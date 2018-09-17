@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <name>ginko_ros</name>
+  <version>0.0.0</version>
+  <description>ROS packages and cad files for GINKO</description>
+
+  <maintainer email="a@gmail.com">nyxrobotics</maintainer>
+
+  <license>BSD</license>
+
+
+  <!-- Url tags are optional, but mutiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/cube</url> -->
+
+  <author email="a@gmail.com">nyxrobotics</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <!-- <run_depend>ginko_bringup</run_depend> -->
+  <!-- <run_depend>ginko_control</run_depend> -->
+  <run_depend>ginko_description</run_depend>
+  <!-- <run_depend>ginko_gazebo</run_depend> -->
+  <!-- <run_depend>ginko_navigation</run_depend> -->
+
+  <export>
+    <metapackage />
+  </export>
+</package>

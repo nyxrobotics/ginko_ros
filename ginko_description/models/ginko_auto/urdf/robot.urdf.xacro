@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="ginko" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+	<xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/modules/leg_r.urdf.xacro"/>
+
+	<link name="world"/>
+	<link name="base"/>
+
+	<joint name="fixed1" type="fixed">
+		<parent link="world"/>
+		<child link="base"/>
+	</joint>
+
+<!-- 	<link name="leg_r_link0">
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>                                                              
+				<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link02_r_femoral.stl"/>
+			</geometry>
+		</collision>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link02_r_femoral.dae"/>
+			</geometry>
+		</visual>
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="6.1"/>
+			<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+		</inertial>
+	</link>
+
+	<joint name="fixed_on_base" type="fixed">
+	    <parent link="base"/>
+		<child link="leg_r_link0"/>
+	    <origin xyz="0 0 0" rpy="0 0 0"/>
+	    <axis xyz="0 0 0"/>
+	</joint> -->
+
+	<xacro:leg_r name="leg_r" parent="base"/> 
+
+
+<!-- 	<xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/modules/leg_r.urdf.xacro">
+		<param name="name" value="leg_r"/>
+		<param name="parent" value="base"/> 
+	</xacro:include > -->
+  
+
+
+
+
+	<!-- <xacro:include filename="robot.transmission.xacro" /> -->
+	<!-- <xacro:include filename="robot.gazebo.xacro" /> -->
+  
+
+</robot>

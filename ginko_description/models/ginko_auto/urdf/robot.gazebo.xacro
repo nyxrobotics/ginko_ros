@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+                          
+  <gazebo reference="Linear1">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+  <gazebo reference="Block">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+  <gazebo reference="Arm1">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+  <gazebo reference="Arm2">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+  <gazebo reference="Arm3">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+  <gazebo reference="Hand1">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+  <gazebo reference="Finger1">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+  <gazebo reference="Finger2">
+    <implicitSpringDamper>True</implicitSpringDamper>
+    <selfCollide>False</selfCollide>
+    <mu1>0.8</mu1>
+    <mu2>0.8</mu2>
+  </gazebo>
+
+</robot>
