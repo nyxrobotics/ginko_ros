@@ -1,5 +1,6 @@
 #include "futaba_driver.hpp"
 #include "serial.hpp"
+#include <linux/serial.h>
 
 PLUGINLIB_EXPORT_CLASS(ginko_joint::revolute, nodelet::Nodelet)
 
@@ -35,6 +36,14 @@ futaba_driver::futaba_driver(ros::NodeHandle nh, ros::NodeHandle prv_nh) {
 	}
 
 	sp.reset(new serial_port(pn));
+
+	//Set Low-Latency mode
+	struct serial_struct serial_settings;
+	int fd = sp->get_fd();
+	ioctl(fd, TIOCGSERIAL, &serial_settings);
+	serial_settings.flags |= ASYNC_LOW_LATENCY;
+	ioctl(fd, TIOCSSERIAL, &serial_settings);
+
 	ginko_usleep(100000);
 //	servo_reboot(255);
  	switch_torque(255,true);
@@ -81,16 +90,23 @@ void futaba_driver::write_position(int *position) {
 	}
 
 	sp->send_packet((void*) p, sizeof(p));
+	ginko_usleep( (100 + l*87) );
 
 	return;
 }
 
 bool futaba_driver::get_status(std::vector<double> *position,
 		std::vector<double> *torque) {
+	bool succeed = 1;
 	unsigned char p[8], buf[26];
 	std::memset(buf, 0, sizeof(buf));
+	const unsigned int ring_buffer_len = 1000;
+	static unsigned char ring_buffer[ring_buffer_len] = {};
+	static unsigned int ring_rp = 0, ring_wp = 1;
+
 	int bytes_available = 0;
 	int fd = sp->get_fd();
+
 
 	for (int i = 0; i < count; i++) {
 
@@ -105,13 +121,17 @@ bool futaba_driver::get_status(std::vector<double> *position,
 		for (int j = 2; j < 7; j++) {
 			p[7] ^= p[j];
 		}
-		ginko_usleep(2000);
+//		ginko_usleep(1000);
 		sp->send_packet((void*) p, sizeof(p));
-		ginko_usleep(2000);
+		ginko_usleep( (100 + sizeof(p)*87) );//送信待機時間
+		ginko_usleep( sizeof(buf)*87 );//送信待機時間
+
+//		ginko_usleep(2000);
+//		ginko_usleep(3000);
 
 
 
-		//Waits for all data get ready
+//		Waits for all data get ready
 //		ros::Time begin = ros::Time::now();
 //		ros::Time now = ros::Time::now();
 //		double dt = (now - begin).toSec();
@@ -119,47 +139,94 @@ bool futaba_driver::get_status(std::vector<double> *position,
 //			ioctl(fd, FIONREAD, &bytes_available);
 //			now = ros::Time::now();
 //			dt = (now - begin).toSec();
-//			if(dt > 0.004){
+//			if(dt > 0.001){
 //				ROS_ERROR("Return Packet Timed out:id%2d", i + 1);
-//				return false;
+//				succeed = 0;
 //			}
 //		}
+
+
 //		ginko_usleep(4000);
 		ioctl(fd, FIONREAD, &bytes_available);
-		if(bytes_available > sizeof(buf)){					//余計なパケットが溜まっている時は最後だけ取り出す
-			unsigned char learge_buf[bytes_available];		//配列の要素数を変数にして宣言するのっていつからできるようになったんだろう。便利だ。
-			sp->receive_packet((void*) learge_buf, bytes_available);
-			for(int j=0; j<sizeof(buf); j++){
-				buf[sizeof(buf) - j - 1] = learge_buf[bytes_available - j - 1];
-			}
-			ROS_ERROR("Receiving Buffer Full Warn:id%2d", i + 1);
-		}else{												//正常なとき
-			sp->receive_packet((void*) buf, sizeof(buf));
+		unsigned char copy_buf[bytes_available];
+		sp->receive_packet((void*) copy_buf, bytes_available);
+		for(int j=0;j<bytes_available;j++){
+			ring_buffer[ring_wp] = copy_buf[j];
+			ring_wp = (ring_wp + 1)%ring_buffer_len;
 		}
+//		ROS_WARN("write:ring_wp:%2d", (int)ring_wp);
 
-		// calculate check sum of return packet.
-		unsigned char cs = 0x00;
-		for (int i = 2; i < (sizeof(buf) - 1); i++) {
-			cs ^= buf[i];
-		}
+		int buffer_instock;
 
-		if (buf[0] != 0xFD || buf[1] != 0xDF || cs != buf[(sizeof(buf) - 1)]) {
-			ROS_ERROR("Receiving Error:id%2d", i + 1);
-			ROS_WARN("buf : %x,%x,%x,%x,%x,%x,%x,%x,%x,%x",buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9]);
-//			return false;
+		if( ring_wp < ring_rp ){
+			buffer_instock = ring_buffer_len + ring_wp - ring_rp - 1;
 		}else{
-
-			position->push_back((double) ((int16_t)buf[7] + (int16_t)(buf[8] << 8) ) * M_PI / 1800); //pose
-
-			int current = buf[13] + buf[14] * 0xFF;    // the unit may be [mA]
-			torque->push_back((double) current * torque_const[i]);
+			buffer_instock = ring_wp - ring_rp - 1;
 		}
-//		ioctl(fd, TCFLSH, 0); // flush receive
-//		ioctl(fd, TCFLSH, 1); // flush transmit
-//		ioctl(fd, TCFLSH, 2); // flush both
+
+		if(buffer_instock < sizeof(buf)){
+			ROS_ERROR("Buffer not in Stock:id%2d", i + 1);
+			ROS_WARN("ring_wp:%2d,ring_rp:%2d", (int)ring_wp, (int)ring_rp);
+			succeed = 0;
+		}else{
+			bool data_ready = false;
+
+//			int headpoint_offset = 0;
+			for(int j=0; j < (buffer_instock + 1 - sizeof(buf)); j++){
+				if(	   ring_buffer[(ring_rp + j + 1)%ring_buffer_len] == 0xFD
+					&& ring_buffer[(ring_rp + j + 2)%ring_buffer_len] == 0xDF
+					&& ring_buffer[(ring_rp + j + 3)%ring_buffer_len] == i + 1){
+					ring_rp = (ring_rp + j)%ring_buffer_len;
+//					headpoint_offset = j;
+					data_ready = true;
+				}
+
+			}
+
+
+			if (data_ready == true){
+				for(int j=0; j<sizeof(buf); j++){
+					buf[j] = ring_buffer[(ring_rp + j +1)%ring_buffer_len];
+//					ring_rp = (ring_rp + 1)%ring_buffer_len;
+				}
+
+	//			ROS_WARN("read:ring_rp:%2d", (int)ring_rp);
+
+				// calculate check sum of return packet.
+				unsigned char cs = 0x00;
+				for (int i = 2; i < (sizeof(buf) - 1); i++) {
+					cs ^= buf[i];
+				}
+
+				if (buf[0] != 0xFD || buf[1] != 0xDF || cs != buf[(sizeof(buf) - 1)]) {
+					ROS_ERROR("Receiving Error:id%2d", i + 1);
+					ROS_WARN("buf : %x,%x,%x,%x,%x,%x,%x,%x,%x,%x",buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7],buf[8],buf[9]);
+					ROS_WARN("ring_wp:%2d,ring_rp:%2d", (int)ring_wp, (int)ring_rp);
+					succeed = 0;
+				}else{
+
+					position->push_back((double) ((int16_t)buf[7] + (int16_t)(buf[8] << 8) ) * M_PI / 1800); //pose
+					int current = buf[13] + buf[14] * 0xFF;    // the unit may be [mA]
+					torque->push_back((double) current * torque_const[i]);
+					ring_rp = (ring_rp + 1)%ring_buffer_len;
+//					ring_rp = (ring_rp + sizeof(buf) )%ring_buffer_len;
+//					ring_rp = (ring_rp + sizeof(buf) + headpoint_offset)%ring_buffer_len;
+
+				}
+
+			}else{
+				ROS_ERROR("Data not ready:id%2d", i + 1);
+				succeed = 0;
+			}
+
+
+	//		ioctl(fd, TCFLSH, 0); // flush receive
+	//		ioctl(fd, TCFLSH, 1); // flush transmit
+	//		ioctl(fd, TCFLSH, 2); // flush both
+		}
 	}
 
-	return true;
+	return succeed;
 }
 
 void futaba_driver::switch_torque(unsigned char id, bool sw) {
@@ -184,6 +251,7 @@ void futaba_driver::switch_torque(unsigned char id, bool sw) {
 	}
 
 	sp->send_packet((void*) p, sizeof(p));
+	ginko_usleep( (200 + sizeof(p)*87) );
 	return;
 }
 
