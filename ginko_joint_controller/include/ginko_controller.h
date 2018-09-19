@@ -45,8 +45,8 @@
 
 namespace ginko {
 //GinkoController
-#define LOOP_FREQUENCY  (25)
-#define SERVO_NUM     2
+#define LOOP_FREQUENCY  (30)
+#define SERVO_NUM     25
 //GinkoSerial
 #define RxRingBufferLength 10000
 
@@ -98,6 +98,7 @@ public:
 	void portClose(void);
 	void setServoBaudrate(unsigned int baudrate);
 	void sendTargetPosition(const double *value);
+	void sendTargetPositionWithSpeed(const double *value,const double ms);
 	void switchTorque(unsigned char id, bool sw);
 	void requestReturnPacket(int servo_id);
 
@@ -125,9 +126,9 @@ private:
 	GinkoSerial ginko_serial_;
 	GinkoTimer ginko_timer_;
 	unsigned char torque_enable_ = 0 , torque_request_ = 0 , pose_request_ = 0;
-	double init_pose_[SERVO_NUM];
-	double target_pose_[SERVO_NUM];
-	double state_pose_[SERVO_NUM];
+	double init_pose_[SERVO_NUM]={};
+	double target_pose_[SERVO_NUM]={};
+	double state_pose_[SERVO_NUM]={};
 	unsigned int timestamp_ms_ = 0;
 	const unsigned int startup_ms_ = 2000;
 	// ROS NodeHandle

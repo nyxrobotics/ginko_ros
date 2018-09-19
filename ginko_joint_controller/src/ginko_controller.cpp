@@ -64,6 +64,7 @@ GinkoController::GinkoController() :
 
 	ROS_INFO("Ginko_controller : Init OK!");
 	ginko_serial_.switchTorque(255,false);
+//	ginko_serial_.setServoBaudrate(460800);
 }
 GinkoController::~GinkoController() {
 //	for (uint8_t num = 0; num < SERVO_NUM; num++)
@@ -80,7 +81,7 @@ void GinkoController::initPublisher() {
 }
 void GinkoController::initSubscriber() {
 	goal_joint_states_sub_ = node_handle_.subscribe(
-			robot_name_ + "/goal_joint_position", 1,
+			robot_name_ + "/goal_joint_position", 100,
 			&GinkoController::goalJointPositionCallback, this);
 	torque_enable_sub_ = node_handle_.subscribe(robot_name_ + "/torque_enable",
 			1, &GinkoController::torqueEnableCallback, this);
@@ -88,13 +89,13 @@ void GinkoController::initSubscriber() {
 void GinkoController::updateJointStates() {
 	sensor_msgs::JointState joint_state;
 
-	float joint_states_pos[SERVO_NUM] = { };
-	float joint_states_vel[SERVO_NUM] = { };
-	float joint_states_eff[SERVO_NUM] = { };
+	float joint_states_pos[SERVO_NUM] = {};
+	float joint_states_vel[SERVO_NUM] = {};
+	float joint_states_eff[SERVO_NUM] = {};
 
-	static double get_joint_position[SERVO_NUM] = { };
-	static double get_joint_velocity[SERVO_NUM] = { };
-	static double get_joint_effort[SERVO_NUM] = { };
+	static double get_joint_position[SERVO_NUM] = {};
+	static double get_joint_velocity[SERVO_NUM] = {};
+	static double get_joint_effort[SERVO_NUM] = {};
 //	ginko_serial_.updateRxRingBuffer();
 	for (int index = 0; index < SERVO_NUM; index++) {
 		ginko_serial_.requestReturnPacket(index+1);
@@ -107,6 +108,8 @@ void GinkoController::updateJointStates() {
 			get_joint_velocity[id_tmp-1]=ginko_serial_.readServoVelocity(id_tmp);
 			get_joint_effort[id_tmp-1]=ginko_serial_.readServoTorque(id_tmp);
 			id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
+
+			state_pose_[id_tmp-1]=get_joint_position[id_tmp-1];
 		}
 	}
 
@@ -115,40 +118,40 @@ void GinkoController::updateJointStates() {
 
 	joint_state.name.push_back("leg_r_joint8");
 	joint_state.name.push_back("leg_r_joint7");
-//	joint_state.name.push_back("leg_r_joint6");
-//	joint_state.name.push_back("leg_r_joint4");
-//	joint_state.name.push_back("leg_r_joint2");
-//	joint_state.name.push_back("leg_r_joint1");
-//	joint_state.name.push_back("leg_r_joint0");
-//
-//	joint_state.name.push_back("leg_l_joint8");
-//	joint_state.name.push_back("leg_l_joint7");
-//	joint_state.name.push_back("leg_l_joint6");
-//	joint_state.name.push_back("leg_l_joint4");
-//	joint_state.name.push_back("leg_l_joint2");
-//	joint_state.name.push_back("leg_l_joint1");
-//	joint_state.name.push_back("leg_l_joint0");
-//
-//	joint_state.name.push_back("body_joint1");
-//
-//	joint_state.name.push_back("arm_r_joint0");
-//	joint_state.name.push_back("arm_r_joint1");
-//	joint_state.name.push_back("arm_r_joint1_rev");
-//	joint_state.name.push_back("arm_r_joint2");
-//	joint_state.name.push_back("arm_r_joint3");
-//
-//	joint_state.name.push_back("arm_l_joint0");
-//	joint_state.name.push_back("arm_l_joint1");
-//	joint_state.name.push_back("arm_l_joint1_rev");
-//	joint_state.name.push_back("arm_l_joint2");
-//	joint_state.name.push_back("arm_l_joint3");
-//
-//	joint_state.name.push_back("joint1");
-//	joint_state.name.push_back("joint2");
-//	joint_state.name.push_back("joint3");
-//	joint_state.name.push_back("joint4");
-//	joint_state.name.push_back("grip_joint");
-//	joint_state.name.push_back("grip_joint_sub");
+	joint_state.name.push_back("leg_r_joint6");
+	joint_state.name.push_back("leg_r_joint4");
+	joint_state.name.push_back("leg_r_joint2");
+	joint_state.name.push_back("leg_r_joint1");
+	joint_state.name.push_back("leg_r_joint0");
+
+	joint_state.name.push_back("leg_l_joint8");
+	joint_state.name.push_back("leg_l_joint7");
+	joint_state.name.push_back("leg_l_joint6");
+	joint_state.name.push_back("leg_l_joint4");
+	joint_state.name.push_back("leg_l_joint2");
+	joint_state.name.push_back("leg_l_joint1");
+	joint_state.name.push_back("leg_l_joint0");
+
+	joint_state.name.push_back("body_joint1");
+
+	joint_state.name.push_back("arm_r_joint0");
+	joint_state.name.push_back("arm_r_joint1");
+	joint_state.name.push_back("arm_r_joint1_rev");
+	joint_state.name.push_back("arm_r_joint2");
+	joint_state.name.push_back("arm_r_joint3");
+
+	joint_state.name.push_back("arm_l_joint0");
+	joint_state.name.push_back("arm_l_joint1");
+	joint_state.name.push_back("arm_l_joint1_rev");
+	joint_state.name.push_back("arm_l_joint2");
+	joint_state.name.push_back("arm_l_joint3");
+
+	joint_state.name.push_back("joint1");
+	joint_state.name.push_back("joint2");
+	joint_state.name.push_back("joint3");
+	joint_state.name.push_back("joint4");
+	joint_state.name.push_back("grip_joint");
+	joint_state.name.push_back("grip_joint_sub");
 
 
 	for (int index = 0; index < SERVO_NUM; index++) {
@@ -168,7 +171,7 @@ void GinkoController::updateJointStates() {
 }
 void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg) {
 	for (int index = 0; index < SERVO_NUM; index++){
-		target_pose_[index] = msg->position.at(index);
+		target_pose_[index] = msg->position.at(index);//送られてくるjointの目標値の数が少ないと配列外参照になるので注意
 	}
 	pose_request_ = 1;
 }
@@ -178,23 +181,21 @@ void GinkoController::torqueEnableCallback(const std_msgs::Int8 &msg) { //0:off,
 //	ROS_INFO("torque on* %d",msg.data);
 }
 void GinkoController::control_loop() {
-//	ROS_INFO("control_loop : step0");
 	//1:トルクの切り替え(サブスクライブがあった場合のみ)
 	static unsigned char torque_enable_pre_ = 0;
 	if (torque_request_ != 0) {
 		//トルク切り替え処理
-		if(torque_enable_==1){
-			if(torque_enable_pre_ != torque_enable_){
+		if(torque_enable_== 1){
+			if(torque_enable_pre_ != 1){
 				ROS_INFO("torque on");
-				timestamp_ms_ = 0;
 				ginko_timer_.msecStart();
+				timestamp_ms_= ginko_timer_.msecGet();
 				for (int index = 0; index < SERVO_NUM; index++){
 					init_pose_[index] = state_pose_[index];
 				}
 			}
 			ginko_serial_.switchTorque(255,true);
 		}else{
-//			ROS_INFO("control_loop : step1");
 			ginko_serial_.switchTorque(255,false);
 			timestamp_ms_ = startup_ms_;
 		}
@@ -202,38 +203,38 @@ void GinkoController::control_loop() {
 	}
 	torque_enable_pre_ = torque_enable_;
 
-//	ROS_INFO("control_loop : step2");
 	//2:目標値の反映
 	if(torque_enable_==1){
-//		timestamp_ms_= ginko_timer_.msecGet();
 		if(timestamp_ms_ < startup_ms_){
 			timestamp_ms_= ginko_timer_.msecGet();
-			ROS_INFO("startup_ms:%d",timestamp_ms_);
+//			ROS_INFO("startup_ms:%d",timestamp_ms_);
 			double startup_pose_[SERVO_NUM]={};
 			for (int index = 0; index < SERVO_NUM; index++){
-				startup_pose_[index] = init_pose_[index] + (target_pose_[index]-init_pose_[index])*(timestamp_ms_/startup_ms_) ;
+				startup_pose_[index] = init_pose_[index] + (target_pose_[index] - init_pose_[index])*(double)timestamp_ms_/(double)startup_ms_;
 			}
-			ginko_serial_.sendTargetPosition(startup_pose_);
+			//ginko_serial_.sendTargetPosition(startup_pose_);
+			ginko_serial_.sendTargetPositionWithSpeed(startup_pose_,1000./(double)(LOOP_FREQUENCY));
 		}else{
 			if(pose_request_ == 1){
-				ginko_serial_.sendTargetPosition(target_pose_);
+//				ginko_serial_.sendTargetPosition(target_pose_);
+				ginko_serial_.sendTargetPositionWithSpeed(target_pose_,1000./(double)(LOOP_FREQUENCY));
 				pose_request_ = 0;
 			}
 		}
 	}
-//	ROS_INFO("control_loop : step3");
+
 	//3:現在値のパブリッシュ,リターン角度の更新
 	updateJointStates();
-//	ROS_INFO("control_loop : step4");
+
 }
 
 //GinkoSerial here
 GinkoSerial::GinkoSerial() {
 	ginko_timer_.usecStart();
-	//.reset(new serial_port("/dev/ttyUSB0"));
-	portOpen("/dev/ttyUSB0",1152000);
-//	sp.reset(new serial_port("/dev/ttyUSB0"));
-//	ginko_timer_.msleepSpan(100);
+
+//	portOpen("/dev/ttyUSB0",115200);
+	portOpen("/dev/ttyUSB0",460800);
+	ginko_timer_.msleepSpan(1000);
 }
 GinkoSerial::GinkoSerial(std::string port_name, unsigned long baudrate) {
 	ginko_timer_.usecStart();
@@ -256,7 +257,7 @@ void GinkoSerial::portOpen(std::string port_name, unsigned long baudrate) {
 	baud_ = baudrate;
 //	sp.reset(new serial_port("/dev/ttyUSB0"));
 
-	fd_ = open(port_name_.data(), O_RDWR);
+	fd_ = open(port_name_.data(), O_RDWR| O_NONBLOCK);
 	check_error("Open", fd_);
 
 	check_error("Save", tcgetattr(fd_, &tio_backup_));
@@ -283,6 +284,8 @@ void GinkoSerial::portOpen(std::string port_name, unsigned long baudrate) {
 	ioctl(fd_, TIOCGSERIAL, &serial_settings);
 	serial_settings.flags |= ASYNC_LOW_LATENCY;
 	ioctl(fd_, TIOCSSERIAL, &serial_settings);
+	ginko_timer_.usleepSpan(10000);
+	tcflush(fd_,TCIOFLUSH);;//clear buffer
 	ginko_timer_.usleepSpan(10000);
 	ROS_INFO("USB connected!");
 }
@@ -365,12 +368,61 @@ void GinkoSerial::sendTargetPosition(const double *value) {
 
 	send_packet((void*) p, sizeof(p));
 	if (baud_ == 460800) {
-		ginko_timer_.usleepSpan((100 + l * 87) / 4);
-	}
-	if (baud_ == 230400) {
+		ginko_timer_.usleepCyclic((100 + l * 87) / 4);
+	}else if (baud_ == 230400) {
 		ginko_timer_.usleepSpan((100 + l * 87) / 2);
 	} else { //baud_==115200
 		ginko_timer_.usleepSpan((100 + l * 87));
+	}
+
+	return;
+}
+
+void GinkoSerial::sendTargetPositionWithSpeed(const double *value,const double ms) {
+	int l = 8 + 5 * SERVO_NUM;
+	unsigned char p[l];
+	int goal[SERVO_NUM];
+	int travel_time = ms/10;
+
+	for (int i = 0; i < SERVO_NUM; i++) {
+		double angle = value[i];
+		if (angle < -2.6) {
+			angle = -2.6;
+		} else if (angle > 2.6) {
+			angle = 2.6;
+		}
+		tx_pose_[i]=angle;//目標位置と現在位置を比較するときに使うためのバッファ
+		goal[i] = (int) (3600 / (2 * M_PI) * angle);
+	}
+
+	p[0] = 0xFA;
+	p[1] = 0xAF;
+	p[2] = 0x00;            // ID  (ロングパケット時は0x00)
+	p[3] = 0x00;   			// Flg (ロングパケット時は0x00)
+	p[4] = 0x1E;            // Adr
+	p[5] = 0x05;			// Len (サーボ１個あたりのデータ長, ID(1byte) + Data(2byte))
+	p[6] = SERVO_NUM;		// Cnt (サーボの数)
+
+	for (int i = 0; i < SERVO_NUM; i++) {
+		p[7 + 5 * i] = i + 1;   // each ID
+		p[8 + 5 * i] = (unsigned char) (goal[i] & 0xFF);
+		p[9 + 5 * i] = (unsigned char) (goal[i] >> 8 & 0xFF);
+		p[10+ 5 * i] = (unsigned char) (travel_time & 0xFF);
+		p[11+ 5 * i] = (unsigned char) (travel_time >> 8 & 0xFF);
+	}
+
+	p[l - 1] = 0x00;    // check sum
+	for (int j = 2; j < l - 1; j++) {
+		p[l - 1] ^= p[j];
+	}
+	ginko_timer_.usecStart();
+	send_packet((void*) p, sizeof(p));
+	if (baud_ == 460800) {
+		ginko_timer_.usleepCyclic(300+100*SERVO_NUM);
+	}else if (baud_ == 230400) {
+		ginko_timer_.usleepCyclic(600+200*SERVO_NUM);
+	} else { //baud_==115200
+		ginko_timer_.usleepCyclic(1200+400*SERVO_NUM);
 	}
 
 	return;
@@ -396,8 +448,15 @@ void GinkoSerial::switchTorque(unsigned char id, bool sw) {
 		p[8] ^= p[j];
 	}
 
+	ginko_timer_.usecStart();
 	send_packet((void*) p, sizeof(p));
-	ginko_timer_.usleepSpan((100 + sizeof(p) * 87));
+	if (baud_ == 460800) {
+		ginko_timer_.usleepCyclic(300);
+	}else if (baud_ == 230400) {
+		ginko_timer_.usleepCyclic(600);
+	} else { //baud_==115200
+		ginko_timer_.usleepCyclic(1200);
+	}
 	return;
 }
 void GinkoSerial::requestReturnPacket(int servo_id) {
@@ -414,17 +473,16 @@ void GinkoSerial::requestReturnPacket(int servo_id) {
 	for (int j = 2; j < 7; j++) {
 		p[7] ^= p[j];
 	}
+	ginko_timer_.usecStart();
 	send_packet((void*) p, sizeof(p));
 	if (baud_ == 460800) {
-		ginko_timer_.usleepSpan((100 + sizeof(p) * 87) / 4);
-		ginko_timer_.usleepSpan((return_packet_size_ * 87) / 4);
-	}
-	if (baud_ == 230400) {
-		ginko_timer_.usleepSpan((100 + sizeof(p) * 87) / 2);
-		ginko_timer_.usleepSpan((return_packet_size_ * 87) / 2);
+		ginko_timer_.usleepCyclic(1000);
+	}else if (baud_ == 230400) {
+		ginko_timer_.usleepCyclic(2100);
 	} else { //baud_==115200
-		ginko_timer_.usleepSpan((100 + sizeof(p) * 87));			//送信待機時間
-		ginko_timer_.usleepSpan((return_packet_size_ * 87));		//受信待機時間
+		ginko_timer_.usleepCyclic(3200);
+//		ginko_timer_.usleepCyclic((100 + sizeof(p) * 87));			//送信待機時間
+//		ginko_timer_.usleepCyclic((return_packet_size_ * 87));		//受信待機時間
 	}
 }
 int GinkoSerial::readRxBufferReadySize(void) {
@@ -494,20 +552,20 @@ void GinkoSerial::getOldestPacketAndIncrementRing(void){
 		rx_vel_ [servo_id-1] = speed;
 		rx_torque_[servo_id-1] = effort;
 
-//		if(servo_id==2){
-			ROS_WARN("Return Packet Detected id:"
-					"%x %x %x %x %x "
-					"%x %x %x %x %x "
-					"%x %x %x %x %x "
-					"%x %x %x %x %x "
-					"%x %x %x %x %x %x"
-					,copy_buf[0],copy_buf[1],copy_buf[2],copy_buf[3],copy_buf[4]
-					,copy_buf[5],copy_buf[6],copy_buf[7],copy_buf[8],copy_buf[9]
-					,copy_buf[10],copy_buf[11],copy_buf[12],copy_buf[13],copy_buf[14]
-					,copy_buf[15],copy_buf[16],copy_buf[17],copy_buf[18],copy_buf[19]
-					,copy_buf[20],copy_buf[21],copy_buf[22],copy_buf[23],copy_buf[24],copy_buf[25]
-					);
-//		}
+////		if(servo_id==2){
+//			ROS_WARN("Return Packet Detected id:"
+//					"%x %x %x %x %x "
+//					"%x %x %x %x %x "
+//					"%x %x %x %x %x "
+//					"%x %x %x %x %x "
+//					"%x %x %x %x %x %x"
+//					,copy_buf[0],copy_buf[1],copy_buf[2],copy_buf[3],copy_buf[4]
+//					,copy_buf[5],copy_buf[6],copy_buf[7],copy_buf[8],copy_buf[9]
+//					,copy_buf[10],copy_buf[11],copy_buf[12],copy_buf[13],copy_buf[14]
+//					,copy_buf[15],copy_buf[16],copy_buf[17],copy_buf[18],copy_buf[19]
+//					,copy_buf[20],copy_buf[21],copy_buf[22],copy_buf[23],copy_buf[24],copy_buf[25]
+//					);
+////		}
 		ring_rp_ = (ring_rp_ + 1) % RxRingBufferLength; //1バイト進めておけばヘッダの0xFA 0xAFの並びが崩れるから次の処理で1パケット分進む
 	}
 
@@ -545,19 +603,21 @@ int GinkoSerial::get_fd() {
 GinkoTimer::GinkoTimer() {
 	clock_getres(CLOCK_MONOTONIC, &ts_stamp_);
 	clock_getres(CLOCK_MONOTONIC, &ts_now_);
+	clock_gettime(CLOCK_MONOTONIC, &ts_stamp_);
+	clock_gettime(CLOCK_MONOTONIC, &ts_now_);
 }
 GinkoTimer::~GinkoTimer() {
 }
 void GinkoTimer::usecStart(void) {
-	clock_getres(CLOCK_MONOTONIC, &ts_stamp_);
+	clock_gettime(CLOCK_MONOTONIC, &ts_stamp_);
 }
 long GinkoTimer::usecGet(void) {
-	struct timespec ts_interval;
 	long us_interval = 0;
-	clock_getres(CLOCK_MONOTONIC, &ts_now_);
-	us_interval = (long) ((((double) ts_now_.tv_sec - (double) ts_stamp_.tv_sec)
-			* 1000000000.0 + (double) ts_now_.tv_nsec
-			- (double) ts_stamp_.tv_nsec) / 1000.0);
+	struct timespec ts_interval_;
+	clock_gettime(CLOCK_MONOTONIC, &ts_now_);
+	ts_interval_.tv_sec=ts_now_.tv_sec - ts_stamp_.tv_sec;
+	ts_interval_.tv_nsec=ts_now_.tv_nsec - ts_stamp_.tv_nsec;
+	us_interval = ((double)ts_interval_.tv_sec * 1000000.)+(ts_interval_.tv_nsec / 1000.) ;
 	return us_interval;
 }
 void GinkoTimer::usleepSpan(long usec) { //ヘッダに書いた通りの機能になってるかわからない
@@ -577,10 +637,11 @@ void GinkoTimer::msecStart(void) {
 }
 long GinkoTimer::msecGet(void) {
 	long ms_interval = 0;
-	clock_getres(CLOCK_MONOTONIC, &ts_now_);
-	ms_interval = (long) ((((double) ts_now_.tv_sec - (double) ts_stamp_.tv_sec)
-			* 1000000000.0 + (double) ts_now_.tv_nsec
-			- (double) ts_stamp_.tv_nsec) / 1000000.);
+	struct timespec ts_interval_;
+	clock_gettime(CLOCK_MONOTONIC, &ts_now_);
+	ts_interval_.tv_sec=ts_now_.tv_sec - ts_stamp_.tv_sec;
+	ts_interval_.tv_nsec=ts_now_.tv_nsec - ts_stamp_.tv_nsec;
+	ms_interval = ((double)ts_interval_.tv_sec * 1000.)+(ts_interval_.tv_nsec / 1000000.) ;
 	return ms_interval;
 }
 void GinkoTimer::msleepSpan(long msec) { //ヘッダに書いた通りの機能になってるかわからない
