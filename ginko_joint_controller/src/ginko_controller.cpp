@@ -65,6 +65,7 @@ GinkoController::GinkoController() :
 	ROS_INFO("Ginko_controller : Init OK!");
 	ginko_serial_.switchTorque(255,false);
 //	ginko_serial_.setServoBaudrate(460800);
+//	ginko_serial_.setServoBaudrate(115200);
 }
 GinkoController::~GinkoController() {
 //	for (uint8_t num = 0; num < SERVO_NUM; num++)
@@ -107,9 +108,10 @@ void GinkoController::updateJointStates() {
 			get_joint_position[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
 			get_joint_velocity[id_tmp-1]=ginko_serial_.readServoVelocity(id_tmp);
 			get_joint_effort[id_tmp-1]=ginko_serial_.readServoTorque(id_tmp);
-			id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
 
-			state_pose_[id_tmp-1]=get_joint_position[id_tmp-1];
+			state_pose_[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
+//			ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
+			id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
 		}
 	}
 
@@ -201,7 +203,7 @@ void GinkoController::control_loop() {
 	if(torque_enable_==1){
 		if(timestamp_ms_ < startup_ms_){
 			timestamp_ms_= ginko_timer_.msecGet();
-//			ROS_INFO("startup_ms:%d",timestamp_ms_);
+//			ROS_INFO("startup_ms:%d , start:%f, end:%f",timestamp_ms_,init_pose_[0],target_pose_[0]);
 			double startup_pose_[SERVO_NUM]={};
 			for (int index = 0; index < SERVO_NUM; index++){
 				startup_pose_[index] = init_pose_[index] + (target_pose_[index] - init_pose_[index])*(double)timestamp_ms_/(double)startup_ms_;

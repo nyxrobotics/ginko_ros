@@ -128,9 +128,9 @@
 	    	<parent link="${name}_link1"/>
 	    	<child  link="${name}_link3"/>
 	    	<origin xyz="0.1 0.0 0.0" rpy="0 -0.7854 0"/>
-	    	<axis xyz="0 1 0"/>
+	    	<axis xyz="0 -1 0"/>
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	    	<!-- <mimic joint="${name}_joint1" multiplier="-1" offset="0"/>  -->
+	    	<!-- <mimic joint="${name}_joint1" multiplier="1" offset="0"/>  -->
 	  	</joint>
 
 
@@ -226,9 +226,9 @@
 	    	<parent link="${name}_link4"/>
 	    	<child  link="${name}_link6"/>
 	    	<origin xyz="0.1 0.0 0.0" rpy="0 -2.3562 0"/>
-	    	<axis xyz="0 1 0"/>
+	    	<axis xyz="0 -1 0"/>
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	    	<!-- <mimic joint="${name}_joint4" multiplier="-1" offset="0"/>  -->
+	    	<!-- <mimic joint="${name}_joint4" multiplier="1" offset="0"/>  -->
 	  	</joint>
 
 		<link name="${name}_link7">
@@ -290,6 +290,32 @@
 	    	<axis xyz="0 0 1"/>
 	    	<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
 	  	</joint>
+ <!-- toe edges -->
+		<link name="${name}_toe_link0"/>
+		<joint name="${name}_toe_joint0" type="fixed">
+	    	<parent link="${name}_link8"/>
+	    	<child  link="${name}_toe_link0"/>
+	    	<origin xyz="0.064 0.040 -0.005" rpy="0 0 0"/>
+	  	</joint>
+		<link name="${name}_toe_link1"/>
+		<joint name="${name}_toe_joint1" type="fixed">
+	    	<parent link="${name}_link8"/>
+	    	<child  link="${name}_toe_link1"/>
+	    	<origin xyz="-0.064 0.040 -0.005" rpy="0 0 0"/>
+	  	</joint>
+		<link name="${name}_toe_link2"/>
+		<joint name="${name}_toe_joint2" type="fixed">
+	    	<parent link="${name}_link8"/>
+	    	<child  link="${name}_toe_link2"/>
+	    	<origin xyz="-0.064 -0.040 -0.005" rpy="0 0 0"/>
+	  	</joint>
+		<link name="${name}_toe_link3"/>
+		<joint name="${name}_toe_joint3" type="fixed">
+	    	<parent link="${name}_link8"/>
+	    	<child  link="${name}_toe_link3"/>
+	    	<origin xyz="0.064 -0.040 -0.005" rpy="0 0 0"/>
+	  	</joint>
+
 
 
 	</xacro:macro>
