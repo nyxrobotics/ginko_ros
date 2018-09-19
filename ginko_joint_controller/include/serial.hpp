@@ -12,6 +12,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <sys/ioctl.h> // 受信バッファに届いているデータの数を所得するために使用
+#include <linux/serial.h>
 
 class serial_port {
     private:

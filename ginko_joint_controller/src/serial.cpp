@@ -33,6 +33,10 @@ serial_port::serial_port(std::string pn) {
     // change the port setting
 
     ROS_INFO("USB connected!");
+//	struct serial_struct serial_settings;
+//	ioctl(fd, TIOCGSERIAL, &serial_settings);
+//	serial_settings.flags |= ASYNC_LOW_LATENCY;
+//	ioctl(fd, TIOCSSERIAL, &serial_settings);
 }
 
 serial_port::~serial_port() {
@@ -49,7 +53,7 @@ void serial_port::send_packet(void* ptr, int size) {
     if(write(fd, ptr, size) < 0) {
         ROS_ERROR("Writing failed: %s(%s)", port_name.data(), std::strerror(errno));
     }
-    usleep(10);
+//    usleep(10);
 
     return;
 }

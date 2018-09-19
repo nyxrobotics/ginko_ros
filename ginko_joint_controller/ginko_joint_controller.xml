@@ -1,6 +1,0 @@
-<library path="lib/libginko_joint_controller">
-  <class name="ginko_joint_controller/revolute" type="ginko_joint::revolute" base_class_type="nodelet::Nodelet">
-    <description>nodelet for revolute actuation.</description>
-  </class>
-</library>
-
