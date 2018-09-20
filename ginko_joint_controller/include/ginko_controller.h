@@ -16,8 +16,8 @@
 
 /* Authors: Taehun Lim (Darby) */
 
-#ifndef GINKO_FUTABA_CONTROLLER_H
-#define GINKO_FUTABA_CONTROLLER_H
+#ifndef GINKO_JOINT_CONTROLLER_H
+#define GINKO_JOINT_CONTROLLER_H
 
 #include <ros/ros.h>
 
