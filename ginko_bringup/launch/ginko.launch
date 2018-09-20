@@ -10,7 +10,7 @@
 		<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
 
 		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
-			<rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/>
+			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
 		</include>
 		<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
 

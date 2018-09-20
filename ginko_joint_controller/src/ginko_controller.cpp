@@ -97,7 +97,7 @@ void GinkoController::initOffsetsReconfigure() {
 	param_server.setCallback(callback_server);
 }
 void GinkoController::offsetsReconfigureCallback(ginko_joint_controller::servo_offsetsConfig &config, uint32_t level) {
-	ROS_INFO("Reconfigure Request");
+//	ROS_INFO("Reconfigure Request");
 
 	servo_offsets_[0] = config.servo_01_ofs;
 	servo_offsets_[1] = config.servo_02_ofs;
@@ -130,8 +130,6 @@ void GinkoController::offsetsReconfigureCallback(ginko_joint_controller::servo_o
 	servo_offsets_[24] = config.servo_25_ofs;
 
 	ofs_reconf_request = 1;
-}
-void GinkoController::reloadOffsets() {
 }
 
 void GinkoController::updateJointStates() {
@@ -236,7 +234,7 @@ void GinkoController::control_loop() {
 				ginko_timer_.msecStart();
 				timestamp_ms_= ginko_timer_.msecGet();
 				for (int index = 0; index < SERVO_NUM; index++){
-					init_pose_[index] = state_pose_[index];
+					init_pose_[index] = state_pose_[index] + servo_offsets_[index];
 				}
 			}
 			ginko_serial_.switchTorque(255,true);
@@ -276,7 +274,6 @@ void GinkoController::control_loop() {
 //GinkoSerial here
 GinkoSerial::GinkoSerial() {
 	ginko_timer_.usecStart();
-
 //	portOpen("/dev/ttyUSB0",115200);
 	portOpen("/dev/ttyUSB0",460800);
 	ginko_timer_.msleepSpan(1000);

@@ -175,7 +175,6 @@ private:
 	void initSubscriber();
 	void initOffsetsReconfigure();
 	void offsetsReconfigureCallback(ginko_joint_controller::servo_offsetsConfig &config, uint32_t level);
-	void reloadOffsets();
 	void updateJointStates();
 	void goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg);
 	void torqueEnableCallback(const std_msgs::Int8 &msg);
