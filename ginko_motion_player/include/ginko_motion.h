@@ -35,6 +35,14 @@
 #include <decision_making/ROSTask.h>
 #include <decision_making/DecisionMaking.h>
 
+
+
+#include <decision_making/SynchCout.h>
+#include <decision_making/BT.h>
+
+#include <std_msgs/Bool.h>
+#include <sensor_msgs/Range.h>
+
 using namespace std;
 using namespace decision_making;
 
@@ -42,38 +50,13 @@ using namespace decision_making;
 
 
 
-//namespace ginko_motion {
-//inko_joint_controllerのGinkoControllerと同じ
+
+//ginko_joint_controllerのGinkoControllerと同じ
 #define LOOP_FREQUENCY  (30)
 #define SERVO_NUM     25
 
 
 
-//class GinkoFSM { //FSMを使って状態遷移を可視化できるようにする
-//private:
-
-//	volatile bool leftBumper, rightBumper, wallSensor;
-//	random_numbers::RandomNumberGenerator _randomizer;
-//	string _motiomCommand = "TorqueFree";
-//	unsigned char _motiomCommandChanged = 0;
-
-//	ros::NodeHandle node_handle_;
-//	ros::Subscriber _motiomCommandSub;
-//	ros::Publisher _PosePublisher;
-
-//public:
-//
-//private:
-//	void initSubscriber();
-	void motionCommandCallback(const std_msgs::String::ConstPtr& msg);
-	string getMotionCommand(void);
-	unsigned char getCommandChanged(void);
-	decision_making::TaskResult torqueFreeTask(string name, const FSMCallContext& context, EventQueue& eventQueue);
-	decision_making::TaskResult torqueOnTask(string name, const FSMCallContext& context, EventQueue& eventQueue);
-//};
 
 
-
-//}
-
-#endif //OPEN_MANIPULATOR_Ginko_CONTROLLER_H
+#endif //GINKO_MOTION_H

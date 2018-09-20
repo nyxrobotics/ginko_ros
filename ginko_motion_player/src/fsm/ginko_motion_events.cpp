@@ -63,12 +63,12 @@ void publishRandomLaserScan(ros::Publisher& laserScanPublisher) {
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "fsm_wandering_events");
-//    ros::Publisher laserScanPublisher = ros::NodeHandle().advertise<sensor_msgs::LaserScan>("/fsm_wandering/scan", 1, false);
+    ros::Publisher laserScanPublisher = ros::NodeHandle().advertise<sensor_msgs::LaserScan>("/fsm_wandering/scan", 1, false);
 
     ROS_INFO("Starting wandering events publisher...");
 
     while (ros::ok()) {
-//        publishRandomLaserScan(laserScanPublisher);
+        publishRandomLaserScan(laserScanPublisher);
         boost::this_thread::sleep(boost::posix_time::milliseconds(100));
     }
 	return 0;
