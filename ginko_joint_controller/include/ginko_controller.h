@@ -43,6 +43,11 @@
 //#include "serial.hpp"
 #include <linux/serial.h>
 
+//dynamic reconfigure----
+#include <dynamic_reconfigure/server.h>
+#include <ginko_joint_controller/servo_offsetsConfig.h> //(project)/cfg/servo_offsets.cfgから自動生成されるらしい
+
+
 namespace ginko {
 //GinkoController
 #define LOOP_FREQUENCY  (30)
@@ -125,10 +130,11 @@ class GinkoController {
 private:
 	GinkoSerial ginko_serial_;
 	GinkoTimer ginko_timer_;
-	unsigned char torque_enable_ = 0 , torque_request_ = 0 , pose_request_ = 0;
+	unsigned char torque_enable_ = 0 , torque_request_ = 0 , pose_request_ = 0, ofs_reconf_request = 0;
 	double init_pose_[SERVO_NUM]={};
 	double target_pose_[SERVO_NUM]={};
 	double state_pose_[SERVO_NUM]={};
+	double servo_offsets_[SERVO_NUM]={};
 	unsigned int timestamp_ms_ = 0;
 	const unsigned int startup_ms_ = 2000;
 	// ROS NodeHandle
@@ -155,15 +161,21 @@ private:
 	std::string joint_mode_;
 	std::string gripper_mode_;
 
+	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig> param_server;
+	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig>::CallbackType callback_server;
+
 public:
 	GinkoController();
 	~GinkoController();
 	void control_loop();
 
 private:
-	void initMsg();
+//	void initMsg();
 	void initPublisher();
 	void initSubscriber();
+	void initOffsetsReconfigure();
+	void offsetsReconfigureCallback(ginko_joint_controller::servo_offsetsConfig &config, uint32_t level);
+	void reloadOffsets();
 	void updateJointStates();
 	void goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg);
 	void torqueEnableCallback(const std_msgs::Int8 &msg);

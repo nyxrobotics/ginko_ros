@@ -5,16 +5,16 @@
 
   <arg name="joint_controller"       default="position_mode"/>
   <arg name="servonum" value="25"/>
-  <arg name="joint1_name"            default="leg_r_joint8"/>
-  <arg name="joint2_name"            default="leg_r_joint7"/>
-  <arg name="joint3_name"            default="leg_r_joint6"/>
-  <arg name="joint4_name"            default="leg_r_joint4"/>
-  <arg name="joint5_name"            default="leg_r_joint2"/>
-  <arg name="joint6_name"            default="leg_r_joint1"/>
-  <arg name="joint7_name"            default="leg_r_joint0"/>
+<!--   <arg name="joint01_name"            default="leg_r_joint8"/>
+  <arg name="joint02_name"            default="leg_r_joint7"/>
+  <arg name="joint03_name"            default="leg_r_joint6"/>
+  <arg name="joint04_name"            default="leg_r_joint4"/>
+  <arg name="joint05_name"            default="leg_r_joint2"/>
+  <arg name="joint06_name"            default="leg_r_joint1"/>
+  <arg name="joint07_name"            default="leg_r_joint0"/>
   
-  <arg name="joint8_name"            default="leg_l_joint8"/>
-  <arg name="joint9_name"            default="leg_l_joint7"/>
+  <arg name="joint08_name"            default="leg_l_joint8"/>
+  <arg name="joint09_name"            default="leg_l_joint7"/>
   <arg name="joint10_name"           default="leg_l_joint6"/>
   <arg name="joint11_name"           default="leg_l_joint4"/>
   <arg name="joint12_name"           default="leg_l_joint2"/>
@@ -33,7 +33,7 @@
   <arg name="joint22_name"           default="arm_l_joint1"/>
   <arg name="joint23_name"           default="arm_l_joint1_rev"/>
   <arg name="joint24_name"           default="arm_l_joint2"/>
-  <arg name="joint25_name"           default="arm_l_joint3"/>
+  <arg name="joint25_name"           default="arm_l_joint3"/> -->
 
   <arg name="gripper_controller"     default="current_mode"/>
 
@@ -46,7 +46,7 @@
 
     <param name="joint_controller"     value="$(arg joint_controller)"/>
 
-    <param name="joint1_name"            value="$(arg joint1_name)"/>
+<!--     <param name="joint1_name"            value="$(arg joint1_name)"/>
     <param name="joint2_name"            value="$(arg joint2_name)"/>
     <param name="joint3_name"            value="$(arg joint3_name)"/>
     <param name="joint4_name"            value="$(arg joint4_name)"/>
@@ -70,7 +70,7 @@
     <param name="joint22_name"            value="$(arg joint22_name)"/>
     <param name="joint23_name"            value="$(arg joint23_name)"/>
     <param name="joint24_name"            value="$(arg joint24_name)"/>
-    <param name="joint25_name"            value="$(arg joint25_name)"/>
+    <param name="joint25_name"            value="$(arg joint25_name)"/> -->
 
   </node>
 </launch>

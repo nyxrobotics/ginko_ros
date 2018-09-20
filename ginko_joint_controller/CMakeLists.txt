@@ -11,6 +11,11 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   nodelet
   pluginlib
+  dynamic_reconfigure #for rqt_reconfigure 
+)
+
+generate_dynamic_reconfigure_options(#for rqt_reconfigure 
+  cfg/servo_offsets.cfg
 )
 
 catkin_package(
@@ -31,41 +36,21 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_library(${PROJECT_NAME}_DEP 
-  src/serial.cpp
-)
 add_dependencies(
-  ${PROJECT_NAME}_DEP 
   ${${PROJECT_NAME}_EXPORTED_TARGETS} 
   ${catkin_EXPORTED_TARGETS}
 )
 
 add_executable(${PROJECT_NAME} src/ginko_controller.cpp)
-# add_dependencies(ginko_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-# target_link_libraries(ginko_controller ${catkin_LIBRARIES})
 
-
-target_link_libraries(${PROJECT_NAME}_DEP
-  ${catkin_LIBRARIES}
-)
-
-# add_library(${PROJECT_NAME}
-#   src/futaba_driver.cpp
-# )
-
-
-# add_library(${PROJECT_NAME}
-#   src/ginko_controller.cpp
-# )
 
 add_dependencies(${PROJECT_NAME}
   ${${PROJECT_NAME}_EXPORTED_TARGETS} 
   ${catkin_EXPORTED_TARGETS}
-  ${PROJECT_NAME}_DEP
+  ginko_joint_controller_gencfg #for rqt_reconfigure 
 )
 target_link_libraries(${PROJECT_NAME} 
   ${catkin_LIBRARIES} 
-  ${PROJECT_NAME}_DEP
 )
 
 
