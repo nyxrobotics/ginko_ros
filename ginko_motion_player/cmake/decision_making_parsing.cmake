@@ -4,7 +4,7 @@ FILE(GLOB_RECURSE FOR_DEL /home/gisen/ros/devel/.private/ginko_motion_player/sha
 if( FOR_DEL )
 	FILE(REMOVE ${FOR_DEL})
 endif()
-execute_process(COMMAND /home/gisen/ros/devel/.private/decision_making_parser/lib/decision_making_parser/decision_making_parser -pe -xml -dot -src "/home/gisen/ros/src/ginko_ros/ginko_motion_player" -dst "/home/gisen/ros/devel/.private/ginko_motion_player/share/ginko_motion_player/graphs" -f "/home/gisen/ros/src/ginko_ros/ginko_motion_player/src/fsm/ginko_motion.cpp:" RESULT_VARIABLE rv)
+execute_process(COMMAND /home/gisen/ros/devel/.private/decision_making_parser/lib/decision_making_parser/decision_making_parser -pe -xml -dot -src "/home/gisen/ros/src/ginko_ros/ginko_motion_player" -dst "/home/gisen/ros/devel/.private/ginko_motion_player/share/ginko_motion_player/graphs" -f "/home/gisen/ros/src/ginko_ros/ginko_motion_player/src/fsm/ginko_fsm.cpp:" RESULT_VARIABLE rv)
 FILE(GLOB_RECURSE CREATED_FILES RELATIVE /home/gisen/ros/devel/.private/ginko_motion_player/share/ginko_motion_player/graphs/ /home/gisen/ros/devel/.private/ginko_motion_player/share/ginko_motion_player/graphs/*.scxml /home/gisen/ros/devel/.private/ginko_motion_player/share/ginko_motion_player/graphs/*.btxml  /home/gisen/ros/devel/.private/ginko_motion_player/share/ginko_motion_player/graphs/*.taoxml)
 message("   -- Created XML files:")
 foreach( f ${CREATED_FILES})

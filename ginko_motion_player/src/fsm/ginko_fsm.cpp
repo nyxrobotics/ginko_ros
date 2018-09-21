@@ -16,7 +16,11 @@
 
 /* Authors: Taehun Lim (Darby) */
 
-#include "ginko_motion.h"
+#include "ginko_fsm.h"
+using namespace ginko_fsm;
+
+GinkoTimer ginko_timer_;
+GinkoPlayer ginko_player_;
 
 enum MOTIN_NUM
 {
@@ -174,13 +178,16 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 //tasks
 decision_making::TaskResult torqueOnCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("torqueOnTask...");
-    sleep(1);
+//    sleep(1);
+    ginko_player_.playPose(standing_Motion_Start,0);
+    ginko_player_.torqueEnable(1);
     eventQueue.riseEvent("/MOTION_FINISH");
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult torqueOffCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("torqueOffTask...");
-    sleep(1);
+//    sleep(1);
+    ginko_player_.torqueEnable(0);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
@@ -202,23 +209,23 @@ decision_making::TaskResult wakeupFrontCallback(string name, const FSMCallContex
 decision_making::TaskResult wakeupBackCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("wakeupBackTask...");
 
-    sleep(1);
+    ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult walkFrontCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("walkFrontStart...");
-    sleep(1);
+    ginko_timer_.msleepCyclic(1000);
     while(_motiomCommand == WALK_FRONT){
         ROS_INFO("walkFrontLoop...");
-        sleep(1);
+        ginko_timer_.msleepCyclic(1000);
     }
     if(_motiomCommand != TORQUE_OFF){
         ROS_INFO("walkFrontEnd...");
-        sleep(1);
+        ginko_timer_.msleepCyclic(1000);
     }
-    sleep(1);
+    ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
@@ -234,7 +241,9 @@ int main(int argc, char** argv){
 
 	ros::NodeHandle node;
 	_motiomCommandSub = node.subscribe("/motion_command",1,&motionCommandCallback);
-
+	//init timer
+    ginko_timer_.usecStart();
+    ginko_player_.initPublisher();
 	//Tasks registration
     LocalTasks::registrate("torqueOnTask",	torqueOnCallback);
     LocalTasks::registrate("torqueOffTask",	torqueOffCallback);

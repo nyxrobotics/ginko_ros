@@ -187,4 +187,4 @@ private:
 
 }
 
-#endif //OPEN_MANIPULATOR_Ginko_CONTROLLER_H
+#endif //GINKO_JOINT_CONTROLLER_H

@@ -258,11 +258,11 @@ void GinkoController::control_loop() {
 			//ginko_serial_.sendTargetPosition(startup_pose_);
 			ginko_serial_.sendTargetPositionWithSpeed(startup_pose_,1000./(double)(LOOP_FREQUENCY));
 		}else{
-			if(pose_request_ == 1){
+//			if(pose_request_ == 1){
 //				ginko_serial_.sendTargetPosition(target_pose_);
 				ginko_serial_.sendTargetPositionWithSpeed(target_pose_,1000./(double)(LOOP_FREQUENCY));
-				pose_request_ = 0;
-			}
+//				pose_request_ = 0;
+//			}
 		}
 	}
 
@@ -360,6 +360,45 @@ void GinkoSerial::setServoBaudrate(unsigned int baudrate) {
 		p[8] ^= p[i];
 	}
 	send_packet((void*) p, sizeof(p));
+	ginko_timer_.msleepSpan(10);
+
+	//setting other parms
+	//zero damper
+	p[0] = 0xFA;	//header
+	p[1] = 0xAF;	//header
+	p[2] = 0xFF;	//id
+	p[3] = 0x00;	//flags
+	p[4] = 0x14;	//address
+	p[5] = 0x01;	//length
+	p[6] = 0x01;	//count
+	p[7] = 0x00;	//data
+	p[8] = 0x00;    // check sum
+	for (int i = 2; i < 8; i++) {
+		p[8] ^= p[i];
+	}
+	send_packet((void*) p, sizeof(p));
+	ginko_timer_.msleepSpan(10);
+	//gain
+	unsigned char p1[14];
+	p1[0] = 0xFA;	//header
+	p1[1] = 0xAF;	//header
+	p1[2] = 0xFF;	//id
+	p1[3] = 0x00;	//flags
+	p1[4] = 0x18;	//address
+	p1[5] = 0x04;	//length
+	p1[6] = 0x01;	//count
+	p1[7] = 0x00;	//data:margin CW
+	p1[8] = 0x00;	//data:margin CCW
+	p1[9] = 0x08;	//data:slope CW
+	p1[10] = 0x08;	//data:slope CCW
+	p1[11] = 0x00;	//data:punch Low
+	p1[12] = 0x00;	//data:punch High
+	p[13] = 0x00;    // check sum
+	for (int i = 2; i < 13; i++) {
+		p[13] ^= p[i];
+	}
+	send_packet((void*) p1, sizeof(p1));
+	ginko_timer_.msleepSpan(10);
 
 	unsigned char p2[8];    //write to rom
 	p2[0] = 0xFA;
@@ -370,8 +409,8 @@ void GinkoSerial::setServoBaudrate(unsigned int baudrate) {
 	p2[5] = 0x00;
 	p2[6] = 0x00;
 	p2[7] = 0x40;
-
 	send_packet((void*) p2, sizeof(p2));
+	ginko_timer_.msleepSpan(10);
 }
 void GinkoSerial::sendTargetPosition(const double *value) {
 	int l = 8 + 3 * SERVO_NUM;

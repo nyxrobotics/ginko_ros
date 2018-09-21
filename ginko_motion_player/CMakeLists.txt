@@ -29,19 +29,23 @@ catkin_package(
 ###########
 ## FSM Build ##
 ###########
-add_executable(fsm_ginko src/fsm/ginko_motion.cpp)
-add_executable(fsm_ginko_events src/fsm/ginko_motion_events.cpp)
+add_executable(fsm_ginko
+ src/fsm/ginko_fsm.cpp
+  src/ginko_timer.cpp
+    src/ginko_player.cpp
+)
+
+add_executable(fsm_ginko_events src/fsm/ginko_fsm_events.cpp)
 target_link_libraries(fsm_ginko ${catkin_LIBRARIES})
 target_link_libraries(fsm_ginko_events ${catkin_LIBRARIES})
-decision_making_parsing(
-  src/fsm/ginko_motion.cpp
-)
+decision_making_parsing(src/fsm/ginko_fsm.cpp)
 ###########
 ## Build ##
 ###########
 
 include_directories(
   include
+  include/motions
   ${catkin_INCLUDE_DIRS}
 )
 

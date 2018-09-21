@@ -43,8 +43,17 @@
 #include <std_msgs/Bool.h>
 #include <sensor_msgs/Range.h>
 
+
+#include "ginko_timer.h"
+#include "ginko_player.h"
+#include "standing.h"
+
+namespace ginko_fsm {
 using namespace std;
 using namespace decision_making;
+using namespace ginko_timer;
+using namespace ginko_player;
+
 
 #define foreach BOOST_FOREACH
 
@@ -55,6 +64,8 @@ using namespace decision_making;
 #define LOOP_FREQUENCY  (30)
 #define SERVO_NUM     25
 
+
+}
 
 
 
