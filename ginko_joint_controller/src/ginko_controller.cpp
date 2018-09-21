@@ -214,7 +214,8 @@ void GinkoController::updateJointStates() {
 }
 void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg) {
 	for (int index = 0; index < SERVO_NUM; index++){
-		target_pose_[index] = msg->position.at(index) - servo_offsets_[index];//送られてくるjointの目標値の数が少ないと配列外参照になるので注意
+//		target_pose_[index] = msg->position.at(index) - servo_offsets_[index];//送られてくるjointの目標値の数が少ないと配列外参照になるので注意
+		target_pose_[index] = msg->position.at(index);
 	}
 	pose_request_ = 1;
 }

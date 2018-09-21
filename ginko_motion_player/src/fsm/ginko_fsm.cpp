@@ -179,7 +179,8 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 decision_making::TaskResult torqueOnCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("torqueOnTask...");
 //    sleep(1);
-    ginko_player_.playPose(standing_Motion_Start,0);
+//    ginko_player_.playPose(standing_Motion_Start,0);
+    ginko_player_.playPose(walkFront_Motion_Start,0);
     ginko_player_.torqueEnable(1);
     eventQueue.riseEvent("/MOTION_FINISH");
     return TaskResult::SUCCESS();
@@ -201,7 +202,7 @@ decision_making::TaskResult standingCallback(string name, const FSMCallContext& 
 }
 decision_making::TaskResult wakeupFrontCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("wakeupFrontTask...");
-    sleep(1);
+    ginko_player_.playMotion(wakeupFront_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
@@ -209,21 +210,23 @@ decision_making::TaskResult wakeupFrontCallback(string name, const FSMCallContex
 decision_making::TaskResult wakeupBackCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("wakeupBackTask...");
 
-    ginko_timer_.msleepCyclic(1000);
+    ginko_player_.playMotion(wakeupBack_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
+
+
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult walkFrontCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("walkFrontStart...");
-    ginko_timer_.msleepCyclic(1000);
+    ginko_player_.playMotion(walkFront_Motion_Start);
     while(_motiomCommand == WALK_FRONT){
         ROS_INFO("walkFrontLoop...");
-        ginko_timer_.msleepCyclic(1000);
+        ginko_player_.playMotion(walkFront_Motion_Loop);
     }
     if(_motiomCommand != TORQUE_OFF){
         ROS_INFO("walkFrontEnd...");
-        ginko_timer_.msleepCyclic(1000);
+        ginko_player_.playMotion(walkFront_Motion_End);
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");

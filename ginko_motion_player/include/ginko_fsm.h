@@ -47,6 +47,10 @@
 #include "ginko_timer.h"
 #include "ginko_player.h"
 #include "standing.h"
+#include "walkFront.h"
+#include "wakeupFront.h"
+#include "wakeupBack.h"
+
 
 namespace ginko_fsm {
 using namespace std;
