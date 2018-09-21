@@ -71,7 +71,7 @@ FSM(Ginko)
 		torqueOn,
 		standing,
 		wakeupFront,wakeupBack,
-		walkFrontStart,walkFront,walkFrontEnd
+		walkFront
 
 	}
 	FSM_START(torqueOff);
@@ -95,7 +95,7 @@ FSM(Ginko)
             FSM_CALL_TASK(standingTask)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(walkFrontStart));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(walkFront));
 				FSM_ON_CONDITION(_motiomCommand == WAKEUP_FRONT && _motiomCommandChanged ==1 , FSM_NEXT(wakeupFront));
 				FSM_ON_CONDITION(_motiomCommand == WAKEUP_BACK && _motiomCommandChanged ==1 , FSM_NEXT(wakeupBack));
             }
@@ -115,29 +115,14 @@ FSM(Ginko)
 
             }
         }
-        FSM_STATE(walkFrontStart){
-            FSM_CALL_TASK(walkFrontStartTask)
-            FSM_TRANSITIONS{
-				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(walkFront));
-				FSM_ON_CONDITION(_motiomCommand != WALK_FRONT , FSM_NEXT(walkFrontEnd));
-            }
-        }
         FSM_STATE(walkFront){
             FSM_CALL_TASK(walkFrontTask)
-            FSM_TRANSITIONS{
-				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(walkFront));
-				FSM_ON_CONDITION(_motiomCommand != WALK_FRONT , FSM_NEXT(walkFrontEnd));
-            }
-        }
-        FSM_STATE(walkFrontEnd){
-            FSM_CALL_TASK(walkFrontEndTask)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
+
 	}
 	FSM_END
 }
@@ -216,32 +201,29 @@ decision_making::TaskResult wakeupFrontCallback(string name, const FSMCallContex
 }
 decision_making::TaskResult wakeupBackCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("wakeupBackTask...");
-    sleep(1);
-    eventQueue.riseEvent("/MOTION_FINISH");
-    _motiomCommandChanged = 0;
-    return TaskResult::SUCCESS();
-}
-decision_making::TaskResult walkFrontStartCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("walkFrontStartTask...");
+
     sleep(1);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult walkFrontCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("walkFrontTask...");
+    ROS_INFO("walkFrontStart...");
+    sleep(1);
+    while(_motiomCommand == WALK_FRONT){
+        ROS_INFO("walkFrontLoop...");
+        sleep(1);
+    }
+    if(_motiomCommand != TORQUE_OFF){
+        ROS_INFO("walkFrontEnd...");
+        sleep(1);
+    }
     sleep(1);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult walkFrontEndCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("walkFrontEndTask...");
-    sleep(1);
-    eventQueue.riseEvent("/MOTION_FINISH");
-    _motiomCommandChanged = 0;
-    return TaskResult::SUCCESS();
-}
+
 
 //main
 int main(int argc, char** argv){
@@ -259,9 +241,8 @@ int main(int argc, char** argv){
     LocalTasks::registrate("standingTask",	standingCallback);
     LocalTasks::registrate("wakeupFrontTask",	wakeupFrontCallback);
     LocalTasks::registrate("wakeupBackTask",	wakeupBackCallback);
-    LocalTasks::registrate("walkFrontStartTask",walkFrontStartCallback);
     LocalTasks::registrate("walkFrontTask",	walkFrontCallback);
-    LocalTasks::registrate("walkFrontEndTask",	walkFrontEndCallback);
+
 
 
 	ros::AsyncSpinner spinner(2);
