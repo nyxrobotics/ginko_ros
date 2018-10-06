@@ -120,7 +120,7 @@ void GinkoController::updateJointStates() {
 	joint_state.name.push_back("leg_r_joint7");
 	joint_state.name.push_back("leg_r_joint6");
 	joint_state.name.push_back("leg_r_joint4");
-	joint_state.name.push_back("leg_r_joint2");
+	joint_state.name.push_back("leg_r_joint3");
 	joint_state.name.push_back("leg_r_joint1");
 	joint_state.name.push_back("leg_r_joint0");
 
@@ -128,7 +128,7 @@ void GinkoController::updateJointStates() {
 	joint_state.name.push_back("leg_l_joint7");
 	joint_state.name.push_back("leg_l_joint6");
 	joint_state.name.push_back("leg_l_joint4");
-	joint_state.name.push_back("leg_l_joint2");
+	joint_state.name.push_back("leg_l_joint3");
 	joint_state.name.push_back("leg_l_joint1");
 	joint_state.name.push_back("leg_l_joint0");
 
@@ -146,12 +146,6 @@ void GinkoController::updateJointStates() {
 	joint_state.name.push_back("arm_l_joint2");
 	joint_state.name.push_back("arm_l_joint3");
 
-	joint_state.name.push_back("joint1");
-	joint_state.name.push_back("joint2");
-	joint_state.name.push_back("joint3");
-	joint_state.name.push_back("joint4");
-	joint_state.name.push_back("grip_joint");
-	joint_state.name.push_back("grip_joint_sub");
 
 
 	for (int index = 0; index < SERVO_NUM; index++) {
