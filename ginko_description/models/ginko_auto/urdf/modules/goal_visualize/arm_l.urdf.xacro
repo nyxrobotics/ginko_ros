@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 
-<robot name="arm_r" xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="arm_r" params="name parent">
+<robot name="arm_l" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:macro name="arm_l" params="name parent">
 	<!-- <xacro:property name="name" value="leg"/> -->
 
 		<!-- shoulder pitch. -->
@@ -11,14 +11,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_r_arm01.stl"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/>
 				</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_r_arm01.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_l_arm01.dae"/>
 				</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -32,7 +32,7 @@
 		    <parent link="${parent}"/>
 			<child link="${name}_link0"/>
 		    <origin xyz="0 0 0" rpy="0 0 0"/>
-		    <axis xyz="0 1 0"/>
+		    <axis xyz="0 -1 0"/>
 			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
 		</joint>
 
@@ -43,14 +43,14 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link10_r_arm02.stl"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link10_l_arm02.stl"/>
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link10_r_arm02.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link10_l_arm02.dae"/>
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -63,7 +63,7 @@
 		<joint name="${name}_joint1" type="revolute">
 			<parent link="${name}_link0"/>
 			<child  link="${name}_link1"/>
-			<origin xyz="0.035 -0.0246 0" rpy="-0.3927 0 0"/>
+			<origin xyz="0.035 0.0246 0" rpy="0.3927 0 0"/>
 			<axis xyz="1 0 0"/>
 			<limit effort="1000.0" lower="-0.85" upper="1.18" velocity="0.5"/>
 		</joint>
@@ -71,10 +71,10 @@
 		<joint name="${name}_joint1_rev" type="revolute">
 			<parent link="${name}_link0"/>
 			<child  link="${name}_link1_rev"/>
-			<origin xyz="-0.0562 -0.0246 0" rpy="0.3927 3.1416 0"/>
+			<origin xyz="-0.0562 0.0246 0" rpy="-0.3927 3.1416 0"/>
 			<axis xyz="1 0 0"/>
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	    	<!-- <mimic joint="${name}_joint1" multiplier="-1" offset="0"/>  -->
+	    	<mimic joint="${name}_joint1" multiplier="-1" offset="0"/> 
 		</joint>
 
 
@@ -85,14 +85,14 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link11_r_scissor01.stl"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link11_l_scissor01.stl"/>
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link11_r_scissor01.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link11_l_scissor01.dae"/>
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -105,8 +105,8 @@
 		<joint name="${name}_joint2" type="revolute">
 	    	<parent link="${name}_link1"/>
 	    	<child  link="${name}_link2"/>
-	    	<origin xyz="0.0092 -0.0784 -0.0933" rpy="0 0.7854 0"/>
-	    	<axis xyz="0 -1 0"/>
+	    	<origin xyz="0.0092 0.0784 -0.0933" rpy="0 0.7854 0"/>
+	    	<axis xyz="0 1 0"/>
 	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="0.5"/>
 	  	</joint>
 
@@ -115,14 +115,14 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link12_r_scissor02.stl"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link12_l_scissor02.stl"/>
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link12_r_scissor02.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link12_l_scissor02.dae"/>
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -135,8 +135,8 @@
 		<joint name="${name}_joint3" type="revolute">
 	    	<parent link="${name}_link1"/>
 	    	<child  link="${name}_link3"/>
-	    	<origin xyz="0.0092 -0.0219 -0.0933" rpy="0 0.7854 0"/>
-	    	<axis xyz="0 -1 0"/>
+	    	<origin xyz="0.0092 0.0219 -0.0933" rpy="0 0.7854 0"/>
+	    	<axis xyz="0 1 0"/>
 	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="0.5"/>
 	  	</joint>
 
@@ -159,7 +159,7 @@
 		<joint name="${name}_urg_joint" type="fixed">
 	    	<parent link="${name}_link1"/>
 	    	<child  link="${name}_urg_link"/>
-	    	<origin xyz="-0.04675 -0.00655 -0.0483" rpy="0 1.57 1.57"/>
+	    	<origin xyz="-0.04675 0.00655 -0.0483" rpy="0 1.57 -1.57"/>
 	  	</joint>
 
 
