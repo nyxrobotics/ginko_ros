@@ -29,6 +29,13 @@ http://wiki.ros.org/smach  →C++で使えない<br>
 
 
 ## Demo
+・/dev/ttyUSB0があれば、以下のコマンドで一応通信しようとする。リターンが来ないけどエラー処理とかはしていない。<br>
+terminal-00: roslaunch ginko_bringup ginko_state_and_goal.launch <br>
+terminal-01: roslaunch ginko_motion_player fsm_ginko.launch <br>
+terminal-02: rviz <br>
+
+・URDFの確認だけなら以下<br>
+terminal-00: roslaunch ginko_description ginko_view.launch <br>
 
 ## VS. 
 
