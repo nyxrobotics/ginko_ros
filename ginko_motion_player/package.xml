@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ginko_motion_player</name>
+  <version>0.0.1</version>
+  <description>controll rs406cb joints</description>
+
+  <maintainer email="gisen@todo.todo">gisen</maintainer>
+
+  <license>TODO</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nodelet</depend>
+  <depend>pluginlib</depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>random_numbers</depend>
+  <depend>decision_making</depend>
+  <depend>decision_making_parser</depend>
+
+
+  <export>
+    <nodelet plugin="${prefix}/ginko_motion_player.xml" />
+  </export>
+
+</package>
