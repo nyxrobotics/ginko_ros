@@ -105,7 +105,7 @@
 		<joint name="${name}_joint2" type="revolute">
 	    	<parent link="${name}_link1"/>
 	    	<child  link="${name}_link2"/>
-	    	<origin xyz="0.0092 -0.0784 -0.0933" rpy="0 0.7854 0"/>
+	    	<origin xyz="0.0092 -0.0547 -0.11295" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 -1 0"/>
 	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="0.5"/>
 	  	</joint>
@@ -135,7 +135,7 @@
 		<joint name="${name}_joint3" type="revolute">
 	    	<parent link="${name}_link1"/>
 	    	<child  link="${name}_link3"/>
-	    	<origin xyz="0.0092 -0.0219 -0.0933" rpy="0 0.7854 0"/>
+	    	<origin xyz="0.0092 0.0018 -0.11295" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 -1 0"/>
 	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="0.5"/>
 	  	</joint>
@@ -159,7 +159,7 @@
 		<joint name="${name}_urg_joint" type="fixed">
 	    	<parent link="${name}_link1"/>
 	    	<child  link="${name}_urg_link"/>
-	    	<origin xyz="-0.04675 -0.00655 -0.0483" rpy="0 1.57 1.57"/>
+	    	<origin xyz="-0.0456 0.01715 -0.06795" rpy="0 1.57 1.57"/>
 	  	</joint>
 
 

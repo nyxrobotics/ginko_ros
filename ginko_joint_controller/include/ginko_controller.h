@@ -93,6 +93,7 @@ private:
 	double rx_pose_[SERVO_NUM]   = {};
 	double rx_vel_[SERVO_NUM]    = {};
 	double rx_torque_[SERVO_NUM] = {};
+	ros::NodeHandle node_handle_;
     //boost::shared_ptr<serial_port> sp;
 
 public:

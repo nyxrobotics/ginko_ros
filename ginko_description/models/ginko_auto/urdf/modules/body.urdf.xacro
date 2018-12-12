@@ -73,7 +73,7 @@
 		<joint name="${name}_joint2" type="fixed">
 		    <parent link="${name}_link0"/>
 			<child link="${name}_arm_r_link"/>
-		    <origin xyz="0 -0.0903 0.04865" rpy="0 0 0"/>
+		    <origin xyz="0 -0.10683 0.05115" rpy="0 0 0"/>
 		    <axis xyz="0 -1 0"/>
 		</joint>
 
@@ -81,7 +81,7 @@
 		<joint name="${name}_joint3" type="fixed">
 		    <parent link="${name}_link0"/>
 			<child link="${name}_arm_l_link"/>
-		    <origin xyz="0 0.0903 0.04865" rpy="0 0 0"/>
+		    <origin xyz="0 0.10683 0.05115" rpy="0 0 0"/>
 		    <axis xyz="0 1 0"/>
 		</joint>
 
@@ -89,7 +89,7 @@
 		<joint name="${name}_joint4" type="fixed">
 		    <parent link="${name}_link1"/>
 			<child link="${name}_leg_r_link"/>
-		    <origin xyz="0.0263 -0.0411 -0.0434" rpy="0 0 0"/>
+		    <origin xyz="0.0205 0.0 -0.0409" rpy="0 0 0"/>
 		    <axis xyz="0 1 0"/>
 		</joint>
 
@@ -97,7 +97,7 @@
 		<joint name="${name}_joint5" type="fixed">
 		    <parent link="${name}_link1"/>
 			<child link="${name}_leg_l_link"/>
-		    <origin xyz="0.0263 0.0411 -0.0434" rpy="0 0 0"/>
+		    <origin xyz="-0.0404 0.0 -0.0409" rpy="0 0 0"/>
 		    <axis xyz="0 1 0"/>
 		</joint>
 

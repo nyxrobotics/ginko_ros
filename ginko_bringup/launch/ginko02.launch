@@ -1,0 +1,24 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+
+		<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
+		<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
+<!-- 		<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+		</node>node> -->
+
+		<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+		<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
+
+		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller02.launch" >
+			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+		</include>
+		<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+
+<!-- Controller -->
+    <!-- servo controller -->
+		<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
+
+</launch>

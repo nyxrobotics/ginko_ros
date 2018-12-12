@@ -276,7 +276,9 @@ void GinkoController::control_loop() {
 GinkoSerial::GinkoSerial() {
 	ginko_timer_.usecStart();
 //	portOpen("/dev/ttyUSB0",115200);
-	portOpen("/dev/ttyUSB0",460800);
+//	portOpen("/dev/ttyUSB0",460800);
+	std::string device_name = node_handle_.param<std::string>(ros::this_node::getName() + "/device_name", "/dev/ttyUSB1");
+	portOpen(device_name,460800);
 	ginko_timer_.msleepSpan(1000);
 }
 GinkoSerial::GinkoSerial(std::string port_name, unsigned long baudrate) {
