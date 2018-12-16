@@ -41,8 +41,9 @@ add_dependencies(
   ${catkin_EXPORTED_TARGETS}
 )
 
-add_executable(${PROJECT_NAME} src/ginko_controller.cpp)
-
+file(GLOB MY_SOURCES "src/*.cpp")
+#add_executable(${PROJECT_NAME} src/ginko_controller.cpp)
+add_executable(${PROJECT_NAME} ${MY_SOURCES})
 
 add_dependencies(${PROJECT_NAME}
   ${${PROJECT_NAME}_EXPORTED_TARGETS} 

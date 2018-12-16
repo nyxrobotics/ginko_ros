@@ -17,7 +17,7 @@
   <depend>pluginlib</depend>
 
   <export>
-    <nodelet plugin="${prefix}/ginko_joint_controller.xml" />
+    <nodelet plugin="${prefix}/ginko_controller.xml" />
   </export>
 
 </package>

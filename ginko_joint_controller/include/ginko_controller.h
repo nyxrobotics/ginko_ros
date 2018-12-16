@@ -16,8 +16,8 @@
 
 /* Authors: Taehun Lim (Darby) */
 
-#ifndef GINKO_JOINT_CONTROLLER_H
-#define GINKO_JOINT_CONTROLLER_H
+#ifndef GINKO_CONTROLLER_H
+#define GINKO_CONTROLLER_H
 
 #include <ros/ros.h>
 
@@ -47,85 +47,10 @@
 #include <dynamic_reconfigure/server.h>
 #include <ginko_joint_controller/servo_offsetsConfig.h> //(project)/cfg/servo_offsets.cfgから自動生成されるらしい
 
-
-namespace ginko {
-//GinkoController
-#define LOOP_FREQUENCY  (30)
-#define SERVO_NUM     25
-//GinkoSerial
-#define RxRingBufferLength 10000
+#include "ginko_serial.h"
+#include "ginko_params.h"
 
 
-class GinkoTimer { //CLOCK_MONOTONICを使ってタイマー管理を行う関数を用意したい
-private:
-	struct timespec ts_now_;
-	struct timespec ts_stamp_;
-
-public:
-	GinkoTimer();
-	~GinkoTimer();
-	void usecStart(void);			//関数呼び出しの時点で開始時刻を更新
-	long usecGet(void);				//開始時刻からの経過時間を所得する
-	void usleepSpan(long usec);		//関数呼び出しの時点で開始時刻を更新し、そこからの経過時間を見る
-	void usleepCyclic(long usec);	//前回の関数呼び出し終了時点からの経過時間を見る
-	void msecStart(void);
-	long msecGet(void);
-	void msleepSpan(long msec);
-	void msleepCyclic(long msec);
-private:
-	void initTimer(void);
-
-};
-
-
-class GinkoSerial {
-private:
-	GinkoTimer ginko_timer_;
-    std::string port_name_;
-    int baud_ = 115200;
-    int return_packet_size_ = 26;
-    void check_error(const char*, int);
-    struct termios tio_, tio_backup_;
-    int fd_ = 0;     // file descriptor
-    unsigned char ring_buffer_[RxRingBufferLength] = {};
-	int ring_rp_ = 0, ring_wp_   = 1;
-	double tx_pose_[SERVO_NUM]   = {};
-	double rx_pose_[SERVO_NUM]   = {};
-	double rx_vel_[SERVO_NUM]    = {};
-	double rx_torque_[SERVO_NUM] = {};
-	ros::NodeHandle node_handle_;
-    //boost::shared_ptr<serial_port> sp;
-
-public:
-    GinkoSerial();
-    GinkoSerial(std::string port_name, unsigned long baudrate);
-	~GinkoSerial();
-	void portOpen(std::string port_name,unsigned long baudrate);
-	void portClose(void);
-	void setServoBaudrate(unsigned int baudrate);
-	void sendTargetPosition(const double *value);
-	void sendTargetPositionWithSpeed(const double *value,const double ms);
-	void switchTorque(unsigned char id, bool sw);
-	void requestReturnPacket(int servo_id);
-
-	void updateRxRingBuffer(void);
-	int readRingBufferReadySize(void);
-	int ringBufferGotoOldestHeader(void);//return id //チェックサムまで確認する //なかったら0返す
-	void getOldestPacketAndIncrementRing(void); //該当idからきたサーボ情報を反映する
-
-	double readServoPosition(int servo_id);
-	double readServoVelocity(int servo_id);
-	double readServoTorque(int servo_id);
-
-private:
-    void send_packet(void*, int);
-    void receive_packet(void*, int);
-    int get_fd();
-	int readRxBufferReadySize(void);
-	//void reloadStatusBuffer(void);
-	//void ringBufferGotoLatestHeader(int servo_id);//特定サーボの最新のデータまで進む //チェックサムまで確認する
-
-};
 
 class GinkoController {
 private:
@@ -187,10 +112,4 @@ private:
 };
 
 
-
-
-
-
-}
-
-#endif //GINKO_JOINT_CONTROLLER_H
+#endif //GINKO_CONTROLLER_H
