@@ -1,19 +1,21 @@
-
 #include "ginko_serial.h"
-
 
 //GinkoSerial here
 GinkoSerial::GinkoSerial() {
 	ginko_timer_.usecStart();
-//	portOpen("/dev/ttyUSB0",115200);
-//	portOpen("/dev/ttyUSB0",460800);
-	std::string device_name = node_handle_.param<std::string>(ros::this_node::getName() + "/device_name", "/dev/ttyUSB1");
-	portOpen(device_name,460800);
+	//paramはstringを呼ぶ時のみ<std::string>を書く必要がある
+	//http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters
+	std::string device_name = node_handle_.param<std::string>(
+			ros::this_node::getName() + "/device_name", "/dev/ttyUSB0");
+	unsigned long baudrate = node_handle_.param(
+			ros::this_node::getName() + "/baud_rate", 460800);
+//	portOpen(device_name,460800);
+	portOpen(device_name, baudrate);
 	ginko_timer_.msleepSpan(1000);
 }
 GinkoSerial::GinkoSerial(std::string port_name, unsigned long baudrate) {
 	ginko_timer_.usecStart();
-	portOpen(port_name,baudrate);
+	portOpen(port_name, baudrate);
 }
 GinkoSerial::~GinkoSerial() {
 	portClose();
@@ -27,14 +29,10 @@ void GinkoSerial::check_error(const char* action, int status) {
 	return;
 }
 void GinkoSerial::portOpen(std::string port_name, unsigned long baudrate) {
-//	portClose();
 	port_name_ += port_name;
 	baud_ = baudrate;
-//	sp.reset(new serial_port("/dev/ttyUSB0"));
-
-	fd_ = open(port_name_.data(), O_RDWR| O_NONBLOCK);
+	fd_ = open(port_name_.data(), O_RDWR | O_NONBLOCK);
 	check_error("Open", fd_);
-
 	check_error("Save", tcgetattr(fd_, &tio_backup_));
 	// save the current port status
 
@@ -60,7 +58,7 @@ void GinkoSerial::portOpen(std::string port_name, unsigned long baudrate) {
 	serial_settings.flags |= ASYNC_LOW_LATENCY;
 	ioctl(fd_, TIOCSSERIAL, &serial_settings);
 	ginko_timer_.usleepSpan(10000);
-	tcflush(fd_,TCIOFLUSH);;//clear buffer
+	tcflush(fd_, TCIOFLUSH);//clear buffer
 	ginko_timer_.usleepSpan(10000);
 	ROS_INFO("USB connected!");
 }
@@ -157,7 +155,7 @@ void GinkoSerial::sendTargetPosition(const double *value) {
 		} else if (angle > 2.6) {
 			angle = 2.6;
 		}
-		tx_pose_[i]=angle;//目標位置と現在位置を比較するときに使うためのバッファ
+		tx_pose_[i] = angle;    //目標位置と現在位置を比較するときに使うためのバッファ
 		goal[i] = (int) (3600 / (2 * M_PI) * angle);
 	}
 
@@ -183,7 +181,7 @@ void GinkoSerial::sendTargetPosition(const double *value) {
 	send_packet((void*) p, sizeof(p));
 	if (baud_ == 460800) {
 		ginko_timer_.usleepCyclic((100 + l * 87) / 4);
-	}else if (baud_ == 230400) {
+	} else if (baud_ == 230400) {
 		ginko_timer_.usleepSpan((100 + l * 87) / 2);
 	} else { //baud_==115200
 		ginko_timer_.usleepSpan((100 + l * 87));
@@ -192,11 +190,12 @@ void GinkoSerial::sendTargetPosition(const double *value) {
 	return;
 }
 
-void GinkoSerial::sendTargetPositionWithSpeed(const double *value,const double ms) {
+void GinkoSerial::sendTargetPositionWithSpeed(const double *value,
+		const double ms) {
 	int l = 8 + 5 * SERVO_NUM;
 	unsigned char p[l];
 	int goal[SERVO_NUM];
-	int travel_time = ms/10;
+	int travel_time = ms / 10;
 
 	for (int i = 0; i < SERVO_NUM; i++) {
 		double angle = value[i];
@@ -205,7 +204,7 @@ void GinkoSerial::sendTargetPositionWithSpeed(const double *value,const double m
 		} else if (angle > 2.6) {
 			angle = 2.6;
 		}
-		tx_pose_[i]=angle;//目標位置と現在位置を比較するときに使うためのバッファ
+		tx_pose_[i] = angle; //目標位置と現在位置を比較するときに使うためのバッファ
 		goal[i] = (int) (3600 / (2 * M_PI) * angle);
 	}
 
@@ -221,8 +220,8 @@ void GinkoSerial::sendTargetPositionWithSpeed(const double *value,const double m
 		p[7 + 5 * i] = i + 1;   // each ID
 		p[8 + 5 * i] = (unsigned char) (goal[i] & 0xFF);
 		p[9 + 5 * i] = (unsigned char) (goal[i] >> 8 & 0xFF);
-		p[10+ 5 * i] = (unsigned char) (travel_time & 0xFF);
-		p[11+ 5 * i] = (unsigned char) (travel_time >> 8 & 0xFF);
+		p[10 + 5 * i] = (unsigned char) (travel_time & 0xFF);
+		p[11 + 5 * i] = (unsigned char) (travel_time >> 8 & 0xFF);
 	}
 
 	p[l - 1] = 0x00;    // check sum
@@ -232,11 +231,11 @@ void GinkoSerial::sendTargetPositionWithSpeed(const double *value,const double m
 	ginko_timer_.usecStart();
 	send_packet((void*) p, sizeof(p));
 	if (baud_ == 460800) {
-		ginko_timer_.usleepCyclic(300+100*SERVO_NUM);
-	}else if (baud_ == 230400) {
-		ginko_timer_.usleepCyclic(600+200*SERVO_NUM);
+		ginko_timer_.usleepCyclic(300 + 100 * SERVO_NUM);
+	} else if (baud_ == 230400) {
+		ginko_timer_.usleepCyclic(600 + 200 * SERVO_NUM);
 	} else { //baud_==115200
-		ginko_timer_.usleepCyclic(1200+400*SERVO_NUM);
+		ginko_timer_.usleepCyclic(1200 + 400 * SERVO_NUM);
 	}
 
 	return;
@@ -266,7 +265,7 @@ void GinkoSerial::switchTorque(unsigned char id, bool sw) {
 	send_packet((void*) p, sizeof(p));
 	if (baud_ == 460800) {
 		ginko_timer_.usleepCyclic(300);
-	}else if (baud_ == 230400) {
+	} else if (baud_ == 230400) {
 		ginko_timer_.usleepCyclic(600);
 	} else { //baud_==115200
 		ginko_timer_.usleepCyclic(1200);
@@ -291,7 +290,7 @@ void GinkoSerial::requestReturnPacket(int servo_id) {
 	send_packet((void*) p, sizeof(p));
 	if (baud_ == 460800) {
 		ginko_timer_.usleepCyclic(1000);
-	}else if (baud_ == 230400) {
+	} else if (baud_ == 230400) {
 		ginko_timer_.usleepCyclic(2100);
 	} else { //baud_==115200
 		ginko_timer_.usleepCyclic(3200);
@@ -316,7 +315,7 @@ void GinkoSerial::updateRxRingBuffer(void) {
 		}
 	}
 }
-int GinkoSerial::readRingBufferReadySize(void){
+int GinkoSerial::readRingBufferReadySize(void) {
 	int buffer_instock = 0;
 	if (ring_wp_ < ring_rp_) {
 		buffer_instock = RxRingBufferLength + ring_wp_ - ring_rp_ - 1;
@@ -325,19 +324,23 @@ int GinkoSerial::readRingBufferReadySize(void){
 	}
 	return buffer_instock;
 }
-int GinkoSerial::ringBufferGotoOldestHeader(void){//バグりそう //何も見つからない場合は0を返す //
+int GinkoSerial::ringBufferGotoOldestHeader(void) { //バグりそう //何も見つからない場合は0を返す //
 	int buffer_instock = readRingBufferReadySize();
 	int servo_id = 0;
 	for (int j = 0; j < (buffer_instock + 1 - return_packet_size_); j++) {
 		if (ring_buffer_[(ring_rp_ + j + 1) % RxRingBufferLength] == 0xFD
-				&& ring_buffer_[(ring_rp_ + j + 2) % RxRingBufferLength]== 0xDF
-				&& ring_buffer_[(ring_rp_ + j + 3) % RxRingBufferLength] != 0x00) {
+				&& ring_buffer_[(ring_rp_ + j + 2) % RxRingBufferLength] == 0xDF
+				&& ring_buffer_[(ring_rp_ + j + 3) % RxRingBufferLength]
+						!= 0x00) {
 			unsigned char cs = 0x00;
 			for (int i = 2; i < (return_packet_size_ - 1); i++) {
 				cs ^= ring_buffer_[(ring_rp_ + j + 1 + i) % RxRingBufferLength];
 			}
-			if(cs == ring_buffer_[(ring_rp_ + j + 1 + (return_packet_size_ - 1) ) % RxRingBufferLength]){
-				servo_id = ring_buffer_[(ring_rp_ + j + 3) % RxRingBufferLength];
+			if (cs
+					== ring_buffer_[(ring_rp_ + j + 1
+							+ (return_packet_size_ - 1)) % RxRingBufferLength]) {
+				servo_id =
+						ring_buffer_[(ring_rp_ + j + 3) % RxRingBufferLength];
 				ring_rp_ = (ring_rp_ + j) % RxRingBufferLength;
 //				ROS_WARN("Return Packet Detected id:%2d", servo_id);
 				return servo_id;
@@ -346,24 +349,27 @@ int GinkoSerial::ringBufferGotoOldestHeader(void){//バグりそう //何も見�
 	}
 	return 0;
 }
-void GinkoSerial::getOldestPacketAndIncrementRing(void){
-	unsigned char copy_buf[return_packet_size_]={};
+void GinkoSerial::getOldestPacketAndIncrementRing(void) {
+	unsigned char copy_buf[return_packet_size_] = { };
 	for (int j = 0; j < return_packet_size_; j++) {
 		copy_buf[j] = ring_buffer_[(ring_rp_ + j + 1) % RxRingBufferLength];
 	}
 	int servo_id = copy_buf[2];
-	if(servo_id > 0 && servo_id<=SERVO_NUM){
-		double pose  =((double) ((int16_t) copy_buf[7]  + (int16_t) (copy_buf[8]  << 8)) * M_PI / 1800); //pose
-		double speed =((double) ((int16_t) copy_buf[11] + (int16_t) (copy_buf[12] << 8)) * M_PI / 1800); //speed
-		double effort=((double) ((int16_t) copy_buf[13] + (int16_t) (copy_buf[14] << 8)) *2.    /1000.);//電流トルク定数がわからない.1Aで2Nmと仮定
-		if(tx_pose_[servo_id]>pose){
-		}else{
+	if (servo_id > 0 && servo_id <= SERVO_NUM) {
+		double pose = ((double) ((int16_t) copy_buf[7]
+				+ (int16_t) (copy_buf[8] << 8)) * M_PI / 1800); //pose
+		double speed = ((double) ((int16_t) copy_buf[11]
+				+ (int16_t) (copy_buf[12] << 8)) * M_PI / 1800); //speed
+		double effort = ((double) ((int16_t) copy_buf[13]
+				+ (int16_t) (copy_buf[14] << 8)) * 2. / 1000.); //電流トルク定数がわからない.1Aで2Nmと仮定
+		if (tx_pose_[servo_id] > pose) {
+		} else {
 			effort *= -1.0;
 		}
 
-		rx_pose_[servo_id-1] = pose;
-		rx_vel_ [servo_id-1] = speed;
-		rx_torque_[servo_id-1] = effort;
+		rx_pose_[servo_id - 1] = pose;
+		rx_vel_[servo_id - 1] = speed;
+		rx_torque_[servo_id - 1] = effort;
 
 ////		if(servo_id==2){
 //			ROS_WARN("Return Packet Detected id:"
@@ -383,28 +389,30 @@ void GinkoSerial::getOldestPacketAndIncrementRing(void){
 	}
 
 }
-double GinkoSerial::readServoPosition(int servo_id){
-	return rx_pose_[servo_id-1];
+double GinkoSerial::readServoPosition(int servo_id) {
+	return rx_pose_[servo_id - 1];
 }
-double GinkoSerial::readServoVelocity(int servo_id){
-	return rx_vel_[servo_id-1];
+double GinkoSerial::readServoVelocity(int servo_id) {
+	return rx_vel_[servo_id - 1];
 }
-double GinkoSerial::readServoTorque(int servo_id){
-	return rx_torque_[servo_id-1];
+double GinkoSerial::readServoTorque(int servo_id) {
+	return rx_torque_[servo_id - 1];
 }
 void GinkoSerial::send_packet(void* ptr, int size) {
-    if(write(fd_, ptr, size) < 0) {
-        ROS_ERROR("Writing failed: %s(%s)", port_name_.data(), std::strerror(errno));
-    }
+	if (write(fd_, ptr, size) < 0) {
+		ROS_ERROR("Writing failed: %s(%s)", port_name_.data(),
+				std::strerror(errno));
+	}
 //    usleep(10);
 
-    return;
+	return;
 }
 void GinkoSerial::receive_packet(void *buf_ptr, int size) {
-    if(read(fd_, buf_ptr, size) < 0) {
-        ROS_ERROR("Reading failed: %s(%s)", port_name_.data(), std::strerror(errno));
-    }
+	if (read(fd_, buf_ptr, size) < 0) {
+		ROS_ERROR("Reading failed: %s(%s)", port_name_.data(),
+				std::strerror(errno));
+	}
 }
 int GinkoSerial::get_fd() {
-    return fd_;
+	return fd_;
 }
