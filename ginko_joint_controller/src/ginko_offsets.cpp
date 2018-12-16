@@ -1,32 +1,31 @@
 
+//2つのサーボで一自由度を駆動する際の、サーボ同士のズレを補正するための機能。
+//dynamic reconfigureで確認しながら調整→servo_offsets.yamlに反映？のような形にしたい
 
-#include "servo_offsets.h"
+
+#include <ginko_offsets.h>
 
 
-double mapd(double x, double in_min, double in_max, double out_min,
-		double out_max) {
-	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
 
 //GinkoControler here
-ServoOffsets::ServoOffsets(){
+GinkoOffsets::GinkoOffsets(){
 	initOffsetsReconfigure();
-	ROS_INFO("ServoOffsetsReconfigure : Init OK!");
-
-}
-ServoOffsets::~ServoOffsets() {
-
+	ROS_INFO("GinkoOffsetsReconfigure : Init OK!");
 }
 
-void ServoOffsets::initOffsetsReconfigure() {
+GinkoOffsets::~GinkoOffsets() {
+
+}
+
+void GinkoOffsets::initOffsetsReconfigure() {
 //	ここに宣言すると共有化に失敗してコールバックが呼ばれない。プライベート変数に入れた。
 //	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig> param_server;
 //	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig>::CallbackType callback_server;
-	callback_server = boost::bind(&ServoOffsets::offsetsReconfigureCallback,this, _1, _2);
+	callback_server = boost::bind(&GinkoOffsets::offsetsReconfigureCallback,this, _1, _2);
 	ROS_INFO("Reconfigure Initializad");
 	param_server.setCallback(callback_server);
 }
-void ServoOffsets::offsetsReconfigureCallback(ginko_joint_controller::servo_offsetsConfig &config, uint32_t level) {
+void GinkoOffsets::offsetsReconfigureCallback(ginko_joint_controller::servo_offsetsConfig &config, uint32_t level) {
 //	ROS_INFO("Reconfigure Request");
 
 	servo_offsets_[0] = config.servo_01_ofs;

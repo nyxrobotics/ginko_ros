@@ -28,8 +28,8 @@
 //dynamic reconfigure----
 #include <dynamic_reconfigure/server.h>
 #include <ginko_joint_controller/servo_offsetsConfig.h> //(project)/cfg/servo_offsets.cfgから自動生成されるらしい
+#include "params.h"
 #include "ginko_timer.h"
-#include "ginko_params.h"
 
 
 class GinkoSerial {
