@@ -286,17 +286,20 @@ void GinkoSerial::requestReturnPacket(int servo_id) {
 	for (int j = 2; j < 7; j++) {
 		p[7] ^= p[j];
 	}
-	ginko_timer_.usecStart();
+	//ginko_timerがCPUをめちゃくちゃ食いつぶしていることが判明、対策検討中
+	//ginko_timer_.usecStart();
 	send_packet((void*) p, sizeof(p));
 	if (baud_ == 460800) {
-		ginko_timer_.usleepCyclic(1000);
+		//ginko_timer_.usleepCyclic(1000);
+		ginko_timer_.usleepSpan(1000);
 	} else if (baud_ == 230400) {
-		ginko_timer_.usleepCyclic(2100);
+		//ginko_timer_.usleepCyclic(2100);
+		ginko_timer_.usleepSpan(2100);
 	} else { //baud_==115200
-		ginko_timer_.usleepCyclic(3200);
-//		ginko_timer_.usleepCyclic((100 + sizeof(p) * 87));			//送信待機時間
-//		ginko_timer_.usleepCyclic((return_packet_size_ * 87));		//受信待機時間
+		//ginko_timer_.usleepCyclic(3200);
+		ginko_timer_.usleepSpan(3200);
 	}
+
 }
 int GinkoSerial::readRxBufferReadySize(void) {
 	int bytes_available = 0;

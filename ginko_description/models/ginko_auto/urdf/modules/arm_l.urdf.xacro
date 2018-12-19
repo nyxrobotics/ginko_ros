@@ -31,7 +31,7 @@
 		<joint name="${name}_joint0" type="revolute">
 		    <parent link="${parent}"/>
 			<child link="${name}_link0"/>
-		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <origin xyz="0 0 0" rpy="0 0.3927 0"/>
 		    <axis xyz="0 -1 0"/>
 			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
 		</joint>
@@ -63,7 +63,7 @@
 		<joint name="${name}_joint1" type="revolute">
 			<parent link="${name}_link0"/>
 			<child  link="${name}_link1"/>
-			<origin xyz="0.035 0.0246 0" rpy="0.3927 0 0"/>
+			<origin xyz="0.035 0.0246 0" rpy="1.1781 0 0"/>
 			<axis xyz="1 0 0"/>
 			<limit effort="1000.0" lower="-0.85" upper="1.18" velocity="0.5"/>
 		</joint>
@@ -71,7 +71,7 @@
 		<joint name="${name}_joint1_rev" type="revolute">
 			<parent link="${name}_link0"/>
 			<child  link="${name}_link1_rev"/>
-			<origin xyz="-0.0562 0.0246 0" rpy="-0.3927 3.1416 0"/>
+			<origin xyz="-0.0562 0.0246 0" rpy="-1.1781 0 3.1416"/>
 			<axis xyz="1 0 0"/>
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
 	    	<!-- <mimic joint="${name}_joint1" multiplier="-1" offset="0"/>  -->

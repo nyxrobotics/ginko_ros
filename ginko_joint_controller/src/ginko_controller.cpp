@@ -81,6 +81,7 @@ void GinkoController::offsetsReconfigureCallback(ginko_joint_controller::servo_o
 }
 
 void GinkoController::updateJointStates() {
+
 	sensor_msgs::JointState joint_state;
 
 	float joint_states_pos[SERVO_NUM] = {};
@@ -91,10 +92,10 @@ void GinkoController::updateJointStates() {
 	static double get_joint_velocity[SERVO_NUM] = {};
 	static double get_joint_effort[SERVO_NUM] = {};
 //	ginko_serial_.updateRxRingBuffer();
+	//此処から先で異常にCPU食ってる
 	for (int index = 0; index < SERVO_NUM; index++) {
-		ginko_serial_.requestReturnPacket(index+1);
+		ginko_serial_.requestReturnPacket(index+1);//ここが異常に食ってる
 		ginko_serial_.updateRxRingBuffer();
-
 		int id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
 		while(id_tmp != 0){
 			ginko_serial_.getOldestPacketAndIncrementRing();
@@ -106,8 +107,9 @@ void GinkoController::updateJointStates() {
 //			ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
 			id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
 		}
-	}
 
+	}
+	//此処まで
 	joint_state.header.frame_id = "world";
 	joint_state.header.stamp = ros::Time::now();
 
@@ -159,6 +161,7 @@ void GinkoController::updateJointStates() {
 	}
 
 	joint_states_pub_.publish(joint_state);
+
 }
 void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg) {
 	for (int index = 0; index < SERVO_NUM; index++){
@@ -173,6 +176,7 @@ void GinkoController::torqueEnableCallback(const std_msgs::Int8 &msg) { //0:off,
 //	ROS_INFO("torque on* %d",msg.data);
 }
 void GinkoController::control_loop() {
+
 	//1:トルクの切り替え(サブスクライブがあった場合のみ)
 	static unsigned char torque_enable_pre_ = 0;
 	if (torque_request_ != 0) {

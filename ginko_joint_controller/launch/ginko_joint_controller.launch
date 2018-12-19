@@ -1,7 +1,7 @@
 <launch>
   <arg name="use_robot_name"         default="ginko"/>
   <arg name="device_name"            default="/dev/ttyUSB0"/>
-  <arg name="baud_rate"              default="115200"/>
+  <arg name="baud_rate"              default="460800"/>
 
   <arg name="joint_controller"       default="position_mode"/>
   <arg name="servonum" value="25"/>
