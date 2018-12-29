@@ -91,8 +91,8 @@ void GinkoController::updateJointStates() {
 	static double get_joint_position[SERVO_NUM] = {};
 	static double get_joint_velocity[SERVO_NUM] = {};
 	static double get_joint_effort[SERVO_NUM] = {};
-//	ginko_serial_.updateRxRingBuffer();
-	//此処から先で異常にCPU食ってる
+    // ginko_serial_.updateRxRingBuffer();
+	// 此処から先で異常にCPU食ってる
 	for (int index = 0; index < SERVO_NUM; index++) {
 		ginko_serial_.requestReturnPacket(index+1);//ここが異常に食ってる
 		ginko_serial_.updateRxRingBuffer();
@@ -104,7 +104,7 @@ void GinkoController::updateJointStates() {
 			get_joint_effort[id_tmp-1]=ginko_serial_.readServoTorque(id_tmp);
 
 			state_pose_[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
-//			ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
+			// ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
 			id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
 		}
 
@@ -145,13 +145,10 @@ void GinkoController::updateJointStates() {
 	joint_state.name.push_back("arm_l_joint2");
 	joint_state.name.push_back("arm_l_joint3");
 
-
-
 	for (int index = 0; index < SERVO_NUM; index++) {
 		joint_states_pos[index]=get_joint_position[index]+servo_offsets_[index];
 		joint_states_vel[index]=get_joint_velocity[index];
 		joint_states_eff[index]=get_joint_effort[index];
-
 	}
 
 	for (int index = 0; index < SERVO_NUM; index++) {
@@ -161,11 +158,10 @@ void GinkoController::updateJointStates() {
 	}
 
 	joint_states_pub_.publish(joint_state);
-
 }
 void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg) {
 	for (int index = 0; index < SERVO_NUM; index++){
-//		target_pose_[index] = msg->position.at(index) - servo_offsets_[index];//送られてくるjointの目標値の数が少ないと配列外参照になるので注意
+		// target_pose_[index] = msg->position.at(index) - servo_offsets_[index];//送られてくるjointの目標値の数が少ないと配列外参照になるので注意
 		target_pose_[index] = msg->position.at(index);
 	}
 	pose_request_ = 1;
@@ -173,7 +169,7 @@ void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::C
 void GinkoController::torqueEnableCallback(const std_msgs::Int8 &msg) { //0:off, 1:on, 2:break
 	torque_enable_ = msg.data;
 	torque_request_ = 1;
-//	ROS_INFO("torque on* %d",msg.data);
+	// ROS_INFO("torque on* %d",msg.data);
 }
 void GinkoController::control_loop() {
 
