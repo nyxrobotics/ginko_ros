@@ -15,6 +15,7 @@ GinkoController::GinkoController(){
 	initOffsetsReconfigure();
 	ROS_INFO("Ginko_controller : Init OK!");
 	ginko_serial_.switchTorque(255,false);
+	ROS_INFO("Ginko_controller : Torque Off OK!");
 }
 GinkoController::~GinkoController() {
 //	for (uint8_t num = 0; num < SERVO_NUM; num++)
@@ -22,7 +23,7 @@ GinkoController::~GinkoController() {
 //
 //	gripper_controller_->itemWrite(gripper_id_.at(0), "Torque_Enable", false);
 	ginko_serial_.switchTorque(255,false);
-	ginko_serial_.portClose();
+//	ginko_serial_.portClose();
 	ros::shutdown();
 }
 void GinkoController::initPublisher() {
@@ -91,25 +92,30 @@ void GinkoController::updateJointStates() {
 	static double get_joint_position[SERVO_NUM] = {};
 	static double get_joint_velocity[SERVO_NUM] = {};
 	static double get_joint_effort[SERVO_NUM] = {};
-    // ginko_serial_.updateRxRingBuffer();
-	// 此処から先で異常にCPU食ってる
+
+//    ginko_serial_.updateRxRingBuffer();
+
+
 	for (int index = 0; index < SERVO_NUM; index++) {
-		ginko_serial_.requestReturnPacket(index+1);//ここが異常に食ってる
-		ginko_serial_.updateRxRingBuffer();
-		int id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
+		int com_select = ginko_serial_.requestReturnPacket(index+1);
+
+		ginko_serial_.updateRxRingBuffer(com_select);
+		int id_tmp = ginko_serial_.ringBufferGotoOldestHeader(com_select);
 		while(id_tmp != 0){
-			ginko_serial_.getOldestPacketAndIncrementRing();
+			ginko_serial_.getOldestPacketAndIncrementRing(com_select);
 			get_joint_position[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
 			get_joint_velocity[id_tmp-1]=ginko_serial_.readServoVelocity(id_tmp);
 			get_joint_effort[id_tmp-1]=ginko_serial_.readServoTorque(id_tmp);
 
 			state_pose_[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
 			// ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
-			id_tmp = ginko_serial_.ringBufferGotoOldestHeader();
+			id_tmp = ginko_serial_.ringBufferGotoOldestHeader(com_select);
 		}
 
+
 	}
-	//此処まで
+
+
 	joint_state.header.frame_id = "world";
 	joint_state.header.stamp = ros::Time::now();
 
@@ -172,6 +178,7 @@ void GinkoController::torqueEnableCallback(const std_msgs::Int8 &msg) { //0:off,
 	// ROS_INFO("torque on* %d",msg.data);
 }
 void GinkoController::control_loop() {
+	//ROS_INFO("Ginko_controller : Loop Start!");
 
 	//1:トルクの切り替え(サブスクライブがあった場合のみ)
 	static unsigned char torque_enable_pre_ = 0;

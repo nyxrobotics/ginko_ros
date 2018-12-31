@@ -35,14 +35,18 @@
 class GinkoSerial {
 private:
 	GinkoTimer ginko_timer_;
-    std::string port_name_;
+	GinkoParams ginko_params_;
+    //std::string port_name_;
     int baud_ = 115200;
     int return_packet_size_ = 26;
     void check_error(const char*, int);
-    struct termios tio_, tio_backup_;
-    int fd_ = 0;     // file descriptor
-    unsigned char ring_buffer_[RxRingBufferLength] = {};
-	int ring_rp_ = 0, ring_wp_   = 1;
+    static const unsigned char _com_count = GinkoParams::_com_count;//なぜこれでコンパイルが通るのかわからない
+    int fd_[_com_count]; // file descriptor
+    struct termios tio_[_com_count], tio_backup_[_com_count];
+    unsigned char ring_buffer_[_com_count][RxRingBufferLength] = {};
+	int ring_rp_[_com_count]; //= 0,
+	int ring_wp_[_com_count]; //   = 1;
+
 	double tx_pose_[SERVO_NUM]   = {};
 	double rx_pose_[SERVO_NUM]   = {};
 	double rx_vel_[SERVO_NUM]    = {};
@@ -52,30 +56,31 @@ private:
 
 public:
     GinkoSerial();
-    GinkoSerial(std::string port_name, unsigned long baudrate);
+//    GinkoSerial(std::string port_name, unsigned long baudrate);
 	~GinkoSerial();
-	void portOpen(std::string port_name,unsigned long baudrate);
-	void portClose(void);
+	void portOpen(unsigned char com_num,std::string port_name,unsigned long baudrate);
+	void portClose(unsigned char com_num);
 	void setServoBaudrate(unsigned int baudrate);
 	void sendTargetPosition(const double *value);
 	void sendTargetPositionWithSpeed(const double *value,const double ms);
-	void switchTorque(unsigned char id, bool sw);
-	void requestReturnPacket(int servo_id);
+	void switchAllTorque(bool sw);
+	void switchTorque(unsigned char servo_id, bool sw);
+	int requestReturnPacket(int servo_id);
 
-	void updateRxRingBuffer(void);
-	int readRingBufferReadySize(void);
-	int ringBufferGotoOldestHeader(void);//return id //チェックサムまで確認する //なかったら0返す
-	void getOldestPacketAndIncrementRing(void); //該当idからきたサーボ情報を反映する
+	void updateRxRingBuffer(unsigned char com_num);
+	int readRingBufferReadySize(unsigned char com_num);
+	int ringBufferGotoOldestHeader(unsigned char com_num);//return id //チェックサムまで確認する //なかったら0返す
+	void getOldestPacketAndIncrementRing(unsigned char com_num); //該当idからきたサーボ情報を反映する
 
 	double readServoPosition(int servo_id);
 	double readServoVelocity(int servo_id);
 	double readServoTorque(int servo_id);
 
 private:
-    void send_packet(void*, int);
-    void receive_packet(void*, int);
-    int get_fd();
-	int readRxBufferReadySize(void);
+    void send_packet(unsigned char com_num, void*, int);
+    void receive_packet(unsigned char com_num, void *buf_ptr, int size);
+    int get_fd(unsigned char com_num);
+	int readRxBufferReadySize(unsigned char com_num);
 	//void reloadStatusBuffer(void);
 	//void ringBufferGotoLatestHeader(int servo_id);//特定サーボの最新のデータまで進む //チェックサムまで確認する
 
