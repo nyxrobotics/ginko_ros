@@ -30,7 +30,7 @@
 #include <ginko_joint_controller/servo_offsetsConfig.h> //(project)/cfg/servo_offsets.cfgから自動生成されるらしい
 #include <ginko_params.h>
 #include "ginko_timer.h"
-
+#include<omp.h>
 
 class GinkoSerial {
 private:

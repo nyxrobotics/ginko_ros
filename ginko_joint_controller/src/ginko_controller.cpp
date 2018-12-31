@@ -82,9 +82,7 @@ void GinkoController::offsetsReconfigureCallback(ginko_joint_controller::servo_o
 }
 
 void GinkoController::updateJointStates() {
-
 	sensor_msgs::JointState joint_state;
-
 	float joint_states_pos[SERVO_NUM] = {};
 	float joint_states_vel[SERVO_NUM] = {};
 	float joint_states_eff[SERVO_NUM] = {};
@@ -93,9 +91,33 @@ void GinkoController::updateJointStates() {
 	static double get_joint_velocity[SERVO_NUM] = {};
 	static double get_joint_effort[SERVO_NUM] = {};
 
+	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){
+		unsigned char servocount = ginko_params_._servo_count[comnum];
+		ginko_serial_.updateRxRingBuffer(comnum);
+		for (int servonum = 0; servonum < servocount; servonum++) {
+			ginko_serial_.requestReturnPacket(ginko_params_._servo_id[comnum][servonum]);
+			ginko_serial_.updateRxRingBuffer(comnum);
+			int id_tmp = ginko_serial_.ringBufferGotoOldestHeader(comnum);
+			while(id_tmp != 0){
+				ginko_serial_.getOldestPacketAndIncrementRing(comnum);
+				get_joint_position[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
+				get_joint_velocity[id_tmp-1]=ginko_serial_.readServoVelocity(id_tmp);
+				get_joint_effort[id_tmp-1]=ginko_serial_.readServoTorque(id_tmp);
+
+				state_pose_[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
+				// ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
+				id_tmp = ginko_serial_.ringBufferGotoOldestHeader(comnum);
+			}
+
+
+		}
+	}
+
+
+
 //    ginko_serial_.updateRxRingBuffer();
 
-
+/*
 	for (int index = 0; index < SERVO_NUM; index++) {
 		int com_select = ginko_serial_.requestReturnPacket(index+1);
 
@@ -114,7 +136,7 @@ void GinkoController::updateJointStates() {
 
 
 	}
-
+*/
 
 	joint_state.header.frame_id = "world";
 	joint_state.header.stamp = ros::Time::now();

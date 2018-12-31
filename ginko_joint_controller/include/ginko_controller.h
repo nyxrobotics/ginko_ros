@@ -55,16 +55,18 @@ class GinkoController {
 private:
 	GinkoSerial ginko_serial_;
 	GinkoTimer ginko_timer_;
+	GinkoParams ginko_params_;
 	unsigned char torque_enable_ = 0 , torque_request_ = 0 , pose_request_ = 0, ofs_reconf_request = 0;
 	double init_pose_[SERVO_NUM]={};
 	double target_pose_[SERVO_NUM]={};
 	double state_pose_[SERVO_NUM]={};
-	double servo_offsets_[SERVO_NUM]={
-			0,		0,		0.052,	0,		0.09,
-			0,		0.104,	0,		0,		0.104,
-			0.02,	0.1,	0,		0.104,	0,
-			0,		0,		0.12,	0,		0,
-			0,		0,		0.1,	0,		0};
+	double servo_offsets_[SERVO_NUM]={};
+//	double servo_offsets_[SERVO_NUM]={
+//			0,		0,		0.052,	0,		0.09,
+//			0,		0.104,	0,		0,		0.104,
+//			0.02,	0.1,	0,		0.104,	0,
+//			0,		0,		0.12,	0,		0,
+//			0,		0,		0.1,	0,		0};
 	unsigned int timestamp_ms_ = 0;
 	const unsigned int startup_ms_ = 2000;
 	// ROS NodeHandle
