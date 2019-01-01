@@ -184,7 +184,7 @@ void GinkoSerial::sendTargetPosition(const double *value) {//*value:サーボID�
 		tx_pose_[i] = angle;    //目標位置と現在位置を比較するときに使うためのバッファ
 		goal[i] = (int) (3600 / (2 * M_PI) * angle);
 	}
-
+	#pragma omp parallel for
 	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){//それぞれのポートでシリアル送信
 		unsigned char servocount = ginko_params_._servo_count[comnum];
 		int l = 8 + 3 * servocount;
@@ -238,7 +238,7 @@ void GinkoSerial::sendTargetPositionWithSpeed(const double *value, const double 
 		tx_pose_[i] = angle; //目標位置と現在位置を比較するときに使うためのバッファ
 		goal[i] = (int) (3600 / (2 * M_PI) * angle);
 	}
-
+	#pragma omp parallel for
 	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){//それぞれのポートでシリアル送信
 		unsigned char servocount = ginko_params_._servo_count[comnum];
 		int l = 8 + 5 * servocount;
@@ -292,6 +292,7 @@ void GinkoSerial::switchAllTorque(bool sw) {
 	for (int j = 2; j < 8; j++) {
 		p[8] ^= p[j];
 	}
+	#pragma omp parallel for
 	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){
 		send_packet(comnum,(void*) p, sizeof(p));
 	}

@@ -96,6 +96,17 @@ private:
 	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig> param_server;
 	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig>::CallbackType callback_server;
 
+	//for using open mp-----
+	sensor_msgs::JointState joint_state;
+	float joint_states_pos[SERVO_NUM] = {};
+	float joint_states_vel[SERVO_NUM] = {};
+	float joint_states_eff[SERVO_NUM] = {};
+
+	static double get_joint_position[SERVO_NUM] = {};
+	static double get_joint_velocity[SERVO_NUM] = {};
+	static double get_joint_effort[SERVO_NUM] = {};
+	//-----
+
 public:
 	GinkoController();
 	~GinkoController();

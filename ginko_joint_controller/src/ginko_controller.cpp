@@ -1,7 +1,7 @@
 
 
 #include "ginko_controller.h"
-
+#include <omp.h>
 
 double mapd(double x, double in_min, double in_max, double out_min,
 		double out_max) {
@@ -82,16 +82,20 @@ void GinkoController::offsetsReconfigureCallback(ginko_joint_controller::servo_o
 }
 
 void GinkoController::updateJointStates() {
-	sensor_msgs::JointState joint_state;
-	float joint_states_pos[SERVO_NUM] = {};
-	float joint_states_vel[SERVO_NUM] = {};
-	float joint_states_eff[SERVO_NUM] = {};
+//	sensor_msgs::JointState joint_state;
+//	float joint_states_pos[SERVO_NUM] = {};
+//	float joint_states_vel[SERVO_NUM] = {};
+//	float joint_states_eff[SERVO_NUM] = {};
+//
+//	static double get_joint_position[SERVO_NUM] = {};
+//	static double get_joint_velocity[SERVO_NUM] = {};
+//	static double get_joint_effort[SERVO_NUM] = {};
 
-	static double get_joint_position[SERVO_NUM] = {};
-	static double get_joint_velocity[SERVO_NUM] = {};
-	static double get_joint_effort[SERVO_NUM] = {};
-
+	#pragma omp parallel for
 	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){
+//		#pragma omp critical
+		//ROS_INFO("open mp running? comnum:%d",comnum);
+
 		unsigned char servocount = ginko_params_._servo_count[comnum];
 		ginko_serial_.updateRxRingBuffer(comnum);
 		for (int servonum = 0; servonum < servocount; servonum++) {
@@ -108,9 +112,8 @@ void GinkoController::updateJointStates() {
 				// ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
 				id_tmp = ginko_serial_.ringBufferGotoOldestHeader(comnum);
 			}
-
-
 		}
+
 	}
 
 
