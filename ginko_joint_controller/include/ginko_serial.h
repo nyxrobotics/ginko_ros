@@ -72,6 +72,7 @@ public:
 	void sendTargetPositionWithSpeedSingleCom(const unsigned char comnum,const double *value, const double ms);
 	void sendTargetPositionWithSpeed(const double *value,const double ms);
 	void switchAllTorque(bool sw);
+	void switchAllTorque_com(unsigned char comnum, bool sw);
 	void switchTorque(unsigned char servo_id, bool sw);
 	int requestReturnPacket(int servo_id);
 

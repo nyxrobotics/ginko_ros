@@ -56,7 +56,10 @@ private:
 	GinkoSerial ginko_serial_;
 	GinkoTimer ginko_timer_;
 	GinkoParams ginko_params_;
-	unsigned char torque_enable_ = 0 , torque_request_ = 0 , pose_request_ = 0, ofs_reconf_request = 0;
+	unsigned char torque_enable_[GinkoParams::_com_count] = {}
+			, torque_request_[GinkoParams::_com_count] = {}
+			, pose_request_[GinkoParams::_com_count] = {}
+			, ofs_reconf_request[GinkoParams::_com_count] = {};
 	double init_pose_[SERVO_NUM]={};
 	double target_pose_[SERVO_NUM]={};
 	double state_pose_[SERVO_NUM]={};
@@ -97,7 +100,7 @@ private:
 	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig>::CallbackType callback_server;
 
 	//for using open mp-----
-	sensor_msgs::JointState joint_state;
+//	sensor_msgs::JointState joint_state;
 	float joint_states_pos[SERVO_NUM] = {};
 	float joint_states_vel[SERVO_NUM] = {};
 	float joint_states_eff[SERVO_NUM] = {};
@@ -110,7 +113,8 @@ private:
 public:
 	GinkoController();
 	~GinkoController();
-	void control_loop();
+	void control_loop_com(unsigned char comnum);
+	void control_loop_main();
 
 private:
 //	void initMsg();

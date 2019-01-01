@@ -78,7 +78,9 @@ void GinkoController::offsetsReconfigureCallback(ginko_joint_controller::servo_o
 	servo_offsets_[23] = config.servo_24_ofs;
 	servo_offsets_[24] = config.servo_25_ofs;
 
-	ofs_reconf_request = 1;
+	for(int comnum = 0; comnum<ginko_params_._com_count; comnum++){
+		ofs_reconf_request[comnum] = 1;//使っていないような気がする
+	}
 }
 
 void GinkoController::requestJointStates(unsigned char comnum) {
@@ -143,6 +145,7 @@ void GinkoController::requestJointStates(unsigned char comnum) {
 }
 
 void GinkoController::updateJointStates() {
+	sensor_msgs::JointState joint_state;
 	joint_state.header.frame_id = "world";
 	joint_state.header.stamp = ros::Time::now();
 
@@ -197,22 +200,28 @@ void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::C
 		// target_pose_[index] = msg->position.at(index) - servo_offsets_[index];//送られてくるjointの目標値の数が少ないと配列外参照になるので注意
 		target_pose_[index] = msg->position.at(index);
 	}
-	pose_request_ = 1;
+
+	for(int comnum = 0; comnum<ginko_params_._com_count; comnum++){
+		pose_request_[comnum] = 1;
+	}
 }
 void GinkoController::torqueEnableCallback(const std_msgs::Int8 &msg) { //0:off, 1:on, 2:break
-	torque_enable_ = msg.data;
-	torque_request_ = 1;
+
+	for(int comnum = 0; comnum<ginko_params_._com_count; comnum++){
+		torque_enable_[comnum] = msg.data;
+		torque_request_[comnum] = 1;
+	}
 	// ROS_INFO("torque on* %d",msg.data);
 }
-void GinkoController::control_loop() {
+void GinkoController::control_loop_com(unsigned char comnum) {
 	//ROS_INFO("Ginko_controller : Loop Start!");
-/*
+
 	//1:トルクの切り替え(サブスクライブがあった場合のみ)
-	static unsigned char torque_enable_pre_ = 0;
-	if (torque_request_ != 0) {
+	static unsigned char torque_enable_pre_[GinkoParams::_com_count] = {};//ゼロ初期化必須
+	if (torque_request_[comnum] != 0) {
 		//トルク切り替え処理
-		if(torque_enable_== 1){
-			if(torque_enable_pre_ != 1){
+		if(torque_enable_[comnum]== 1){
+			if(torque_enable_pre_[comnum] != 1){
 				ROS_INFO("torque on");
 				ginko_timer_.msecStart();
 				timestamp_ms_= ginko_timer_.msecGet();
@@ -220,28 +229,20 @@ void GinkoController::control_loop() {
 					init_pose_[index] = state_pose_[index] + servo_offsets_[index];
 				}
 			}
-			ginko_serial_.switchTorque(255,true);
+			ginko_serial_.switchAllTorque_com(comnum,true);
 		}else{
-			ginko_serial_.switchTorque(255,false);
+			ginko_serial_.switchAllTorque_com(comnum,false);
 			timestamp_ms_ = startup_ms_;
 		}
-		torque_request_ = 0;
+		torque_request_[comnum] = 0;
 	}
-	torque_enable_pre_ = torque_enable_;
-	*/
-	int comnum=0;
-//#pragma omp barrier
-//#pragma omp single
-//	#pragma omp parallel for schedule(static) num_threads(4) private(comnum)
-//    #pragma omp parallel for schedule(dynamic) num_threads(4)
-//#pragma omp for schedule(dynamic)
-#pragma omp parallel for schedule(static) num_threads(4)
-	for(comnum=0;comnum<ginko_params_._com_count;comnum++){
-		ROS_INFO("thread:%d / %d / %d" , omp_get_thread_num(), omp_get_num_threads(),sysconf(_SC_NPROCESSORS_ONLN));
+	torque_enable_pre_[comnum] = torque_enable_[comnum];
+
+
 
 
 	//2:目標値の反映
-		if(torque_enable_==1){
+		if(torque_enable_[comnum]==1){
 			if(timestamp_ms_ < startup_ms_){
 				timestamp_ms_= ginko_timer_.msecGet();
 	//			ROS_INFO("startup_ms:%d , start:%f, end:%f",timestamp_ms_,init_pose_[0],target_pose_[0]);
@@ -261,33 +262,10 @@ void GinkoController::control_loop() {
 		}
 //		ginko_timer_.usleepSpan(100);
 	//3:リターン角度の更新
-#pragma barrier
 		requestJointStates(comnum);
-
-
-	}
-
-
-//	#pragma omp parallel num_threads(4)
-//	{
-//	  if(omp_get_thread_num() == 1){
-//		  ginko_timer_.usleepSpan(1000);
-//	  } else if(omp_get_thread_num() == 2){
-//		  ginko_timer_.usleepSpan(1000);
-//	  } else if(omp_get_thread_num() == 3){
-//		  ginko_timer_.usleepSpan(1000);
-//	  } else if(omp_get_thread_num() == 4){
-//		  ginko_timer_.usleepSpan(1000);
-//	  }
-//	}
-
-
-//	#pragma omp barrier
-//    #pragma omp single
-	ginko_timer_.usleepSpan(1000);
-	ROS_INFO("thread:end----");
-	//4:現在値のパブリッシュ
-	//updateJointStates();
-
 }
 
+void GinkoController::control_loop_main(void) {
+	//4:現在値のパブリッシュ(comポート全てに対して一回)(すべての処理の最初で良いと思われる)
+	updateJointStates();
+}

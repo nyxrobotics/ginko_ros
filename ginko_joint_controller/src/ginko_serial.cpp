@@ -356,6 +356,35 @@ void GinkoSerial::switchAllTorque(bool sw) {
 	}
 	return;
 }
+void GinkoSerial::switchAllTorque_com(unsigned char comnum, bool sw) {
+	unsigned char p[9];
+	p[0] = 0xFA;
+	p[1] = 0xAF;
+	p[2] = 0xFF;    // ID
+	p[3] = 0x00;    // Flg
+	p[4] = 0x24;    // Adr
+	p[5] = 0x01;    // Len
+	p[6] = 0x01;    // Cnt
+	if (sw) {
+		p[7] = 0x01; // Torque on
+	} else {
+		p[7] = 0x00; // Torque off
+	}
+	p[8] = 0x00;    // check sum
+	for (int j = 2; j < 8; j++) {
+		p[8] ^= p[j];
+	}
+
+	send_packet(comnum,(void*) p, sizeof(p));
+	if (baud_ == 460800) {
+		ginko_timer_.usleepSpan(300);
+	} else if (baud_ == 230400) {
+		ginko_timer_.usleepSpan(600);
+	} else { //baud_==115200
+		ginko_timer_.usleepSpan(1200);
+	}
+	return;
+}
 void GinkoSerial::switchTorque(unsigned char servo_id, bool sw) {
 	if (servo_id == 0xFF){
 		switchAllTorque(sw);
