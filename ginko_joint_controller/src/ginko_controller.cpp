@@ -247,7 +247,7 @@ void GinkoController::control_loop() {
 	//			}
 			}
 		}
-
+//		ginko_timer_.usleepSpan(100);
 	//3:リターン角度の更新
 		requestJointStates(comnum);
 	}

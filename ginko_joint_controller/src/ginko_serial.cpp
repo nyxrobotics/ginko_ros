@@ -264,11 +264,12 @@ void GinkoSerial::sendTargetPositionWithSpeedSingleCom(const unsigned char comnu
 		}
 		send_packet(comnum,(void*) p, sizeof(p));
 		if (baud_ == 460800) {
-			ginko_timer_.usleepSpan((100 + l * 87) / 4);
+			ginko_timer_.usleepSpan((100 + l * 100) / 4);
+//			ginko_timer_.usleepSpan((10 + l * 100) / 4);
 		} else if (baud_ == 230400) {
-			ginko_timer_.usleepSpan((100 + l * 87) / 2);
+			ginko_timer_.usleepSpan((100 + l * 100) / 2);
 		} else { //baud_==115200
-			ginko_timer_.usleepSpan((100 + l * 87));
+			ginko_timer_.usleepSpan((100 + l * 100));
 		}
 //	}
 	return;
