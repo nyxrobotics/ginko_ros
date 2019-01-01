@@ -62,6 +62,7 @@ public:
 	void portClose(unsigned char com_num);
 	void setServoBaudrate(unsigned int baudrate);
 	void sendTargetPosition(const double *value);
+	void sendTargetPositionWithSpeedSingleCom(const unsigned char comnum,const double *value, const double ms);
 	void sendTargetPositionWithSpeed(const double *value,const double ms);
 	void switchAllTorque(bool sw);
 	void switchTorque(unsigned char servo_id, bool sw);

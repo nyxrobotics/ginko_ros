@@ -102,9 +102,9 @@ private:
 	float joint_states_vel[SERVO_NUM] = {};
 	float joint_states_eff[SERVO_NUM] = {};
 
-	static double get_joint_position[SERVO_NUM] = {};
-	static double get_joint_velocity[SERVO_NUM] = {};
-	static double get_joint_effort[SERVO_NUM] = {};
+	double get_joint_position[SERVO_NUM] = {};
+	double get_joint_velocity[SERVO_NUM] = {};
+	double get_joint_effort[SERVO_NUM] = {};
 	//-----
 
 public:
@@ -118,6 +118,7 @@ private:
 	void initSubscriber();
 	void initOffsetsReconfigure();
 	void offsetsReconfigureCallback(ginko_joint_controller::servo_offsetsConfig &config, uint32_t level);
+	void requestJointStates(unsigned char comnum);
 	void updateJointStates();
 	void goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg);
 	void torqueEnableCallback(const std_msgs::Int8 &msg);

@@ -222,7 +222,57 @@ void GinkoSerial::sendTargetPosition(const double *value) {//*value:サーボID�
 
 	return;
 }
+void GinkoSerial::sendTargetPositionWithSpeedSingleCom(const unsigned char comnum,const double *value, const double ms) {
 
+	int goal[SERVO_NUM];
+	int travel_time = ms / 10;
+
+	for (int i = 0; i < SERVO_NUM; i++) {
+		double angle = value[i];
+		if (angle < -2.6) {
+			angle = -2.6;
+		} else if (angle > 2.6) {
+			angle = 2.6;
+		}
+		tx_pose_[i] = angle; //目標位置と現在位置を比較するときに使うためのバッファ
+		goal[i] = (int) (3600 / (2 * M_PI) * angle);
+	}
+//	#pragma omp parallel for
+//	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){//それぞれのポートでシリアル送信
+		unsigned char servocount = ginko_params_._servo_count[comnum];
+		int l = 8 + 5 * servocount;
+		unsigned char p[l];
+		p[0] = 0xFA;
+		p[1] = 0xAF;
+		p[2] = 0x00;            // ID  (ロングパケット時は0x00)
+		p[3] = 0x00;   			// Flg (ロングパケット時は0x00)
+		p[4] = 0x1E;            // Adr
+		p[5] = 0x05;			// Len (サーボ１個あたりのデータ長, ID(1byte) + Data(2byte))
+		p[6] = servocount;		// Cnt (サーボの数)
+
+		for (int i = 0; i < servocount; i++) {
+			p[7 + 5 * i] = i + 1;   // each ID
+			p[8 + 5 * i] = (unsigned char) (goal[i] & 0xFF);
+			p[9 + 5 * i] = (unsigned char) (goal[i] >> 8 & 0xFF);
+			p[10 + 5 * i] = (unsigned char) (travel_time & 0xFF);
+			p[11 + 5 * i] = (unsigned char) (travel_time >> 8 & 0xFF);
+		}
+
+		p[l - 1] = 0x00;    // check sum
+		for (int j = 2; j < l - 1; j++) {
+			p[l - 1] ^= p[j];
+		}
+		send_packet(comnum,(void*) p, sizeof(p));
+		if (baud_ == 460800) {
+			ginko_timer_.usleepSpan((100 + l * 87) / 4);
+		} else if (baud_ == 230400) {
+			ginko_timer_.usleepSpan((100 + l * 87) / 2);
+		} else { //baud_==115200
+			ginko_timer_.usleepSpan((100 + l * 87));
+		}
+//	}
+	return;
+}
 void GinkoSerial::sendTargetPositionWithSpeed(const double *value, const double ms) {
 
 	int goal[SERVO_NUM];

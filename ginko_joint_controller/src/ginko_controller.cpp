@@ -81,7 +81,7 @@ void GinkoController::offsetsReconfigureCallback(ginko_joint_controller::servo_o
 	ofs_reconf_request = 1;
 }
 
-void GinkoController::updateJointStates() {
+void GinkoController::requestJointStates(unsigned char comnum) {
 //	sensor_msgs::JointState joint_state;
 //	float joint_states_pos[SERVO_NUM] = {};
 //	float joint_states_vel[SERVO_NUM] = {};
@@ -91,8 +91,8 @@ void GinkoController::updateJointStates() {
 //	static double get_joint_velocity[SERVO_NUM] = {};
 //	static double get_joint_effort[SERVO_NUM] = {};
 
-	#pragma omp parallel for
-	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){
+//	#pragma omp parallel for
+//	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){
 //		#pragma omp critical
 		//ROS_INFO("open mp running? comnum:%d",comnum);
 
@@ -114,9 +114,7 @@ void GinkoController::updateJointStates() {
 			}
 		}
 
-	}
-
-
+//	}
 
 //    ginko_serial_.updateRxRingBuffer();
 
@@ -140,7 +138,9 @@ void GinkoController::updateJointStates() {
 
 	}
 */
+}
 
+void GinkoController::updateJointStates() {
 	joint_state.header.frame_id = "world";
 	joint_state.header.stamp = ros::Time::now();
 
@@ -226,28 +226,32 @@ void GinkoController::control_loop() {
 		torque_request_ = 0;
 	}
 	torque_enable_pre_ = torque_enable_;
-
+	#pragma omp parallel for
+	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){
 	//2:目標値の反映
-	if(torque_enable_==1){
-		if(timestamp_ms_ < startup_ms_){
-			timestamp_ms_= ginko_timer_.msecGet();
-//			ROS_INFO("startup_ms:%d , start:%f, end:%f",timestamp_ms_,init_pose_[0],target_pose_[0]);
-			double startup_pose_[SERVO_NUM]={};
-			for (int index = 0; index < SERVO_NUM; index++){
-				startup_pose_[index] = init_pose_[index] + (target_pose_[index] - init_pose_[index])*(double)timestamp_ms_/(double)startup_ms_;
+		if(torque_enable_==1){
+			if(timestamp_ms_ < startup_ms_){
+				timestamp_ms_= ginko_timer_.msecGet();
+	//			ROS_INFO("startup_ms:%d , start:%f, end:%f",timestamp_ms_,init_pose_[0],target_pose_[0]);
+				double startup_pose_[SERVO_NUM]={};
+				for (int index = 0; index < SERVO_NUM; index++){
+					startup_pose_[index] = init_pose_[index] + (target_pose_[index] - init_pose_[index])*(double)timestamp_ms_/(double)startup_ms_;
+				}
+				//ginko_serial_.sendTargetPosition(startup_pose_);
+				ginko_serial_.sendTargetPositionWithSpeedSingleCom(comnum,startup_pose_,1000./(double)(LOOP_FREQUENCY));
+			}else{
+	//			if(pose_request_ == 1){
+	//				ginko_serial_.sendTargetPosition(target_pose_);
+					ginko_serial_.sendTargetPositionWithSpeedSingleCom(comnum,target_pose_,1000./(double)(LOOP_FREQUENCY));
+	//				pose_request_ = 0;
+	//			}
 			}
-			//ginko_serial_.sendTargetPosition(startup_pose_);
-			ginko_serial_.sendTargetPositionWithSpeed(startup_pose_,1000./(double)(LOOP_FREQUENCY));
-		}else{
-//			if(pose_request_ == 1){
-//				ginko_serial_.sendTargetPosition(target_pose_);
-				ginko_serial_.sendTargetPositionWithSpeed(target_pose_,1000./(double)(LOOP_FREQUENCY));
-//				pose_request_ = 0;
-//			}
 		}
-	}
 
-	//3:現在値のパブリッシュ,リターン角度の更新
+	//3:リターン角度の更新
+		requestJointStates(comnum);
+	}
+	//4:現在値のパブリッシュ
 	updateJointStates();
 
 }
