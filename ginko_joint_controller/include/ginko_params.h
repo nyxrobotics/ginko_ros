@@ -2,7 +2,7 @@
 #define GINKO_PARAMS_H
 
 //GinkoController
-#define LOOP_FREQUENCY  (30)
+#define LOOP_FREQUENCY  (3)
 #define SERVO_NUM     25
 //GinkoSerial
 #define RxRingBufferLength 10000

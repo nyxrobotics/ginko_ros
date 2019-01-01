@@ -104,12 +104,14 @@ void GinkoController::requestJointStates(unsigned char comnum) {
 			int id_tmp = ginko_serial_.ringBufferGotoOldestHeader(comnum);
 			while(id_tmp != 0){
 				ginko_serial_.getOldestPacketAndIncrementRing(comnum);
+				/*
 				get_joint_position[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
 				get_joint_velocity[id_tmp-1]=ginko_serial_.readServoVelocity(id_tmp);
 				get_joint_effort[id_tmp-1]=ginko_serial_.readServoTorque(id_tmp);
 
 				state_pose_[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
 				// ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
+				*/
 				id_tmp = ginko_serial_.ringBufferGotoOldestHeader(comnum);
 			}
 		}
@@ -204,7 +206,7 @@ void GinkoController::torqueEnableCallback(const std_msgs::Int8 &msg) { //0:off,
 }
 void GinkoController::control_loop() {
 	//ROS_INFO("Ginko_controller : Loop Start!");
-
+/*
 	//1:トルクの切り替え(サブスクライブがあった場合のみ)
 	static unsigned char torque_enable_pre_ = 0;
 	if (torque_request_ != 0) {
@@ -226,8 +228,18 @@ void GinkoController::control_loop() {
 		torque_request_ = 0;
 	}
 	torque_enable_pre_ = torque_enable_;
-	#pragma omp parallel for
-	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){
+	*/
+	int comnum=0;
+//#pragma omp barrier
+//#pragma omp single
+//	#pragma omp parallel for schedule(static) num_threads(4) private(comnum)
+//    #pragma omp parallel for schedule(dynamic) num_threads(4)
+//#pragma omp for schedule(dynamic)
+#pragma omp parallel for schedule(static) num_threads(4)
+	for(comnum=0;comnum<ginko_params_._com_count;comnum++){
+		ROS_INFO("thread:%d / %d / %d" , omp_get_thread_num(), omp_get_num_threads(),sysconf(_SC_NPROCESSORS_ONLN));
+
+
 	//2:目標値の反映
 		if(torque_enable_==1){
 			if(timestamp_ms_ < startup_ms_){
@@ -249,10 +261,33 @@ void GinkoController::control_loop() {
 		}
 //		ginko_timer_.usleepSpan(100);
 	//3:リターン角度の更新
+#pragma barrier
 		requestJointStates(comnum);
+
+
 	}
+
+
+//	#pragma omp parallel num_threads(4)
+//	{
+//	  if(omp_get_thread_num() == 1){
+//		  ginko_timer_.usleepSpan(1000);
+//	  } else if(omp_get_thread_num() == 2){
+//		  ginko_timer_.usleepSpan(1000);
+//	  } else if(omp_get_thread_num() == 3){
+//		  ginko_timer_.usleepSpan(1000);
+//	  } else if(omp_get_thread_num() == 4){
+//		  ginko_timer_.usleepSpan(1000);
+//	  }
+//	}
+
+
+//	#pragma omp barrier
+//    #pragma omp single
+	ginko_timer_.usleepSpan(1000);
+	ROS_INFO("thread:end----");
 	//4:現在値のパブリッシュ
-	updateJointStates();
+	//updateJointStates();
 
 }
 

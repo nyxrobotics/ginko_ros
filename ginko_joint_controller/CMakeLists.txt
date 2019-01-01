@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8.3)
 # Package name: ginko_joint_controller
 project(ginko_joint_controller)
 
-add_compile_options(-std=c++11)
+#add_compile_options(-std=c++11)
+add_compile_options(-std=c++17 -O3)
 
 # Finding Dependent CMake Packages
 find_package(catkin REQUIRED COMPONENTS
@@ -23,7 +24,7 @@ IF(USE_OpenMP)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
   ENDIF()
 ENDIF()
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lpthread")
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lpthread")
 
 generate_dynamic_reconfigure_options(#for rqt_reconfigure 
   cfg/servo_offsets.cfg

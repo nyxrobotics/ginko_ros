@@ -51,6 +51,13 @@ private:
 	double rx_pose_[SERVO_NUM]   = {};
 	double rx_vel_[SERVO_NUM]    = {};
 	double rx_torque_[SERVO_NUM] = {};
+//for OpenMP
+	double rx_pose_com[GinkoParams::_com_count][GinkoParams::_servo_count_max];
+	double rx_vel_com[GinkoParams::_com_count][GinkoParams::_servo_count_max];
+	double rx_battery_voltage_com[GinkoParams::_com_count][GinkoParams::_servo_count_max];
+	double rx_battery_current_com[GinkoParams::_com_count][GinkoParams::_servo_count_max];
+	double rx_duty_com[GinkoParams::_com_count][GinkoParams::_servo_count_max];
+	double rx_torque_com[GinkoParams::_com_count][GinkoParams::_servo_count_max];
 	ros::NodeHandle node_handle_;
     //boost::shared_ptr<serial_port> sp;
 
