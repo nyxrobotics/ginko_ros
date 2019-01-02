@@ -106,14 +106,14 @@ void GinkoController::requestJointStates(unsigned char comnum) {
 			int id_tmp = ginko_serial_.ringBufferGotoOldestHeader(comnum);
 			while(id_tmp != 0){
 				ginko_serial_.getOldestPacketAndIncrementRing(comnum);
-				/*
+
 				get_joint_position[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
 				get_joint_velocity[id_tmp-1]=ginko_serial_.readServoVelocity(id_tmp);
 				get_joint_effort[id_tmp-1]=ginko_serial_.readServoTorque(id_tmp);
 
 				state_pose_[id_tmp-1]=ginko_serial_.readServoPosition(id_tmp);
 				// ROS_INFO("id:%d state_pose_:%f",id_tmp,state_pose_[id_tmp-1]);
-				*/
+
 				id_tmp = ginko_serial_.ringBufferGotoOldestHeader(comnum);
 			}
 		}
