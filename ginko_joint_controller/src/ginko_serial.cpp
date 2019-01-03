@@ -531,16 +531,25 @@ void GinkoSerial::getOldestPacketAndIncrementRing(unsigned char com_num) {
 				+ (int16_t) (copy_buf[8] << 8)) * M_PI / 1800); //pose
 		double speed = ((double) ((int16_t) copy_buf[11]
 				+ (int16_t) (copy_buf[12] << 8)) * M_PI / 1800); //speed
-		double effort = ((double) ((int16_t) copy_buf[13]
-				+ (int16_t) (copy_buf[14] << 8)) * 2. / 1000.); //電流トルク定数がわからない.1Aで2Nmと仮定
+		double current = ((double) ((int16_t) copy_buf[13]
+				+ (int16_t) (copy_buf[14] << 8)) * 0.001 ); //電流トルク定数がわからない.1Aで2Nmと仮定
+		double voltage = ((double) ((int16_t) copy_buf[17]
+				+ (int16_t) (copy_buf[18] << 8)) * 0.01 ); //電流トルク定数がわからない.1Aで2Nmと仮定
+		if(servo_id == 1){
+			ROS_INFO("current : [0x%x 0x%x] , %f[A]",copy_buf[13],copy_buf[14],current);
+			ROS_INFO("voltage : [0x%x 0x%x] , %f[A]",copy_buf[17],copy_buf[18],voltage);
+		}
+
+
+		/*
 		if (tx_pose_[servo_id] > pose) {
 		} else {
 			effort *= -1.0;
 		}
-
+*/
 		rx_pose_[servo_id - 1] = pose;
 		rx_vel_[servo_id - 1] = speed;
-		rx_torque_[servo_id - 1] = effort;
+		rx_torque_[servo_id - 1] = current;
 
 ////		if(servo_id==2){
 //			ROS_WARN("Return Packet Detected id:"
