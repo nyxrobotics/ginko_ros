@@ -222,56 +222,53 @@ void GinkoSerial::sendTargetPosition(const double *value) {//*value:サーボID�
 
 	return;
 }
-void GinkoSerial::sendTargetPositionWithSpeedSingleCom(const unsigned char comnum,const double *value, const double ms) {
-
-	int goal[SERVO_NUM];
+void GinkoSerial::sendTargetPositionWithSpeedSingleCom(const unsigned char comnum,const double *value, const double ms) {//*valueはID順に全サーボの目標角度
 	int travel_time = ms / 10;
+	unsigned char servocount = ginko_params_._servo_count[comnum];
+	int goal[servocount];
+	//送信パケット生成
+	int l = 8 + 5 * servocount;
+	unsigned char p[l];
+	p[0] = 0xFA;
+	p[1] = 0xAF;
+	p[2] = 0x00;            // ID  (ロングパケット時は0x00)
+	p[3] = 0x00;   			// Flg (ロングパケット時は0x00)
+	p[4] = 0x1E;            // Adr
+	p[5] = 0x05;			// Len (サーボ１個あたりのデータ長, ID(1byte) + Data(2byte))
+	p[6] = servocount;		// Cnt (サーボの数)
 
-	for (int i = 0; i < SERVO_NUM; i++) {
-		double angle = value[i];
-		if (angle < -2.6) {
-			angle = -2.6;
-		} else if (angle > 2.6) {
-			angle = 2.6;
+	for (int i = 0; i < servocount; i++) {
+		int id_tmp = ginko_params_._servo_id[comnum][i];
+		//ゴール角度リミット
+		double angle_tmp = value[id_tmp - 1];
+		if (angle_tmp < -2.6) {
+			angle_tmp = -2.6;
+		} else if (angle_tmp > 2.6) {
+			angle_tmp = 2.6;
 		}
-		tx_pose_[i] = angle; //目標位置と現在位置を比較するときに使うためのバッファ
-		goal[i] = (int) (3600 / (2 * M_PI) * angle);
+		tx_pose_[i] = angle_tmp; //目標位置と現在位置を比較するときに使うための、目標位置バッファ
+		goal[i] = (int) (3600 / (2 * M_PI) * angle_tmp);
+
+		p[7 + 5 * i] = id_tmp;   // each ID
+		p[8 + 5 * i] = (unsigned char) (goal[i] & 0xFF);
+		p[9 + 5 * i] = (unsigned char) (goal[i] >> 8 & 0xFF);
+		p[10 + 5 * i] = (unsigned char) (travel_time & 0xFF);
+		p[11 + 5 * i] = (unsigned char) (travel_time >> 8 & 0xFF);
 	}
-//	#pragma omp parallel for
-//	for(int comnum=0;comnum<ginko_params_._com_count;comnum++){//それぞれのポートでシリアル送信
-		unsigned char servocount = ginko_params_._servo_count[comnum];
-		int l = 8 + 5 * servocount;
-		unsigned char p[l];
-		p[0] = 0xFA;
-		p[1] = 0xAF;
-		p[2] = 0x00;            // ID  (ロングパケット時は0x00)
-		p[3] = 0x00;   			// Flg (ロングパケット時は0x00)
-		p[4] = 0x1E;            // Adr
-		p[5] = 0x05;			// Len (サーボ１個あたりのデータ長, ID(1byte) + Data(2byte))
-		p[6] = servocount;		// Cnt (サーボの数)
 
-		for (int i = 0; i < servocount; i++) {
-			p[7 + 5 * i] = i + 1;   // each ID
-			p[8 + 5 * i] = (unsigned char) (goal[i] & 0xFF);
-			p[9 + 5 * i] = (unsigned char) (goal[i] >> 8 & 0xFF);
-			p[10 + 5 * i] = (unsigned char) (travel_time & 0xFF);
-			p[11 + 5 * i] = (unsigned char) (travel_time >> 8 & 0xFF);
-		}
+	p[l - 1] = 0x00;    // check sum
+	for (int j = 2; j < l - 1; j++) {
+		p[l - 1] ^= p[j];
+	}
+	send_packet(comnum,(void*) p, sizeof(p));
+	if (baud_ == 460800) {
+		ginko_timer_.usleepSpan((100 + l * 100) / 4);
+	} else if (baud_ == 230400) {
+		ginko_timer_.usleepSpan((100 + l * 100) / 2);
+	} else { //baud_==115200
+		ginko_timer_.usleepSpan((100 + l * 100));
+	}
 
-		p[l - 1] = 0x00;    // check sum
-		for (int j = 2; j < l - 1; j++) {
-			p[l - 1] ^= p[j];
-		}
-		send_packet(comnum,(void*) p, sizeof(p));
-		if (baud_ == 460800) {
-			ginko_timer_.usleepSpan((100 + l * 100) / 4);
-//			ginko_timer_.usleepSpan((10 + l * 100) / 4);
-		} else if (baud_ == 230400) {
-			ginko_timer_.usleepSpan((100 + l * 100) / 2);
-		} else { //baud_==115200
-			ginko_timer_.usleepSpan((100 + l * 100));
-		}
-//	}
 	return;
 }
 void GinkoSerial::sendTargetPositionWithSpeed(const double *value, const double ms) {
@@ -303,9 +300,10 @@ void GinkoSerial::sendTargetPositionWithSpeed(const double *value, const double 
 		p[6] = servocount;		// Cnt (サーボの数)
 
 		for (int i = 0; i < servocount; i++) {
-			p[7 + 5 * i] = i + 1;   // each ID
-			p[8 + 5 * i] = (unsigned char) (goal[i] & 0xFF);
-			p[9 + 5 * i] = (unsigned char) (goal[i] >> 8 & 0xFF);
+			int id_tmp = ginko_params_._servo_id[comnum][i];
+			p[7 + 5 * i] = id_tmp;   // each ID
+			p[8 + 5 * i] = (unsigned char) (goal[id_tmp - 1] & 0xFF);
+			p[9 + 5 * i] = (unsigned char) (goal[id_tmp - 1] >> 8 & 0xFF);
 			p[10 + 5 * i] = (unsigned char) (travel_time & 0xFF);
 			p[11 + 5 * i] = (unsigned char) (travel_time >> 8 & 0xFF);
 		}
@@ -532,26 +530,26 @@ void GinkoSerial::getOldestPacketAndIncrementRing(unsigned char com_num) {
 		double speed = ((double) ((int16_t) copy_buf[11]
 				+ (int16_t) (copy_buf[12] << 8)) * M_PI / 1800); //speed
 		double current = ((double) ((int16_t) copy_buf[13]
-				+ (int16_t) (copy_buf[14] << 8)) * 0.001 ); //電流トルク定数がわからない.1Aで2Nmと仮定
+				+ (int16_t) (copy_buf[14] << 8)) * 0.001 ); //電流トルク定数がわからない.(多分2Aくらいでストール)
 		double voltage = ((double) ((int16_t) copy_buf[17]
-				+ (int16_t) (copy_buf[18] << 8)) * 0.01 ); //電流トルク定数がわからない.1Aで2Nmと仮定
-		if(servo_id == 1){
-			ROS_INFO("current : [0x%x 0x%x] , %f[A]",copy_buf[13],copy_buf[14],current);
-			ROS_INFO("voltage : [0x%x 0x%x] , %f[A]",copy_buf[17],copy_buf[18],voltage);
-		}
+				+ (int16_t) (copy_buf[18] << 8)) * 0.01 );
 
+//		if (tx_pose_[servo_id] > pose) {
+//		} else {
+//			effort *= -1.0;
+//		}
 
-		/*
-		if (tx_pose_[servo_id] > pose) {
-		} else {
-			effort *= -1.0;
-		}
-*/
 		rx_pose_[servo_id - 1] = pose;
 		rx_vel_[servo_id - 1] = speed;
-		rx_torque_[servo_id - 1] = current;
+		rx_torque_[servo_id - 1] = current;//ID:1,3,22が役に立たない値を出しているので修理から帰ってくるまで保留
 
-////		if(servo_id==2){
+
+//		if(servo_id == 1){
+//			ROS_INFO("current : [0x%x 0x%x] , %f[A]",copy_buf[13],copy_buf[14],current);
+//			ROS_INFO("voltage : [0x%x 0x%x] , %f[A]",copy_buf[17],copy_buf[18],voltage);
+//		}
+
+//		if(servo_id==2){
 //			ROS_WARN("Return Packet Detected id:"
 //					"%x %x %x %x %x "
 //					"%x %x %x %x %x "
@@ -564,7 +562,8 @@ void GinkoSerial::getOldestPacketAndIncrementRing(unsigned char com_num) {
 //					,copy_buf[15],copy_buf[16],copy_buf[17],copy_buf[18],copy_buf[19]
 //					,copy_buf[20],copy_buf[21],copy_buf[22],copy_buf[23],copy_buf[24],copy_buf[25]
 //					);
-////		}
+//		}
+
 		ring_rp_[com_num] = (ring_rp_[com_num] + 1) % RxRingBufferLength ; //1バイト進めておけばヘッダの0xFA 0xAFの並びが崩れるから次の処理で1パケット分進む
 	}
 

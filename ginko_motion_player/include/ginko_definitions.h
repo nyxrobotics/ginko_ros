@@ -25,7 +25,7 @@
 
 namespace ginko_definitions {
 
-#define LOOP_FREQUENCY  (30)
+#define LOOP_FREQUENCY  (100)
 #define SERVO_NUM     25
 
 

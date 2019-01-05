@@ -145,7 +145,7 @@ void GinkoController::requestJointStates(unsigned char comnum) {
 }
 
 void GinkoController::updateJointStates() {
-	sensor_msgs::JointState joint_state;
+	sensor_msgs::JointState joint_state;//push_backで追加しているので毎回初期化が必須
 	joint_state.header.frame_id = "world";
 	joint_state.header.stamp = ros::Time::now();
 
@@ -242,24 +242,24 @@ void GinkoController::control_loop_com(unsigned char comnum) {
 
 
 	//2:目標値の反映
-		if(torque_enable_[comnum]==1){
-			if(timestamp_ms_ < startup_ms_){
-				timestamp_ms_= ginko_timer_.msecGet();
-	//			ROS_INFO("startup_ms:%d , start:%f, end:%f",timestamp_ms_,init_pose_[0],target_pose_[0]);
-				double startup_pose_[SERVO_NUM]={};
-				for (int index = 0; index < SERVO_NUM; index++){
-					startup_pose_[index] = init_pose_[index] + (target_pose_[index] - init_pose_[index])*(double)timestamp_ms_/(double)startup_ms_;
-				}
-				//ginko_serial_.sendTargetPosition(startup_pose_);
-				ginko_serial_.sendTargetPositionWithSpeedSingleCom(comnum,startup_pose_,1000./(double)(LOOP_FREQUENCY));
-			}else{
-	//			if(pose_request_ == 1){
-	//				ginko_serial_.sendTargetPosition(target_pose_);
-					ginko_serial_.sendTargetPositionWithSpeedSingleCom(comnum,target_pose_,1000./(double)(LOOP_FREQUENCY));
-	//				pose_request_ = 0;
-	//			}
+	if(torque_enable_[comnum]==1){
+		if(timestamp_ms_ < startup_ms_){
+			timestamp_ms_= ginko_timer_.msecGet();
+//			ROS_INFO("startup_ms:%d , start:%f, end:%f",timestamp_ms_,init_pose_[0],target_pose_[0]);
+			double startup_pose_[SERVO_NUM]={};
+			for (int index = 0; index < SERVO_NUM; index++){
+				startup_pose_[index] = init_pose_[index] + (target_pose_[index] - init_pose_[index])*(double)timestamp_ms_/(double)startup_ms_;
 			}
+			//ginko_serial_.sendTargetPosition(startup_pose_);
+			ginko_serial_.sendTargetPositionWithSpeedSingleCom(comnum,startup_pose_,1000./(double)(LOOP_FREQUENCY));
+		}else{
+//			if(pose_request_ == 1){
+//				ginko_serial_.sendTargetPosition(target_pose_);
+				ginko_serial_.sendTargetPositionWithSpeedSingleCom(comnum,target_pose_,1000./(double)(LOOP_FREQUENCY));
+//				pose_request_ = 0;
+//			}
 		}
+	}
 //		ginko_timer_.usleepSpan(100);
 	//3:リターン角度の更新
 		requestJointStates(comnum);

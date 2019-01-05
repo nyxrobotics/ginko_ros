@@ -179,8 +179,8 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 decision_making::TaskResult torqueOnCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("torqueOnTask...");
 //    sleep(1);
-//    ginko_player_.playPose(standing_Motion_Start,0);
-    ginko_player_.playPose(walkFront_Motion_Start,0);
+    ginko_player_.playPose(standing_Motion_Start,0);
+//    ginko_player_.playPose(walkFront_Motion_Start,0);
     ginko_player_.torqueEnable(1);
     eventQueue.riseEvent("/MOTION_FINISH");
     return TaskResult::SUCCESS();
