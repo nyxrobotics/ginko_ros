@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
 	//とにかく、スレッドが分かれている処理と、そうでない処理を混在させることができなかった。single、barrier系がことごとくCPUを食い潰す。
 	//おそらくbarrier処理が走った時にCPU負荷が大きく上昇する。
 	//kernel 4.15と4.13で試したが両方ダメ。
-	//clock_gettimeのCPU負荷が以上に高いことと関係があるかもしれない。同期を取るときに使っているのではないだろうか・・・
+	//clock_gettimeのCPU負荷が高いことと関係があるかもしれない。同期を取るときに使っているのではないだろうか・・・
 	//複製しないで欲しい変数はsharedオプションの中に入れないと、意図しない動作になることが多い。
 	#pragma omp parallel num_threads(4) shared(loop_rate0,loop_rate1,loop_rate2,loop_rate3,ginko_controller)
 	{
