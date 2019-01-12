@@ -1,24 +1,57 @@
 <!-- -*- mode: XML -*- -->
 <launch>
 
-		<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
-		<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
-<!-- 		<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
-		</node>node> -->
+	<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
+	<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
+	<!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+	</node>node> -->
 
+	<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+	<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
+
+	<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
 		<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
-		<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
+	</include>
+	<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
 
-		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
-			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
-		</include>
-		<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
-
-		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
 
 <!-- Controller -->
     <!-- servo controller -->
 		<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
+
+
+	<!-- LiDAR(right) -->
+    <node name="urg_node_right" pkg="urg_node" type="urg_node">
+		<param name="serial_port" value="/dev/ttyURG_1.4" />
+		<param name="frame_id" value="arm_r_urg_link" />
+     	<!-- <param name="angle_min" value="-2.2" /> -->
+        <!-- <param name="angle_max" value="2.2" /> -->
+        <remap from="scan" to="/sensor/urg/scan_right" />
+	</node>
+	<!-- LiDAR(left) -->
+    <node name="urg_node_left" pkg="urg_node" type="urg_node">
+		<param name="serial_port" value="/dev/ttyURG_1.1" />
+		<param name="frame_id" value="arm_l_urg_link" />
+     	<!-- <param name="angle_min" value="-2.2" /> -->
+        <!-- <param name="angle_max" value="2.2" /> -->
+        <remap from="scan" to="/sensor/urg/scan_left" />
+	</node>
+	<!-- IMU -->
+    <node name="mpu9250_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true">
+        <param name="port" value="/dev/ttyArduino_1.3"/>
+        <param name="frame_id" value="body_imu_link"/>
+        <param name="broadcast_tf" value="false"/>
+        <remap from="imu" to="/sensor/imu/raw"/>
+    </node>
+    <node name="mpu9250_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true">
+        <remap from="imu/data_raw" to="/sensor/imu/raw/data"/>
+        <remap from="imu/data" to="/sensor/imu/madgwick"/>
+        <param name="use_mag" value="false"/>
+        <!-- <param name="publish_tf" value="false"/> -->
+        <param name="fixed_frame" value="body_imu_reverse"/>
+        <param name="reverse_tf" value="true"/>
+    </node>
 
 </launch>
