@@ -47,6 +47,8 @@ enum MOTIN_NUM
 	ATK_BACK_LHIGH,
 	ATK_BACK_LLOW,
 
+	MOVE_URG,
+
 };
 
 volatile bool leftBumper, rightBumper, wallSensor;
@@ -75,7 +77,10 @@ FSM(Ginko)
 		torqueOn,
 		standing,
 		wakeupFront,wakeupBack,
-		walkFront
+		walkFront,
+		moveUrg1
+//		moveUrg2,
+//		moveUrg3
 
 	}
 	FSM_START(torqueOff);
@@ -102,6 +107,7 @@ FSM(Ginko)
 				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(walkFront));
 				FSM_ON_CONDITION(_motiomCommand == WAKEUP_FRONT && _motiomCommandChanged ==1 , FSM_NEXT(wakeupFront));
 				FSM_ON_CONDITION(_motiomCommand == WAKEUP_BACK && _motiomCommandChanged ==1 , FSM_NEXT(wakeupBack));
+				FSM_ON_CONDITION(_motiomCommand == MOVE_URG && _motiomCommandChanged ==1 , FSM_NEXT(moveUrg1));
             }
         }
         FSM_STATE(wakeupFront){
@@ -126,6 +132,27 @@ FSM(Ginko)
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
+        FSM_STATE(moveUrg1){
+            FSM_CALL_TASK(moveUrg1Task)
+            FSM_TRANSITIONS{
+				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+            }
+        }
+//        FSM_STATE(moveUrg2){
+//            FSM_CALL_TASK(moveURG2Task)
+//            FSM_TRANSITIONS{
+//				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+//                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+//            }
+//        }
+//        FSM_STATE(moveUrg3){
+//            FSM_CALL_TASK(moveURG3Task)
+//            FSM_TRANSITIONS{
+//				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+//                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+//            }
+//        }
 
 	}
 	FSM_END
@@ -137,7 +164,7 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 {
 	string tmpCommandString = msg->data.c_str();
 	static string preCommandString = "TORQUE_OFF";
-//	static int prev_command = TORQUE_OFF;
+	//	static int prev_command = TORQUE_OFF;
 
 	if(tmpCommandString  == "TORQUE_OFF" && preCommandString != tmpCommandString){
 		_motiomCommandChanged = 1;
@@ -162,6 +189,10 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 	}else if(tmpCommandString  == "WALK_FRONT" && preCommandString != tmpCommandString){
 		_motiomCommandChanged = 1;
 		_motiomCommand = WALK_FRONT;
+	    ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
+	}else if(tmpCommandString  == "MOVE_URG" && preCommandString != tmpCommandString){
+		_motiomCommandChanged = 1;
+		_motiomCommand = MOVE_URG;
 	    ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
 	}
 
@@ -233,7 +264,56 @@ decision_making::TaskResult walkFrontCallback(string name, const FSMCallContext&
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-
+decision_making::TaskResult moveUrg1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("moveUrgStart...");
+//    ginko_player_.playMotion(walkFront_Motion_Start);
+    while(_motiomCommand == MOVE_URG){
+        ROS_INFO("moveUrgLoop...");
+        ginko_player_.playMotion(move_urg2_Motion_Loop);
+        ginko_player_.playMotion(move_urg3_Motion_Loop);
+    }
+    if(_motiomCommand != TORQUE_OFF){
+        ROS_INFO("moveUrgEnd...");
+//        ginko_player_.playMotion(walkFront_Motion_End);
+    }
+    ginko_timer_.msleepCyclic(1000);
+    eventQueue.riseEvent("/MOTION_FINISH");
+    _motiomCommandChanged = 0;
+    return TaskResult::SUCCESS();
+}
+//decision_making::TaskResult moveURG2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+//    ROS_INFO("walkFrontStart...");
+//    ginko_player_.playMotion(walkFront_Motion_Start);
+//    while(_motiomCommand == WALK_FRONT){
+//        ROS_INFO("walkFrontLoop...");
+//        ginko_player_.playMotion(walkFront_Motion_Loop);
+//    }
+//    if(_motiomCommand != TORQUE_OFF){
+//        ROS_INFO("walkFrontEnd...");
+//        ginko_player_.playMotion(walkFront_Motion_End);
+//    }
+//    ginko_timer_.msleepCyclic(1000);
+//    eventQueue.riseEvent("/MOTION_FINISH");
+//    _motiomCommandChanged = 0;
+//    return TaskResult::SUCCESS();
+//}
+//
+//decision_making::TaskResult moveURG3Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+//    ROS_INFO("walkFrontStart...");
+//    ginko_player_.playMotion(walkFront_Motion_Start);
+//    while(_motiomCommand == WALK_FRONT){
+//        ROS_INFO("walkFrontLoop...");
+//        ginko_player_.playMotion(walkFront_Motion_Loop);
+//    }
+//    if(_motiomCommand != TORQUE_OFF){
+//        ROS_INFO("walkFrontEnd...");
+//        ginko_player_.playMotion(walkFront_Motion_End);
+//    }
+//    ginko_timer_.msleepCyclic(1000);
+//    eventQueue.riseEvent("/MOTION_FINISH");
+//    _motiomCommandChanged = 0;
+//    return TaskResult::SUCCESS();
+//}
 
 //main
 int main(int argc, char** argv){
@@ -254,8 +334,9 @@ int main(int argc, char** argv){
     LocalTasks::registrate("wakeupFrontTask",	wakeupFrontCallback);
     LocalTasks::registrate("wakeupBackTask",	wakeupBackCallback);
     LocalTasks::registrate("walkFrontTask",	walkFrontCallback);
-
-
+    LocalTasks::registrate("moveUrg1Task",	moveUrg1Callback);
+//    LocalTasks::registrate("moveURG2Task",	moveURG2Callback);
+//    LocalTasks::registrate("moveURG3Task",	moveURG3Callback);
 
 	ros::AsyncSpinner spinner(2);
 	spinner.start();

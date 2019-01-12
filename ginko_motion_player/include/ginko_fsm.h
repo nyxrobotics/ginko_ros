@@ -50,7 +50,9 @@
 #include "walkFront.h"
 #include "wakeupFront.h"
 #include "wakeupBack.h"
-
+#include "moveUrg1.h"
+#include "moveUrg2.h"
+#include "moveUrg3.h"
 
 namespace ginko_fsm {
 using namespace std;
