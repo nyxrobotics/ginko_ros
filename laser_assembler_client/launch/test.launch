@@ -28,7 +28,7 @@
 		<param name="frame_id" value="arm_r_urg_link" />
      	<!-- <param name="angle_min" value="-2.2" /> -->
         <!-- <param name="angle_max" value="2.2" /> -->
-        <remap from="scan" to="/sensor/urg/right/scan" />
+        <remap from="scan" to="/sensor/urg/scan_right" />
 	</node>
 	<!-- LiDAR(left) -->
     <node name="urg_left_node" pkg="urg_node" type="urg_node">
@@ -36,7 +36,7 @@
 		<param name="frame_id" value="arm_l_urg_link" />
      	<!-- <param name="angle_min" value="-2.2" /> -->
         <!-- <param name="angle_max" value="2.2" /> -->
-        <remap from="scan" to="/sensor/urg/left/scan" />
+        <remap from="scan" to="/sensor/urg/scan_left" />
 	</node>
 	<!-- IMU -->
     <node name="mpu9250_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true">
@@ -55,27 +55,17 @@
     </node>
 
 	<!-- laser assembler(move lidar -> create pointcloud) -->
-	<group ns="/sensor/urg/right">
-		<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler">
-			<remap from="scan" to="/sensor/urg/right/scan"/>
-			<param name="max_scans" type="int" value="400" />
-			<param name="fixed_frame" type="string" value="body_imu_reverse" />
-		</node>
-		<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
-			<remap from="cloud" to="/sensor/urg/right_cloud"/>
-		</node>
-	</group>
-
-	<group ns="/sensor/urg/left">
-		<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler">
-			<remap from="scan" to="/sensor/urg/left/scan"/>
-			<param name="max_scans" type="int" value="400" />
-			<param name="fixed_frame" type="string" value="body_imu_reverse" />
-		</node>
-		<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
-			<remap from="cloud" to="/sensor/urg/left_cloud"/>
-		</node>
-	</group>
-
+	<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+		<remap from="scan" to="/sensor/urg/scan_right"/>
+		<param name="max_scans" type="int" value="400" />
+		<param name="fixed_frame" type="string" value="body_imu_reverse" />
+	</node>
+	<!-- <node name="periodic_snapshotter"  pkg="laser_assembler" type="periodic_snapshotter" respawn="false" output="screen" /> -->
+<!-- 	<node type="point_cloud2_assembler" pkg="laser_assembler"  name="pcl_assembler_server">
+		<remap from="scan"  to="/sensor/urg/scan_right"/>
+		<remap from="cloud" to="/sensor/urg/cloud_right"/>
+		<param name="max_clouds" type="int" value="400" />
+		<param name="fixed_frame" type="string" value="map" />
+	</node> -->
 
 </launch>
