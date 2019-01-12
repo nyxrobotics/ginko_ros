@@ -36,7 +36,7 @@
 		</joint>
 
 
-		<!-- parallel link (upper-1st) -->
+		<!-- waist -->
 		<link name="${name}_link1">
 			<!-- Collision created from STL mesh without color -->
 			<collision>
@@ -101,5 +101,11 @@
 		    <axis xyz="0 1 0"/>
 		</joint>
 
+		<link name="${name}_imu_link"/>
+		<joint name="${name}_imu_joint" type="fixed">
+	    	<parent link="${name}_link1"/>
+	    	<child  link="${name}_imu_link"/>
+	    	<origin xyz="-0.09 0 -0.0379" rpy="0 1.5708 0"/>
+	  	</joint>
 	</xacro:macro>
 </robot>
