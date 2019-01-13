@@ -24,19 +24,27 @@
 
 	<!-- LiDAR(right) -->
     <node name="urg_right_node" pkg="urg_node" type="urg_node">
+		<remap from="scan" to="/sensor/urg/right/scan" />
 		<param name="serial_port" value="/dev/ttyURG_1.4" />
 		<param name="frame_id" value="arm_r_urg_link" />
-     	<!-- <param name="angle_min" value="-2.2" /> -->
-        <!-- <param name="angle_max" value="2.2" /> -->
-        <remap from="scan" to="/sensor/urg/right/scan" />
+		<param name="time_calib" value="-0.1" />
+		<param name="ofs_const_calib" value="0.0" />
+		<param name="ofs_linear_calib" value="0.0" />
+		<!-- <param name="angle_min" value="-2.2" /> -->
+		<!-- <param name="angle_max" value="2.2" /> -->
+
+
 	</node>
 	<!-- LiDAR(left) -->
     <node name="urg_left_node" pkg="urg_node" type="urg_node">
+		<remap from="scan" to="/sensor/urg/left/scan" />
 		<param name="serial_port" value="/dev/ttyURG_1.1" />
 		<param name="frame_id" value="arm_l_urg_link" />
+		<param name="time_calib" value="-0.1" />
+		<param name="ofs_const_calib" value="0.05" />
+		<param name="ofs_linear_calib" value="0.01" />
      	<!-- <param name="angle_min" value="-2.2" /> -->
         <!-- <param name="angle_max" value="2.2" /> -->
-        <remap from="scan" to="/sensor/urg/left/scan" />
 	</node>
 	<!-- IMU -->
     <node name="mpu9250_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true">
@@ -77,5 +85,45 @@
 		</node>
 	</group>
 
+<!-- voxelgrid -->
+    <arg name="nodelet_manager"   default="voxelgrid_nodelet"/>
+	<node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen" />
+
+<!-- 	<node name="voxel_right" pkg="nodelet" type="nodelet" args="load pcl/VoxelGrid $(arg nodelet_manager)" >
+	    <remap from="~input" to="/sensor/urg/right_cloud" />
+	    <remap from="~output" to="/sensor/urg/right_voxel" />
+		<param name="leaf_size" value="0.02" />
+		<param name="filter_field_name" value="z" />
+		<param name="filter_limit_min" value="-1.5" />
+		<param name="filter_limit_max" value="5" />
+		<param name="filter_limit_negative" value="False" />
+	</node>
+	<node name="voxel_left" pkg="nodelet" type="nodelet" args="load pcl/VoxelGrid $(arg nodelet_manager)" >
+	    <remap from="~input" to="/sensor/urg/left_cloud" />
+	    <remap from="~output" to="/sensor/urg/left_voxel" />
+		<param name="leaf_size" value="0.02" />
+		<param name="filter_field_name" value="z" />
+		<param name="filter_limit_min" value="-1.5" />
+		<param name="filter_limit_max" value="5" />
+		<param name="filter_limit_negative" value="False" />
+	</node> -->
+
+	<group ns="/sensor/urg/right">
+		<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)">
+		    <remap from="~input" to="/sensor/urg/right_cloud"/>
+		    <remap from="~output" to="/sensor/urg/right_mark"/>
+			<param name="~resolution" value="0.02" />
+			<param name="~publish_marker" value="false" />
+		</node>
+	</group>
+
+	<group ns="/sensor/urg/left">
+		<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)">
+		    <remap from="~input" to="/sensor/urg/left_cloud"/>
+		    <remap from="~output" to="/sensor/urg/left_mark"/>
+			<param name="~resolution" value="0.02" />
+			<param name="~publish_marker" value="false" />
+		</node>
+	</group>
 
 </launch>
