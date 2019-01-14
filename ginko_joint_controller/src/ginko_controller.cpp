@@ -147,7 +147,7 @@ void GinkoController::requestJointStates(unsigned char comnum) {
 void GinkoController::updateJointStates() {
 	sensor_msgs::JointState joint_state;//push_backで追加しているので毎回初期化が必須
 	joint_state.header.frame_id = "world";
-	joint_state.header.stamp = ros::Time::now();
+	joint_state.header.stamp = ros::Time::now();// - ros::Duration(0.1);
 
 	//サーボのID順に書く必要アリ
 
