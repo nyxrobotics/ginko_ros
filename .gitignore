@@ -2,3 +2,5 @@
 ginko_description/\.project
 
 ginko_bringup/\.project
+
+imu_drift_correction/\.project
