@@ -1,0 +1,76 @@
+<launch>
+  <arg name="use_robot_name"         default="ginko"/>
+  <arg name="device_name"            default="/dev/ttyUSB0"/>
+  <arg name="baud_rate"              default="460800"/>
+
+  <arg name="joint_controller"       default="position_mode"/>
+  <arg name="servonum" value="25"/>
+<!--   <arg name="joint01_name"            default="leg_r_joint8"/>
+  <arg name="joint02_name"            default="leg_r_joint7"/>
+  <arg name="joint03_name"            default="leg_r_joint6"/>
+  <arg name="joint04_name"            default="leg_r_joint4"/>
+  <arg name="joint05_name"            default="leg_r_joint2"/>
+  <arg name="joint06_name"            default="leg_r_joint1"/>
+  <arg name="joint07_name"            default="leg_r_joint0"/>
+  
+  <arg name="joint08_name"            default="leg_l_joint8"/>
+  <arg name="joint09_name"            default="leg_l_joint7"/>
+  <arg name="joint10_name"           default="leg_l_joint6"/>
+  <arg name="joint11_name"           default="leg_l_joint4"/>
+  <arg name="joint12_name"           default="leg_l_joint2"/>
+  <arg name="joint13_name"           default="leg_l_joint1"/>
+  <arg name="joint14_name"           default="leg_l_joint0"/>
+  
+  <arg name="joint15_name"           default="body_joint1"/>
+  
+  <arg name="joint16_name"           default="arm_r_joint0"/>
+  <arg name="joint17_name"           default="arm_r_joint1"/>
+  <arg name="joint18_name"           default="arm_r_joint1_rev"/>
+  <arg name="joint19_name"           default="arm_r_joint2"/>
+  <arg name="joint20_name"           default="arm_r_joint3"/>
+
+  <arg name="joint21_name"           default="arm_l_joint0"/>
+  <arg name="joint22_name"           default="arm_l_joint1"/>
+  <arg name="joint23_name"           default="arm_l_joint1_rev"/>
+  <arg name="joint24_name"           default="arm_l_joint2"/>
+  <arg name="joint25_name"           default="arm_l_joint3"/> -->
+
+  <arg name="gripper_controller"     default="current_mode"/>
+
+
+
+  <node pkg="ginko_joint_controller" type="ginko_joint_controller" name="ginko_joint_controller" required="true" output="screen">
+    <param name="robot_name"           value="$(arg use_robot_name)"/>
+    <param name="device_name"          value="$(arg device_name)"/>
+    <param name="baud_rate"            value="$(arg baud_rate)"/>
+
+    <param name="joint_controller"     value="$(arg joint_controller)"/>
+
+<!--     <param name="joint1_name"            value="$(arg joint1_name)"/>
+    <param name="joint2_name"            value="$(arg joint2_name)"/>
+    <param name="joint3_name"            value="$(arg joint3_name)"/>
+    <param name="joint4_name"            value="$(arg joint4_name)"/>
+    <param name="joint5_name"            value="$(arg joint5_name)"/>
+    <param name="joint6_name"            value="$(arg joint6_name)"/>
+    <param name="joint7_name"            value="$(arg joint7_name)"/>
+    <param name="joint8_name"            value="$(arg joint8_name)"/>
+    <param name="joint9_name"            value="$(arg joint9_name)"/>
+    <param name="joint10_name"            value="$(arg joint10_name)"/>
+    <param name="joint11_name"            value="$(arg joint11_name)"/>
+    <param name="joint12_name"            value="$(arg joint12_name)"/>
+    <param name="joint13_name"            value="$(arg joint13_name)"/>
+    <param name="joint14_name"            value="$(arg joint14_name)"/>
+    <param name="joint15_name"            value="$(arg joint15_name)"/>
+    <param name="joint16_name"            value="$(arg joint16_name)"/>
+    <param name="joint17_name"            value="$(arg joint17_name)"/>
+    <param name="joint18_name"            value="$(arg joint18_name)"/>
+    <param name="joint19_name"            value="$(arg joint19_name)"/>
+    <param name="joint20_name"            value="$(arg joint20_name)"/>
+    <param name="joint21_name"            value="$(arg joint21_name)"/>
+    <param name="joint22_name"            value="$(arg joint22_name)"/>
+    <param name="joint23_name"            value="$(arg joint23_name)"/>
+    <param name="joint24_name"            value="$(arg joint24_name)"/>
+    <param name="joint25_name"            value="$(arg joint25_name)"/> -->
+
+  </node>
+</launch>
