@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   nodelet
-  pluginlib
   dynamic_reconfigure #for rqt_reconfigure
 )
 # let cmake find OpenMP and set some variables(https://stackoverflow.com/questions/17633513/cmake-cannot-find-openmp)
@@ -33,7 +32,7 @@ generate_dynamic_reconfigure_options(#for rqt_reconfigure
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs nodelet pluginlib
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs nodelet
 )
 
 ###########

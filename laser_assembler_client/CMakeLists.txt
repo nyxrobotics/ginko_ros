@@ -11,14 +11,13 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   nodelet
-  pluginlib
   laser_assembler
 )
 
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs nodelet pluginlib
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs nodelet
 )
 
 ###########

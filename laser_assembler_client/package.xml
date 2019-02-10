@@ -14,10 +14,5 @@
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>nodelet</depend>
-  <depend>pluginlib</depend>
-
-  <export>
-    <nodelet plugin="${prefix}/lasr_assembler_client.xml" />
-  </export>
 
 </package>

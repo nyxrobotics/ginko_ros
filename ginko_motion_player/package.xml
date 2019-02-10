@@ -14,16 +14,10 @@
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>nodelet</depend>
-  <depend>pluginlib</depend>
 
   <depend>geometry_msgs</depend>
   <depend>random_numbers</depend>
   <depend>decision_making</depend>
   <depend>decision_making_parser</depend>
-
-
-  <export>
-    <nodelet plugin="${prefix}/ginko_motion_player.xml" />
-  </export>
 
 </package>

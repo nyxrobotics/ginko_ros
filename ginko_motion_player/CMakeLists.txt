@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   nodelet
-  pluginlib
 
   decision_making_parser
   decision_making
@@ -22,7 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs nodelet pluginlib
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs nodelet
 )
 
 
