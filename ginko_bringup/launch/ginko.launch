@@ -3,131 +3,154 @@
 
 	<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
 	<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
+
 	<!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
 	</node>node> -->
 
 	<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
 	<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
 
-	<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
+
+	<group ns="servo_motor">
+	    <!-- servo controller -->
+		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
+			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+			<!-- <remap from="joint_states" to="/servo_motor/joint_states" /> -->
+		</include>
 		<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
-	</include>
-	<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+	
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	</group>
 
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-
-
-<!-- Controller -->
-    <!-- servo controller -->
-		<!-- <include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
-
-
-	<!-- LiDAR(right) -->
-    <node name="urg_right_node" pkg="urg_node" type="urg_node">
-		<remap from="scan" to="/sensor/urg/right/scan" />
-		<param name="serial_port" value="/dev/ttyURG_1.4" />
-		<param name="frame_id" value="arm_r_urg_link" />
-		<param name="time_calib" value="-0.07" />
-<!-- 		<param name="time_calib" value="-0.095" /> -->
-		<param name="ofs_const_calib" value="0.02" />
-		<param name="ofs_linear_calib" value="0.0" />
-		<!-- <param name="angle_min" value="-2.2" /> -->
-		<!-- <param name="angle_max" value="2.2" /> -->
-
-
-	</node>
-	<!-- LiDAR(left) -->
-    <node name="urg_left_node" pkg="urg_node" type="urg_node">
-		<remap from="scan" to="/sensor/urg/left/scan" />
-		<param name="serial_port" value="/dev/ttyURG_1.1" />
-		<param name="frame_id" value="arm_l_urg_link" />
-		<param name="time_calib" value="-0.07" />
-		<!-- <param name="time_calib" value="-0.095" /> -->
-		<param name="ofs_const_calib" value="0.08" />
-		<param name="ofs_linear_calib" value="0.01" />
-<!-- 		<param name="ofs_const_calib" value="0.05" />
-		<param name="ofs_linear_calib" value="0.01" /> -->
-     	<!-- <param name="angle_min" value="-2.2" /> -->
-        <!-- <param name="angle_max" value="2.2" /> -->
-	</node>
-	<!-- IMU -->
-    <node name="mpu9250_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true">
-        <param name="port" value="/dev/ttyArduino_1.3"/>
-        <param name="frame_id" value="body_imu_link"/>
-        <param name="broadcast_tf" value="false"/>
-        <remap from="imu" to="/sensor/imu/raw"/>
-    </node>
-    <node name="mpu9250_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true">
-        <remap from="imu/data_raw" to="/sensor/imu/raw/data"/>
-        <remap from="imu/data" to="/sensor/imu/madgwick"/>
-        <param name="use_mag" value="false"/>
-        <!-- <param name="publish_tf" value="false"/> -->
-        <param name="fixed_frame" value="body_imu_reverse"/>
-        <param name="reverse_tf" value="true"/>
-    </node>
-
+	<group ns="sensor">
+	
+		<!-- IMU -->
+		<group ns="imu">
+			<!-- Connect under USB-Serial with rosserial-arduino -->
+		    <node name="imu_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true">
+		        <param name="port" value="/dev/ttyArduino_1.3"/>
+		        <param name="frame_id" value="body_imu_link"/>
+		        <param name="broadcast_tf" value="false"/>
+		        <remap from="imu" to="raw"/>
+		    </node>
+   			<!-- Madgwick filter calculates quaternion from imu raw data -->
+		    <node name="imu_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true">
+		        <remap from="imu/data_raw" to="raw/data"/>
+		        <remap from="imu/data" to="madgwick"/>
+		        <param name="use_mag" value="false"/>
+		        <!-- <param name="publish_tf" value="false"/> -->
+		        <param name="fixed_frame" value="body_imu_reverse"/>
+		        <param name="reverse_tf" value="true"/>
+		    </node>
+		</group>
+		
+		<!-- LiDAR (HOKUYO) -->
+		<group ns="urg">
+			<!-- Right LiDAR -->
+			<group ns="right">
+				<!-- Connect under USB-Serial -->
+			    <node name="urg_right_node" pkg="urg_node" type="urg_node">
+    				<!-- Topic name: /sensor/urg/right/scan -->
+					<remap from="scan" to="scan" />
+					<param name="serial_port" value="/dev/ttyURG_1.4" />
+					<param name="frame_id" value="arm_r_urg_link" />
+					<param name="time_calib" value="-0.07" />
+					<param name="ofs_const_calib" value="0.02" />
+					<param name="ofs_linear_calib" value="0.0" />
+					<!-- <param name="angle_min" value="-2.2" /> -->
+					<!-- <param name="angle_max" value="2.2" /> -->
+				</node>
+			</group>
+			
+			<!-- Left LiDAR -->
+			<group ns="left">
+				<!-- Connect under USB-Serial -->
+			    <node name="urg_left_node" pkg="urg_node" type="urg_node">
+       				<!-- Topic name: /sensor/urg/left/scan -->
+					<remap from="scan" to="scan" />
+					<param name="serial_port" value="/dev/ttyURG_1.1" />
+					<param name="frame_id" value="arm_l_urg_link" />
+					<param name="time_calib" value="-0.07" />
+					<param name="ofs_const_calib" value="0.08" />
+					<param name="ofs_linear_calib" value="0.01" />
+			     	<!-- <param name="angle_min" value="-2.2" /> -->
+			        <!-- <param name="angle_max" value="2.2" /> -->
+				</node>
+			</group>
+		</group>
+		
+	</group>
+	
 	<!-- laser assembler(move lidar -> create pointcloud) -->
-	<group ns="/sensor/urg/right">
-		<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler">
-			<remap from="scan" to="/sensor/urg/right/scan"/>
-			<param name="max_scans" type="int" value="400" />
-			<param name="fixed_frame" type="string" value="body_imu_reverse" />
-		</node>
-		<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
-			<remap from="cloud" to="/sensor/urg/right_cloud"/>
-		</node>
+	<group ns="laser_assembler">
+		<group ns="right">
+			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/right/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="body_imu_reverse" />
+			</node>
+			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="right_cloud"/>
+			</node>
+		</group>
+		<group ns="left">
+			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/left/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="body_imu_reverse" />
+			</node>
+			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="left_cloud"/>
+			</node>
+		</group>
 	</group>
 
-	<group ns="/sensor/urg/left">
-		<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler">
-			<remap from="scan" to="/sensor/urg/left/scan"/>
-			<param name="max_scans" type="int" value="400" />
-			<param name="fixed_frame" type="string" value="body_imu_reverse" />
-		</node>
-		<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
-			<remap from="cloud" to="/sensor/urg/left_cloud"/>
-		</node>
+
+	<!-- voxelgrid -->
+	<!-- <arg name="nodelet_manager"   default="voxelgrid_nodelet"/> -->
+	<!-- <node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" /> -->
+	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/>
+	<group ns="voxelgrid">
+		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" />
+		<group ns="right">
+			<!-- <node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)"> -->
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/right/right_cloud"/>
+			    <remap from="~output" to="right_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
+	
+		<group ns="left">
+			<!-- <node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)"> -->
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/left/left_cloud"/>
+			    <remap from="~output" to="left_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
 	</group>
-
-<!-- voxelgrid -->
-    <arg name="nodelet_manager"   default="voxelgrid_nodelet"/>
-	<node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="screen" />
-
-<!-- 	<node name="voxel_right" pkg="nodelet" type="nodelet" args="load pcl/VoxelGrid $(arg nodelet_manager)" >
-	    <remap from="~input" to="/sensor/urg/right_cloud" />
-	    <remap from="~output" to="/sensor/urg/right_voxel" />
-		<param name="leaf_size" value="0.02" />
-		<param name="filter_field_name" value="z" />
-		<param name="filter_limit_min" value="-1.5" />
-		<param name="filter_limit_max" value="5" />
-		<param name="filter_limit_negative" value="False" />
-	</node>
-	<node name="voxel_left" pkg="nodelet" type="nodelet" args="load pcl/VoxelGrid $(arg nodelet_manager)" >
-	    <remap from="~input" to="/sensor/urg/left_cloud" />
-	    <remap from="~output" to="/sensor/urg/left_voxel" />
-		<param name="leaf_size" value="0.02" />
-		<param name="filter_field_name" value="z" />
-		<param name="filter_limit_min" value="-1.5" />
-		<param name="filter_limit_max" value="5" />
-		<param name="filter_limit_negative" value="False" />
-	</node> -->
-
-	<group ns="/sensor/urg/right">
-		<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)">
-		    <remap from="~input" to="/sensor/urg/right_cloud"/>
-		    <remap from="~output" to="/sensor/urg/right_mark"/>
-			<param name="~resolution" value="0.02" />
-			<param name="~publish_marker" value="false" />
-		</node>
+		<!-- 
+	<group ns="voxelgrid">
+		<group ns="right">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)">
+			    <remap from="~input" to="/sensor/urg/right_cloud"/>
+			    <remap from="~output" to="/sensor/urg/right_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
+	
+		<group ns="left">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)">
+			    <remap from="~input" to="/sensor/urg/left_cloud"/>
+			    <remap from="~output" to="/sensor/urg/left_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
 	</group>
-
-	<group ns="/sensor/urg/left">
-		<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /$(arg nodelet_manager)">
-		    <remap from="~input" to="/sensor/urg/left_cloud"/>
-		    <remap from="~output" to="/sensor/urg/left_mark"/>
-			<param name="~resolution" value="0.02" />
-			<param name="~publish_marker" value="false" />
-		</node>
-	</group>
-
+	 -->
 </launch>

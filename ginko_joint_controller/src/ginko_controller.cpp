@@ -27,15 +27,14 @@ GinkoController::~GinkoController() {
 	ros::shutdown();
 }
 void GinkoController::initPublisher() {
-	joint_states_pub_ = node_handle_.advertise<sensor_msgs::JointState>(
-			robot_name_ + "/joint_states", 10);
+	joint_states_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states", 1);
+//	joint_states_pub_ = node_handle_.advertise<sensor_msgs::JointState>(robot_name_ + "/joint_states", 10);
 }
 void GinkoController::initSubscriber() {
-	goal_joint_states_sub_ = node_handle_.subscribe(
-			robot_name_ + "/goal_joint_position", 100,
-			&GinkoController::goalJointPositionCallback, this);
-	torque_enable_sub_ = node_handle_.subscribe(robot_name_ + "/torque_enable",
-			1, &GinkoController::torqueEnableCallback, this);
+	goal_joint_states_sub_ = node_handle_.subscribe("goal_joint_position", 1,&GinkoController::goalJointPositionCallback, this);
+	torque_enable_sub_ = node_handle_.subscribe("torque_enable",1, &GinkoController::torqueEnableCallback, this);
+//	goal_joint_states_sub_ = node_handle_.subscribe(robot_name_ + "/goal_joint_position", 100,&GinkoController::goalJointPositionCallback, this);
+//	torque_enable_sub_ = node_handle_.subscribe(robot_name_ + "/torque_enable",1, &GinkoController::torqueEnableCallback, this);
 }
 void GinkoController::initOffsetsReconfigure() {
 //	ここに宣言すると共有化に失敗してコールバックが呼ばれない。プライベート変数に入れた。

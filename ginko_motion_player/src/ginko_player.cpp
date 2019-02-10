@@ -1,21 +1,3 @@
-/*******************************************************************************
- * Copyright 2016 ROBOTIS CO., LTD.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
-
-/* Authors: Taehun Lim (Darby) */
-
 #include "ginko_player.h"
 
 using namespace ginko_player;
@@ -23,16 +5,16 @@ using namespace ginko_player;
 
 //GinkoTimer here
 GinkoPlayer::GinkoPlayer() {
-	//init timer
+	// init timer
     ginko_timer_.usecStart();
-//    initPublisher();
+    // initPublisher();
 }
 GinkoPlayer::~GinkoPlayer() {
 }
 void GinkoPlayer::initPublisher(){
 	ros::NodeHandle node_handle_;
-	goal_joint_states_pub_ 	= node_handle_.advertise<sensor_msgs::JointState>("/goal_joint_position", 10);
-	torque_enable_pub_ 		= node_handle_.advertise<std_msgs::Int8>("/torque_enable", 10);
+	goal_joint_states_pub_ 	= node_handle_.advertise<sensor_msgs::JointState>("goal_joint_position", 1);
+	torque_enable_pub_ 		= node_handle_.advertise<std_msgs::Int8>("torque_enable", 1);
 }
 void GinkoPlayer::posePublish(double goalJoint[SERVO_NUM]) {
 	sensor_msgs::JointState joint_state;
