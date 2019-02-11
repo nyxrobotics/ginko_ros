@@ -1,7 +1,7 @@
 <launch>
 	<group ns="sensor">
 		<group ns="imu">
-		    <node name="imu_euler" pkg="imu_angle_correction" type="imu_angle_correction" required="true">
+		    <node name="imu_euler" pkg="imu_euler_publisher" type="imu_euler_publisher" required="true">
 		        <remap from="imu_quaternion_in" to="madgwick"/>
 		        <remap from="euler_out" to="madgwick_euler"/>
 		    </node>

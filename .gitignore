@@ -6,3 +6,6 @@ ginko_bringup/\.project
 imu_drift_correction/\.project
 
 imu_angle_correction/\.project
+
+laser_assembler_client/\.project
+

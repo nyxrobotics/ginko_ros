@@ -1,7 +1,7 @@
 <launch>
 	<group ns="sensor">
 		<group ns="imu">
-		    <node name="imu_angle" pkg="imu_angle_correction" type="imu_angle_correction" required="true">
+		    <node name="imu_drift" pkg="imu_drift_correction" type="imu_drift_correction" required="true">
 		        <remap from="imu_raw_in" to="raw/data"/>
    		        <param name="parent_link" value="body_imu_base_link" />
    		        <!-- ロボットの座標系に向きを合わせる -->

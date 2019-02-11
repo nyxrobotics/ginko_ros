@@ -33,7 +33,7 @@
 		    </node>
 		    
 		   <!-- fixture changing and z-axis drift filtering. -->
-   		    <node name="imu_drift" pkg="imu_drift_correction" type="imu_drift_correction" required="true">
+   		    <node name="angle_correction" pkg="imu_angle_correction" type="imu_angle_correction" required="true">
 		        <remap from="imu_raw_in" to="raw/data"/>
    		        <remap from="imu_base_out" to="base"/>
    		        <remap from="imu_drift_correction_out" to="drift"/>
@@ -61,7 +61,7 @@
 		    </node>
 		    
 			<!-- publish euler -->
-		    <node name="imu_euler" pkg="imu_angle_correction" type="imu_angle_correction" required="true">
+		    <node name="euler_publisher" pkg="imu_euler_publisher" type="imu_euler_publisher" required="true">
 		        <remap from="imu_quaternion_in" to="madgwick"/>
 		        <remap from="euler_out" to="madgwick_euler"/>
 		    </node>
