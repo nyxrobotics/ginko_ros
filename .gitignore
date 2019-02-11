@@ -4,3 +4,5 @@ ginko_description/\.project
 ginko_bringup/\.project
 
 imu_drift_correction/\.project
+
+imu_angle_correction/\.project
