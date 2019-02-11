@@ -1,17 +1,13 @@
 <launch>
 	<group ns="sensor">
 		<group ns="imu">
-		    <node name="imu_drift" pkg="imu_drift_correction" type="imu_drift_correction" required="true">
-		        <remap from="imu_raw_in" to="raw/data"/>
-   		        <param name="parent_link" value="body_imu_base_link" />
-   		        <!-- ロボットの座標系に向きを合わせる -->
-   		        <param name="fixture_euler_x" value="0.0" />
-		        <param name="fixture_euler_y" value="1.57" />
-   		        <param name="fixture_euler_z" value="0.0" />
-   		        <!-- ジンバルロックして調整できないので調整用を別途用意 -->
-   		        <param name="calib_euler_x" value="0.018" />
-		        <param name="calib_euler_y" value="-0.05" />
-   		        <param name="calib_euler_z" value="0.0" />
+   		    <!-- IMUのドリフト補正。関節が動いていない時に重力方向周りのジャイロドリフトを補正する。 -->
+   		    <node name="drift_correction" pkg="imu_drift_correction" type="imu_drift_correction" required="true">
+		        <remap from="imu_raw_in" to="base"/>
+   		        <remap from="imu_quaternion_in" to="madgwick"/>
+   		        <remap from="imu_drift_correction_out" to="drift"/>
+   		        <remap from="joint_goals_in" to="/servo_motor/goal_joint_position"/>
+   		        <remap from="joint_states_in" to="/servo_motor/joint_states"/>
 		    </node>
 		</group>
 	</group>

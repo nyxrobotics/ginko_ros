@@ -36,7 +36,7 @@
    		    <node name="angle_correction" pkg="imu_angle_correction" type="imu_angle_correction" required="true">
 		        <remap from="imu_raw_in" to="raw/data"/>
    		        <remap from="imu_base_out" to="base"/>
-   		        <remap from="imu_drift_correction_out" to="drift"/>
+<!--    		        <remap from="imu_drift_correction_out" to="drift"/> -->
    		        <param name="parent_link" value="body_imu_base_link" />
    		        <param name="fixture_euler_x" value="0.0" />
 		        <param name="fixture_euler_y" value="1.57" />
@@ -48,10 +48,19 @@
    		        <param name="calib_euler_z" value="0.0" />
 		    </node>
 		    
+   		    <!-- IMUのドリフト補正。関節が動いていない時に重力方向周りのジャイロドリフトを補正する。 -->
+<!--    		    <node name="drift_correction" pkg="imu_drift_correction" type="imu_drift_correction" required="true"> -->
+<!-- 		        <remap from="imu_raw_in" to="base"/> -->
+<!--    		        <remap from="imu_quaternion_in" to="madgwick"/> -->
+<!--    		        <remap from="imu_drift_correction_out" to="drift"/> -->
+
+<!-- 		    </node> -->
+		    
    			<!-- Madgwick filter calculates quaternion from imu raw data -->
 		    <node name="imu_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true">
 <!-- 		        <remap from="imu/data_raw" to="raw/data"/> -->
-		        <remap from="imu/data_raw" to="base"/>
+<!-- 		        <remap from="imu/data_raw" to="base"/> -->
+		        <remap from="imu/data_raw" to="drift"/>
 		        <remap from="imu/data" to="madgwick"/>
 		        <param name="use_mag" value="false"/>
    		        <param name="use_mag" value="false"/>
@@ -65,6 +74,8 @@
 		        <remap from="imu_quaternion_in" to="madgwick"/>
 		        <remap from="euler_out" to="madgwick_euler"/>
 		    </node>
+		    
+
 		</group>
 		
 		<!-- LiDAR (HOKUYO) -->

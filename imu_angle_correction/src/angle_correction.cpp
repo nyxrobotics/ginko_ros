@@ -28,7 +28,7 @@ void DriftCorrection::initSubscriber(){
 }
 void DriftCorrection::initPublisher(){
 	imu_base_pub_  = node_handle_.advertise<sensor_msgs::Imu>("imu_base_out", 1);
-	imu_drift_correct_pub_ = node_handle_.advertise<sensor_msgs::Imu>("imu_drift_correction_out", 1);
+//	imu_drift_correct_pub_ = node_handle_.advertise<sensor_msgs::Imu>("imu_drift_correction_out", 1);
 //	ROS_FATAL("ImuRpy:Publisher Initialized");
 }
 void DriftCorrection::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
@@ -54,8 +54,8 @@ void DriftCorrection::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	imu_out.linear_acceleration.z = linear_accel_base.getZ();
 	imu_out.header.frame_id = parent_link;
 	imu_base_pub_.publish(imu_out);
-	imu_out.angular_velocity.z = 0.0;
-	imu_drift_correct_pub_.publish(imu_out);
+//	imu_out.angular_velocity.z = 0.0;
+//	imu_drift_correct_pub_.publish(imu_out);
 }
 
 

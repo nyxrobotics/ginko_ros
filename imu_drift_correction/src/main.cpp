@@ -9,7 +9,6 @@ int main(int argc, char **argv) {
 	//ノードハンドラを渡さないと、rosparamで受け取ろうとする名前空間がノード名の一層上になってしまい、launchの中でかけない。
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
 	DriftCorrection imu_drift_correction(node_handle_);
-//		DriftCorrection imu_drift_correction;
 
 	ros::spin();
 
