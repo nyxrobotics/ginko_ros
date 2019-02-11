@@ -2,24 +2,16 @@
 #define DRIFT_CORRECTION_H
 
 #include <ros/ros.h>
+//#include <tf2_ros/static_transform_broadcaster.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <cstdio>
 #include <tf2/LinearMath/Quaternion.h>
-#include <tf2/transform_datatypes.h>
-#include <tf2/LinearMath/Matrix3x3.h>
-#include <geometry_msgs/Quaternion.h>
-#include <geometry_msgs/Vector3.h>
-#include <sensor_msgs/Imu.h>
 
 
 class DriftCorrection {
 private:
-	ros::NodeHandle node_handle_;
-	ros::Subscriber imu_raw_sub_;
-	ros::Publisher imu_base_pub_;
-	ros::Publisher imu_drift_correct_pub_;
-	//座標変換に使用(ジャイロの向き→ロボットの向き)
-	geometry_msgs::Vector3 fixture_euler_;
-	geometry_msgs::Vector3 calib_euler_;
-	std::string parent_link;
 //	LaunchParams launch_params;
 	double gyro_z_drift_ = 0.;		//算出する現在のドリフト値
 	double gyro_z_stopping_ = 1.;	//1~0の値を取る。これが1に近くなるとドリフト補正を始める。
@@ -30,20 +22,24 @@ private:
 	// ROS Topic Subscriber
 	ros::Subscriber joint_target_sub_;	//関節角度の目標値。停止中の判定に使用。
 	ros::Subscriber joint_sens_sub_;	//関節角度の計測値。停止中の判定に使用。
+	ros::Subscriber imu_raw_sub_;		//ジャイロの生データ
+	ros::Publisher  imu_drift_correction_pub_; //ドリフト補正後のデータ
 
+	//tf2_ros::TransformBroadcaster tf2_br_;
+	//tf2_ros::Buffer tf2_buf_;
+	//tf2_ros::TransformListener tf2_lis_(tf2_buf_);
 
 public:
-	DriftCorrection(ros::NodeHandle main_nh);
+	DriftCorrection();
 	~DriftCorrection();
 
 	double drift_thresh = 0.99;
 	bool publish_debug_topic = true;
-	void readParams(ros::NodeHandle main_nh);
+	void readParams();
 
 private:
-	void initPublisher();
-	void initSubscriber();
-	void getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg);
+//	void initPublisher();
+//	void initSubscriber();
 
 };
 

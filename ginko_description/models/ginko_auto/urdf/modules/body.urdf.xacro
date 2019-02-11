@@ -101,24 +101,19 @@
 		    <axis xyz="0 1 0"/>
 		</joint>
 
-		<link name="${name}_imu_link"/>
-		<joint name="${name}_imu_joint" type="fixed">
+		<link name="${name}_imu_attached_link"/>
+		<joint name="${name}_imu_attached_joint" type="fixed">
 	    	<parent link="${name}_link1"/>
-	    	<child  link="${name}_imu_link"/>
+	    	<child  link="${name}_imu_attached_link"/>
 	    	<origin xyz="-0.09 0 -0.0379" rpy="0 1.5708 0"/>
 	  	</joint>
-
-<!-- 		<link name="${name}_imu_link_dummy"/>
-		<joint name="${name}_imu_joint_dummy" type="fixed">
+	  	
+		<link name="${name}_imu_base_link"/>
+		<joint name="${name}_imu_base_joint" type="fixed">
 	    	<parent link="${name}_link1"/>
-	    	<child  link="${name}_imu_link_dummy"/>
-	    	<origin xyz="-0.09 0 -0.0379" rpy="0 1.48 0"/>
+	    	<child  link="${name}_imu_base_link"/>
+	    	<origin xyz="-0.09 0 -0.0379" rpy="0 0 0"/>
 	  	</joint>
-		<link name="${name}_imu_link"/>
-		<joint name="${name}_imu_joint" type="fixed">
-	    	<parent link="${name}_imu_link_dummy"/>
-	    	<child  link="${name}_imu_link"/>
-	    	<origin xyz="0 0 0" rpy="0 0 -0.025"/>
-	  	</joint> -->
+
 	</xacro:macro>
 </robot>

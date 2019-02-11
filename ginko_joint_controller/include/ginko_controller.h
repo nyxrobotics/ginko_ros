@@ -57,7 +57,7 @@ private:
 	const unsigned int startup_ms_ = 2000;
 	// ROS NodeHandle
 	ros::NodeHandle node_handle_;
-	ros::NodeHandle priv_node_handle_;
+//	ros::NodeHandle priv_node_handle_;
 	// ROS Parameters
 	// ROS Topic Publisher
 	ros::Publisher joint_states_pub_;
