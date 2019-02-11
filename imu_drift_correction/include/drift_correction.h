@@ -12,15 +12,18 @@
 
 class DriftCorrection {
 private:
+	//NodeHandler,Publisher,Subscriber
 	ros::NodeHandle node_handle_;
 	ros::Subscriber imu_raw_sub_;
 	ros::Publisher imu_base_pub_;
 	ros::Publisher imu_drift_correct_pub_;
+	//ROS Params
 	//座標変換に使用(ジャイロの向き→ロボットの向き)
 	geometry_msgs::Vector3 fixture_euler_;
 	geometry_msgs::Vector3 calib_euler_;
+	//ロボットの向きに合わせたジャイロの位置のリンク
 	std::string parent_link;
-//	LaunchParams launch_params;
+
 	double gyro_z_drift_ = 0.;		//算出する現在のドリフト値
 	double gyro_z_stopping_ = 1.;	//1~0の値を取る。これが1に近くなるとドリフト補正を始める。
 	double joint_target_stopping_ = 0.;

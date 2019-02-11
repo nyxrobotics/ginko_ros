@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 # Package name: imu_drift_correction
-project(imu_angle_correction)
+project(imu_euler_publisher)
 
 #add_compile_options(-std=c++11)
 add_compile_options(-std=c++17 -O3)
