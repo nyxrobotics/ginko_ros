@@ -26,7 +26,7 @@
 		<group ns="imu">
 			<!-- Connect under USB-Serial with rosserial-arduino -->
 		    <node name="imu_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true">
-		        <param name="port" value="/dev/ttyArduino_1.3"/>
+		        <param name="port" value="/dev/ttyCH340_1.3"/>
 		        <param name="frame_id" value="body_imu_attached_link"/>
 		        <param name="broadcast_tf" value="false"/>
 		        <remap from="imu" to="raw"/>
@@ -49,13 +49,14 @@
 		    </node>
 		    
    		    <!-- IMUのドリフト補正。関節が動いていない時に重力方向周りのジャイロドリフトを補正する。 -->
-<!--    		    <node name="drift_correction" pkg="imu_drift_correction" type="imu_drift_correction" required="true"> -->
-<!-- 		        <remap from="imu_raw_in" to="base"/> -->
-<!--    		        <remap from="imu_quaternion_in" to="madgwick"/> -->
-<!--    		        <remap from="imu_drift_correction_out" to="drift"/> -->
+		    <node name="drift_correction" pkg="imu_drift_correction" type="imu_drift_correction" required="true">
+		        <remap from="imu_raw_in" to="base"/>
+   		        <remap from="imu_quaternion_in" to="madgwick"/>
+   		        <remap from="imu_drift_correction_out" to="drift"/>
+   		        <remap from="joint_goals_in" to="/servo_motor/goal_joint_position"/>
+   		        <remap from="joint_states_in" to="/servo_motor/joint_states"/>
+		    </node>
 
-<!-- 		    </node> -->
-		    
    			<!-- Madgwick filter calculates quaternion from imu raw data -->
 		    <node name="imu_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true">
 <!-- 		        <remap from="imu/data_raw" to="raw/data"/> -->
@@ -89,8 +90,10 @@
 					<param name="serial_port" value="/dev/ttyURG_1.4" />
 					<param name="frame_id" value="arm_r_urg_link" />
 					<param name="time_calib" value="-0.07" />
-					<param name="ofs_const_calib" value="0.02" />
+					<param name="ofs_const_calib" value="0.0" />
 					<param name="ofs_linear_calib" value="0.0" />
+<!-- 					<param name="ofs_const_calib" value="0.02" /> -->
+<!-- 					<param name="ofs_linear_calib" value="0.0" /> -->
 					<!-- <param name="angle_min" value="-2.2" /> -->
 					<!-- <param name="angle_max" value="2.2" /> -->
 				</node>
@@ -105,8 +108,10 @@
 					<param name="serial_port" value="/dev/ttyURG_1.1" />
 					<param name="frame_id" value="arm_l_urg_link" />
 					<param name="time_calib" value="-0.07" />
-					<param name="ofs_const_calib" value="0.08" />
-					<param name="ofs_linear_calib" value="0.01" />
+					<param name="ofs_const_calib" value="0.06" />
+					<param name="ofs_linear_calib" value="0.0" />
+<!-- 					<param name="ofs_const_calib" value="0.08" /> -->
+<!-- 					<param name="ofs_linear_calib" value="0.01" /> -->
 			     	<!-- <param name="angle_min" value="-2.2" /> -->
 			        <!-- <param name="angle_max" value="2.2" /> -->
 				</node>
@@ -116,50 +121,50 @@
 	</group>
 	
 	<!-- laser assembler(move lidar -> create pointcloud) -->
-<!-- 	<group ns="laser_assembler"> -->
-<!-- 		<group ns="right"> -->
-<!-- 			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
-<!-- 				<remap from="scan" to="/sensor/urg/right/scan"/> -->
-<!-- 				<param name="max_scans" type="int" value="400" /> -->
-<!-- 				<param name="fixed_frame" type="string" value="body_imu_reverse" /> -->
-<!-- 			</node> -->
-<!-- 			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
-<!-- 				<remap from="cloud" to="right_cloud"/> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
-<!-- 		<group ns="left"> -->
-<!-- 			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
-<!-- 				<remap from="scan" to="/sensor/urg/left/scan"/> -->
-<!-- 				<param name="max_scans" type="int" value="400" /> -->
-<!-- 				<param name="fixed_frame" type="string" value="body_imu_reverse" /> -->
-<!-- 			</node> -->
-<!-- 			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
-<!-- 				<remap from="cloud" to="left_cloud"/> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
-<!-- 	</group> -->
+	<group ns="laser_assembler">
+		<group ns="right">
+			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/right/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="body_imu_reverse" />
+			</node>
+			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="right_cloud"/>
+			</node>
+		</group>
+		<group ns="left">
+			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/left/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="body_imu_reverse" />
+			</node>
+			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="left_cloud"/>
+			</node>
+		</group>
+	</group>
 
 
-	<!-- voxelgrid -->
-<!-- 	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/> -->
-<!-- 	<group ns="voxelgrid"> -->
-<!-- 		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" /> -->
-<!-- 		<group ns="right"> -->
-<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
-<!-- 			    <remap from="~input" to="/laser_assembler/right/right_cloud"/> -->
-<!-- 			    <remap from="~output" to="right_mark"/> -->
-<!-- 				<param name="~resolution" value="0.02" /> -->
-<!-- 				<param name="~publish_marker" value="false" /> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
+	voxelgrid
+	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/>
+	<group ns="voxelgrid">
+		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" />
+		<group ns="right">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/right/right_cloud"/>
+			    <remap from="~output" to="right_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
 	
-<!-- 		<group ns="left"> -->
-<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
-<!-- 			    <remap from="~input" to="/laser_assembler/left/left_cloud"/> -->
-<!-- 			    <remap from="~output" to="left_mark"/> -->
-<!-- 				<param name="~resolution" value="0.02" /> -->
-<!-- 				<param name="~publish_marker" value="false" /> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
-<!-- 	</group> -->
+		<group ns="left">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/left/left_cloud"/>
+			    <remap from="~output" to="left_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
+	</group>
 </launch>

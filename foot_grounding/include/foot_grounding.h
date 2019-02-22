@@ -11,26 +11,37 @@
 #include <sensor_msgs/JointState.h>
 #include <std_msgs/Float32.h>
 #include <iostream>
+//used for handling TF
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Twist.h>
+#include <string>
 
-class DriftCorrection {
+class FootGrounding {
 private:
+	//動作:
+	//足裏8点の位置関係を見て、両足接地、片足面接地、片足エッジ接地、を判定する。(自己位置計算用)
+	//Publisher:現在高さ、現在速度、TF
+	//TF:自己位置増減計算の起点となる接地点、及び胴体真下のbase_linkをpublishする。
 	//NodeHandler,Publisher,Subscriber
 	ros::NodeHandle node_handle_;
-	ros::Subscriber imu_base_sub_;//ジャイロの生データ。これにドリフト補正をかける。
-	ros::Subscriber imu_quaternion_sub_;//ドリフト補正を重力周りにかけるため、現在姿勢も受け取る必要がある。
-	ros::Subscriber joint_goals_sub_;	//関節角度の目標値。停止中の判定に使用。
-	ros::Subscriber joint_states_sub_;	//関節角度の計測値。停止中の判定に使用。
+	ros::Subscriber imu_quaternion_sub_;//足裏のどの頂点が接地しているかを判定するため、現在姿勢を受け取る。
+	ros::Subscriber joint_states_sub_;	//関節角度の更新周期に合わせて再計算する。データ自体は使わない。
 
-	ros::Publisher imu_drift_correct_pub_;
+	ros::Publisher ground_height_pub_;  //MPU6500中央からみた重力方向への床の高さ
+	ros::Publisher velocity_pub_;       //重力方向を鉛直、胸部前方をx軸とした時の、MPU6500中央のxyz方向の速度
+
+	tf2_ros::Buffer tfBuffer;
+	tf2_ros::TransformListener tfListener(tfBuffer);
+
 	//rosparam
-	bool publish_debug_topics_ ;
-	int imu_drift_waiting_counter_ ;
-
-	ros::Publisher debug_stopping_pub_;
-	ros::Publisher debug_gyro_drift_pub_;
-	ros::Publisher debug_accel_drift_pub_;
-	ros::Publisher debug_joint_states_drift_pub_;
-	ros::Publisher debug_joint_goals_drift_pub_;
+	std::string center_tf_in_name_ = "body_imu_base_link";//ジャイロのTF
+	std::string base_tf_out_name_  = "ground_base_link";//ジャイロを地面に投影した位置(odomを生やす基準点にする予定)
+	std::string ground_point_tf_out_name_ = "ground_point_link";//足裏の接地点
+	double footup_thresh_min_ = 0.001;		//どちらかの足が上がっている判定のスレッショルド
+	double footup_thresh_max_ = 0.003;		//minからmaxまではground_point_linkが線形で遷移
+	double toe_edg_thresh_min_ = 0.0005;	//片方の足において足先エッジが上がっている判定のスレッショルド
+	double toe_edg_thresh_max_ = 0.002;		//minからmaxまではground_point_linkが線形で遷移
 
 	//内部処理用変数
 	sensor_msgs::Imu imu_raw_;
@@ -55,8 +66,8 @@ private:
 	tf2::Vector3 drifting_;			//現在姿勢に対して重力周りの回転だけを取り出してドリフトとして引く。
 
 public:
-	DriftCorrection(ros::NodeHandle main_nh);
-	~DriftCorrection();
+	FootGrounding(ros::NodeHandle main_nh);
+	~FootGrounding();
 
 	double drift_thresh = 0.99;
 	bool publish_debug_topic = true;

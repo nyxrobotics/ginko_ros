@@ -1,41 +1,30 @@
-#include "drift_correction.h"
+#include <foot_grounding.h>
 
-//DriftCorrection here
-DriftCorrection::DriftCorrection(ros::NodeHandle main_nh){
+//FootGrounding here
+FootGrounding::FootGrounding(ros::NodeHandle main_nh){
 	readParams(main_nh);
 	initSubscriber();
 	initPublisher();
-	drifting_.setX(0);
-	drifting_.setY(0);
-	drifting_.setZ(0);
 }
-DriftCorrection::~DriftCorrection() {
+FootGrounding::~FootGrounding() {
 	ros::shutdown();
 }
-void DriftCorrection::readParams(ros::NodeHandle main_nh){
+void FootGrounding::readParams(ros::NodeHandle main_nh){
 	main_nh.param<bool>("publish_debug_topics", publish_debug_topics_, true);
 	main_nh.param<int>("drift_waiting_conter", imu_drift_waiting_counter_, 100);
 }
 
-void DriftCorrection::initSubscriber(){
-	imu_base_sub_ = node_handle_.subscribe("imu_raw_in", 1,&DriftCorrection::getImuRawCallback, this);
-	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 1,&DriftCorrection::getImuQuaternionCallback, this);
-	joint_goals_sub_ = node_handle_.subscribe("joint_goals_in", 1,&DriftCorrection::getJointGoalsCallback, this);
-	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 1,&DriftCorrection::getJointStatesCallback, this);
+void FootGrounding::initSubscriber(){
+	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 1,&FootGrounding::getImuQuaternionCallback, this);
+	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 1,&FootGrounding::getJointStatesCallback, this);
 //	ROS_FATAL("ImuRpy:Subscriber Initialized");
 }
-void DriftCorrection::initPublisher(){
-	imu_drift_correct_pub_ = node_handle_.advertise<sensor_msgs::Imu>("imu_drift_correction_out", 1);
-//	ROS_FATAL("ImuRpy:Publisher Initialized");
-	if(publish_debug_topics_ == true){
-		debug_stopping_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/stopping_flag", 1);
-		debug_gyro_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/gyro_flag", 1);
-		debug_accel_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/accel_flag", 1);
-		debug_joint_states_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/joint_states_flag", 1);
-		debug_joint_goals_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/joint_goals_flag", 1);
-	}
+void FootGrounding::initPublisher(){
+	ground_height_pub_ = node_handle_.advertise<std_msgs::Float32>("height_out", 1);
+	velocity_pub_ = node_handle_.advertise<geometry_msgs::Vector3>("velocity_out", 1);
+
 }
-void DriftCorrection::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
+void FootGrounding::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	sensor_msgs::Imu imu_out = *msg; //中身をコピー
 	gyro_stopping_ = gyroNormal(*msg);
 	accel_stopping_ = accelNormal(*msg);
@@ -67,7 +56,7 @@ void DriftCorrection::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	imu_out.angular_velocity.x -= drifting_.getX();
 	imu_out.angular_velocity.y -= drifting_.getY();
 	imu_out.angular_velocity.z -= drifting_.getZ();
-
+//	imu_out.angular_velocity.z = 0.0;
 	imu_drift_correct_pub_.publish(imu_out);
 
 	if(publish_debug_topics_){
@@ -85,23 +74,23 @@ void DriftCorrection::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	}
 	joint_target_stopping_*=0.999;//目標値は来ない時もあるのでその時は少しづつ減らす。
 }
-void DriftCorrection::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg){
+void FootGrounding::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	quaternion_.setX(msg->orientation.x);
 	quaternion_.setY(msg->orientation.y);
 	quaternion_.setZ(msg->orientation.z);
 	quaternion_.setW(msg->orientation.w);
 }
-void DriftCorrection::getJointGoalsCallback(const sensor_msgs::JointState::ConstPtr& msg){
+void FootGrounding::getJointGoalsCallback(const sensor_msgs::JointState::ConstPtr& msg){
 //	sensor_msgs::JointState jg_tmp = *msg;
 	joint_target_stopping_ = jointStatesNormal(*msg);
 }
 
-void DriftCorrection::getJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg){
+void FootGrounding::getJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg){
 //	sensor_msgs::JointState js_tmp = *msg;
 	joint_sens_stopping_ = jointStatesNormal(*msg);
 }
 
-double DriftCorrection::gyroNormal(const sensor_msgs::Imu imu_in){
+double FootGrounding::gyroNormal(const sensor_msgs::Imu imu_in){
 	double normal = 0;
 	//2乗はpowより掛け算のほうが早いらしい(参考:https://fenrir.naruoka.org/archives/000623.html)
 	normal += imu_in.angular_velocity.x * imu_in.angular_velocity.x;
@@ -109,7 +98,7 @@ double DriftCorrection::gyroNormal(const sensor_msgs::Imu imu_in){
 	normal += imu_in.angular_velocity.z * imu_in.angular_velocity.z;
 	return normal;
 }
-double DriftCorrection::accelNormal(const sensor_msgs::Imu imu_in){
+double FootGrounding::accelNormal(const sensor_msgs::Imu imu_in){
 	double normal = 0;
 	static sensor_msgs::Imu imu_old = imu_in;
 	normal += (imu_in.linear_acceleration.x - imu_old.linear_acceleration.x) * (imu_in.linear_acceleration.x - imu_old.linear_acceleration.x);
@@ -118,7 +107,7 @@ double DriftCorrection::accelNormal(const sensor_msgs::Imu imu_in){
 	imu_old = imu_in;
 	return normal;
 }
-double DriftCorrection::jointStatesNormal(const sensor_msgs::JointState joints_in){
+double FootGrounding::jointStatesNormal(const sensor_msgs::JointState joints_in){
 	double normal = 0;
 	static sensor_msgs::JointState js_old = joints_in;
 	int joint_num = joints_in.position.size();
@@ -126,10 +115,10 @@ double DriftCorrection::jointStatesNormal(const sensor_msgs::JointState joints_i
 		normal += (joints_in.position[i]-js_old.position[i])*(joints_in.position[i]-js_old.position[i]);
 	}
 	js_old = joints_in;
-	ROS_DEBUG("DriftCorrection:[%d] Joints Detected",joint_num);
+	ROS_DEBUG("FootGrounding:[%d] Joints Detected",joint_num);
 	return normal;
 }
-double DriftCorrection::jointGoalsNormal(const sensor_msgs::JointState joints_in){
+double FootGrounding::jointGoalsNormal(const sensor_msgs::JointState joints_in){
 	double normal = 0;
 	static sensor_msgs::JointState js_old = joints_in;
 	int joint_num = joints_in.position.size();
@@ -137,6 +126,6 @@ double DriftCorrection::jointGoalsNormal(const sensor_msgs::JointState joints_in
 		normal += (joints_in.position[i]-js_old.position[i])*(joints_in.position[i]-js_old.position[i]);
 	}
 	js_old = joints_in;
-	ROS_DEBUG("DriftCorrection:[%d] Joints Detected",joint_num);
+	ROS_DEBUG("FootGrounding:[%d] Joints Detected",joint_num);
 	return normal;
 }
