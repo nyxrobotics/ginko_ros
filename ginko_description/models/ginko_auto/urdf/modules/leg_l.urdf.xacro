@@ -316,6 +316,12 @@
 	    	<child  link="${name}_toe_link3"/>
 	    	<origin xyz="0.064 -0.040 -0.005" rpy="0 0 0"/>
 	  	</joint>
+		<link name="${name}_toe_link0"/>
+		<joint name="${name}_toe_center" type="fixed">
+	    	<parent link="${name}_link8"/>
+	    	<child  link="${name}_toe_link0"/>
+	    	<origin xyz="0.0 0.0 -0.005" rpy="0 0 0"/>
+	  	</joint>
 
 	</xacro:macro>
 </robot>

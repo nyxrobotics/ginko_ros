@@ -42,26 +42,19 @@ int FootGrounding::groundingMainLoop(){
 	static ros::Time ros_last  = ros::Time::now();
 //	ros::Time ros_now  = ros::Time::now();
 	geometry_msgs::TransformStamped transformStamped;
-	/*
 	if (initialize_flag){
+		//最初の一回は何もしない(ros_lastのみ更新)
 //		transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
-		transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
 		initialize_flag = false;
 		return 1;
 	}
 	//TFの更新に合わせて処理
-//	transformStamped = tfBuffer_ptr->lookupTransform("body_imu_yaw", "body_imu_reverse", ros::Time::now(), ros::Duration(0.1));
 //	transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
-	transformStamped = tfBuffer_ptr->lookupTransform("body_imu_yaw", "body_imu_reverse", ros::Time::now(), ros::Duration(1.0));
-	*/
-//	transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time(0), ros::Duration(1.0));
-//	transformStamped = tfBuffer_ptr->lookupTransform("body_link1", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
-//	transformStamped = tfBuffer_ptr->lookupTransform("leg_r_link8", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
-	transformStamped = tfBuffer_ptr->lookupTransform("leg_r_link7", "leg_r_link8", ros::Time(0), ros::Duration(1.0));
+
 	ros::Time ros_now  = ros::Time::now();
 	ros::Duration ros_duration  = ros_now - ros_last;
 
-//	calcRightGroundpoint();
+	calcRightGroundpoint();
 
 	std_msgs::Float32 tmp;
 	tmp.data = transformStamped.transform.rotation.w;
@@ -96,22 +89,27 @@ void FootGrounding::getJointStatesCallback(const sensor_msgs::JointState::ConstP
 
 }
 void FootGrounding::calcRightGroundpoint(){
-	geometry_msgs::TransformStamped toe0_tf = tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[0],ros::Time(0));
-	geometry_msgs::TransformStamped toe1_tf = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0],r_toe_tf_in_[1],ros::Time(0));
-	geometry_msgs::TransformStamped toe2_tf = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0],r_toe_tf_in_[2],ros::Time(0));
-	geometry_msgs::TransformStamped toe3_tf = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0],r_toe_tf_in_[3],ros::Time(0));
+	geometry_msgs::TransformStamped toe0_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[0],ros::Time(0));
+	geometry_msgs::TransformStamped toe1_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[1],ros::Time(0));
+	geometry_msgs::TransformStamped toe2_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[2],ros::Time(0));
+	geometry_msgs::TransformStamped toe3_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[3],ros::Time(0));
+	geometry_msgs::TransformStamped toe_c_tf	= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_center_tf_,ros::Time(0));
+	geometry_msgs::TransformStamped toe_c_0_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[0],ros::Time(0));
+	geometry_msgs::TransformStamped toe_c_1_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[1],ros::Time(0));
+	geometry_msgs::TransformStamped toe_c_2_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[2],ros::Time(0));
+	geometry_msgs::TransformStamped toe_c_3_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[3],ros::Time(0));
 
 	geometry_msgs::TransformStamped transformStamped = toe0_tf;
 	transformStamped.header.stamp = ros::Time::now();
 	transformStamped.header.frame_id = r_toe_tf_in_[0];
 	transformStamped.child_frame_id = "r_center";
-	transformStamped.transform.translation.x = toe2_tf.transform.translation.x * 0.5;
-	transformStamped.transform.translation.y = toe2_tf.transform.translation.y * 0.5;
-	transformStamped.transform.translation.z = toe2_tf.transform.translation.z * 0.5;
-//	transformStamped.transform.rotation.x = rotation.x();
-//	transformStamped.transform.rotation.y = rotation.y();
-//	transformStamped.transform.rotation.z = rotation.z();
-//	transformStamped.transform.rotation.w = rotation.w();
+	transformStamped.transform.translation.x = toe_0_2_tf.transform.translation.x * 0.5;
+	transformStamped.transform.translation.y = toe_0_2_tf.transform.translation.y * 0.5;
+	transformStamped.transform.translation.z = toe_0_2_tf.transform.translation.z * 0.5;
+	transformStamped.transform.rotation.x = 0.0;
+	transformStamped.transform.rotation.y = 0.0;
+	transformStamped.transform.rotation.z = 0.0;
+	transformStamped.transform.rotation.w = 1.0;
 	tfBroadcaster.sendTransform(transformStamped);
 }
 

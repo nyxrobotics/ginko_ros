@@ -62,6 +62,7 @@ private:
 	double toe_edg_thresh_max_ = 0.002;		//minからmaxまではground_point_linkが線形で遷移
 	int r_toe_tf_num = 4;
 	bool publish_debug_topic = true;
+	std::string r_toe_center_tf_ = "leg_r_toe_center";
 	std::string r_toe_tf_in_[4] = {
 			"leg_r_toe_link0",
 			"leg_r_toe_link1",
