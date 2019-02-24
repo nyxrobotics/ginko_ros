@@ -2,11 +2,16 @@
 
 //RollPitchTF here
 RollPitchTF::RollPitchTF(){
-
+//	if(publish_debug_topic_){
+		initPublisher(main_nh);
+//	}
 }
 
 RollPitchTF::~RollPitchTF() {
 
+}
+void RollPitchTF::initPublisher(ros::NodeHandle main_nh){
+	yaw_angle_pub_ = main_nh.advertise<std_msgs::Float32>("imu_yaw_angle", 1);
 }
 
 tf2::Quaternion RollPitchTF::calcRollPitchQuaternion(const sensor_msgs::Imu imu_in){
@@ -36,6 +41,11 @@ tf2::Quaternion RollPitchTF::calcYawQuaternion(const sensor_msgs::Imu imu_in){
 	tf2::Vector3 x_axis_vector(1.0, 0.0, 0.0);
 	tf2::Vector3 face_vector  = rotation_matrix_in * x_axis_vector;
 	double theta_z = std::atan2(face_vector.getY(),face_vector.getX());
+	if(publish_debug_topic_){
+		std_msgs::Float32 tmp;
+		tmp.data = theta_z;
+		yaw_angle_pub_.publish(tmp);
+	}
 	tf2::Matrix3x3 rotation_matrix_out;
 	rotation_matrix_in.setEulerZYX(theta_z, 0.0, 0.0);
 	tf2::Quaternion imu_out_quaternion;

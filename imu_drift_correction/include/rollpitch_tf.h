@@ -23,10 +23,14 @@
 class RollPitchTF {
 	private:
 		tf2_ros::TransformBroadcaster tfBroadcaster;
+		ros::Publisher yaw_angle_pub_;
+		bool publish_debug_topic_ = true;
+		ros::NodeHandle main_nh;
 
 	public:
 		RollPitchTF();
 		~RollPitchTF();
+		void initPublisher(ros::NodeHandle main_nh);
 		tf2::Quaternion calcRollPitchQuaternion(const sensor_msgs::Imu imu_in);
 		tf2::Quaternion calcYawQuaternion(const sensor_msgs::Imu imu_in);
 		void broadcastRotatedTf(std::string parent_name,std::string tf_name,tf2::Quaternion rotation);
