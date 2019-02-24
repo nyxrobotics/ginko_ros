@@ -11,6 +11,17 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   nodelet
+  tf2
+  tf2_bullet
+  tf2_eigen
+  tf2_geometry_msgs
+  tf2_kdl
+  tf2_msgs
+  tf2_py
+  tf2_ros
+  tf2_sensor_msgs
+  tf2_tools
+  tf
 )
 
 catkin_package(

@@ -1,6 +1,8 @@
 #ifndef DRIFT_CORRECTION_H
 #define DRIFT_CORRECTION_H
 
+#include <rollpitch_tf.h>
+
 #include <ros/ros.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/transform_datatypes.h>
@@ -14,6 +16,7 @@
 
 class DriftCorrection {
 private:
+
 	//NodeHandler,Publisher,Subscriber
 	ros::NodeHandle node_handle_;
 	ros::Subscriber imu_base_sub_;//ジャイロの生データ。これにドリフト補正をかける。
@@ -54,6 +57,8 @@ private:
 	tf2::Quaternion quaternion_;	//ドリフト補正を重力周りにかけるため、現在姿勢も受け取る必要がある。
 	tf2::Vector3 drifting_;			//現在姿勢に対して重力周りの回転だけを取り出してドリフトとして引く。
 
+	//yaw角のみのTFを吐くために追加
+	RollPitchTF roll_pitch_tf;
 public:
 	DriftCorrection(ros::NodeHandle main_nh);
 	~DriftCorrection();
