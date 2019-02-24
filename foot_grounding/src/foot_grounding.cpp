@@ -2,130 +2,118 @@
 
 //FootGrounding here
 FootGrounding::FootGrounding(ros::NodeHandle main_nh){
+
+	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
+	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
+	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
+	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
+	usleep(1000000);
 	readParams(main_nh);
-	initSubscriber();
-	initPublisher();
+	initSubscriber(main_nh);
+	initPublisher(main_nh);
 }
+
 FootGrounding::~FootGrounding() {
 	ros::shutdown();
 }
-void FootGrounding::readParams(ros::NodeHandle main_nh){
-	main_nh.param<bool>("publish_debug_topics", publish_debug_topics_, true);
-	main_nh.param<int>("drift_waiting_conter", imu_drift_waiting_counter_, 100);
+
+void FootGrounding::readParams(ros::NodeHandle node_handle_){
+//	node_handle_.param<bool>("publish_debug_topics", publish_debug_topics_, true);
+//	node_handle_.param<int>("drift_waiting_conter", imu_drift_waiting_counter_, 100);
 }
 
-void FootGrounding::initSubscriber(){
+void FootGrounding::initSubscriber(ros::NodeHandle node_handle_){
 	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 1,&FootGrounding::getImuQuaternionCallback, this);
 	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 1,&FootGrounding::getJointStatesCallback, this);
-//	ROS_FATAL("ImuRpy:Subscriber Initialized");
 }
-void FootGrounding::initPublisher(){
-	ground_height_pub_ = node_handle_.advertise<std_msgs::Float32>("height_out", 1);
-	velocity_pub_ = node_handle_.advertise<geometry_msgs::Vector3>("velocity_out", 1);
 
+void FootGrounding::initPublisher(ros::NodeHandle node_handle_){
+	imu_ground_height_pub_	= node_handle_.advertise<std_msgs::Float32>("imu_height_out", 1);
+	imu_velocity_pub_		= node_handle_.advertise<geometry_msgs::Vector3>("imu_velocity_out", 1);
+
+	r_ground_height_pub_	= node_handle_.advertise<geometry_msgs::Vector3>("r_ground_height_out", 1);
+	r_velocity_pub_			= node_handle_.advertise<geometry_msgs::Vector3>("r_velocity_out", 1);
+	l_ground_height_pub_	= node_handle_.advertise<geometry_msgs::Vector3>("l_ground_height_out", 1);
+	l_velocity_pub_			= node_handle_.advertise<geometry_msgs::Vector3>("l_velocity_out", 1);
 }
-void FootGrounding::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
-	sensor_msgs::Imu imu_out = *msg; //中身をコピー
-	gyro_stopping_ = gyroNormal(*msg);
-	accel_stopping_ = accelNormal(*msg);
-	//ドリフト補正が可能か判定
-	//stopping_が1.0以上になったら静止していると判定
-	if(gyro_stopping_<thresh_gyro_stopping_
-			&& accel_stopping_<thresh_accel_stopping_
-			&& joint_target_stopping_<thresh_joint_target_stopping_
-			&& joint_sens_stopping_<thresh_joint_sens_stopping_){
-		if(stopping_< 1.1){
-			stopping_ += 1.1/(double)imu_drift_waiting_counter_;
-		}
-	}else{
-		stopping_ = 0;
-	}
-	//ドリフト補正開始
-	if(stopping_>1.0){
-		tf2::Vector3 gyro_latest(msg->angular_velocity.x,msg->angular_velocity.y,msg->angular_velocity.z);//最新のジャイロの生データ
-		tf2::Matrix3x3 calib_matrix(quaternion_);
-		tf2::Vector3 drifting_calib = calib_matrix * gyro_latest;
-		//Z軸周り以外はmadgwickがとってくれるので無視
-		drifting_calib.setX(0.0);
-		drifting_calib.setY(0.0);
-		tf2::Vector3 drifting_latest = calib_matrix.inverse() * gyro_latest;
-		drifting_ = drifting_*(1.0-drift_correction_speed_norm_) + drifting_latest*drift_correction_speed_norm_;
 
+int FootGrounding::groundingMainLoop(){
+	static bool initialize_flag = true;
+	static ros::Time ros_last  = ros::Time::now();
+//	ros::Time ros_now  = ros::Time::now();
+	geometry_msgs::TransformStamped transformStamped;
+	/*
+	if (initialize_flag){
+//		transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
+		transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
+		initialize_flag = false;
+		return 1;
 	}
+	//TFの更新に合わせて処理
+//	transformStamped = tfBuffer_ptr->lookupTransform("body_imu_yaw", "body_imu_reverse", ros::Time::now(), ros::Duration(0.1));
+//	transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
+	transformStamped = tfBuffer_ptr->lookupTransform("body_imu_yaw", "body_imu_reverse", ros::Time::now(), ros::Duration(1.0));
+	*/
+//	transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time(0), ros::Duration(1.0));
+//	transformStamped = tfBuffer_ptr->lookupTransform("body_link1", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
+//	transformStamped = tfBuffer_ptr->lookupTransform("leg_r_link8", "leg_r_toe_link0", ros::Time::now(), ros::Duration(1.0));
+	transformStamped = tfBuffer_ptr->lookupTransform("leg_r_link7", "leg_r_link8", ros::Time(0), ros::Duration(1.0));
+	ros::Time ros_now  = ros::Time::now();
+	ros::Duration ros_duration  = ros_now - ros_last;
 
-	imu_out.angular_velocity.x -= drifting_.getX();
-	imu_out.angular_velocity.y -= drifting_.getY();
-	imu_out.angular_velocity.z -= drifting_.getZ();
-//	imu_out.angular_velocity.z = 0.0;
-	imu_drift_correct_pub_.publish(imu_out);
+//	calcRightGroundpoint();
 
-	if(publish_debug_topics_){
-		std_msgs::Float32 tmp;
-		tmp.data = stopping_;
-		debug_stopping_pub_.publish(tmp);
-		tmp.data = gyro_stopping_ / thresh_gyro_stopping_;
-		debug_gyro_drift_pub_.publish(tmp);
-		tmp.data = accel_stopping_ / thresh_accel_stopping_;
-		debug_accel_drift_pub_.publish(tmp);
-		tmp.data = joint_target_stopping_ / thresh_joint_target_stopping_;
-		debug_joint_goals_drift_pub_.publish(tmp);
-		tmp.data = joint_sens_stopping_ / thresh_joint_sens_stopping_;
-		debug_joint_states_drift_pub_.publish(tmp);
-	}
-	joint_target_stopping_*=0.999;//目標値は来ない時もあるのでその時は少しづつ減らす。
+	std_msgs::Float32 tmp;
+	tmp.data = transformStamped.transform.rotation.w;
+	imu_ground_height_pub_.publish(tmp);
+	ros_last = ros_now;
+	return 0;
 }
+
 void FootGrounding::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	quaternion_.setX(msg->orientation.x);
 	quaternion_.setY(msg->orientation.y);
 	quaternion_.setZ(msg->orientation.z);
 	quaternion_.setW(msg->orientation.w);
+	quaternion_update_flag_ = 1;
+//	tf2::Stamped imu_reverse_yaw;
+//    tf2::Stamped rotate_tf = tfBuffer.lookupTransform(imu_tf_in_name_,r_toe_tf_in_[0],ros::Time(0));
+//	imu_reverse_yaw.header.stamp = ros::Time::now();
+//	imu_reverse_yaw.header.frame_id = imu_tf_in_name_;
+//	imu_reverse_yaw.child_frame_id = imu_tf_reverse_in_name_;
+//	imu_reverse_yaw.transform.translation.x = msg->x;
+//	imu_reverse_yaw.transform.translation.y = msg->y;
+//	imu_reverse_yaw.transform.translation.z = 0.0;
+//	tf2::Quaternion q;
+//	q.setRPY(0, 0, msg->theta);
+//	imu_reverse_yaw.transform.rotation.x = q.x();
+//	imu_reverse_yaw.transform.rotation.y = q.y();
+//	imu_reverse_yaw.transform.rotation.z = q.z();
+//	imu_reverse_yaw.transform.rotation.w = q.w();
+//	tfBroadcaster.sendTransform(imu_reverse_yaw);
 }
-void FootGrounding::getJointGoalsCallback(const sensor_msgs::JointState::ConstPtr& msg){
-//	sensor_msgs::JointState jg_tmp = *msg;
-	joint_target_stopping_ = jointStatesNormal(*msg);
-}
-
 void FootGrounding::getJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg){
-//	sensor_msgs::JointState js_tmp = *msg;
-	joint_sens_stopping_ = jointStatesNormal(*msg);
+
+}
+void FootGrounding::calcRightGroundpoint(){
+	geometry_msgs::TransformStamped toe0_tf = tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[0],ros::Time(0));
+	geometry_msgs::TransformStamped toe1_tf = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0],r_toe_tf_in_[1],ros::Time(0));
+	geometry_msgs::TransformStamped toe2_tf = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0],r_toe_tf_in_[2],ros::Time(0));
+	geometry_msgs::TransformStamped toe3_tf = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0],r_toe_tf_in_[3],ros::Time(0));
+
+	geometry_msgs::TransformStamped transformStamped = toe0_tf;
+	transformStamped.header.stamp = ros::Time::now();
+	transformStamped.header.frame_id = r_toe_tf_in_[0];
+	transformStamped.child_frame_id = "r_center";
+	transformStamped.transform.translation.x = toe2_tf.transform.translation.x * 0.5;
+	transformStamped.transform.translation.y = toe2_tf.transform.translation.y * 0.5;
+	transformStamped.transform.translation.z = toe2_tf.transform.translation.z * 0.5;
+//	transformStamped.transform.rotation.x = rotation.x();
+//	transformStamped.transform.rotation.y = rotation.y();
+//	transformStamped.transform.rotation.z = rotation.z();
+//	transformStamped.transform.rotation.w = rotation.w();
+	tfBroadcaster.sendTransform(transformStamped);
 }
 
-double FootGrounding::gyroNormal(const sensor_msgs::Imu imu_in){
-	double normal = 0;
-	//2乗はpowより掛け算のほうが早いらしい(参考:https://fenrir.naruoka.org/archives/000623.html)
-	normal += imu_in.angular_velocity.x * imu_in.angular_velocity.x;
-	normal += imu_in.angular_velocity.y * imu_in.angular_velocity.y;
-	normal += imu_in.angular_velocity.z * imu_in.angular_velocity.z;
-	return normal;
-}
-double FootGrounding::accelNormal(const sensor_msgs::Imu imu_in){
-	double normal = 0;
-	static sensor_msgs::Imu imu_old = imu_in;
-	normal += (imu_in.linear_acceleration.x - imu_old.linear_acceleration.x) * (imu_in.linear_acceleration.x - imu_old.linear_acceleration.x);
-	normal += (imu_in.linear_acceleration.y - imu_old.linear_acceleration.y) * (imu_in.linear_acceleration.y - imu_old.linear_acceleration.y);
-	normal += (imu_in.linear_acceleration.z - imu_old.linear_acceleration.z) * (imu_in.linear_acceleration.z - imu_old.linear_acceleration.z);
-	imu_old = imu_in;
-	return normal;
-}
-double FootGrounding::jointStatesNormal(const sensor_msgs::JointState joints_in){
-	double normal = 0;
-	static sensor_msgs::JointState js_old = joints_in;
-	int joint_num = joints_in.position.size();
-	for(int i=0;i<joint_num;i++){
-		normal += (joints_in.position[i]-js_old.position[i])*(joints_in.position[i]-js_old.position[i]);
-	}
-	js_old = joints_in;
-	ROS_DEBUG("FootGrounding:[%d] Joints Detected",joint_num);
-	return normal;
-}
-double FootGrounding::jointGoalsNormal(const sensor_msgs::JointState joints_in){
-	double normal = 0;
-	static sensor_msgs::JointState js_old = joints_in;
-	int joint_num = joints_in.position.size();
-	for(int i=0;i<joint_num;i++){
-		normal += (joints_in.position[i]-js_old.position[i])*(joints_in.position[i]-js_old.position[i]);
-	}
-	js_old = joints_in;
-	ROS_DEBUG("FootGrounding:[%d] Joints Detected",joint_num);
-	return normal;
-}
+
+

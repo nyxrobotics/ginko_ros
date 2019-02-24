@@ -13,5 +13,4 @@
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>nodelet</depend>
-
 </package>

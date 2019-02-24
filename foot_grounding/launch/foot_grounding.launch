@@ -1,0 +1,6 @@
+<launch>
+	<group ns="odom">
+	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true">
+	    </node>
+	</group>
+</launch>
