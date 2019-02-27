@@ -20,6 +20,7 @@
 #include <string>
 
 #include <boost/bind.hpp>
+#include <tf2/LinearMath/Matrix3x3.h>
 
 class FootGrounding {
 private:
@@ -48,32 +49,36 @@ private:
 
 	//rosparam
 	//TODO:パラメータにする
-	std::string imu_tf_in_name_			= "body_imu_base_link";//入力：ジャイロのTF()
-	std::string imu_tf_reverse_in_name_	= "body_imu_reverse";//入力：ジャイロの回転の基準になっているTF()
-	std::string imu_tf_yaw_in_name_		= "body_imu_yaw";//入力：ジャイロのTF()
-	std::string ground_imu_tf_out_name_		= "ground_imu_link";//出力：ジャイロを地面に投影した位置(odomを生やす基準点にする予定)
-	std::string ground_point_tf_out_name_	= "ground_point_link";//足裏の接地点
+	std::string imu_tf_in_name_				= "body_imu_base_link";	//入力：ジャイロのTF()
+	std::string imu_tf_reverse_in_name_		= "body_imu_reverse";	//入力：ジャイロの回転の基準になっているTF()
+	std::string imu_tf_yaw_in_name_			= "body_imu_yaw";		//入力：ジャイロのTF()
+	std::string ground_imu_tf_out_name_		= "ground_imu_link";	//出力：ジャイロを地面に投影した位置(odomを生やす基準点にする予定)
+	std::string ground_point_tf_out_name_	= "ground_point_link";	//足裏の接地点
 	std::string ground_center_tf_out_name_	= "ground_foot_center_link";//足裏の接地点
-	std::string ground_r_tf_out_name_	= "ground_foot_r_link";//右足裏の接地点
-	std::string ground_l_tf_out_name_	= "ground_foot_l_link";//左足裏の接地点
-	double footup_thresh_min_ = 0.001;		//どちらかの足が上がっている判定のスレッショルド
-	double footup_thresh_max_ = 0.003;		//minからmaxまではground_point_linkが線形で遷移
-	double toe_edg_thresh_min_ = 0.0005;	//片方の足において足先エッジが上がっている判定のスレッショルド
-	double toe_edg_thresh_max_ = 0.002;		//minからmaxまではground_point_linkが線形で遷移
-	int r_toe_tf_num = 4;
+	std::string ground_r_tf_out_name_	= "ground_foot_r_link";		//右足裏の接地点
+	std::string ground_l_tf_out_name_	= "ground_foot_l_link";		//左足裏の接地点
+//	double footup_thresh_min_  = 0.001;	//どちらかの足が上がっている判定のスレッショルド
+	double footup_thresh_max_  = 0.003;	//minからmaxまではground_point_linkが線形で遷移
+//	double toe_edg_thresh_min_ = 0.002; //片方の足において足先エッジが上がっている判定のスレッショルド
+	double toe_edg_thresh_max_ = 0.005;	//minからmaxまではground_point_linkが線形で遷移
+
 	bool publish_debug_topic = true;
 	std::string r_toe_center_tf_ = "leg_r_toe_center";
+	int r_toe_tf_num = 4;
 	std::string r_toe_tf_in_[4] = {
 			"leg_r_toe_link0",
 			"leg_r_toe_link1",
 			"leg_r_toe_link2",
 			"leg_r_toe_link3"};
+
+	std::string l_toe_center_tf_ = "leg_l_toe_center";
 	int l_toe_tf_num = 4;
 	std::string l_toe_tf_in_[4] = {
 			"leg_l_toe_link0",
 			"leg_l_toe_link1",
 			"leg_l_toe_link2",
 			"leg_l_toe_link3"};
+
 	//内部用変数
 	tf2::Quaternion quaternion_;	//現在姿勢
 	int quaternion_update_flag_ = 0;
@@ -90,8 +95,9 @@ private:
 	void initSubscriber(ros::NodeHandle node_handle_);
 	void getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg);
 	void getJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg);
-	void calcRightGroundpoint();
-
+	geometry_msgs::TransformStamped calcRightGroundpoint();
+	geometry_msgs::TransformStamped calcLeftGroundpoint();
+	void calcGroundpoint();
 };
 
 

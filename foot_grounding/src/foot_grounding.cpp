@@ -54,8 +54,9 @@ int FootGrounding::groundingMainLoop(){
 	ros::Time ros_now  = ros::Time::now();
 	ros::Duration ros_duration  = ros_now - ros_last;
 
-	calcRightGroundpoint();
-
+	transformStamped = calcRightGroundpoint();
+	transformStamped = calcLeftGroundpoint();
+//	calcGroundpoint();
 	std_msgs::Float32 tmp;
 	tmp.data = transformStamped.transform.rotation.w;
 	imu_ground_height_pub_.publish(tmp);
@@ -88,30 +89,180 @@ void FootGrounding::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& m
 void FootGrounding::getJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg){
 
 }
-void FootGrounding::calcRightGroundpoint(){
-	geometry_msgs::TransformStamped toe0_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[0],ros::Time(0));
-	geometry_msgs::TransformStamped toe1_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[1],ros::Time(0));
-	geometry_msgs::TransformStamped toe2_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[2],ros::Time(0));
-	geometry_msgs::TransformStamped toe3_tf		= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_tf_in_[3],ros::Time(0));
-	geometry_msgs::TransformStamped toe_c_tf	= tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_,r_toe_center_tf_,ros::Time(0));
-	geometry_msgs::TransformStamped toe_c_0_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[0],ros::Time(0));
-	geometry_msgs::TransformStamped toe_c_1_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[1],ros::Time(0));
-	geometry_msgs::TransformStamped toe_c_2_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[2],ros::Time(0));
-	geometry_msgs::TransformStamped toe_c_3_tf	= tfBuffer_ptr->lookupTransform(r_toe_center_tf_,r_toe_tf_in_[3],ros::Time(0));
+geometry_msgs::TransformStamped FootGrounding::calcRightGroundpoint(){
+	geometry_msgs::TransformStamped toe_tf[4]	={
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,r_toe_tf_in_[0] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,r_toe_tf_in_[1] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,r_toe_tf_in_[2] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,r_toe_tf_in_[3] ,ros::Time(0))
+		};
+	geometry_msgs::TransformStamped toe_shape[2]	={
+			tfBuffer_ptr->lookupTransform(r_toe_tf_in_[2] ,r_toe_tf_in_[3] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(r_toe_tf_in_[2] ,r_toe_tf_in_[1] ,ros::Time(0))
+		};
+	double toe_length = toe_shape[0].transform.translation.x;
+	double toe_width  = toe_shape[1].transform.translation.y;
 
-	geometry_msgs::TransformStamped transformStamped = toe0_tf;
+	double z2_z3_diff = toe_tf[3].transform.translation.z - toe_tf[2].transform.translation.z;
+	double z2_z1_diff = toe_tf[1].transform.translation.z - toe_tf[2].transform.translation.z;
+
+	double gravityPointX = toe_length * 0.5 * (1.0  - (z2_z3_diff / toe_edg_thresh_max_));
+	if (gravityPointX > toe_length){
+		gravityPointX = toe_length;
+	}else if(gravityPointX < 0){
+		gravityPointX = 0;
+	}
+
+	double gravityPointY = toe_width * 0.5 * (1.0 - (z2_z1_diff / toe_edg_thresh_max_));
+	if (gravityPointY > toe_width){
+		gravityPointY = toe_width;
+	}else if(gravityPointY < 0){
+		gravityPointY = 0;
+	}
+
+	geometry_msgs::TransformStamped transformStamped;
 	transformStamped.header.stamp = ros::Time::now();
-	transformStamped.header.frame_id = r_toe_tf_in_[0];
-	transformStamped.child_frame_id = "r_center";
-	transformStamped.transform.translation.x = toe_0_2_tf.transform.translation.x * 0.5;
-	transformStamped.transform.translation.y = toe_0_2_tf.transform.translation.y * 0.5;
-	transformStamped.transform.translation.z = toe_0_2_tf.transform.translation.z * 0.5;
-	transformStamped.transform.rotation.x = 0.0;
-	transformStamped.transform.rotation.y = 0.0;
-	transformStamped.transform.rotation.z = 0.0;
-	transformStamped.transform.rotation.w = 1.0;
+	transformStamped.header.frame_id = r_toe_tf_in_[2];
+	transformStamped.child_frame_id  = "r_grounding";
+	transformStamped.transform.translation.x = gravityPointX;
+	transformStamped.transform.translation.y = gravityPointY;
+	transformStamped.transform.translation.z = 0.0;
+	transformStamped.transform.rotation.x		= 0.0;
+	transformStamped.transform.rotation.y		= 0.0;
+	transformStamped.transform.rotation.z		= 0.0;
+	transformStamped.transform.rotation.w		= 1.0;
 	tfBroadcaster.sendTransform(transformStamped);
+
+	//ここまでで終わりでよかったのに。
+	transformStamped.header.frame_id = imu_tf_yaw_in_name_;
+	transformStamped.child_frame_id  = "r_grounding_from_imu";
+	tf2::Quaternion quaternion;
+	quaternion.setX(toe_tf[2].transform.rotation.x);
+	quaternion.setY(toe_tf[2].transform.rotation.y);
+	quaternion.setZ(toe_tf[2].transform.rotation.z);
+	quaternion.setW(toe_tf[2].transform.rotation.w);
+	tf2::Matrix3x3 rotationalMatrix(quaternion);
+	tf2::Vector3 translation_vector3;
+	translation_vector3.setX(gravityPointX);
+	translation_vector3.setY(gravityPointY);
+	translation_vector3.setZ(0);
+	tf2::Vector3 translation_rotate = rotationalMatrix * translation_vector3;
+	transformStamped.transform.translation.x = toe_tf[2].transform.translation.x + translation_rotate.x();
+	transformStamped.transform.translation.y = toe_tf[2].transform.translation.y + translation_rotate.y();
+	transformStamped.transform.translation.z = toe_tf[2].transform.translation.z + translation_rotate.z();
+	tfBroadcaster.sendTransform(transformStamped);
+	return transformStamped;
+
+}
+
+geometry_msgs::TransformStamped FootGrounding::calcLeftGroundpoint(){
+	geometry_msgs::TransformStamped toe_tf[4]	={
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,l_toe_tf_in_[0] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,l_toe_tf_in_[1] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,l_toe_tf_in_[2] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,l_toe_tf_in_[3] ,ros::Time(0))
+		};
+	geometry_msgs::TransformStamped toe_shape[2]	={
+			tfBuffer_ptr->lookupTransform(l_toe_tf_in_[2] ,l_toe_tf_in_[3] ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(l_toe_tf_in_[2] ,l_toe_tf_in_[1] ,ros::Time(0))
+		};
+	double toe_length = toe_shape[0].transform.translation.x;
+	double toe_width  = toe_shape[1].transform.translation.y;
+
+	double z2_z3_diff = toe_tf[3].transform.translation.z - toe_tf[2].transform.translation.z;
+	double z2_z1_diff = toe_tf[1].transform.translation.z - toe_tf[2].transform.translation.z;
+
+	double gravityPointX = toe_length * 0.5 * (1.0  - (z2_z3_diff / toe_edg_thresh_max_));
+	if (gravityPointX > toe_length){
+		gravityPointX = toe_length;
+	}else if(gravityPointX < 0){
+		gravityPointX = 0;
+	}
+
+	double gravityPointY = toe_width * 0.5 * (1.0 - (z2_z1_diff / toe_edg_thresh_max_));
+	if (gravityPointY > toe_width){
+		gravityPointY = toe_width;
+	}else if(gravityPointY < 0){
+		gravityPointY = 0;
+	}
+
+	geometry_msgs::TransformStamped transformStamped;
+	transformStamped.header.stamp = ros::Time::now();
+	transformStamped.header.frame_id = l_toe_tf_in_[2];
+	transformStamped.child_frame_id  = "l_grounding";
+	transformStamped.transform.translation.x = gravityPointX;
+	transformStamped.transform.translation.y = gravityPointY;
+	transformStamped.transform.translation.z = 0.0;
+	transformStamped.transform.rotation.x		= 0.0;
+	transformStamped.transform.rotation.y		= 0.0;
+	transformStamped.transform.rotation.z		= 0.0;
+	transformStamped.transform.rotation.w		= 1.0;
+	tfBroadcaster.sendTransform(transformStamped);
+
+	//ここまでで終わりでよかったのに。
+	transformStamped.header.frame_id = imu_tf_yaw_in_name_;
+	transformStamped.child_frame_id  = "l_grounding_from_imu";
+	tf2::Quaternion quaternion;
+	quaternion.setX(toe_tf[2].transform.rotation.x);
+	quaternion.setY(toe_tf[2].transform.rotation.y);
+	quaternion.setZ(toe_tf[2].transform.rotation.z);
+	quaternion.setW(toe_tf[2].transform.rotation.w);
+	tf2::Matrix3x3 rotationalMatrix(quaternion);
+	tf2::Vector3 translation_vector3;
+	translation_vector3.setX(gravityPointX);
+	translation_vector3.setY(gravityPointY);
+	translation_vector3.setZ(0);
+	tf2::Vector3 translation_rotate = rotationalMatrix * translation_vector3;
+	transformStamped.transform.translation.x = toe_tf[2].transform.translation.x + translation_rotate.x();
+	transformStamped.transform.translation.y = toe_tf[2].transform.translation.y + translation_rotate.y();
+	transformStamped.transform.translation.z = toe_tf[2].transform.translation.z + translation_rotate.z();
+	tfBroadcaster.sendTransform(transformStamped);
+	return transformStamped;
+
 }
 
 
+void FootGrounding::calcGroundpoint( ){
+	geometry_msgs::TransformStamped foots_tf[2]	={
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,"r_grounding" ,ros::Time(0)),
+			tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,"l_grounding" ,ros::Time(0)),
+		};
+	geometry_msgs::TransformStamped foots_diff = tfBuffer_ptr->lookupTransform("r_grounding" ,"l_grounding" ,ros::Time(0));
 
+
+
+	double gravityPointX = foots_diff.transform.translation.x * 0.5 * (1.0  - (foots_diff.transform.translation.z  / footup_thresh_max_));
+	if (gravityPointX > foots_diff.transform.translation.x){
+		gravityPointX = foots_diff.transform.translation.x;
+	}else if(gravityPointX < 0){
+		gravityPointX = 0;
+	}
+
+	double gravityPointY = foots_diff.transform.translation.y * 0.5 * (1.0  - (foots_diff.transform.translation.z  / footup_thresh_max_));
+	if (gravityPointY > foots_diff.transform.translation.y){
+		gravityPointY = foots_diff.transform.translation.y;
+	}else if(gravityPointY < 0){
+		gravityPointY = 0;
+	}
+
+	double gravityPointZ = foots_diff.transform.translation.z * 0.5 * (1.0  - (foots_diff.transform.translation.z  / footup_thresh_max_));
+	if (gravityPointZ > foots_diff.transform.translation.z){
+		gravityPointZ = foots_diff.transform.translation.z;
+	}else if(gravityPointZ < 0){
+		gravityPointZ = 0;
+	}
+
+	geometry_msgs::TransformStamped transformStamped;
+	transformStamped.header.stamp = ros::Time::now();
+	transformStamped.header.frame_id = "r_grounding";
+	transformStamped.child_frame_id  = "grounding_point";
+	transformStamped.transform.translation.x = gravityPointX;
+	transformStamped.transform.translation.y = gravityPointY;
+	transformStamped.transform.translation.z = gravityPointZ;
+	transformStamped.transform.rotation.x		= 0.0;
+	transformStamped.transform.rotation.y		= 0.0;
+	transformStamped.transform.rotation.z		= 0.0;
+	transformStamped.transform.rotation.w		= 1.0;
+	tfBroadcaster.sendTransform(transformStamped);
+
+}
