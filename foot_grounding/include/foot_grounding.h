@@ -97,7 +97,9 @@ private:
 	void getJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg);
 	geometry_msgs::TransformStamped calcRightGroundpoint();
 	geometry_msgs::TransformStamped calcLeftGroundpoint();
-	void calcGroundpoint(geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped left_ground);
+	geometry_msgs::TransformStamped calcFootsCenter();
+	geometry_msgs::TransformStamped calcGroundpoint(geometry_msgs::TransformStamped center,geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped left_ground);
+	geometry_msgs::TransformStamped calcImuGround(geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped ground);
 };
 
 

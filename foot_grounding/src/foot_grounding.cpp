@@ -55,9 +55,14 @@ int FootGrounding::groundingMainLoop(){
 	ros::Duration ros_duration  = ros_now - ros_last;
 	geometry_msgs::TransformStamped transformStampedRight;
 	geometry_msgs::TransformStamped transformStampedLight;
+	geometry_msgs::TransformStamped transformStampedCenter;
+	geometry_msgs::TransformStamped transformStampedFootsGround;
+	geometry_msgs::TransformStamped transformStampedImuGround;
 	transformStampedRight = calcRightGroundpoint();
 	transformStampedLight = calcLeftGroundpoint();
-	calcGroundpoint(transformStampedRight,transformStampedLight);
+	transformStampedCenter =  calcFootsCenter();
+	transformStampedFootsGround = calcGroundpoint(transformStampedCenter,transformStampedRight,transformStampedLight);
+	transformStampedImuGround = calcImuGround(transformStampedRight,transformStampedFootsGround);
 	std_msgs::Float32 tmp;
 //	tmp.data = transformStamped.transform.rotation.w;
 	imu_ground_height_pub_.publish(tmp);
@@ -71,21 +76,6 @@ void FootGrounding::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& m
 	quaternion_.setZ(msg->orientation.z);
 	quaternion_.setW(msg->orientation.w);
 	quaternion_update_flag_ = 1;
-//	tf2::Stamped imu_reverse_yaw;
-//    tf2::Stamped rotate_tf = tfBuffer.lookupTransform(imu_tf_in_name_,r_toe_tf_in_[0],ros::Time(0));
-//	imu_reverse_yaw.header.stamp = ros::Time::now();
-//	imu_reverse_yaw.header.frame_id = imu_tf_in_name_;
-//	imu_reverse_yaw.child_frame_id = imu_tf_reverse_in_name_;
-//	imu_reverse_yaw.transform.translation.x = msg->x;
-//	imu_reverse_yaw.transform.translation.y = msg->y;
-//	imu_reverse_yaw.transform.translation.z = 0.0;
-//	tf2::Quaternion q;
-//	q.setRPY(0, 0, msg->theta);
-//	imu_reverse_yaw.transform.rotation.x = q.x();
-//	imu_reverse_yaw.transform.rotation.y = q.y();
-//	imu_reverse_yaw.transform.rotation.z = q.z();
-//	imu_reverse_yaw.transform.rotation.w = q.w();
-//	tfBroadcaster.sendTransform(imu_reverse_yaw);
 }
 void FootGrounding::getJointStatesCallback(const sensor_msgs::JointState::ConstPtr& msg){
 
@@ -132,11 +122,11 @@ geometry_msgs::TransformStamped FootGrounding::calcRightGroundpoint(){
 	transformStamped.transform.rotation.y		= 0.0;
 	transformStamped.transform.rotation.z		= 0.0;
 	transformStamped.transform.rotation.w		= 1.0;
-	tfBroadcaster.sendTransform(transformStamped);
+//	tfBroadcaster.sendTransform(transformStamped);
 
-	//ここまでで終わりでよかったのに。
+	//向きをジャイロに合わせる
 	transformStamped.header.frame_id = imu_tf_yaw_in_name_;
-	transformStamped.child_frame_id  = "r_grounding_from_imu";
+	transformStamped.child_frame_id  = ground_r_tf_out_name_;
 	tf2::Quaternion quaternion;
 	quaternion.setX(toe_tf[2].transform.rotation.x);
 	quaternion.setY(toe_tf[2].transform.rotation.y);
@@ -199,11 +189,11 @@ geometry_msgs::TransformStamped FootGrounding::calcLeftGroundpoint(){
 	transformStamped.transform.rotation.y		= 0.0;
 	transformStamped.transform.rotation.z		= 0.0;
 	transformStamped.transform.rotation.w		= 1.0;
-	tfBroadcaster.sendTransform(transformStamped);
+//	tfBroadcaster.sendTransform(transformStamped);
 
-	//ここまでで終わりでよかったのに。
+	//向きをジャイロに合わせる
 	transformStamped.header.frame_id = imu_tf_yaw_in_name_;
-	transformStamped.child_frame_id  = "l_grounding_from_imu";
+	transformStamped.child_frame_id  = ground_l_tf_out_name_;
 	tf2::Quaternion quaternion;
 	quaternion.setX(toe_tf[2].transform.rotation.x);
 	quaternion.setY(toe_tf[2].transform.rotation.y);
@@ -224,8 +214,27 @@ geometry_msgs::TransformStamped FootGrounding::calcLeftGroundpoint(){
 
 }
 
+geometry_msgs::TransformStamped FootGrounding::calcFootsCenter(){
 
-void FootGrounding::calcGroundpoint(geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped left_ground){
+	geometry_msgs::TransformStamped foot_right = tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,r_toe_center_tf_ ,ros::Time(0));
+	geometry_msgs::TransformStamped foot_left  = tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,l_toe_center_tf_ ,ros::Time(0));
+	geometry_msgs::TransformStamped foot_center;
+	foot_center.header.stamp    = ros::Time::now();
+	foot_center.header.frame_id = imu_tf_yaw_in_name_;
+	foot_center.child_frame_id  = ground_center_tf_out_name_;
+	foot_center.transform.translation.x = ( foot_right.transform.translation.x + foot_left.transform.translation.x ) * 0.5;
+	foot_center.transform.translation.y = ( foot_right.transform.translation.y + foot_left.transform.translation.y ) * 0.5;
+	foot_center.transform.translation.z = ( foot_right.transform.translation.z + foot_left.transform.translation.z ) * 0.5;
+	foot_center.transform.rotation.x	= 0.0;
+	foot_center.transform.rotation.y	= 0.0;
+	foot_center.transform.rotation.z	= 0.0;
+	foot_center.transform.rotation.w	= 1.0;
+
+	tfBroadcaster.sendTransform(foot_center);
+	return foot_center;
+}
+
+geometry_msgs::TransformStamped FootGrounding::calcGroundpoint(geometry_msgs::TransformStamped center,geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped left_ground){
 
 	geometry_msgs::TransformStamped foots_diff;
 	foots_diff.header.stamp = ros::Time::now();
@@ -248,11 +257,11 @@ void FootGrounding::calcGroundpoint(geometry_msgs::TransformStamped right_ground
 	double gravityPointX = foots_diff.transform.translation.x * 0.5 * foots_diff_ratio;
 	double gravityPointY = foots_diff.transform.translation.y * 0.5 * foots_diff_ratio;
 	double gravityPointZ = foots_diff.transform.translation.z * 0.5 * foots_diff_ratio;
-
+	//右足接点から見た座標で計算
 	geometry_msgs::TransformStamped transformStamped;
 	transformStamped.header.stamp = ros::Time::now();
 	transformStamped.header.frame_id = right_ground.child_frame_id;//imu_tf_yaw_in_name_;
-	transformStamped.child_frame_id  = "grounding_point";
+	transformStamped.child_frame_id  = ground_point_tf_out_name_;
 	transformStamped.transform.translation.x = gravityPointX;
 	transformStamped.transform.translation.y = gravityPointY;
 	transformStamped.transform.translation.z = gravityPointZ;
@@ -260,6 +269,29 @@ void FootGrounding::calcGroundpoint(geometry_msgs::TransformStamped right_ground
 	transformStamped.transform.rotation.y		= 0.0;
 	transformStamped.transform.rotation.z		= 0.0;
 	transformStamped.transform.rotation.w		= 1.0;
-	tfBroadcaster.sendTransform(transformStamped);
+//	tfBroadcaster.sendTransform(transformStamped);
+	//足と足の間の中心からみた座標に変換
 
+
+
+
+	tfBroadcaster.sendTransform(transformStamped);
+	return transformStamped;
+}
+
+geometry_msgs::TransformStamped FootGrounding::calcImuGround(geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped ground){
+
+	geometry_msgs::TransformStamped imu_ground_tf =	right_ground;
+	imu_ground_tf.header.frame_id = imu_tf_yaw_in_name_;
+	imu_ground_tf.child_frame_id  = "imu_foot_ground";
+	imu_ground_tf.transform.translation.x = 0.0;
+	imu_ground_tf.transform.translation.y = 0.0;
+	imu_ground_tf.transform.translation.z = right_ground.transform.translation.z + ground.transform.translation.z;
+	imu_ground_tf.transform.rotation.x		= 0.0;
+	imu_ground_tf.transform.rotation.y		= 0.0;
+	imu_ground_tf.transform.rotation.z		= 0.0;
+	imu_ground_tf.transform.rotation.w		= 1.0;
+
+	tfBroadcaster.sendTransform(imu_ground_tf);
+	return imu_ground_tf;
 }
