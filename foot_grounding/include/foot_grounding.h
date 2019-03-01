@@ -99,7 +99,7 @@ private:
 	geometry_msgs::TransformStamped calcLeftGroundpoint();
 	geometry_msgs::TransformStamped calcFootsCenter();
 	geometry_msgs::TransformStamped calcGroundpoint(geometry_msgs::TransformStamped center,geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped left_ground);
-	geometry_msgs::TransformStamped calcImuGround(geometry_msgs::TransformStamped right_ground,geometry_msgs::TransformStamped ground);
+	geometry_msgs::TransformStamped calcImuGround(geometry_msgs::TransformStamped ground);
 };
 
 

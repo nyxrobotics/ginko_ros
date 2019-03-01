@@ -7,18 +7,18 @@
 
 servo_01_ofs: 0.06
 servo_02_ofs: 0.03
-servo_03_ofs: 0.06
-servo_04_ofs: 0.0
-servo_05_ofs: 0.08
+servo_03_ofs: 0.04
+servo_04_ofs: 0.01
+servo_05_ofs: 0.03
 servo_06_ofs: 0.03
 servo_07_ofs: 0.07
 
 servo_08_ofs: 0.07
-servo_09_ofs: 0.0
-servo_10_ofs: 0.1
+servo_09_ofs: -0.05
+servo_10_ofs: 0.09
 servo_11_ofs: 0.03
-servo_12_ofs: 0.1
-servo_13_ofs: 0.1
+servo_12_ofs: 0.09
+servo_13_ofs: 0.08
 servo_14_ofs: 0.03
 
 servo_15_ofs: 0.1
