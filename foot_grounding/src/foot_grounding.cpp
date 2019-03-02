@@ -66,13 +66,9 @@ int FootGrounding::groundingMainLoop(){
 
 
 	tf2::Quaternion r_quat(r_pose_data_.pose.pose.orientation.x, r_pose_data_.pose.pose.orientation.y, r_pose_data_.pose.pose.orientation.z, r_pose_data_.pose.pose.orientation.w);
-	geometry_msgs::Vector3 r_euler;
-	tf2::Matrix3x3(r_quat).getEulerYPR(r_euler.z, r_euler.y, r_euler.x);
 	tf2::Quaternion l_quat(l_pose_data_.pose.pose.orientation.x, l_pose_data_.pose.pose.orientation.y, l_pose_data_.pose.pose.orientation.z, l_pose_data_.pose.pose.orientation.w);
-	geometry_msgs::Vector3 l_euler;
-	tf2::Matrix3x3(l_quat).getEulerYPR(l_euler.z, l_euler.y, l_euler.x);
-	static geometry_msgs::Vector3 r_euler_prev;
-	static geometry_msgs::Vector3 l_euler_prev;
+	static tf2::Quaternion r_quat_prev;
+	static tf2::Quaternion l_quat_prev;
 	static int init_flag = 0;
 	if(init_flag < 1){
 		//最初の2回は速度・加速度が計算できないので何もしない
@@ -85,16 +81,22 @@ int FootGrounding::groundingMainLoop(){
 		r_pose_data_.twist.twist.linear.x =  (r_pose_data_.pose.pose.position.x - r_pose_prev_.pose.pose.position.x)/dt;
 		r_pose_data_.twist.twist.linear.y =  (r_pose_data_.pose.pose.position.y - r_pose_prev_.pose.pose.position.y)/dt;
 		r_pose_data_.twist.twist.linear.z =  (r_pose_data_.pose.pose.position.z - r_pose_prev_.pose.pose.position.z)/dt;
-		r_pose_data_.twist.twist.angular.x = (r_euler.x - r_euler_prev.x)/dt;
-		r_pose_data_.twist.twist.angular.y = (r_euler.y - r_euler_prev.y)/dt;
-		r_pose_data_.twist.twist.angular.z = (r_euler.z - r_euler_prev.z)/dt;
+		tf2::Quaternion r_quat_diff = r_quat * r_quat_prev.inverse();
+		geometry_msgs::Vector3 r_euler_diff;
+		tf2::Matrix3x3(r_quat_diff).getEulerYPR(r_euler_diff.z, r_euler_diff.y, r_euler_diff.x);
+		r_pose_data_.twist.twist.angular.x = r_euler_diff.x/dt;
+		r_pose_data_.twist.twist.angular.y = r_euler_diff.y/dt;
+		r_pose_data_.twist.twist.angular.z = r_euler_diff.z/dt;
 
 		l_pose_data_.twist.twist.linear.x =  (l_pose_data_.pose.pose.position.x - l_pose_prev_.pose.pose.position.x)/dt;
 		l_pose_data_.twist.twist.linear.y =  (l_pose_data_.pose.pose.position.y - l_pose_prev_.pose.pose.position.y)/dt;
 		l_pose_data_.twist.twist.linear.z =  (l_pose_data_.pose.pose.position.z - l_pose_prev_.pose.pose.position.z)/dt;
-		l_pose_data_.twist.twist.angular.x = (l_euler.x - l_euler_prev.x)/dt;
-		l_pose_data_.twist.twist.angular.y = (l_euler.y - l_euler_prev.y)/dt;
-		l_pose_data_.twist.twist.angular.z = (l_euler.z - l_euler_prev.z)/dt;
+		tf2::Quaternion l_quat_diff = l_quat * l_quat_prev.inverse();
+		geometry_msgs::Vector3 l_euler_diff;
+		tf2::Matrix3x3(l_quat_diff).getEulerYPR(l_euler_diff.z, l_euler_diff.y, l_euler_diff.x);
+		l_pose_data_.twist.twist.angular.x = l_euler_diff.x/dt;
+		l_pose_data_.twist.twist.angular.y = l_euler_diff.y/dt;
+		l_pose_data_.twist.twist.angular.z = l_euler_diff.z/dt;
 
 		r_ratio_pub_.publish(r_ratio_data_);
 		l_ratio_pub_.publish(l_ratio_data_);
@@ -105,15 +107,13 @@ int FootGrounding::groundingMainLoop(){
 		l_pose_pub_.publish(l_pose_data_);
 	}
 
-
-
 	//一回前の値を更新
 	imu_height_prev_ = imu_height_data_;
 	imu_height_vel_prev_ = imu_height_vel_data_;
 	r_pose_prev_ = r_pose_data_;
 	l_pose_prev_ = l_pose_data_;
-	r_euler_prev = r_euler;
-	l_euler_prev = l_euler;
+	r_quat_prev = r_quat;
+	l_quat_prev = l_quat;
 	time_last = time_now;
 
 	return 0;
