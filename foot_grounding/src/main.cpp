@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 	while (ros::ok()) {
 		foot_grounding.groundingMainLoop();
 		ros::spinOnce();
-		rate_.sleep();
+//		rate_.sleep();
 	}
 //	ros::spin();
 	ros::shutdown();

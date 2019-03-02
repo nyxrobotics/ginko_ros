@@ -25,13 +25,13 @@ servo_15_ofs: 0.1
 
 servo_16_ofs: 0.05
 servo_17_ofs: 0.06
-servo_18_ofs: 0.16
+servo_18_ofs: 0.05
 servo_19_ofs: 0.05
 servo_20_ofs: 0.03
 
 servo_21_ofs: 0.0
 servo_22_ofs: 0.05
-servo_23_ofs: -0.07
+servo_23_ofs: 0.08
 servo_24_ofs: 0.0
 servo_25_ofs: 0.0
 
