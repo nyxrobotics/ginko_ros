@@ -2,15 +2,18 @@
 
 //FootGrounding here
 FootGrounding::FootGrounding(ros::NodeHandle main_nh){
-
+	readParams(main_nh);
+//	initSubscriber(main_nh);
+	initPublisher(main_nh);
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
 	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(2.0), false));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
-	usleep(1000000);
-	readParams(main_nh);
-//	initSubscriber(main_nh);
-	initPublisher(main_nh);
+	sleep(5);//TFが安定するまで待つ(ないと落ちる。２秒だとたまに更新周期が下がる。大変良くわからない)
+	geometry_msgs::TransformStamped transformStamped;
+	transformStamped = tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(1.0));
+	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(1.0));
+
 }
 
 FootGrounding::~FootGrounding() {
@@ -42,7 +45,7 @@ void FootGrounding::initPublisher(ros::NodeHandle node_handle_){
 int FootGrounding::groundingMainLoop(){
 	//新しいデータが来るまで待機
 	geometry_msgs::TransformStamped transformStamped;
-	transformStamped = tfBuffer_ptr->lookupTransform("leg_l_toe_link0", "leg_r_toe_link0", ros::Time::now(), ros::Duration(0.1));
+	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(0.2));
 
 	geometry_msgs::TransformStamped transformStampedRight;
 	geometry_msgs::TransformStamped transformStampedLight;
@@ -63,7 +66,6 @@ int FootGrounding::groundingMainLoop(){
 	static std_msgs::Float32 imu_height_vel_prev_ = imu_height_vel_data_;
 	static nav_msgs::Odometry r_pose_prev_;
 	static nav_msgs::Odometry l_pose_prev_;
-
 
 	tf2::Quaternion r_quat(r_pose_data_.pose.pose.orientation.x, r_pose_data_.pose.pose.orientation.y, r_pose_data_.pose.pose.orientation.z, r_pose_data_.pose.pose.orientation.w);
 	tf2::Quaternion l_quat(l_pose_data_.pose.pose.orientation.x, l_pose_data_.pose.pose.orientation.y, l_pose_data_.pose.pose.orientation.z, l_pose_data_.pose.pose.orientation.w);

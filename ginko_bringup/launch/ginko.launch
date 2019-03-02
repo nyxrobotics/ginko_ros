@@ -124,6 +124,12 @@
 		
 	</group>
 	
+	<!-- Odometry nodes -->
+	<group ns="odom">
+	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="false">
+	    </node>
+	</group>
+	
 	<!-- laser assembler(move lidar -> create pointcloud) -->
 <!-- 	<group ns="laser_assembler"> -->
 <!-- 		<group ns="right"> -->
