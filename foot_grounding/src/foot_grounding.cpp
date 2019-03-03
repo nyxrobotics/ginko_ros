@@ -337,11 +337,21 @@ geometry_msgs::TransformStamped FootGrounding::calcGroundpoint(geometry_msgs::Tr
 	//以下パブリッシュ用データ代入
 	r_ratio_data_.data = 0.5 + foots_diff_ratio;
 	l_ratio_data_.data = 0.5 - foots_diff_ratio;
-	ground_pose_data_.header.frame_id = imu_tf_yaw_in_name_;
+	//接地点はimu_tf_in_name_を親にして生やす
+	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(imu_tf_in_name_, imu_tf_yaw_in_name_, ros::Time(0));
+	tf2::Quaternion quaternion_diff;
+	quaternion_diff.setX(tf_diff.transform.rotation.x);
+	quaternion_diff.setY(tf_diff.transform.rotation.y);
+	quaternion_diff.setZ(tf_diff.transform.rotation.z);
+	quaternion_diff.setW(tf_diff.transform.rotation.w);
+	tf2::Matrix3x3 rotation_diff(quaternion_diff);
+	tf2::Vector3 vector_base(gravityPointX,gravityPointY,gravityPointZ);
+	tf2::Vector3 vector_rotate = rotation_diff * vector_base;
+	ground_pose_data_.header.frame_id = imu_tf_in_name_;
 	ground_pose_data_.header.stamp = ros::Time::now();
-	ground_pose_data_.pose.position.x = gravityPointX;
-	ground_pose_data_.pose.position.y = gravityPointY;
-	ground_pose_data_.pose.position.z = gravityPointZ;
+	ground_pose_data_.pose.position.x = vector_rotate.getX();
+	ground_pose_data_.pose.position.y = vector_rotate.getY();
+	ground_pose_data_.pose.position.z = vector_rotate.getZ();
 	ground_pose_data_.pose.orientation.x = 0.;
 	ground_pose_data_.pose.orientation.y = 0.;
 	ground_pose_data_.pose.orientation.z = 0.;
