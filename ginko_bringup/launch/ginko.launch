@@ -70,7 +70,7 @@
 		        <remap from="imu/data" to="madgwick"/>
 		        <param name="use_mag" value="false"/>
    		        <param name="use_mag" value="false"/>
-		        <!-- <param name="publish_tf" value="false"/> -->
+<!-- 		        <param name="publish_tf" value="false"/> -->
 		        <param name="fixed_frame" value="body_imu_reverse"/>
 		        <param name="reverse_tf" value="true"/>
 		    </node>
@@ -126,7 +126,7 @@
 	
 	<!-- Odometry nodes -->
 	<group ns="odom">
-	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="false">
+	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true">
 	    </node>
 	</group>
 	

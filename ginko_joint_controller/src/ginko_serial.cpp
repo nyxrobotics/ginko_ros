@@ -17,6 +17,7 @@ GinkoSerial::GinkoSerial() {
 		std::string portname = ginko_params_._com_names[i];
 //		ROS_INFO("%s",portname.c_str());
 		portOpen(i, portname, ginko_params_._baudrate);
+		ginko_timer_.msleepSpan(250);//不要なsleep
 //		portOpen(i, ginko_params_._com_names[i], ginko_params_._baudrate);
 //		ginko_timer_.msleepSpan(250);
 	}
