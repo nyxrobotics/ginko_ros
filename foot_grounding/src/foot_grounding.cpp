@@ -276,6 +276,44 @@ geometry_msgs::TransformStamped FootGrounding::calcFootsCenter(){
 
 	tfBroadcaster.sendTransform(foot_center);
 	//以下パブリッシュ用データ代入
+	//imu_tf_in_name_を親にして生やす
+	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(imu_tf_in_name_, imu_tf_yaw_in_name_, ros::Time(0));
+	tf2::Quaternion quaternion_diff;
+	quaternion_diff.setX(tf_diff.transform.rotation.x);
+	quaternion_diff.setY(tf_diff.transform.rotation.y);
+	quaternion_diff.setZ(tf_diff.transform.rotation.z);
+	quaternion_diff.setW(tf_diff.transform.rotation.w);
+	tf2::Matrix3x3 rotation_diff(quaternion_diff);
+	tf2::Vector3 r_vector_base(foot_right.transform.translation.x,foot_right.transform.translation.y,foot_right.transform.translation.z);
+	tf2::Vector3 r_vector_rotate = rotation_diff * r_vector_base;
+	tf2::Quaternion r_quaternion_base(foot_right.transform.rotation.x,foot_right.transform.rotation.y,foot_right.transform.rotation.z,foot_right.transform.rotation.w);
+	tf2::Quaternion r_quaternion_rotate = quaternion_diff * r_quaternion_base;
+	r_pose_data_.header = foot_right.header;
+	r_pose_data_.header.frame_id = imu_tf_in_name_;
+	r_pose_data_.child_frame_id = foot_right.child_frame_id;
+	r_pose_data_.pose.pose.position.x = r_vector_rotate.getX();
+	r_pose_data_.pose.pose.position.y = r_vector_rotate.getY();
+	r_pose_data_.pose.pose.position.z = r_vector_rotate.getZ();
+	r_pose_data_.pose.pose.orientation.x = r_quaternion_rotate.getX();
+	r_pose_data_.pose.pose.orientation.y = r_quaternion_rotate.getY();
+	r_pose_data_.pose.pose.orientation.z = r_quaternion_rotate.getZ();
+	r_pose_data_.pose.pose.orientation.w = r_quaternion_rotate.getW();
+
+	tf2::Vector3 l_vector_base(foot_left.transform.translation.x,foot_left.transform.translation.y,foot_left.transform.translation.z);
+	tf2::Vector3 l_vector_rotate = rotation_diff * l_vector_base;
+	tf2::Quaternion l_quaternion_base(foot_left.transform.rotation.x,foot_left.transform.rotation.y,foot_left.transform.rotation.z,foot_left.transform.rotation.w);
+	tf2::Quaternion l_quaternion_rotate = quaternion_diff * l_quaternion_base;
+	l_pose_data_.header = foot_left.header;
+	l_pose_data_.header.frame_id = imu_tf_in_name_;
+	l_pose_data_.child_frame_id = foot_left.child_frame_id;
+	l_pose_data_.pose.pose.position.x = l_vector_rotate.getX();
+	l_pose_data_.pose.pose.position.y = l_vector_rotate.getY();
+	l_pose_data_.pose.pose.position.z = l_vector_rotate.getZ();
+	l_pose_data_.pose.pose.orientation.x = l_quaternion_rotate.getX();
+	l_pose_data_.pose.pose.orientation.y = l_quaternion_rotate.getY();
+	l_pose_data_.pose.pose.orientation.z = l_quaternion_rotate.getZ();
+	l_pose_data_.pose.pose.orientation.w = l_quaternion_rotate.getW();
+	/*
 	r_pose_data_.header = foot_right.header;
 	r_pose_data_.child_frame_id = foot_right.child_frame_id;
 	r_pose_data_.pose.pose.position.x = foot_right.transform.translation.x;
@@ -295,6 +333,7 @@ geometry_msgs::TransformStamped FootGrounding::calcFootsCenter(){
 	l_pose_data_.pose.pose.orientation.y = foot_left.transform.rotation.y;
 	l_pose_data_.pose.pose.orientation.z = foot_left.transform.rotation.z;
 	l_pose_data_.pose.pose.orientation.w = foot_left.transform.rotation.w;
+	*/
 
 	return foot_center;
 }
@@ -356,6 +395,10 @@ geometry_msgs::TransformStamped FootGrounding::calcGroundpoint(geometry_msgs::Tr
 	ground_pose_data_.pose.orientation.y = 0.;
 	ground_pose_data_.pose.orientation.z = 0.;
 	ground_pose_data_.pose.orientation.w = 1.;
+//	ground_pose_data_.header.frame_id = imu_tf_yaw_in_name_;
+//	ground_pose_data_.pose.position.x = gravityPointX;
+//	ground_pose_data_.pose.position.y = gravityPointY;
+//	ground_pose_data_.pose.position.z = gravityPointZ;
 	return transformStamped;
 }
 
