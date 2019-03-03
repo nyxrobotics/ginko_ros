@@ -62,8 +62,8 @@ int GinkoOdometry::odomLoop(){
 	static int init_flag = 0;
 	tf2::Quaternion quaternion;
 	static tf2::Quaternion quaternion_prev;
-//	tf2::Vector3 orientation_pose_offset;
-//	static tf2::Vector3 orientation_pose_offset_prev;
+	tf2::Vector3 ground_vector_rotate(ground_pose_data_.pose.position.x, ground_pose_data_.pose.position.y, ground_pose_data_.pose.position.z);
+	static tf2::Vector3 ground_vector_rotate_prev;
 
 	//高さ・向きを反映
 	odom_data_.header.frame_id = imu_data.header.frame_id;
@@ -79,7 +79,7 @@ int GinkoOdometry::odomLoop(){
 
 	tf2::Vector3 height_vector(0.,0.,-imu_height_data_.data);
 	tf2::Matrix3x3 rotation_matrix(quaternion_inv);
-	tf2::Matrix3x3 rotation_matrix_inv(quaternion);
+//	tf2::Matrix3x3 rotation_matrix_inv(quaternion);
 	tf2::Vector3 height_vector_rotate = rotation_matrix * height_vector;
 	odom_data_.pose.pose.position.x = height_vector_rotate.getX();
 	odom_data_.pose.pose.position.y = height_vector_rotate.getY();
@@ -103,20 +103,21 @@ int GinkoOdometry::odomLoop(){
 		odom_y = 0.;
 	}else{
 		//姿勢変化による前後・左右移動量分
-		tf2::Quaternion quaternion_diff = quaternion * quaternion_prev.inverse();
-		tf2::Matrix3x3 rotation_diff(quaternion_diff);
-		tf2::Vector3 ground_vector_rotate(ground_pose_data_.pose.position.x, ground_pose_data_.pose.position.y, ground_pose_data_.pose.position.z);
-		tf2::Vector3 ground_vector = rotation_matrix_inv * ground_vector_rotate;
-		tf2::Vector3 ground_vector_diff = (rotation_diff * ground_vector) - ground_vector;
+		/*
+		tf2::Matrix3x3 rotation_prev(quaternion_prev.inverse());
+		tf2::Vector3 ground_vector_prev =   rotation_prev.inverse() * ground_vector_rotate;
+		tf2::Vector3 ground_vector 		= rotation_matrix.inverse() * ground_vector_rotate;
+		ROS_FATAL("odom xyz vector:%f,%f,%f",ground_vector.getX(),ground_vector.getY(),ground_vector.getZ());
+		tf2::Vector3 ground_vector_diff = ground_vector - ground_vector_prev;
+		ROS_FATAL("odom xyz vector diff:%f,%f,%f",ground_vector_diff.getX(),ground_vector_diff.getY(),ground_vector_diff.getZ());
 		x_diff = ground_vector_diff.getX();
 		y_diff = ground_vector_diff.getY();
 		z_diff = ground_vector_diff.getZ();
-//		ROS_FATAL("odom xyz_Diff:%f,%f,%f",x_diff,y_diff,z_diff);
 		tf2::Vector3 odom_diff_vector(x_diff,y_diff,z_diff);
-		tf2::Vector3 odom_diff_vector_rotate = rotation_matrix * odom_diff_vector_rotate;
 		odom_x += odom_diff_vector.getX();
 		odom_y += odom_diff_vector.getY();
-//		ROS_FATAL("odom pose,speed(angle):%f,%f,%f,%f",odom_x,odom_y,odom_diff_vector.getX(),odom_diff_vector.getY());
+		//ROS_FATAL("odom pose,speed(angle):%f,%f,%f,%f",odom_x,odom_y,odom_diff_vector.getX(),odom_diff_vector.getY());
+		 */
 
 	}
 
@@ -127,6 +128,7 @@ int GinkoOdometry::odomLoop(){
 	odom_data_.pose.pose.position.z += odom_vector_rotate.getZ();
 	odomTfPublish(odom_data_);
 	quaternion_prev = quaternion;
+	ground_vector_rotate_prev = ground_vector_rotate;
 	return 0;
 }
 void GinkoOdometry::odomTfPublish(const nav_msgs::Odometry odom){
