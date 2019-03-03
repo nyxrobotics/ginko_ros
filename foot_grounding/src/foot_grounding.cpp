@@ -40,6 +40,7 @@ void FootGrounding::initPublisher(ros::NodeHandle node_handle_){
 	l_pose_pub_	= node_handle_.advertise<nav_msgs::Odometry>("l_pose_out", 1);
 	r_ratio_pub_= node_handle_.advertise<std_msgs::Float32>("r_ratio_out", 1);
 	l_ratio_pub_= node_handle_.advertise<std_msgs::Float32>("l_ratio_out", 1);
+	ground_pose_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("ground_pose_out", 1);
 }
 
 int FootGrounding::groundingMainLoop(){
@@ -108,6 +109,7 @@ int FootGrounding::groundingMainLoop(){
 		imu_height_acc_pub_.publish(imu_height_acc_data_);
 		r_pose_pub_.publish(r_pose_data_);
 		l_pose_pub_.publish(l_pose_data_);
+		ground_pose_pub_.publish(ground_pose_data_);
 	}
 
 	//一回前の値を更新
@@ -335,6 +337,15 @@ geometry_msgs::TransformStamped FootGrounding::calcGroundpoint(geometry_msgs::Tr
 	//以下パブリッシュ用データ代入
 	r_ratio_data_.data = 0.5 + foots_diff_ratio;
 	l_ratio_data_.data = 0.5 - foots_diff_ratio;
+	ground_pose_data_.header.frame_id = imu_tf_yaw_in_name_;
+	ground_pose_data_.header.stamp = ros::Time::now();
+	ground_pose_data_.pose.position.x = gravityPointX;
+	ground_pose_data_.pose.position.y = gravityPointY;
+	ground_pose_data_.pose.position.z = gravityPointZ;
+	ground_pose_data_.pose.orientation.x = 0.;
+	ground_pose_data_.pose.orientation.y = 0.;
+	ground_pose_data_.pose.orientation.z = 0.;
+	ground_pose_data_.pose.orientation.w = 1.;
 	return transformStamped;
 }
 

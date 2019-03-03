@@ -22,6 +22,7 @@
 #include <boost/bind.hpp>
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <nav_msgs/Odometry.h>
+#include "geometry_msgs/PoseStamped.h"
 
 class FootGrounding {
 private:
@@ -45,6 +46,7 @@ private:
 	ros::Publisher l_pose_pub_;	//MPU6500中央から見た足先位置・速度
 	ros::Publisher r_ratio_pub_;//どちらの足の動きを基準に動いているかのパラメータ
 	ros::Publisher l_ratio_pub_;//合計は基本１、一定以上斜めになると両方0になる
+	ros::Publisher ground_pose_pub_;//ジャイロ中心、z軸床鉛直、顔前方x軸とする座標から見た接地点
 
 //	nav_msgs::Odometry imu_ground_pose_data_;//位置と速度を両方出すためだけにodom型を使う
 	std_msgs::Float32  imu_height_data_;
@@ -54,6 +56,7 @@ private:
 	nav_msgs::Odometry l_pose_data_;
 	std_msgs::Float32  r_ratio_data_;
 	std_msgs::Float32  l_ratio_data_;
+	geometry_msgs::PoseStamped ground_pose_data_;
 
 	//tf2_ros::Buffer tfBuffer(ros::Duration(1.0), false);
 	//tf2_ros::TransformListener tfListener(tfBuffer);
