@@ -154,6 +154,52 @@ geometry_msgs::TransformStamped FootGrounding::calcRightGroundpoint(){
 	}else if(gravityPointY < 0){
 		gravityPointY = 0;
 	}
+	//z軸回転について、ジャイロの回転に足裏の回転が一致する動きの時は足裏中心に寄せる
+	ros::Time time_now  = ros::Time::now();
+	static ros::Time time_last;
+	static int init_flag = 0;
+	geometry_msgs::TransformStamped imu_to_center_tf = tfBuffer_ptr->lookupTransform(imu_tf_reverse_in_name_,r_toe_center_tf_,ros::Time(0));
+	static geometry_msgs::TransformStamped imu_to_center_tf_prev;
+	if(init_flag < 1){
+		init_flag++;
+	}else{
+		tf2::Quaternion quaternion;
+		quaternion.setX(imu_to_center_tf.transform.rotation.x);
+		quaternion.setY(imu_to_center_tf.transform.rotation.y);
+		quaternion.setZ(imu_to_center_tf.transform.rotation.z);
+		quaternion.setW(imu_to_center_tf.transform.rotation.w);
+		tf2::Quaternion quaternion_prev;
+		quaternion_prev.setX(imu_to_center_tf_prev.transform.rotation.x);
+		quaternion_prev.setY(imu_to_center_tf_prev.transform.rotation.y);
+		quaternion_prev.setZ(imu_to_center_tf_prev.transform.rotation.z);
+		quaternion_prev.setW(imu_to_center_tf_prev.transform.rotation.w);
+		tf2::Quaternion quaternion_diff = quaternion * quaternion_prev.inverse();
+		geometry_msgs::Vector3 euler;
+		tf2::Matrix3x3(quaternion_diff).getEulerYPR(euler.z, euler.y, euler.x);
+		ros::Duration ros_duration  =  time_now -  time_last;
+		double dt = ros_duration.toSec();
+		double euler_z_vel = euler.z/dt;
+		double edge_ratio = fabs(z2_z3_diff / foot_center_edg_thresh_);
+		double euler_ratio = fabs(euler_z_vel / foot_center_rotation_thresh_);
+		if(edge_ratio<1.0){
+			geometry_msgs::TransformStamped center_tf = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[2],r_toe_center_tf_,ros::Time(0));
+			if(edge_ratio>1.0){
+				edge_ratio = 1.0;
+			}
+			if(euler_ratio>1.0){
+				euler_ratio = 1.0;
+			}
+			double center_ratio = (1.0 - edge_ratio) * (1.0 - euler_ratio) * foot_center_multiple_;
+			if(center_ratio>1.0){
+				center_ratio = 1.0;
+			}
+			gravityPointX = gravityPointX * (1. - center_ratio) + (0.5 * toe_length)*(center_ratio);
+			gravityPointY = gravityPointY * (1. - center_ratio) + (0.5 * toe_width )*(center_ratio);
+		}
+	}
+	imu_to_center_tf_prev = imu_to_center_tf;
+	time_last = time_now;
+
 
 	geometry_msgs::TransformStamped transformStamped;
 	transformStamped.header.stamp = ros::Time::now();
@@ -221,6 +267,65 @@ geometry_msgs::TransformStamped FootGrounding::calcLeftGroundpoint(){
 	}else if(gravityPointY < 0){
 		gravityPointY = 0;
 	}
+	//z軸回転について、ジャイロの回転に足裏の回転が一致する動きの時は足裏中心に寄せる
+	ros::Time time_now  = ros::Time::now();
+	static ros::Time time_last;
+	static int init_flag = 0;
+	geometry_msgs::TransformStamped imu_to_center_tf = tfBuffer_ptr->lookupTransform(imu_tf_reverse_in_name_,l_toe_center_tf_,ros::Time(0));
+	static geometry_msgs::TransformStamped imu_to_center_tf_prev;
+	if(init_flag < 1){
+		init_flag++;
+	}else{
+		tf2::Quaternion quaternion;
+		quaternion.setX(imu_to_center_tf.transform.rotation.x);
+		quaternion.setY(imu_to_center_tf.transform.rotation.y);
+		quaternion.setZ(imu_to_center_tf.transform.rotation.z);
+		quaternion.setW(imu_to_center_tf.transform.rotation.w);
+		tf2::Quaternion quaternion_prev;
+		quaternion_prev.setX(imu_to_center_tf_prev.transform.rotation.x);
+		quaternion_prev.setY(imu_to_center_tf_prev.transform.rotation.y);
+		quaternion_prev.setZ(imu_to_center_tf_prev.transform.rotation.z);
+		quaternion_prev.setW(imu_to_center_tf_prev.transform.rotation.w);
+		tf2::Quaternion quaternion_diff = quaternion * quaternion_prev.inverse();
+		geometry_msgs::Vector3 euler;
+		tf2::Matrix3x3(quaternion_diff).getEulerYPR(euler.z, euler.y, euler.x);
+		ros::Duration ros_duration  =  time_now -  time_last;
+		double dt = ros_duration.toSec();
+		double euler_z_vel = euler.z/dt;
+		double edge_ratio = fabs(z2_z3_diff / foot_center_edg_thresh_);
+		double euler_ratio = fabs(euler_z_vel / foot_center_rotation_thresh_);
+		if(edge_ratio<1.0){
+			geometry_msgs::TransformStamped center_tf = tfBuffer_ptr->lookupTransform(l_toe_tf_in_[2],l_toe_center_tf_,ros::Time(0));
+			if(edge_ratio>1.0){
+				edge_ratio = 1.0;
+			}
+			if(edge_ratio < foot_center_edg_min_){
+				edge_ratio = 0.;
+			}else{
+				edge_ratio -= foot_center_edg_min_;
+				edge_ratio *= (1.0/(1.0-foot_center_edg_min_));
+			}
+			if(euler_ratio>1.0){
+				euler_ratio = 1.0;
+			}
+			if(euler_ratio < foot_center_rotation_min_){
+				euler_ratio = 0.;
+			}else{
+				euler_ratio -= foot_center_rotation_min_;
+				euler_ratio *= (1.0/(1.0-foot_center_rotation_min_));
+			}
+			double center_ratio = (1.0 - edge_ratio) * (1.0 - euler_ratio) * foot_center_multiple_;
+			if(center_ratio>1.0){
+				center_ratio = 1.0;
+			}
+			gravityPointX = gravityPointX * (1. - center_ratio) + (0.5 * toe_length)*(center_ratio);
+			gravityPointY = gravityPointY * (1. - center_ratio) + (0.5 * toe_width )*(center_ratio);
+		}
+	}
+	imu_to_center_tf_prev = imu_to_center_tf;
+	time_last = time_now;
+
+
 
 	geometry_msgs::TransformStamped transformStamped;
 	transformStamped.header.stamp = ros::Time::now();

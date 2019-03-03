@@ -77,8 +77,13 @@ private:
 	std::string ground_l_tf_out_name_	= "ground_foot_l_link";		//左足裏の接地点
 	std::string ground_point_tf_out_name_	= "ground_point_link";	//最終的な接地点
 
-	double footup_thresh_max_  = 0.003;	//どちらかの足が上がっている判定のスレッショルド。maxまではground_point_linkが線形で遷移
-	double toe_edg_thresh_max_ = 0.005;	//片方の足において足先エッジが上がっている判定のスレッショルド。maxまではground_point_linkが線形で遷移
+	double footup_thresh_max_			= 0.003;	//どちらかの足が上がっている判定のスレッショルド。maxまではground_point_linkが線形で遷移
+	double toe_edg_thresh_max_			= 0.005;	//片方の足において足先エッジが上がっている判定のスレッショルド。maxまではground_point_linkが線形で遷移
+	double foot_center_edg_thresh_		= 0.02;
+	double foot_center_edg_min_			= 0.01;
+	double foot_center_rotation_thresh_	= 0.8;
+	double foot_center_rotation_min_	= 0.4;
+	double foot_center_multiple_ = 1.;
 
 	bool publish_debug_topic = true;
 	std::string r_toe_center_tf_ = "leg_r_toe_center";
