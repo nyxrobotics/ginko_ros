@@ -1,14 +1,12 @@
 <!-- -*- mode: XML -*- -->
 <launch>
-
 	<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
 	<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
 	<!-- Publish Default tf2 of imu callibrated -->
 <!-- 	<arg name="imu_calibrated_tf"   default="imu_calib_link"/> -->
 <!-- 	<node name="imu_tf2_ofs" pkg="tf2_ros" type="static_transform_publisher" args="0.2 0 0 0 0 0 1 body_imu_attached_link $(arg imu_calibrated_tf)" /> -->
 
-
-
+	
 	<group ns="servo_motor">
 	    <!-- servo controller -->
 		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
@@ -128,52 +126,71 @@
 	<group ns="odom">
 	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true">
 	    </node>
+   	    <node name="odometry" pkg="ginko_odom" type="ginko_odom" required="true">
+			<remap from="~imu_height_in" to="/odom/odom_foot/imu_height_out"/>
+			<remap from="~imu_height_vel_in" to="/odom/odom_foot/imu_height_vel_out"/>
+			<remap from="~imu_height_acc_in" to="/odom/odom_foot/imu_height_acc_out"/>
+			<remap from="~r_pose_in" to="/odom/odom_foot/r_pose_out"/>
+			<remap from="~l_pose_in" to="/odom/odom_foot/l_pose_out"/>
+			<remap from="~r_ratio_in" to="/odom/odom_foot/r_ratio_out"/>
+			<remap from="~l_ratio_in" to="/odom/odom_foot/l_ratio_out"/>
+			<remap from="~imu_in" to="/sensor/imu/madgwick"/>
+			<remap from="~ground_pose_in" to="/odom/odom_foot/ground_pose_out"/>
+	    </node>
+	    
 	</group>
 	
+	
 	<!-- laser assembler(move lidar -> create pointcloud) -->
-<!-- 	<group ns="laser_assembler"> -->
-<!-- 		<group ns="right"> -->
-<!-- 			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
-<!-- 				<remap from="scan" to="/sensor/urg/right/scan"/> -->
-<!-- 				<param name="max_scans" type="int" value="400" /> -->
+	<group ns="laser_assembler">
+		<group ns="right">
+			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/right/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="odom" />
 <!-- 				<param name="fixed_frame" type="string" value="body_imu_reverse" /> -->
-<!-- 			</node> -->
-<!-- 			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
-<!-- 				<remap from="cloud" to="right_cloud"/> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
-<!-- 		<group ns="left"> -->
-<!-- 			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
-<!-- 				<remap from="scan" to="/sensor/urg/left/scan"/> -->
-<!-- 				<param name="max_scans" type="int" value="400" /> -->
+			</node>
+			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="right_cloud"/>
+			</node>
+		</group>
+		<group ns="left">
+			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/left/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="odom" />
 <!-- 				<param name="fixed_frame" type="string" value="body_imu_reverse" /> -->
-<!-- 			</node> -->
-<!-- 			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
-<!-- 				<remap from="cloud" to="left_cloud"/> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
-<!-- 	</group> -->
+			</node>
+			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="left_cloud"/>
+			</node>
+		</group>
+	</group>
 	
 	<!-- voxelgrid -->
-<!-- 	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/> -->
-<!-- 	<group ns="voxelgrid"> -->
-<!-- 		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" /> -->
-<!-- 		<group ns="right"> -->
-<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
-<!-- 			    <remap from="~input" to="/laser_assembler/right/right_cloud"/> -->
-<!-- 			    <remap from="~output" to="right_mark"/> -->
-<!-- 				<param name="~resolution" value="0.02" /> -->
-<!-- 				<param name="~publish_marker" value="false" /> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
+	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/>
+	<group ns="voxelgrid">
+		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" />
+		<group ns="right">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/right/right_cloud"/>
+			    <remap from="~output" to="right_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
 	
-<!-- 		<group ns="left"> -->
-<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
-<!-- 			    <remap from="~input" to="/laser_assembler/left/left_cloud"/> -->
-<!-- 			    <remap from="~output" to="left_mark"/> -->
-<!-- 				<param name="~resolution" value="0.02" /> -->
-<!-- 				<param name="~publish_marker" value="false" /> -->
-<!-- 			</node> -->
-<!-- 		</group> -->
-<!-- 	</group> -->
+		<group ns="left">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/left/left_cloud"/>
+			    <remap from="~output" to="left_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
+	</group>
+	
+
+	
+	
 </launch>
