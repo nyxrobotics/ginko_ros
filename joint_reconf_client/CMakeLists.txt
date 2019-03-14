@@ -12,6 +12,17 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   nodelet
   dynamic_reconfigure #for rqt_reconfigure
+  tf2
+  tf2_bullet
+  tf2_eigen
+  tf2_geometry_msgs
+  tf2_kdl
+  tf2_msgs
+  tf2_py
+  tf2_ros
+  tf2_sensor_msgs
+  tf2_tools
+  tf
 )
 # let cmake find OpenMP and set some variables(https://stackoverflow.com/questions/17633513/cmake-cannot-find-openmp)
 OPTION (USE_OpenMP "Use OpenMP" ON)

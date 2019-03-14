@@ -13,6 +13,7 @@ GinkoOffsets::GinkoOffsets(){
 //	initOffsetsReconfigure();
 //	initPublisher();
 	initSubscriber();
+	initTF2();
 	ROS_INFO("OffsetsReconfigureClient : Init OK!");
 
 }
@@ -64,33 +65,21 @@ void GinkoOffsets::calcJointStatesMedian() {
                         median_buffer[j] = v;
                 }
         }
-//        if(servo_index == 2){
-//			ROS_INFO("median(servo-2): %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f",
-//					median_buffer[0],median_buffer[1],median_buffer[2],median_buffer[3],median_buffer[4],
-//					median_buffer[5],median_buffer[6],median_buffer[7],median_buffer[8],median_buffer[9],
-//					median_buffer[10],median_buffer[11],median_buffer[12],median_buffer[13],median_buffer[14],
-//					median_buffer[15],median_buffer[16],median_buffer[17],median_buffer[18],median_buffer[19]);
-//        }
         int middle = JOINT_BUFFER_NUM / 2;
         joints_median[servo_index] = median_buffer[middle];
         servo_states_[servo_index] = joints_median[servo_index];
-//        ROS_INFO("result: %f %f",joints_median[index],servo_states_[index]);
 	}
 }
 
 void GinkoOffsets::calcJointOffsets() {
+
 	calcJointStatesMedian();
 	double joints_median[SERVO_NUM] {};
 	for (int index = 0; index < SERVO_NUM; index++){
-		servo_offsets_calib_[index] = 0.;
+		if(index != 6 && index!= 13){
+			servo_offsets_calib_[index] = 0.;
+		}
 	}
-//	ROS_INFO("median: %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f",
-//			servo_states_[0],servo_states_[1],servo_states_[2],servo_states_[3],servo_states_[4],
-//			servo_states_[5],servo_states_[6],servo_states_[7],servo_states_[8],servo_states_[9],
-//			servo_states_[10],servo_states_[11],servo_states_[12],servo_states_[13],servo_states_[14],
-//			servo_states_[15],servo_states_[16],servo_states_[17],servo_states_[18],servo_states_[19]);
-
-
 	double diff_tmp;
 	//右足首
 	diff_tmp = 0. - servo_states_[0];
@@ -141,6 +130,9 @@ void GinkoOffsets::reconfigureOffsetsClient() {
 //		servo_offsets_calib_[index] = (double)index / 100.0;
 //	}
 	calcJointOffsets();
+	calcCrotchOffsetsMedian();
+	servo_offsets_calib_[6]  += crotch_offsets_calib_[0];
+	servo_offsets_calib_[13] -= crotch_offsets_calib_[1];
 	dynamic_reconfigure::ReconfigureRequest srv_req;
 	dynamic_reconfigure::ReconfigureResponse srv_resp;
 	dynamic_reconfigure::DoubleParameter double_param;
@@ -168,5 +160,76 @@ void GinkoOffsets::reconfigureOffsetsClient() {
 }
 void GinkoOffsets::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
 	init_flag = msg -> data;
+	static int initial = 0;
+	if(initial == 0){
+		initial = 1;
+		reconfigureOffsetsClient();//初期値が入っているとうまく行かないので、最初は2回打つ。
+	}
 	reconfigureOffsetsClient();
+}
+
+
+
+
+void GinkoOffsets::initTF2() {
+	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
+	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
+	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
+	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
+	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
+	tfBuffer_ptr->lookupTransform(crotch_tf_ ,r_toe_center_tf_, ros::Time::now(), ros::Duration(1.0));
+	tfBuffer_ptr->lookupTransform(crotch_tf_ ,l_toe_center_tf_, ros::Time::now(), ros::Duration(1.0));
+	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
+}
+
+
+void GinkoOffsets::calcCrotchOffsets() {
+	usleep(10000);
+	geometry_msgs::TransformStamped tf_r = tfBuffer_ptr->lookupTransform(crotch_tf_ ,r_toe_center_tf_, ros::Time(0));
+	geometry_msgs::TransformStamped tf_l = tfBuffer_ptr->lookupTransform(crotch_tf_ ,l_toe_center_tf_, ros::Time(0));
+	double r_dy,r_dz,r_dtheta;
+	r_dy = tf_r.transform.translation.y + (toe_width*0.5);
+	r_dz = tf_r.transform.translation.z;
+	r_dtheta = atan2(-r_dy,-r_dz);
+
+	double l_dy,l_dz,l_dtheta;
+	l_dy = tf_l.transform.translation.y - (toe_width*0.5);
+	l_dz = tf_l.transform.translation.z;
+	l_dtheta = atan2(-l_dy,-l_dz);
+	ROS_INFO("r(%f,%f),l(%f,%f)",r_dy,r_dz,l_dy,l_dz);
+
+	for (int crotch_index = 0; crotch_index < 2; crotch_index++){
+		for (int buffer_index = JOINT_BUFFER_NUM-1 ; buffer_index > 0; buffer_index--){ //バッファを進める
+			crotch_offsets_calib_buffer_[crotch_index][buffer_index] = crotch_offsets_calib_buffer_[crotch_index][buffer_index - 1];
+		}
+	}
+	crotch_offsets_calib_buffer_[0][0] = r_dtheta;
+	crotch_offsets_calib_buffer_[1][0] = l_dtheta;
+}
+void GinkoOffsets::calcCrotchOffsetsMedian() {
+	double crotch_median[2] {};
+	for (int buffer_index = 0; buffer_index < JOINT_BUFFER_NUM; buffer_index++){
+		calcCrotchOffsets();
+	}
+	for (int crotch_index = 0; crotch_index < 2; crotch_index++){
+		double median_buffer[JOINT_BUFFER_NUM] = {};
+		for (int buffer_index = 0; buffer_index < JOINT_BUFFER_NUM; buffer_index++){
+			median_buffer[buffer_index] = crotch_offsets_calib_buffer_[crotch_index][buffer_index];
+		}
+		//median_bufferの中身をサイズ順にする
+        for (int i = 0; i < JOINT_BUFFER_NUM - 1; i++) {
+                int j = i;
+                for (int k = i; k < JOINT_BUFFER_NUM; k++) {
+                        if (median_buffer[k] < median_buffer[j]) j = k;
+                }
+                if (i < j) {
+                        double v = median_buffer[i];
+                        median_buffer[i] = median_buffer[j];
+                        median_buffer[j] = v;
+                }
+        }
+        int middle = JOINT_BUFFER_NUM / 2;
+        crotch_median[crotch_index] = median_buffer[middle];
+        crotch_offsets_calib_[crotch_index] = crotch_median[crotch_index];
+	}
 }
