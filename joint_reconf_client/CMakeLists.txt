@@ -25,10 +25,6 @@ IF(USE_OpenMP)
 ENDIF()
 # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lpthread")
 
-generate_dynamic_reconfigure_options(#for rqt_reconfigure 
-  cfg/servo_offsets.cfg
-)
-
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}

@@ -32,7 +32,6 @@ void GinkoOffsets::initSubscriber() {
 void GinkoOffsets::initOffsetsReconfigure() {
 
 	ROS_INFO("Reconfigure Client Initializad");
-	param_server.setCallback(callback_server);
 }
 
 

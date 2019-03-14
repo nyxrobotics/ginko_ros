@@ -5,7 +5,6 @@
 
 //dynamic reconfigure----
 #include <dynamic_reconfigure/server.h>
-#include <joint_reconf_client/servo_offsetsConfig.h> //(project)/cfg/servo_offsets.cfgから自動生成されるらしい
 #include <ginko_params.h>
 #include <sensor_msgs/JointState.h>
 
@@ -23,8 +22,6 @@
 class GinkoOffsets {
 private:
 	int init_flag = 1;
-	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig> param_server;
-	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig>::CallbackType callback_server;
 	// ROS NodeHandle
 	ros::NodeHandle node_handle_;
 
