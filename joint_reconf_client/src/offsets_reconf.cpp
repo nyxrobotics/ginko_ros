@@ -162,7 +162,7 @@ void GinkoOffsets::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
 	init_flag = msg -> data;
 	static int initial = 0;
 	if(initial == 0){
-		initial = 1;
+//		initial = 1;
 		reconfigureOffsetsClient();//初期値が入っているとうまく行かないので、最初は2回打つ。
 	}
 	reconfigureOffsetsClient();
