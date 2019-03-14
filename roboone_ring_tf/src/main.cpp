@@ -13,10 +13,10 @@ int main(int argc, char **argv) {
 
 	//ノードハンドラを渡さないと、rosparamで受け取ろうとする名前空間がノード名の一層上になってしまい、launchの中でかけない。
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
-	RobooneRing foot_grounding(node_handle_);
+	RobooneRing ring_tf(node_handle_);
 //	ros::Rate rate_(100); // 10 hz
 	while (ros::ok()) {
-		foot_grounding.groundingMainLoop();
+		ring_tf.ringMainLoop();
 		ros::spinOnce();
 //		rate_.sleep();
 	}
