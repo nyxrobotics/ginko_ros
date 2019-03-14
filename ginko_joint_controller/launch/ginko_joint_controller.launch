@@ -75,4 +75,6 @@
     <remap from="goal_joint_position" to="servo_goal_position" />
     <remap from="joint_states" to="servo_joint_states" />
   </node>
+  
+
 </launch>

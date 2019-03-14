@@ -11,9 +11,10 @@
 	    <!-- servo controller -->
 		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
 			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
-			<!-- <remap from="joint_states" to="/servo_motor/joint_states" /> -->
 		</include>
-		<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+		<include file="$(find ginko_joint_offset)/launch/ginko_joint_offset.launch" >
+			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+		</include>
 	
 		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" >
 			<param name="publish_frequency" value="100"/>
@@ -123,22 +124,22 @@
 	</group>
 	
 	<!-- Odometry nodes -->
-	<group ns="odom">
-	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true">
-	    </node>
-   	    <node name="odometry" pkg="ginko_odom" type="ginko_odom" required="true">
-			<remap from="~imu_height_in" to="/odom/odom_foot/imu_height_out"/>
-			<remap from="~imu_height_vel_in" to="/odom/odom_foot/imu_height_vel_out"/>
-			<remap from="~imu_height_acc_in" to="/odom/odom_foot/imu_height_acc_out"/>
-			<remap from="~r_pose_in" to="/odom/odom_foot/r_pose_out"/>
-			<remap from="~l_pose_in" to="/odom/odom_foot/l_pose_out"/>
-			<remap from="~r_ratio_in" to="/odom/odom_foot/r_ratio_out"/>
-			<remap from="~l_ratio_in" to="/odom/odom_foot/l_ratio_out"/>
-			<remap from="~imu_in" to="/sensor/imu/madgwick"/>
-			<remap from="~ground_pose_in" to="/odom/odom_foot/ground_pose_out"/>
-	    </node>
+<!-- 	<group ns="odom"> -->
+<!-- 	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true"> -->
+<!-- 	    </node> -->
+<!--    	    <node name="odometry" pkg="ginko_odom" type="ginko_odom" required="true"> -->
+<!-- 			<remap from="~imu_height_in" to="/odom/odom_foot/imu_height_out"/> -->
+<!-- 			<remap from="~imu_height_vel_in" to="/odom/odom_foot/imu_height_vel_out"/> -->
+<!-- 			<remap from="~imu_height_acc_in" to="/odom/odom_foot/imu_height_acc_out"/> -->
+<!-- 			<remap from="~r_pose_in" to="/odom/odom_foot/r_pose_out"/> -->
+<!-- 			<remap from="~l_pose_in" to="/odom/odom_foot/l_pose_out"/> -->
+<!-- 			<remap from="~r_ratio_in" to="/odom/odom_foot/r_ratio_out"/> -->
+<!-- 			<remap from="~l_ratio_in" to="/odom/odom_foot/l_ratio_out"/> -->
+<!-- 			<remap from="~imu_in" to="/sensor/imu/madgwick"/> -->
+<!-- 			<remap from="~ground_pose_in" to="/odom/odom_foot/ground_pose_out"/> -->
+<!-- 	    </node> -->
 	    
-	</group>
+<!-- 	</group> -->
 	
 	
 	<!-- laser assembler(move lidar -> create pointcloud) -->

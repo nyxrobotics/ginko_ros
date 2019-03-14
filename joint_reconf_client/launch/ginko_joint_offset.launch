@@ -1,0 +1,9 @@
+<launch>
+	<node pkg="ginko_joint_offset" type="ginko_joint_offset" name="ginko_joint_offset" required="true" output="screen">
+	  <rosparam command="load" file="$(find ginko_joint_offset)/cfg/servo_offsets.yaml" />
+	  <remap from="goal_joint_position_in" to="goal_joint_position" />
+	  <remap from="goal_joint_position_ofs" to="servo_goal_position" />
+	  <remap from="joint_states_in" to="servo_joint_states" />
+	  <remap from="joint_states_ofs" to="joint_states" />
+	</node>
+</launch>
