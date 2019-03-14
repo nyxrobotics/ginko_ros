@@ -108,6 +108,14 @@ void GinkoOffsets::getGoalJointCallback(const sensor_msgs::JointState::ConstPtr 
 		joint_goal_[index] = msg->position.at(index);//送られてくるjointの目標値の数が少ないと配列外参照になるので注意
 		servo_goal_[index] = joint_goal_[index] - servo_offsets_[index];
 	}
+	//ダブルサーボ部分の目標値を揃える
+	joint_goal_[3]=joint_goal_[2];
+	joint_goal_[5]=joint_goal_[4];
+	joint_goal_[10]=joint_goal_[9];
+	joint_goal_[12]=joint_goal_[11];
+	joint_goal_[17]=-joint_goal_[16];
+	joint_goal_[22]=-joint_goal_[21];
+
 	sensor_msgs::JointState joint_state_in = *msg;
 
 	sensor_msgs::JointState joint_state_out;
