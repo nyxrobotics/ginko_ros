@@ -1,0 +1,5 @@
+<launch>
+	<node pkg="joint_reconf_client" type="joint_reconf_client" name="joint_reconf_client" required="true" output="screen">
+		  <remap from="joint_states_in" to="servo_joint_states" />
+    </node>
+</launch>

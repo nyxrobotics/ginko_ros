@@ -1,11 +1,10 @@
 #ifndef GINKO_PARAMS_H
 #define GINKO_PARAMS_H
 
-//GinkoController
-#define LOOP_FREQUENCY  (100)
+
 #define SERVO_NUM     25
-//GinkoSerial
-#define RxRingBufferLength 10000
+
+
 
 
 #include <stdint.h>

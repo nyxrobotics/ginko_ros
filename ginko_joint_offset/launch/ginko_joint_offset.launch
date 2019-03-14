@@ -6,6 +6,5 @@
 	  <remap from="joint_states_in" to="servo_joint_states" />
 	  <remap from="joint_states_ofs" to="joint_states" />
 	</node>
-	<node pkg="joint_reconf_client" type="joint_reconf_client" name="joint_reconf_client" required="true" output="screen">
-    </node>
+	<include file="$(find joint_reconf_client)/launch/joint_reconf_client.launch" />
 </launch>

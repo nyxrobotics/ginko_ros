@@ -3,7 +3,7 @@
 #define MAIN_H
 
 
-#include "ginko_offsets.h"
+#include <offsets_reconf.h>
 
 
 #endif //MAIN_H
