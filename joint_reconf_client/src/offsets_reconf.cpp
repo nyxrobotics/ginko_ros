@@ -133,6 +133,9 @@ void GinkoOffsets::reconfigureOffsetsClient() {
 	calcCrotchOffsetsMedian();
 	servo_offsets_calib_[6]  += crotch_offsets_calib_[0];
 	servo_offsets_calib_[13] -= crotch_offsets_calib_[1];
+	//右肩P(一旦ベタ書き)
+	servo_offsets_calib_[15] = 0.15;
+	servo_offsets_calib_[20] = 0.025;
 	dynamic_reconfigure::ReconfigureRequest srv_req;
 	dynamic_reconfigure::ReconfigureResponse srv_resp;
 	dynamic_reconfigure::DoubleParameter double_param;

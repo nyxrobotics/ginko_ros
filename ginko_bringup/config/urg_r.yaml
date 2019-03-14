@@ -12,7 +12,7 @@ scan_filter_chain:
     box_frame: leg_r_toe_center
     min_x: -0.09
     max_x: 0.09
-    min_y: -0.05
-    max_y: 0.05
+    min_y: -0.07
+    max_y: 0.07
     min_z: -0.1
     max_z: 0.3
