@@ -45,7 +45,7 @@
     <param name="baud_rate"            value="$(arg baud_rate)"/>
 
     <param name="joint_controller"     value="$(arg joint_controller)"/>
-    <rosparam command="load" file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" />
+<!--     <rosparam command="load" file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" /> -->
 
 <!--     <param name="joint1_name"            value="$(arg joint1_name)"/>
     <param name="joint2_name"            value="$(arg joint2_name)"/>
@@ -72,6 +72,7 @@
     <param name="joint23_name"            value="$(arg joint23_name)"/>
     <param name="joint24_name"            value="$(arg joint24_name)"/>
     <param name="joint25_name"            value="$(arg joint25_name)"/> -->
-
+    <remap from="goal_joint_position" to="servo_goal_position" />
+    <remap from="joint_states" to="servo_joint_states" />
   </node>
 </launch>

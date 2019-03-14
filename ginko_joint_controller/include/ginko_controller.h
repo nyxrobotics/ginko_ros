@@ -28,7 +28,6 @@
 
 //dynamic reconfigure----
 #include <dynamic_reconfigure/server.h>
-#include <ginko_joint_controller/servo_offsetsConfig.h> //(project)/cfg/servo_offsets.cfgから自動生成されるらしい
 #include <ginko_params.h>
 #include "ginko_serial.h"
 
@@ -46,13 +45,6 @@ private:
 	double init_pose_[SERVO_NUM]={};
 	double target_pose_[SERVO_NUM]={};
 	double state_pose_[SERVO_NUM]={};
-	double servo_offsets_[SERVO_NUM]={};
-//	double servo_offsets_[SERVO_NUM]={
-//			0,		0,		0.052,	0,		0.09,
-//			0,		0.104,	0,		0,		0.104,
-//			0.02,	0.1,	0,		0.104,	0,
-//			0,		0,		0.12,	0,		0,
-//			0,		0,		0.1,	0,		0};
 	unsigned int timestamp_ms_ = 0;
 	const unsigned int startup_ms_ = 2000;
 	// ROS NodeHandle
@@ -79,9 +71,6 @@ private:
 	std::string joint_mode_;
 	std::string gripper_mode_;
 
-	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig> param_server;
-	dynamic_reconfigure::Server<ginko_joint_controller::servo_offsetsConfig>::CallbackType callback_server;
-
 	//for using open mp-----
 //	sensor_msgs::JointState joint_state;
 	float joint_states_pos[SERVO_NUM] = {};
@@ -103,8 +92,6 @@ private:
 //	void initMsg();
 	void initPublisher();
 	void initSubscriber();
-	void initOffsetsReconfigure();
-	void offsetsReconfigureCallback(ginko_joint_controller::servo_offsetsConfig &config, uint32_t level);
 	void requestJointStates(unsigned char comnum);
 	void updateJointStates();
 	void goalJointPositionCallback(const sensor_msgs::JointState::ConstPtr &msg);

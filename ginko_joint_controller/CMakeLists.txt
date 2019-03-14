@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   nodelet
-  dynamic_reconfigure #for rqt_reconfigure
 )
 # let cmake find OpenMP and set some variables(https://stackoverflow.com/questions/17633513/cmake-cannot-find-openmp)
 OPTION (USE_OpenMP "Use OpenMP" ON)
@@ -24,10 +23,6 @@ IF(USE_OpenMP)
   ENDIF()
 ENDIF()
 # set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lpthread")
-
-generate_dynamic_reconfigure_options(#for rqt_reconfigure 
-  cfg/servo_offsets.cfg
-)
 
 catkin_package(
   INCLUDE_DIRS include
