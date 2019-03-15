@@ -68,7 +68,7 @@ void DriftCorrection::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	imu_out.angular_velocity.x -= drifting_.getX();
 	imu_out.angular_velocity.y -= drifting_.getY();
 	imu_out.angular_velocity.z -= drifting_.getZ();
-
+	imu_out.header.stamp = ros::Time::now();
 	imu_drift_correct_pub_.publish(imu_out);
 
 	if(publish_debug_topics_){

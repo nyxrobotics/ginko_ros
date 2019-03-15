@@ -58,12 +58,16 @@ private:
 	std_msgs::Float32  l_ratio_data_;
 	geometry_msgs::PoseStamped ground_pose_data_;
 
-	//tf2_ros::Buffer tfBuffer(ros::Duration(1.0), false);
-	//tf2_ros::TransformListener tfListener(tfBuffer);
 	boost::shared_ptr<tf2_ros::Buffer> tfBuffer_ptr;
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr;
+//	tf2_ros::Buffer tfBuffer;
+//	tf2_ros::TransformListener tfListener(tfBuffer);
 	tf2_ros::TransformBroadcaster tfBroadcaster;
-
+//	geometry_msgs::TransformStamped ground_r_tf_;
+//	geometry_msgs::TransformStamped ground_l_tf_;
+//	geometry_msgs::TransformStamped foot_center_tf_;
+//	geometry_msgs::TransformStamped ground_pint_tf_;
+//	geometry_msgs::TransformStamped ground_imu_tf_;
 	//rosparam
 	//TODO:パラメータにする
 	//入力
@@ -101,11 +105,6 @@ private:
 			"leg_l_toe_link1",
 			"leg_l_toe_link2",
 			"leg_l_toe_link3"};
-
-	//内部用変数
-//	tf2::Quaternion quaternion_;	//現在姿勢
-//	int quaternion_update_flag_ = 0;
-//	int joint_update_flag_ = 0;
 
 public:
 	FootGrounding(ros::NodeHandle main_nh);

@@ -2,17 +2,21 @@
 
 //FootGrounding here
 FootGrounding::FootGrounding(ros::NodeHandle main_nh){
-	readParams(main_nh);
-//	initSubscriber(main_nh);
-	initPublisher(main_nh);
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
 	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
+
+	readParams(main_nh);
+//	initSubscriber(main_nh);
+	initPublisher(main_nh);
+
 	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
-	tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(1.0));
-	tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(1.0));
-	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
+	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(1.0));
+	sleep(1);
+//	tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(1.0));
+//	tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(1.0));
+//	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
 
 }
 
@@ -47,10 +51,15 @@ int FootGrounding::groundingMainLoop(){
 	//新しいデータが来るまで待機
 
 	geometry_msgs::TransformStamped transformStamped;
-	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(0.2));
-	//	usleep(100);//不要なsleep
+//	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(0.2));
+//	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now() - ros::Duration(0.005), ros::Duration(0.2));
+//	usleep(10000);//不要なsleep
+//	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(0.2));
+//	tfBuffer_ptr->canTransform("leg_r_link0" ,"leg_r_link1", ros::Time::now(), ros::Duration(0.2));
+	tfBuffer_ptr->canTransform("world" ,"base", ros::Time::now(), ros::Duration(0.2));
+	tfBuffer_ptr->canTransform("body_link0" ,"body_link1", ros::Time::now(), ros::Duration(0.2));
 //	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time(0));
-
+//	usleep(10000);//不要なsleep
 	geometry_msgs::TransformStamped transformStampedRight;
 	geometry_msgs::TransformStamped transformStampedLight;
 	geometry_msgs::TransformStamped transformStampedCenter;
@@ -61,10 +70,26 @@ int FootGrounding::groundingMainLoop(){
 	transformStampedCenter =  calcFootsCenter();
 	transformStampedFootsGround = calcGroundpoint(transformStampedCenter,transformStampedRight,transformStampedLight);
 	transformStampedImuGround = calcImuGround(transformStampedFootsGround);
+
+	std::vector<geometry_msgs::TransformStamped> tf_transforms;
+	ros::Time time_now  = ros::Time::now();
+	transformStampedRight.header.stamp = time_now;
+    tf_transforms.push_back(transformStampedRight);
+    transformStampedLight.header.stamp = time_now;
+    tf_transforms.push_back(transformStampedLight);
+    transformStampedCenter.header.stamp = time_now;
+    tf_transforms.push_back(transformStampedCenter);
+    transformStampedFootsGround.header.stamp = time_now;
+    tf_transforms.push_back(transformStampedFootsGround);
+    transformStampedImuGround.header.stamp = time_now;
+    tf_transforms.push_back(transformStampedImuGround);
+    tfBroadcaster.sendTransform(tf_transforms);
+
+
 	imu_height_data_.data = -transformStampedImuGround.transform.translation.z;
 
 	//速度の計算をするため、一回前の値を保持
-	ros::Time time_now  = ros::Time::now();
+//	ros::Time time_now  = ros::Time::now();
 	static ros::Time time_last  = ros::Time::now();
 	static std_msgs::Float32 imu_height_prev_ = imu_height_data_;
 	static std_msgs::Float32 imu_height_vel_prev_ = imu_height_vel_data_;
@@ -214,7 +239,6 @@ geometry_msgs::TransformStamped FootGrounding::calcRightGroundpoint(){
 	transformStamped.transform.rotation.y		= 0.0;
 	transformStamped.transform.rotation.z		= 0.0;
 	transformStamped.transform.rotation.w		= 1.0;
-//	tfBroadcaster.sendTransform(transformStamped);
 
 	//向きをジャイロに合わせる
 	transformStamped.header.frame_id = imu_tf_yaw_in_name_;
@@ -233,8 +257,9 @@ geometry_msgs::TransformStamped FootGrounding::calcRightGroundpoint(){
 	transformStamped.transform.translation.x = toe_tf[2].transform.translation.x + translation_rotate.x();
 	transformStamped.transform.translation.y = toe_tf[2].transform.translation.y + translation_rotate.y();
 	transformStamped.transform.translation.z = toe_tf[2].transform.translation.z + translation_rotate.z();
-	tfBroadcaster.sendTransform(transformStamped);
-//	transformStamped.child_frame_id  = "r_grounding";
+	transformStamped.header.stamp = ros::Time::now();
+//	tfBroadcaster.sendTransform(transformStamped);
+
 	return transformStamped;
 
 }
@@ -340,7 +365,6 @@ geometry_msgs::TransformStamped FootGrounding::calcLeftGroundpoint(){
 	transformStamped.transform.rotation.y		= 0.0;
 	transformStamped.transform.rotation.z		= 0.0;
 	transformStamped.transform.rotation.w		= 1.0;
-//	tfBroadcaster.sendTransform(transformStamped);
 
 	//向きをジャイロに合わせる
 	transformStamped.header.frame_id = imu_tf_yaw_in_name_;
@@ -359,8 +383,7 @@ geometry_msgs::TransformStamped FootGrounding::calcLeftGroundpoint(){
 	transformStamped.transform.translation.x = toe_tf[2].transform.translation.x + translation_rotate.x();
 	transformStamped.transform.translation.y = toe_tf[2].transform.translation.y + translation_rotate.y();
 	transformStamped.transform.translation.z = toe_tf[2].transform.translation.z + translation_rotate.z();
-	tfBroadcaster.sendTransform(transformStamped);
-//	transformStamped.child_frame_id  = "l_grounding";
+//	tfBroadcaster.sendTransform(transformStamped);
 	return transformStamped;
 
 }
@@ -381,7 +404,7 @@ geometry_msgs::TransformStamped FootGrounding::calcFootsCenter(){
 	foot_center.transform.rotation.z	= 0.0;
 	foot_center.transform.rotation.w	= 1.0;
 
-	tfBroadcaster.sendTransform(foot_center);
+//	tfBroadcaster.sendTransform(foot_center);
 	//以下パブリッシュ用データ代入
 	//imu_tf_in_name_を親にして生やす
 	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(imu_tf_in_name_, imu_tf_yaw_in_name_, ros::Time(0));
@@ -479,7 +502,7 @@ geometry_msgs::TransformStamped FootGrounding::calcGroundpoint(geometry_msgs::Tr
 	transformStamped.transform.rotation.y		= 0.0;
 	transformStamped.transform.rotation.z		= 0.0;
 	transformStamped.transform.rotation.w		= 1.0;
-	tfBroadcaster.sendTransform(transformStamped);
+//	tfBroadcaster.sendTransform(transformStamped);
 	//以下パブリッシュ用データ代入
 	r_ratio_data_.data = 0.5 + foots_diff_ratio;
 	l_ratio_data_.data = 0.5 - foots_diff_ratio;
@@ -523,6 +546,6 @@ geometry_msgs::TransformStamped FootGrounding::calcImuGround(geometry_msgs::Tran
 	imu_ground_tf.transform.rotation.z		= 0.0;
 	imu_ground_tf.transform.rotation.w		= 1.0;
 
-	tfBroadcaster.sendTransform(imu_ground_tf);
+//	tfBroadcaster.sendTransform(imu_ground_tf);
 	return imu_ground_tf;
 }

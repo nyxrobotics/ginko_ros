@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
 	sleep(5);
 	RobooneRing ring_tf(node_handle_);
-	ros::Rate rate_(1); // 1 hz
+	ros::Rate rate_(10); // 1 hz
 	while (ros::ok()) {
 		ring_tf.ringMainLoop();
 		ros::spinOnce();
