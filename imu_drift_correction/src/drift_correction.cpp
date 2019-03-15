@@ -19,21 +19,21 @@ void DriftCorrection::readParams(ros::NodeHandle main_nh){
 }
 
 void DriftCorrection::initSubscriber(){
-	imu_base_sub_ = node_handle_.subscribe("imu_raw_in", 1,&DriftCorrection::getImuRawCallback, this);
-	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 1,&DriftCorrection::getImuQuaternionCallback, this);
-	joint_goals_sub_ = node_handle_.subscribe("joint_goals_in", 1,&DriftCorrection::getJointGoalsCallback, this);
-	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 1,&DriftCorrection::getJointStatesCallback, this);
+	imu_base_sub_ = node_handle_.subscribe("imu_raw_in", 0,&DriftCorrection::getImuRawCallback, this);
+	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 0,&DriftCorrection::getImuQuaternionCallback, this);
+	joint_goals_sub_ = node_handle_.subscribe("joint_goals_in", 0,&DriftCorrection::getJointGoalsCallback, this);
+	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 0,&DriftCorrection::getJointStatesCallback, this);
 //	ROS_FATAL("ImuRpy:Subscriber Initialized");
 }
 void DriftCorrection::initPublisher(){
-	imu_drift_correct_pub_ = node_handle_.advertise<sensor_msgs::Imu>("imu_drift_correction_out", 1);
+	imu_drift_correct_pub_ = node_handle_.advertise<sensor_msgs::Imu>("imu_drift_correction_out", 0);
 //	ROS_FATAL("ImuRpy:Publisher Initialized");
 	if(publish_debug_topics_ == true){
-		debug_stopping_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/stopping_flag", 1);
-		debug_gyro_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/gyro_flag", 1);
-		debug_accel_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/accel_flag", 1);
-		debug_joint_states_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/joint_states_flag", 1);
-		debug_joint_goals_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/joint_goals_flag", 1);
+		debug_stopping_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/stopping_flag", 0);
+		debug_gyro_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/gyro_flag", 0);
+		debug_accel_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/accel_flag", 0);
+		debug_joint_states_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/joint_states_flag", 0);
+		debug_joint_goals_drift_pub_ = node_handle_.advertise<std_msgs::Float32>("debug/joint_goals_flag", 0);
 	}
 }
 void DriftCorrection::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){

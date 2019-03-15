@@ -25,7 +25,7 @@ void RobooneRing::readParams(ros::NodeHandle node_handle_){
 }
 
 void RobooneRing::initSubscriber(ros::NodeHandle node_handle_){
-	init_flag_sub_ = node_handle_.subscribe("ring_init_in", 1,&RobooneRing::getInitFlagCallback, this);
+	init_flag_sub_ = node_handle_.subscribe("ring_init_in", 0,&RobooneRing::getInitFlagCallback, this);
 }
 
 void RobooneRing::initPublisher(ros::NodeHandle node_handle_){

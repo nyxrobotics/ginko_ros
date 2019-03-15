@@ -50,7 +50,6 @@ private:
 	void getJointStatesCallback(const sensor_msgs::JointState::ConstPtr &msg);
 	void getGoalJointCallback(const sensor_msgs::JointState::ConstPtr &msg);
 	void getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg);
-	void reconfigureOffsetsClient();
 };
 
 

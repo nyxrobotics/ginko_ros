@@ -22,11 +22,11 @@ GinkoController::~GinkoController() {
 	ros::shutdown();
 }
 void GinkoController::initPublisher() {
-	joint_states_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states", 1);
+	joint_states_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states", 0);
 }
 void GinkoController::initSubscriber() {
-	goal_joint_states_sub_ = node_handle_.subscribe("goal_joint_position", 1,&GinkoController::goalJointPositionCallback, this);
-	torque_enable_sub_ = node_handle_.subscribe("torque_enable",1, &GinkoController::torqueEnableCallback, this);
+	goal_joint_states_sub_ = node_handle_.subscribe("goal_joint_position", 0,&GinkoController::goalJointPositionCallback, this);
+	torque_enable_sub_ = node_handle_.subscribe("torque_enable",0, &GinkoController::torqueEnableCallback, this);
 }
 
 void GinkoController::requestJointStates(unsigned char comnum) {

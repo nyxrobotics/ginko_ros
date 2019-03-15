@@ -161,8 +161,8 @@
 			<remap from="~imu_in" to="/sensor/imu/madgwick"/>
 			<remap from="~ground_pose_in" to="/odom/odom_foot/ground_pose_out"/>
 	    </node>
-	    
 	</group>
+	
 	<include file="$(find roboone_ring_tf)/launch/roboone_ring.launch" />
 	<include file="$(find urg_nearest_detector)/launch/urg_nearest.launch" />
 	
@@ -173,7 +173,6 @@
 				<remap from="scan" to="/sensor/urg/right/scan"/>
 				<param name="max_scans" type="int" value="400" />
 				<param name="fixed_frame" type="string" value="odom" />
-<!-- 				<param name="fixed_frame" type="string" value="body_imu_reverse" /> -->
 			</node>
 			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
 				<remap from="cloud" to="right_cloud"/>
@@ -184,7 +183,6 @@
 				<remap from="scan" to="/sensor/urg/left/scan"/>
 				<param name="max_scans" type="int" value="400" />
 				<param name="fixed_frame" type="string" value="odom" />
-<!-- 				<param name="fixed_frame" type="string" value="body_imu_reverse" /> -->
 			</node>
 			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
 				<remap from="cloud" to="left_cloud"/>

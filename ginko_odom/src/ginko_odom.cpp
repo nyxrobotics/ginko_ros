@@ -18,15 +18,15 @@ void GinkoOdometry::readParams(ros::NodeHandle node_handle_){
 }
 
 void GinkoOdometry::initSubscriber(ros::NodeHandle node_handle_){
-	imu_height_sub_ = node_handle_.subscribe("imu_height_in", 1,&GinkoOdometry::getImuHeightCallback, this);
-	imu_height_vel_sub_ = node_handle_.subscribe("imu_height_vel_in", 1,&GinkoOdometry::getImuHeightVelCallback, this);
-	imu_height_acc_sub_ = node_handle_.subscribe("imu_height_acc_in", 1,&GinkoOdometry::getImuHeightAccCallback, this);
-	r_pose_sub_ = node_handle_.subscribe("r_pose_in", 1,&GinkoOdometry::getFootRightCallback, this);
-	l_pose_sub_ = node_handle_.subscribe("l_pose_in", 1,&GinkoOdometry::getFootLeftCallback, this);
-	r_ratio_sub_ = node_handle_.subscribe("r_ratio_in", 1,&GinkoOdometry::getFoorRightRatioCallback, this);
-	l_ratio_sub_ = node_handle_.subscribe("l_ratio_in", 1,&GinkoOdometry::getFoorLeftRatioCallback, this);
-	imu_sub_ = node_handle_.subscribe("imu_in", 1,&GinkoOdometry::getImuCallback, this);
-	ground_pose_sub_ = node_handle_.subscribe("ground_pose_in", 1,&GinkoOdometry::getGroundPoseCallback, this);
+	imu_height_sub_ = node_handle_.subscribe("imu_height_in", 0,&GinkoOdometry::getImuHeightCallback, this);
+	imu_height_vel_sub_ = node_handle_.subscribe("imu_height_vel_in", 0,&GinkoOdometry::getImuHeightVelCallback, this);
+	imu_height_acc_sub_ = node_handle_.subscribe("imu_height_acc_in", 0,&GinkoOdometry::getImuHeightAccCallback, this);
+	r_pose_sub_ = node_handle_.subscribe("r_pose_in", 0,&GinkoOdometry::getFootRightCallback, this);
+	l_pose_sub_ = node_handle_.subscribe("l_pose_in", 0,&GinkoOdometry::getFootLeftCallback, this);
+	r_ratio_sub_ = node_handle_.subscribe("r_ratio_in", 0,&GinkoOdometry::getFoorRightRatioCallback, this);
+	l_ratio_sub_ = node_handle_.subscribe("l_ratio_in", 0,&GinkoOdometry::getFoorLeftRatioCallback, this);
+	imu_sub_ = node_handle_.subscribe("imu_in", 0,&GinkoOdometry::getImuCallback, this);
+	ground_pose_sub_ = node_handle_.subscribe("ground_pose_in", 0,&GinkoOdometry::getGroundPoseCallback, this);
 
 //	//Init TF Listener
 //	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
