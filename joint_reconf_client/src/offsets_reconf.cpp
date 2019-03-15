@@ -26,9 +26,9 @@ void GinkoOffsets::initPublisher() {
 //	goal_joint_position_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("goal_joint_position_ofs", 1);
 }
 void GinkoOffsets::initSubscriber() {
-	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 0,&GinkoOffsets::getJointStatesCallback, this);
+	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 1,&GinkoOffsets::getJointStatesCallback, this);
 //	goal_joint_position_sub_  = node_handle_.subscribe("goal_joint_position_in",1, &GinkoOffsets::getGoalJointCallback, this);
-	init_flag_sub_ = node_handle_.subscribe("ofs_init_in", 0,&GinkoOffsets::getInitFlagCallback, this);
+	init_flag_sub_ = node_handle_.subscribe("ofs_init_in", 1,&GinkoOffsets::getInitFlagCallback, this);
 }
 void GinkoOffsets::initOffsetsReconfigure() {
 

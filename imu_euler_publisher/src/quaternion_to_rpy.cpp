@@ -10,11 +10,11 @@ ImuRpy::~ImuRpy() {
 }
 
 void ImuRpy::initSubscriber(){
-	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 0,&ImuRpy::getQuaternionCallback, this);
+	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 1,&ImuRpy::getQuaternionCallback, this);
 //	ROS_FATAL("ImuRpy:Subscriber Initialized");
 }
 void ImuRpy::initPublisher(){
-	imu_euler_pub_ = node_handle_.advertise<geometry_msgs::Vector3>("euler_out", 0);
+	imu_euler_pub_ = node_handle_.advertise<geometry_msgs::Vector3>("euler_out", 1);
 //	ROS_FATAL("ImuRpy:Publisher Initialized");
 }
 void ImuRpy::getQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg){

@@ -23,11 +23,11 @@ void DriftCorrection::readParams(ros::NodeHandle main_nh){
 }
 
 void DriftCorrection::initSubscriber(){
-	imu_raw_sub_ = node_handle_.subscribe("imu_raw_in", 0,&DriftCorrection::getImuRawCallback, this);
+	imu_raw_sub_ = node_handle_.subscribe("imu_raw_in", 1,&DriftCorrection::getImuRawCallback, this);
 //	ROS_FATAL("ImuRpy:Subscriber Initialized");
 }
 void DriftCorrection::initPublisher(){
-	imu_base_pub_  = node_handle_.advertise<sensor_msgs::Imu>("imu_base_out", 0);
+	imu_base_pub_  = node_handle_.advertise<sensor_msgs::Imu>("imu_base_out", 1);
 //	imu_drift_correct_pub_ = node_handle_.advertise<sensor_msgs::Imu>("imu_drift_correction_out", 1);
 //	ROS_FATAL("ImuRpy:Publisher Initialized");
 }

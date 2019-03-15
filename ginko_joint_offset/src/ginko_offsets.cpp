@@ -20,12 +20,12 @@ GinkoOffsets::~GinkoOffsets() {
 
 }
 void GinkoOffsets::initPublisher() {
-	joint_states_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states_ofs", 0);
-	goal_joint_position_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("goal_joint_position_ofs", 0);
+	joint_states_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states_ofs", 1);
+	goal_joint_position_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("goal_joint_position_ofs", 1);
 }
 void GinkoOffsets::initSubscriber() {
-	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 0,&GinkoOffsets::getJointStatesCallback, this);
-	goal_joint_position_sub_  = node_handle_.subscribe("goal_joint_position_in",0, &GinkoOffsets::getGoalJointCallback, this);
+	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 1,&GinkoOffsets::getJointStatesCallback, this);
+	goal_joint_position_sub_  = node_handle_.subscribe("goal_joint_position_in", 1, &GinkoOffsets::getGoalJointCallback, this);
 }
 void GinkoOffsets::initOffsetsReconfigure() {
 //	ここに宣言すると共有化に失敗してコールバックが呼ばれない。プライベート変数に入れた。

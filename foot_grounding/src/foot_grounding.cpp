@@ -35,16 +35,16 @@ void FootGrounding::initSubscriber(ros::NodeHandle node_handle_){
 }
 
 void FootGrounding::initPublisher(ros::NodeHandle node_handle_){
-	imu_height_pub_     = node_handle_.advertise<std_msgs::Float32>("imu_height_out", 0);
-	imu_height_vel_pub_	= node_handle_.advertise<std_msgs::Float32>("imu_height_vel_out", 0);
-	imu_height_acc_pub_	= node_handle_.advertise<std_msgs::Float32>("imu_height_acc_out", 0);
+	imu_height_pub_     = node_handle_.advertise<std_msgs::Float32>("imu_height_out", 1);
+	imu_height_vel_pub_	= node_handle_.advertise<std_msgs::Float32>("imu_height_vel_out", 1);
+	imu_height_acc_pub_	= node_handle_.advertise<std_msgs::Float32>("imu_height_acc_out", 1);
 //	imu_velocity_pub_		= node_handle_.advertise<geometry_msgs::Vector3>("imu_velocity_out", 1);
 //	imu_ground_pose_pub_	= node_handle_.advertise<nav_msgs::Odometry>("imu_ground_pose_out", 1);
-	r_pose_pub_	= node_handle_.advertise<nav_msgs::Odometry>("r_pose_out", 0);
-	l_pose_pub_	= node_handle_.advertise<nav_msgs::Odometry>("l_pose_out", 0);
-	r_ratio_pub_= node_handle_.advertise<std_msgs::Float32>("r_ratio_out", 0);
-	l_ratio_pub_= node_handle_.advertise<std_msgs::Float32>("l_ratio_out", 0);
-	ground_pose_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("ground_pose_out", 0);
+	r_pose_pub_	= node_handle_.advertise<nav_msgs::Odometry>("r_pose_out", 1);
+	l_pose_pub_	= node_handle_.advertise<nav_msgs::Odometry>("l_pose_out", 1);
+	r_ratio_pub_= node_handle_.advertise<std_msgs::Float32>("r_ratio_out", 1);
+	l_ratio_pub_= node_handle_.advertise<std_msgs::Float32>("l_ratio_out", 1);
+	ground_pose_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("ground_pose_out", 1);
 }
 
 int FootGrounding::groundingMainLoop(){

@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
 	// Init ROS node
 	ros::init(argc, argv, "foot_grounding_node");
 	ros::NodeHandle node_handle_("~");
-	sleep(5);
+//	sleep(5);
 
 	//ノードハンドラを渡さないと、rosparamで受け取ろうとする名前空間がノード名の一層上になってしまい、launchの中でかけない。
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
