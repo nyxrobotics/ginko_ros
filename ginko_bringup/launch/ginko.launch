@@ -152,7 +152,7 @@
 	    </node>
 	    
 	</group>
-	
+	<include file="$(find roboone_ring_tf)/launch/roboone_ring.launch" />
 	
 	<!-- laser assembler(move lidar -> create pointcloud) -->
 	<group ns="laser_assembler">
