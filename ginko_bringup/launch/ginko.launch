@@ -107,6 +107,12 @@
 				   <remap from="scan_filtered" to="scan" />
 				</node>
 				
+				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
+				   <remap from="scan" to="scan" />
+				   <remap from="scan_filtered" to="scan_inside" />
+				</node>
+				
 			</group>
 			
 			<!-- Left LiDAR -->
@@ -129,6 +135,11 @@
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_l.yaml" />
 				   <remap from="scan" to="scan_raw" />
 				   <remap from="scan_filtered" to="scan" />
+				</node>
+				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
+				   <remap from="scan" to="scan" />
+				   <remap from="scan_filtered" to="scan_inside" />
 				</node>
 			</group>
 		</group>

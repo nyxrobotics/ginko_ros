@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>urg_nearest_detector</name>
+  <version>0.0.1</version>
+  <description>detect nearest point of laserscan as target(publish tf2)</description>
+
+  <maintainer email="ginko@test.org">Ginko</maintainer>
+
+  <license>TODO</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>nodelet</depend>
+
+</package>

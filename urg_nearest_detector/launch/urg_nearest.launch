@@ -1,0 +1,18 @@
+<launch>
+	<group ns="sensor">
+		<group ns="urg">
+			<group ns="right">
+				<node pkg="urg_nearest_detector" type="urg_nearest_detector" name="urg_nearest_detector_node" required="true" output="screen">
+					<remap from="scan" to="scan_inside" />
+					<param name="target_tf" value="target_r" />
+			    </node>
+   			</group>
+   			<group ns="left">
+				<node pkg="urg_nearest_detector" type="urg_nearest_detector" name="urg_nearest_detector_node" required="true" output="screen">
+					<remap from="scan" to="scan_inside" />
+					<param name="target_tf" value="target_l" />
+			    </node>
+   			</group>
+		</group>
+	</group>
+</launch>

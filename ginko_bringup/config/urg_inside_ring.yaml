@@ -1,0 +1,104 @@
+scan_filter_chain:
+- name: box_floor
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring
+    min_x: -1.8
+    max_x: 1.8
+    min_y: -1.8
+    max_y: 1.8
+    min_z: -5.0
+    max_z: 0.05
+- name: box_roof
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring
+    min_x: -1.8
+    max_x: 1.8
+    min_y: -1.8
+    max_y: 1.8
+    min_z: 0.5
+    max_z: 6.0
+- name: box_edge_0
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_0
+    min_x: -0.0
+    max_x: 10.0
+    min_y: -6.8
+    max_y: 6.8
+    min_z: -5.0
+    max_z: 5.0
+- name: box_edge_1
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_1
+    min_x: -0.05
+    max_x: 0.65
+    min_y: -0.65
+    max_y: 0.65
+    min_z: -5.0
+    max_z: 5.0
+
+- name: box_edge_2
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_2
+    min_x: -0.05
+    max_x: 10.0
+    min_y: -1.8
+    max_y: 1.8
+    min_z: -5.0
+    max_z: 5.0
+- name: box_edge_3
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_3
+    min_x: -0.05
+    max_x: 0.65
+    min_y: -0.65
+    max_y: 0.65
+    min_z: -5.0
+    max_z: 5.0
+
+- name: box_edge_4
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_4
+    min_x: -0.05
+    max_x: 10.0
+    min_y: -6.8
+    max_y: 6.8
+    min_z: -5.0
+    max_z: 5.0
+- name: box_edge_5
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_5
+    min_x: -0.05
+    max_x: 0.65
+    min_y: -0.65
+    max_y: 0.65
+    min_z: -5.0
+    max_z: 5.0
+
+- name: box_edge_6
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_6
+    min_x: -0.05
+    max_x: 10.0
+    min_y: -1.8
+    max_y: 1.8
+    min_z: -5.0
+    max_z: 5.0
+- name: box_edge_7
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring_edge_7
+    min_x: -0.05
+    max_x: 0.65
+    min_y: -0.65
+    max_y: 0.65
+    min_z: -5.0
+    max_z: 5.0
