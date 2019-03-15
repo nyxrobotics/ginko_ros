@@ -22,6 +22,7 @@ UrgNearest::~UrgNearest() {
 void UrgNearest::readParams(ros::NodeHandle main_nh){
 //	main_nh.param<std::string>("urg_tf", urg_tf_in_name_, "urg_link");
 	main_nh.param<std::string>("target_tf", detected_tf_out_name_, "detected_target");
+	main_nh.param<std::string>("fixed_tf", odom_tf_in_name_, "odom");
 }
 
 void UrgNearest::initPublisher() {

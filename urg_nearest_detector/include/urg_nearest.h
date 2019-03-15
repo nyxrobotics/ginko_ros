@@ -41,10 +41,10 @@ private:
 	tf2_ros::StaticTransformBroadcaster staticBroadcaster;
 
 	//入力
-	std::string urg_tf_in_name_	 = "urg_link";	//ジャイロのTF
-	std::string odom_tf_in_name_ = "odom";	//ジャイロの回転の基準になっているTF
+	std::string urg_tf_in_name_	 = "urg_link";
+	std::string odom_tf_in_name_ = "odom";
 	//出力
-	std::string detected_tf_out_name_ = "target";		//ジャイロの位置、ロボット前方をx軸とする床に水平なTF
+	std::string detected_tf_out_name_ = "target";
 
 	bool urg_ready = 0;
 	bool urg_updated = 0;
