@@ -16,9 +16,9 @@
 			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
 		</include>
 	
-		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" >
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"  launch-prefix="nice -n 0">
 			<param name="publish_frequency" value="100"/>
-<!-- 			<param name="ignore_timestamp" value="true"/> -->
+			<param name="ignore_timestamp" value="true"/>
 	    	<!-- use_tf_staticがtrueだとめっちゃ遅くなる。60Hzくらいしか出ない。 -->
 			<param name="use_tf_static" value="false"/>
 		</node>
@@ -29,7 +29,7 @@
 		<!-- IMU -->
 		<group ns="imu">
 			<!-- Connect under USB-Serial with rosserial-arduino -->
-		    <node name="imu_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true">
+		    <node name="imu_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true" launch-prefix="nice -n 0">
 		        <param name="port" value="/dev/ttyCH340_1.3"/>
 		        <param name="frame_id" value="body_imu_attached_link"/>
 		        <param name="broadcast_tf" value="false"/>
@@ -37,7 +37,7 @@
 		    </node>
 <!-- 		    <node name="imu_throttler" pkg="topic_tools" type="throttle" args="messages /sensor/imu/raw/data 100 /sensor/imu/raw_slow" /> -->
 		    <!-- fixture changing and z-axis drift filtering. -->
-   		    <node name="angle_correction" pkg="imu_angle_correction" type="imu_angle_correction" required="true">
+   		    <node name="angle_correction" pkg="imu_angle_correction" type="imu_angle_correction" required="true" launch-prefix="nice -n 0">
 		        <remap from="imu_raw_in" to="raw/data"/>
 <!-- 		        <remap from="imu_raw_in" to="raw_slow"/> -->
    		        <remap from="imu_base_out" to="base"/>
@@ -54,7 +54,7 @@
 		    </node>
 		    
    		    <!-- IMUのドリフト補正。関節が動いていない時に重力方向周りのジャイロドリフトを補正する。 -->
-		    <node name="drift_correction" pkg="imu_drift_correction" type="imu_drift_correction" required="true">
+		    <node name="drift_correction" pkg="imu_drift_correction" type="imu_drift_correction" required="true" launch-prefix="nice -n 0">
 		        <remap from="imu_raw_in" to="base"/>
    		        <remap from="imu_quaternion_in" to="madgwick"/>
    		        <remap from="imu_drift_correction_out" to="drift"/>
@@ -63,7 +63,7 @@
 		    </node>
 
    			<!-- Madgwick filter calculates quaternion from imu raw data -->
-		    <node name="imu_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true">
+		    <node name="imu_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true" launch-prefix="nice -n 0">
 <!-- 		        <remap from="imu/data_raw" to="raw/data"/> -->
 <!-- 		        <remap from="imu/data_raw" to="base"/> -->
 		        <remap from="imu/data_raw" to="drift"/>
@@ -76,7 +76,7 @@
 		    </node>
 		    
 			<!-- publish euler -->
-		    <node name="euler_publisher" pkg="imu_euler_publisher" type="imu_euler_publisher" required="true">
+		    <node name="euler_publisher" pkg="imu_euler_publisher" type="imu_euler_publisher" required="true" launch-prefix="nice -n 0">
 		        <remap from="imu_quaternion_in" to="madgwick"/>
 		        <remap from="euler_out" to="madgwick_euler"/>
 		    </node>
@@ -101,21 +101,17 @@
 					<!-- <param name="angle_min" value="-2.2" /> -->
 					<!-- <param name="angle_max" value="2.2" /> -->
 				</node>
-				
 				<node name="urg_r_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_r.yaml" />
 				   <remap from="scan" to="scan_raw" />
 				   <remap from="scan_filtered" to="scan" />
 				</node>
-				
 				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
 				   <remap from="scan" to="scan" />
 				   <remap from="scan_filtered" to="scan_inside" />
 				</node>
-				
 			</group>
-			
 			<!-- Left LiDAR -->
 			<group ns="left">
 				<!-- Connect under USB-Serial -->
@@ -144,13 +140,12 @@
 				</node>
 			</group>
 		</group>
-		
 	</group>
+
 	
 	<!-- Odometry nodes -->
 	<group ns="odom">
-	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true">
-	    </node>
+	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true" launch-prefix="nice -n 0" />
    	    <node name="odometry" pkg="ginko_odom" type="ginko_odom" required="true">
 			<remap from="~imu_height_in" to="/odom/odom_foot/imu_height_out"/>
 			<remap from="~imu_height_vel_in" to="/odom/odom_foot/imu_height_vel_out"/>

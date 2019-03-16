@@ -9,7 +9,7 @@
 
 //GinkoControler here
 GinkoOffsets::GinkoOffsets(){
-	initOffsetsReconfigure();
+//	initOffsetsReconfigure();
 	initPublisher();
 	initSubscriber();
 	ROS_INFO("GinkoOffsetsReconfigure : Init OK!");
@@ -20,12 +20,14 @@ GinkoOffsets::~GinkoOffsets() {
 
 }
 void GinkoOffsets::initPublisher() {
-	joint_states_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states_ofs", 1);
-	goal_joint_position_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("goal_joint_position_ofs", 1);
+	joint_states_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states_ofs", 10);
+	goal_joint_position_ofs_pub_ = node_handle_.advertise<sensor_msgs::JointState>("goal_joint_position_ofs", 10);
 }
 void GinkoOffsets::initSubscriber() {
-	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 1,&GinkoOffsets::getJointStatesCallback, this);
-	goal_joint_position_sub_  = node_handle_.subscribe("goal_joint_position_in", 1, &GinkoOffsets::getGoalJointCallback, this);
+	ros::TransportHints transport_hints;
+	transport_hints.tcpNoDelay(true);
+	joint_states_sub_ = node_handle_.subscribe("joint_states_in", 10,&GinkoOffsets::getJointStatesCallback, this, transport_hints);
+	goal_joint_position_sub_  = node_handle_.subscribe("goal_joint_position_in", 10, &GinkoOffsets::getGoalJointCallback, this, transport_hints);
 }
 void GinkoOffsets::initOffsetsReconfigure() {
 //	ここに宣言すると共有化に失敗してコールバックが呼ばれない。プライベート変数に入れた。
@@ -80,7 +82,7 @@ void GinkoOffsets::getJointStatesCallback(const sensor_msgs::JointState::ConstPt
 	sensor_msgs::JointState joint_state_in = *msg;
 	sensor_msgs::JointState joint_state_out;
 	joint_state_out.header.frame_id = joint_state_in.header.frame_id;
-	joint_state_out.header.stamp = ros::Time::now();//joint_state_in.header.stamp;
+	joint_state_out.header.stamp = joint_state_in.header.stamp;
 	joint_state_out.name = joint_state_in.name;
 	joint_state_out.velocity = joint_state_in.velocity;
 	joint_state_out.effort = joint_state_in.effort;

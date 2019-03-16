@@ -2,18 +2,17 @@
 
 //FootGrounding here
 FootGrounding::FootGrounding(ros::NodeHandle main_nh){
-	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
-	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
-	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
-	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
-
 	readParams(main_nh);
 //	initSubscriber(main_nh);
 	initPublisher(main_nh);
 
-	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
-	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(1.0));
-	sleep(1);
+	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
+	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
+	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(2.0), true));
+	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
+//	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
+//	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(1.0));
+	sleep(2);
 //	tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(1.0));
 //	tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(1.0));
 //	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
@@ -54,10 +53,12 @@ int FootGrounding::groundingMainLoop(){
 //	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(0.2));
 //	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now() - ros::Duration(0.005), ros::Duration(0.2));
 //	usleep(10000);//不要なsleep
-//	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(0.2));
+	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(0.1));
 //	tfBuffer_ptr->canTransform("leg_r_link0" ,"leg_r_link1", ros::Time::now(), ros::Duration(0.2));
-	tfBuffer_ptr->canTransform("world" ,"base", ros::Time::now(), ros::Duration(0.2));
-	tfBuffer_ptr->canTransform("body_link0" ,"body_link1", ros::Time::now(), ros::Duration(0.2));
+//	tfBuffer_ptr->canTransform("world" ,"base", ros::Time::now(), ros::Duration(0.2));
+//	tfBuffer_ptr->canTransform("world" ,imu_tf_yaw_in_name_	, ros::Time::now(), ros::Duration(1.0));
+//	tfBuffer_ptr->canTransform(imu_tf_in_name_ ,imu_tf_yaw_in_name_	, ros::Time::now(), ros::Duration(1.0));
+//	tfBuffer_ptr->canTransform("body_link0" ,"body_link1", ros::Time::now(), ros::Duration(1.0));
 //	transformStamped = tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time(0));
 //	usleep(10000);//不要なsleep
 	geometry_msgs::TransformStamped transformStampedRight;

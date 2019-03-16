@@ -18,15 +18,17 @@ void GinkoOdometry::readParams(ros::NodeHandle node_handle_){
 }
 
 void GinkoOdometry::initSubscriber(ros::NodeHandle node_handle_){
-	imu_height_sub_ = node_handle_.subscribe("imu_height_in", 1,&GinkoOdometry::getImuHeightCallback, this);
-	imu_height_vel_sub_ = node_handle_.subscribe("imu_height_vel_in", 1,&GinkoOdometry::getImuHeightVelCallback, this);
-	imu_height_acc_sub_ = node_handle_.subscribe("imu_height_acc_in", 1,&GinkoOdometry::getImuHeightAccCallback, this);
-	r_pose_sub_ = node_handle_.subscribe("r_pose_in", 1,&GinkoOdometry::getFootRightCallback, this);
-	l_pose_sub_ = node_handle_.subscribe("l_pose_in", 1,&GinkoOdometry::getFootLeftCallback, this);
-	r_ratio_sub_ = node_handle_.subscribe("r_ratio_in", 1,&GinkoOdometry::getFoorRightRatioCallback, this);
-	l_ratio_sub_ = node_handle_.subscribe("l_ratio_in", 1,&GinkoOdometry::getFoorLeftRatioCallback, this);
-	imu_sub_ = node_handle_.subscribe("imu_in", 1,&GinkoOdometry::getImuCallback, this);
-	ground_pose_sub_ = node_handle_.subscribe("ground_pose_in", 1,&GinkoOdometry::getGroundPoseCallback, this);
+	ros::TransportHints transport_hints;
+	transport_hints.tcpNoDelay(true);
+	imu_height_sub_ = node_handle_.subscribe("imu_height_in", 1,&GinkoOdometry::getImuHeightCallback, this, transport_hints);
+	imu_height_vel_sub_ = node_handle_.subscribe("imu_height_vel_in", 1,&GinkoOdometry::getImuHeightVelCallback, this, transport_hints);
+	imu_height_acc_sub_ = node_handle_.subscribe("imu_height_acc_in", 1,&GinkoOdometry::getImuHeightAccCallback, this, transport_hints);
+	r_pose_sub_ = node_handle_.subscribe("r_pose_in", 1,&GinkoOdometry::getFootRightCallback, this, transport_hints);
+	l_pose_sub_ = node_handle_.subscribe("l_pose_in", 1,&GinkoOdometry::getFootLeftCallback, this, transport_hints);
+	r_ratio_sub_ = node_handle_.subscribe("r_ratio_in", 1,&GinkoOdometry::getFoorRightRatioCallback, this, transport_hints);
+	l_ratio_sub_ = node_handle_.subscribe("l_ratio_in", 1,&GinkoOdometry::getFoorLeftRatioCallback, this, transport_hints);
+	imu_sub_ = node_handle_.subscribe("imu_in", 1,&GinkoOdometry::getImuCallback, this, transport_hints);
+	ground_pose_sub_ = node_handle_.subscribe("ground_pose_in", 1,&GinkoOdometry::getGroundPoseCallback, this, transport_hints);
 
 //	//Init TF Listener
 //	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));

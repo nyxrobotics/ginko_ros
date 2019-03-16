@@ -1,0 +1,110 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
+	<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
+	<!-- Publish Default tf2 of imu callibrated -->
+<!-- 	<arg name="imu_calibrated_tf"   default="imu_calib_link"/> -->
+<!-- 	<node name="imu_tf2_ofs" pkg="tf2_ros" type="static_transform_publisher" args="0.2 0 0 0 0 0 1 body_imu_attached_link $(arg imu_calibrated_tf)" /> -->
+
+	
+	<group ns="servo_motor">
+	    <!-- servo controller -->
+<!-- 		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" /> -->
+		<node pkg="ginko_joint_controller" type="ginko_joint_controller" name="ginko_joint_controller" required="true" output="screen">
+		    <remap from="goal_joint_position" to="servo_goal_position" />
+		    <remap from="joint_states" to="servo_joint_states" />
+<!-- 		    <remap from="goal_joint_position" to="goal_joint_position" /> -->
+<!-- 		    <remap from="joint_states" to="joint_states" /> -->
+		</node>
+  
+		
+		
+<!-- 		<include file="$(find ginko_joint_offset)/launch/ginko_joint_offset.launch" /> -->
+
+		<node pkg="ginko_joint_offset" type="ginko_joint_offset" name="ginko_joint_offset" required="true" output="screen">
+		  <rosparam command="load" file="$(find ginko_joint_offset)/cfg/servo_offsets.yaml" />
+		  <remap from="goal_joint_position_in" to="goal_joint_position" />
+		  <remap from="goal_joint_position_ofs" to="servo_goal_position" />
+		  <remap from="joint_states_in" to="servo_joint_states" />
+		  <remap from="joint_states_ofs" to="joint_states" />
+		</node>
+<!-- 		<include file="$(find joint_reconf_client)/launch/joint_reconf_client.launch" /> -->
+
+	
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"  launch-prefix="nice -n 0">
+			<param name="publish_frequency" value="100"/>
+			<param name="ignore_timestamp" value="true"/>
+	    	<!-- use_tf_staticがtrueだとめっちゃ遅くなる。60Hzくらいしか出ない。 -->
+			<param name="use_tf_static" value="false"/>
+		</node>
+	</group>
+
+	<group ns="sensor">
+		<!-- IMU -->
+		<group ns="imu">
+		    <node name="imu_reverse_tf2" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 1 body_imu_base_link body_imu_reverse" />
+			<node name="imu_yaw_tf2" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 1 body_imu_base_link body_imu_yaw" />	
+		</group>
+	</group>
+	
+	<!-- Odometry nodes -->
+	<group ns="odom">
+	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true" launch-prefix="nice -n 0">
+	    </node>
+		<node name="odom_tf2" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 1 body_imu_base_link odom" />
+	</group>
+	
+<!-- 	<include file="$(find roboone_ring_tf)/launch/roboone_ring.launch" /> -->
+<!-- 	<include file="$(find urg_nearest_detector)/launch/urg_nearest.launch" /> -->
+	
+	<!-- laser assembler(move lidar -> create pointcloud) -->
+<!-- 	<group ns="laser_assembler"> -->
+<!-- 		<group ns="right"> -->
+<!-- 			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
+<!-- 				<remap from="scan" to="/sensor/urg/right/scan"/> -->
+<!-- 				<param name="max_scans" type="int" value="400" /> -->
+<!-- 				<param name="fixed_frame" type="string" value="odom" /> -->
+<!-- 			</node> -->
+<!-- 			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
+<!-- 				<remap from="cloud" to="right_cloud"/> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+<!-- 		<group ns="left"> -->
+<!-- 			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
+<!-- 				<remap from="scan" to="/sensor/urg/left/scan"/> -->
+<!-- 				<param name="max_scans" type="int" value="400" /> -->
+<!-- 				<param name="fixed_frame" type="string" value="odom" /> -->
+<!-- 			</node> -->
+<!-- 			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
+<!-- 				<remap from="cloud" to="left_cloud"/> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+<!-- 	</group> -->
+	
+	<!-- voxelgrid -->
+<!-- 	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/> -->
+<!-- 	<group ns="voxelgrid"> -->
+<!-- 		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" /> -->
+<!-- 		<group ns="right"> -->
+<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
+<!-- 			    <remap from="~input" to="/laser_assembler/right/right_cloud"/> -->
+<!-- 			    <remap from="~output" to="right_mark"/> -->
+<!-- 				<param name="~resolution" value="0.02" /> -->
+<!-- 				<param name="~publish_marker" value="false" /> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+	
+<!-- 		<group ns="left"> -->
+<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
+<!-- 			    <remap from="~input" to="/laser_assembler/left/left_cloud"/> -->
+<!-- 			    <remap from="~output" to="left_mark"/> -->
+<!-- 				<param name="~resolution" value="0.02" /> -->
+<!-- 				<param name="~publish_marker" value="false" /> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+<!-- 	</group> -->
+	
+
+	
+	
+</launch>
