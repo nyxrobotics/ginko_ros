@@ -6,7 +6,7 @@ scan_filter_chain:
     max_angle: 170
     neighbors: 20
     window: 1
-- name: box
+- name: box_toe
   type: LaserScanBoxFilter
   params:
     box_frame: leg_l_toe_center
@@ -16,4 +16,13 @@ scan_filter_chain:
     max_y: 0.07
     min_z: -0.1
     max_z: 0.3
-
+- name: box_knee
+  type: LaserScanBoxFilter
+  params:
+    box_frame: leg_l_link3
+    min_x: -0.2
+    max_x: 0.04
+    min_y: -0.02
+    max_y: 0.07
+    min_z: -0.2
+    max_z: 0.2
