@@ -5,6 +5,9 @@ GinkoOdometry::GinkoOdometry(ros::NodeHandle main_nh){
 	readParams(main_nh);
 	initSubscriber(main_nh);
 	initPublisher(main_nh);
+	for (int index = 0;index < 9;index++){
+		subscriber_callback_init_flag_[index] = 0;
+	}
 	usleep(100000);
 }
 
@@ -20,15 +23,15 @@ void GinkoOdometry::readParams(ros::NodeHandle node_handle_){
 void GinkoOdometry::initSubscriber(ros::NodeHandle node_handle_){
 	ros::TransportHints transport_hints;
 	transport_hints.tcpNoDelay(true);
-	imu_height_sub_ = node_handle_.subscribe("imu_height_in", 1,&GinkoOdometry::getImuHeightCallback, this, transport_hints);
-	imu_height_vel_sub_ = node_handle_.subscribe("imu_height_vel_in", 1,&GinkoOdometry::getImuHeightVelCallback, this, transport_hints);
-	imu_height_acc_sub_ = node_handle_.subscribe("imu_height_acc_in", 1,&GinkoOdometry::getImuHeightAccCallback, this, transport_hints);
-	r_pose_sub_ = node_handle_.subscribe("r_pose_in", 1,&GinkoOdometry::getFootRightCallback, this, transport_hints);
-	l_pose_sub_ = node_handle_.subscribe("l_pose_in", 1,&GinkoOdometry::getFootLeftCallback, this, transport_hints);
-	r_ratio_sub_ = node_handle_.subscribe("r_ratio_in", 1,&GinkoOdometry::getFoorRightRatioCallback, this, transport_hints);
-	l_ratio_sub_ = node_handle_.subscribe("l_ratio_in", 1,&GinkoOdometry::getFoorLeftRatioCallback, this, transport_hints);
-	imu_sub_ = node_handle_.subscribe("imu_in", 1,&GinkoOdometry::getImuCallback, this, transport_hints);
-	ground_pose_sub_ = node_handle_.subscribe("ground_pose_in", 1,&GinkoOdometry::getGroundPoseCallback, this, transport_hints);
+	imu_height_sub_ = node_handle_.subscribe("imu_height_in", 10,&GinkoOdometry::getImuHeightCallback, this, transport_hints);
+	imu_height_vel_sub_ = node_handle_.subscribe("imu_height_vel_in", 10,&GinkoOdometry::getImuHeightVelCallback, this, transport_hints);
+	imu_height_acc_sub_ = node_handle_.subscribe("imu_height_acc_in", 10,&GinkoOdometry::getImuHeightAccCallback, this, transport_hints);
+	r_pose_sub_ = node_handle_.subscribe("r_pose_in", 10,&GinkoOdometry::getFootRightCallback, this, transport_hints);
+	l_pose_sub_ = node_handle_.subscribe("l_pose_in", 10,&GinkoOdometry::getFootLeftCallback, this, transport_hints);
+	r_ratio_sub_ = node_handle_.subscribe("r_ratio_in", 10,&GinkoOdometry::getFoorRightRatioCallback, this, transport_hints);
+	l_ratio_sub_ = node_handle_.subscribe("l_ratio_in", 10,&GinkoOdometry::getFoorLeftRatioCallback, this, transport_hints);
+	imu_sub_ = node_handle_.subscribe("imu_in", 10,&GinkoOdometry::getImuCallback, this, transport_hints);
+	ground_pose_sub_ = node_handle_.subscribe("ground_pose_in", 10,&GinkoOdometry::getGroundPoseCallback, this, transport_hints);
 
 //	//Init TF Listener
 //	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
@@ -104,10 +107,16 @@ int GinkoOdometry::odomLoop(){
 
 
 	if(init_flag < 1){
+		int subscriber_ready = 1;
+		for (int index = 0;index < 9;index++){
+			subscriber_ready *= subscriber_callback_init_flag_[index];
+		}
+		if(subscriber_ready == 1){
 		//最初の一回は過去の値がないので加算をしない。
-		init_flag ++;
-		odom_x = 0.;
-		odom_y = 0.;
+			init_flag ++;
+			odom_x = 0.;
+			odom_y = 0.;
+		}
 	}else{
 		//足の動きに合わせてodomに加算
 		tf2::Vector3 right_pose_diff_rotate = right_pose - right_pose_prev;
@@ -166,28 +175,37 @@ void GinkoOdometry::odomTfPublish(const nav_msgs::Odometry odom){
 
 void GinkoOdometry::getImuHeightCallback(const std_msgs::Float32::ConstPtr& msg){
 	imu_height_data_ = *msg; //中身をコピー
+	subscriber_callback_init_flag_[0] = 1;
 }
 void GinkoOdometry::getImuHeightVelCallback(const std_msgs::Float32::ConstPtr& msg){
 	imu_height_vel_data_ = *msg;
+	subscriber_callback_init_flag_[1] = 1;
 }
 void GinkoOdometry::getImuHeightAccCallback(const std_msgs::Float32::ConstPtr& msg){
 	imu_height_acc_data_ = *msg;
+	subscriber_callback_init_flag_[2] = 1;
 }
 void GinkoOdometry::getFootRightCallback(const nav_msgs::Odometry::ConstPtr& msg){
 	r_pose_data_ = *msg;
+	subscriber_callback_init_flag_[3] = 1;
 }
 void GinkoOdometry::getFootLeftCallback(const nav_msgs::Odometry::ConstPtr& msg){
 	l_pose_data_ = *msg;
+	subscriber_callback_init_flag_[4] = 1;
 }
 void GinkoOdometry::getFoorRightRatioCallback(const std_msgs::Float32::ConstPtr& msg){
 	r_ratio_data_ = *msg;
+	subscriber_callback_init_flag_[5] = 1;
 }
 void GinkoOdometry::getFoorLeftRatioCallback(const std_msgs::Float32::ConstPtr& msg){
 	l_ratio_data_ = *msg;
+	subscriber_callback_init_flag_[6] = 1;
 }
 void GinkoOdometry::getImuCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	imu_data = *msg;
+	subscriber_callback_init_flag_[7] = 1;
 }
 void GinkoOdometry::getGroundPoseCallback(const geometry_msgs::PoseStamped::ConstPtr& msg){
 	ground_pose_data_ = *msg;
+	subscriber_callback_init_flag_[8] = 1;
 }

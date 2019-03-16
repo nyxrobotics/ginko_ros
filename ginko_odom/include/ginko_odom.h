@@ -77,6 +77,7 @@ private:
 	tf2_ros::TransformBroadcaster tfBroadcaster;
 	double odom_x = 0.;
 	double odom_y = 0.;
+	int subscriber_callback_init_flag_[9]={};
 
 public:
 	GinkoOdometry(ros::NodeHandle main_nh);

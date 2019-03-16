@@ -191,10 +191,15 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 //tasks
 decision_making::TaskResult torqueOnCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("torqueOnTask...");
+    ginko_player_.torqueEnable(1);
+    usleep(100000);
+    ginko_player_.torqueEnable(0);
+    usleep(100000);
+    ginko_player_.torqueEnable(1);
 //    sleep(1);
     ginko_player_.playPose(standing_Motion_Start,0);
 //    ginko_player_.playPose(walkFront_Motion_Start,0);
-    ginko_player_.torqueEnable(1);
+//    ginko_player_.torqueEnable(1);
     eventQueue.riseEvent("/MOTION_FINISH");
     return TaskResult::SUCCESS();
 }
@@ -251,7 +256,7 @@ decision_making::TaskResult moveUrg1Callback(string name, const FSMCallContext& 
 //    ginko_player_.playMotion(walkFront_Motion_Start);
     while(_motiomCommand == MOVE_URG){
         ROS_INFO("moveUrgLoop...");
-        ginko_player_.playMotion(move_urg2_Motion_Loop);
+//        ginko_player_.playMotion(move_urg2_Motion_Loop);
         ginko_player_.playMotion(move_urg3_Motion_Loop);
     }
     if(_motiomCommand != TORQUE_OFF){
