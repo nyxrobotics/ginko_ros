@@ -26,11 +26,13 @@ void UrgNearest::readParams(ros::NodeHandle main_nh){
 }
 
 void UrgNearest::initPublisher() {
-	target_pose_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("target_pose", 1);
+	target_pose_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("target_pose", 10);
 
 }
 void UrgNearest::initSubscriber() {
-	urg_sub_ = node_handle_.subscribe("scan", 1,&UrgNearest::getLaserScanCallback, this);
+	ros::TransportHints transport_hints;
+	transport_hints.tcpNoDelay(true);
+	urg_sub_ = node_handle_.subscribe("scan", 10,&UrgNearest::getLaserScanCallback, this, transport_hints);
 }
 
 void UrgNearest::initTF2() {

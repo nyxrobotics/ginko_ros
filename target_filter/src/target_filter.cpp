@@ -24,11 +24,13 @@ void TargetFilter::readParams(ros::NodeHandle main_nh){
 }
 
 void TargetFilter::initPublisher() {
-	target_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("target_out", 1);
+	target_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("target_out", 10);
 }
 void TargetFilter::initSubscriber() {
-	r_target_sub_ = node_handle_.subscribe("target_r", 1, &TargetFilter::getRightTargetCallback, this);
-	l_target_sub_ = node_handle_.subscribe("target_l", 1, &TargetFilter::getLeftTargetCallback, this);
+	ros::TransportHints transport_hints;
+	transport_hints.tcpNoDelay(true);
+	r_target_sub_ = node_handle_.subscribe("target_r", 10, &TargetFilter::getRightTargetCallback, this, transport_hints);
+	l_target_sub_ = node_handle_.subscribe("target_l", 10, &TargetFilter::getLeftTargetCallback, this, transport_hints);
 }
 
 void TargetFilter::initTF2() {

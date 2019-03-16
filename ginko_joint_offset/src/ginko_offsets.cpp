@@ -9,7 +9,7 @@
 
 //GinkoControler here
 GinkoOffsets::GinkoOffsets(){
-//	initOffsetsReconfigure();
+	initOffsetsReconfigure();
 	initPublisher();
 	initSubscriber();
 	ROS_INFO("GinkoOffsetsReconfigure : Init OK!");

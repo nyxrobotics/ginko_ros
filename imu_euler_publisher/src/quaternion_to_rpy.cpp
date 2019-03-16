@@ -10,7 +10,9 @@ ImuRpy::~ImuRpy() {
 }
 
 void ImuRpy::initSubscriber(){
-	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 1,&ImuRpy::getQuaternionCallback, this);
+	ros::TransportHints transport_hints;
+	transport_hints.tcpNoDelay(true);
+	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 1,&ImuRpy::getQuaternionCallback, this, transport_hints);
 //	ROS_FATAL("ImuRpy:Subscriber Initialized");
 }
 void ImuRpy::initPublisher(){
