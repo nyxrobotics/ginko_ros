@@ -1,0 +1,8 @@
+<launch>
+	<group ns="battle">
+	    <node name="battle_node" pkg="ginko_battle_planner" type="ginko_battle_planner" required="true">
+			<remap from="~motion_command_out" to="/motion_command" />
+			<remap from="~imu_quaternion_in" to="/sensor/imu/madgwick" />
+	    </node>
+	</group>
+</launch>

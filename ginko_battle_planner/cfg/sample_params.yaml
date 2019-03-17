@@ -1,0 +1,13 @@
+# Example configuration:
+# - velocity limits are around a 10% above the physical limits
+# - acceleration limits are just low enough to avoid jerking
+
+#Drift correction starting threshold.
+drift_thresh: 0.99
+publish_debug_topic: true
+
+
+
+
+
+
