@@ -38,6 +38,7 @@ private:
 	int battle_command_ready_ = 0;
 	int battle_command_update_ = 0;
 	ros::Publisher motion_command_pub_;
+	std_msgs::String motion_command_;
 
 	sensor_msgs::Imu imu_quaternion_;
 	std_msgs::String battle_command_;
