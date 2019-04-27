@@ -1,6 +1,6 @@
 <launch>
 	<!-- Dummy TFs of ring edge -->
-	<arg name="large_ring" default="1"/>
+	<arg name="large_ring" default="0"/>
 	<group ns="roboone_ring">
 		<group if="$(arg large_ring)">
 			<node name="ring_tf" pkg="tf2_ros" type="static_transform_publisher" args="0.9 0 0 0 0 0 1 odom ring" />

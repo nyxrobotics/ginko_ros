@@ -1,0 +1,48 @@
+<launch>
+	<group ns="fsm_ginko">
+	    <!-- ================================================================== -->
+	    <!-- == Arguments ===================================================== -->
+	    <!-- ================================================================== -->
+		<arg name="example_name" default="fsm_ginko"/>
+		<arg name="events" default="true" />
+		<arg name="gui" default="false" />
+	
+	
+	    <!-- ================================================================== -->
+	    <!-- == Decision making node ========================================== -->
+	    <!-- ================================================================== -->
+		<node
+	      pkg="ginko_motion_player"
+	      type="$(arg example_name)"
+	      name="$(arg example_name)"
+	      required="true"
+	      output="screen">
+			<remap from="goal_joint_position" to="/servo_motor/goal_joint_position"/>
+			<remap from="torque_enable"       to="/servo_motor/torque_enable"/>
+		</node>
+	
+	    <!-- ================================================================== -->
+	    <!-- == Events publisher ============================================== -->
+	    <!-- ================================================================== -->
+	    <node 
+	        if="$(arg events)" 
+	        pkg="ginko_motion_player" 
+	        name="$(arg example_name)_events" 
+	        type="$(arg example_name)_events" 
+	        output="screen" />
+	
+	
+	    <!-- ================================================================== -->
+	    <!-- == Decision making rqt visualization plugin ====================== -->
+	    <!-- ================================================================== -->
+	    <node 
+	        if="$(arg gui)" 
+	        name="rqt" 
+	        pkg="rqt_gui" 
+	        type="rqt_gui" 
+	        args="-s rqt_decision_graph" 
+	        output="screen" />
+
+
+	</group>
+</launch>

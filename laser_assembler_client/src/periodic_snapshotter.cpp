@@ -42,7 +42,7 @@ public:
 		AssembleScans srv;
 //    srv.request.begin = e.last_real;
 		srv.request.end = e.current_real;
-		srv.request.begin = srv.request.end - ros::Duration(5.0);
+		srv.request.begin = srv.request.end - ros::Duration(2.0);
 
 		// Make the service call
 		if (client_.call(srv)) {

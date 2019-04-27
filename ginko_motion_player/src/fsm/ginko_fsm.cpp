@@ -317,12 +317,12 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 decision_making::TaskResult torqueOnCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("torqueOnTask...");
     ginko_player_.torqueEnable(1);
-    usleep(10000);
+    usleep(100000);
     ginko_player_.torqueEnable(0);
 //    usleep(100000);
     sleep(1);
     ginko_player_.torqueEnable(1);
-    usleep(10000);
+    usleep(100000);
 //    sleep(1);
 //    ginko_player_.playPose(standing_Motion_Start,0);
     ginko_player_.playPose(standing_Motion_Loop,0);
@@ -342,7 +342,7 @@ decision_making::TaskResult torqueOffCallback(string name, const FSMCallContext&
 decision_making::TaskResult standingCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("standingTask...");
 //    sleep(1);
-    ginko_player_.playPose(standing_Motion_Start,0);
+//    ginko_player_.playPose(standing_Motion_Start,0);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
@@ -464,6 +464,7 @@ decision_making::TaskResult attackLeftBack2Callback(string name, const FSMCallCo
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
+/*
 decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("moveUrgStart...");
     ginko_player_.playMotion(move_urg3_Motion_Loop);
@@ -471,24 +472,25 @@ decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& c
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
+*/
 
-//decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-//    ROS_INFO("moveUrgStart...");
-////    ginko_player_.playMotion(walkFront_Motion_Start);
-//    while(_motiomCommand == MOVE_URG){
-//        ROS_INFO("moveUrgLoop...");
-////        ginko_player_.playMotion(move_urg2_Motion_Loop);
-//        ginko_player_.playMotion(move_urg3_Motion_Loop);
-//    }
-//    if(_motiomCommand != TORQUE_OFF){
-//        ROS_INFO("moveUrgEnd...");
-////        ginko_player_.playMotion(walkFront_Motion_End);
-//    }
-//    ginko_timer_.msleepCyclic(1000);
-//    eventQueue.riseEvent("/MOTION_FINISH");
-//    _motiomCommandChanged = 0;
-//    return TaskResult::SUCCESS();
-//}
+decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("moveUrgStart...");
+//    ginko_player_.playMotion(walkFront_Motion_Start);
+    while(_motiomCommand == MOVE_URG){
+        ROS_INFO("moveUrgLoop...");
+//        ginko_player_.playMotion(move_urg2_Motion_Loop);
+        ginko_player_.playMotion(move_urg3_Motion_Loop);
+    }
+    if(_motiomCommand != TORQUE_OFF){
+        ROS_INFO("moveUrgEnd...");
+//        ginko_player_.playMotion(walkFront_Motion_End);
+    }
+    ginko_timer_.msleepCyclic(1000);
+    eventQueue.riseEvent("/MOTION_FINISH");
+    _motiomCommandChanged = 0;
+    return TaskResult::SUCCESS();
+}
 
 
 
