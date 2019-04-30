@@ -31,18 +31,18 @@
 			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>3</maxContacts>
-			<selfCollide>true</selfCollide>
+			<selfCollide>false</selfCollide>
 		</gazebo>
 		<!-- knee -->
-<!-- 		<gazebo reference="${name}_link3">
+		<gazebo reference="${name}_link3">
 			<kp>10000.0</kp>
 			<kd>0.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
-			<maxContacts>3</maxContacts>
-			<selfCollide>true</selfCollide>
-		</gazebo> -->
+			<maxContacts>10</maxContacts>
+			<selfCollide>false</selfCollide>
+		</gazebo>
 		<!-- parallel link (lower-1st) -->
 <!-- 		<gazebo reference="${name}_link4">
 			<kp>10000.0</kp>
@@ -119,10 +119,20 @@
 		<!-- parallel link (upper-2nd) -->
 		<gazebo>
 			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
-				<joint>leg_l_joint1</joint>
-				<mimicJoint>leg_l_joint2</mimicJoint>
-				<link>leg_l_link1</link>
-				<mimicLink>leg_l_link2</mimicLink>
+				<joint>${name}_joint1</joint>
+				<mimicJoint>${name}_joint2</mimicJoint>
+				<link>${name}_link1</link>
+				<mimicLink>${name}_link2</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo>
+		<!-- knee -->
+		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint1</joint>
+				<mimicJoint>${name}_joint3</mimicJoint>
+				<link>${name}_link1</link>
+				<mimicLink>${name}_link3</mimicLink>
 				<multiplier>1.0</multiplier>
 			</plugin>
 		</gazebo>

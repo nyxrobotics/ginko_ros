@@ -19,12 +19,11 @@
   <link name="base"/>
 
   <xacro:body name="body" parent="base"/>
-  <!-- <xacro:body_gazebo name="body"/> -->
-  <!-- <xacro:arm_l name="arm_l" parent="body_arm_l_link"/> -->
-  <xacro:arm_l name="arm_l" parent="body_link0"/>
+  <xacro:body_gazebo name="body"/>
+<!--   <xacro:arm_l name="arm_l" parent="body_link0"/>
   <xacro:arm_l_gazebo name="arm_l"/>
   <xacro:arm_r name="arm_r" parent="body_link0"/>
-  <xacro:arm_r_gazebo name="arm_r"/>
+  <xacro:arm_r_gazebo name="arm_r"/> -->
 
   <xacro:leg_l name="leg_l" parent="body_link1"/>
   <xacro:leg_l_gazebo name="leg_l"/>

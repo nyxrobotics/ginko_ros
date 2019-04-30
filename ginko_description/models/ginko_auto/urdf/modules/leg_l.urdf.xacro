@@ -111,17 +111,18 @@
 
 
 		<!-- knee -->
-<!-- 		<link name="${name}_link3">
+		<link name="${name}_link3">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
+	    		<geometry>
 					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link05_l_knee.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link05_l_knee.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link05_l_knee.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link05_l_knee.dae"/> -->
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -136,7 +137,7 @@
 	    	<origin xyz="0.1 0.0 0.0" rpy="0 -0.7854 0"/>
 	    	<axis xyz="0 1 0"/>
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	  	</joint> -->
+	  	</joint>
 
 
 		<!-- parallel link (lower-1st) -->
