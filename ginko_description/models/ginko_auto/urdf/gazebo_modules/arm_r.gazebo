@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 
-<robot name="arm_l" xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="arm_l_gazebo" params="name">
+<robot name="arm_r" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:macro name="arm_r_gazebo" params="name">
 		<!-- shoulder pitch. -->
 
 		<gazebo reference="${name}_link0">

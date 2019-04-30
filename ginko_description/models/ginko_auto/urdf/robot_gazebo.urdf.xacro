@@ -4,7 +4,8 @@
   <xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/gazebo_modules/body.gazebo"/>
   <xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/modules/arm_l.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/gazebo_modules/arm_l.gazebo"/>
-
+  <xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/modules/arm_r.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/gazebo_modules/arm_r.gazebo"/>
   <!-- Import all Gazebo-customization elements, including Gazebo colors -->
   <!-- <xacro:include filename="$(find rrbot_description)/urdf/rrbot.gazebo" /> -->
   <!-- Import Rviz colors -->
@@ -18,4 +19,6 @@
   <!-- <xacro:arm_l name="arm_l" parent="body_arm_l_link"/> -->
   <xacro:arm_l name="arm_l" parent="body_link0"/>
   <xacro:arm_l_gazebo name="arm_l"/>
+  <xacro:arm_r name="arm_r" parent="body_link0"/>
+  <xacro:arm_r_gazebo name="arm_r"/>
 </robot>

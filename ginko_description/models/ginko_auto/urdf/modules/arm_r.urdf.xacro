@@ -18,7 +18,8 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_r_arm01.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_r_arm01.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_r_arm01.dae"/> -->
 				</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -31,7 +32,7 @@
 		<joint name="${name}_joint0" type="revolute">
 		    <parent link="${parent}"/>
 			<child link="${name}_link0"/>
-		    <origin xyz="0 0 0" rpy="0 0.3927 0"/>
+		    <origin xyz="0 -0.10683 0.05115" rpy="0 0.3927 0"/>
 		    <axis xyz="0 1 0"/>
 			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
 		</joint>
@@ -50,7 +51,8 @@
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link10_r_arm02.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link10_r_arm02.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link10_r_arm02.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -92,7 +94,8 @@
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link11_r_scissor01.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link11_r_scissor01.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link11_r_scissor01.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -122,7 +125,8 @@
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link12_r_scissor02.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link12_r_scissor02.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link12_r_scissor02.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -142,18 +146,28 @@
 
 	  	<!-- LiDAR -->
 		<link name="${name}_urg_link">
+	    	<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/urg.stl"/>
+	    		</geometry>
+			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/urg.dae"/>
+	    			<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/urg.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/urg.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.16705492"/>
+				<origin xyz="-0.00014579 0.00000831 -0.02360505" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00008801"
+					ixy="0.00000000" iyy="0.00008854"
+					ixz="-0.00000049" iyz="-0.00000004" izz="0.00006019"/>
 			</inertial>
 		</link>
 		<joint name="${name}_urg_joint" type="fixed">
