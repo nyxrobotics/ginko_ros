@@ -10,23 +10,29 @@
 			<!-- Collision created from STL mesh without color -->
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/>
+				<geometry>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link01_waist.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/> -->
 				</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_l_arm01.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link01_waist.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/> -->
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_l_arm01.dae"/> -->
 				</geometry>
 			</visual>
 			<!-- nothing worth -->
-<!-- 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
-			</inertial> -->
+			<inertial>
+				<mass value="0.01356014"/>
+				<origin xyz="-0.01125790 0.00529265 0.00000000" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00000235"
+					ixy="0.00000004" iyy="0.00001670"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00001606"/>
+			</inertial>
 		</link>
 		<joint name="${name}_joint0" type="revolute">
 		    <parent link="${parent}"/>
@@ -50,14 +56,18 @@
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link10_l_arm02.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link10_l_arm02.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link10_l_arm02.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.33139947"/>
+				<origin xyz="-0.02612786 0.02650564 -0.06333369" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00115128"
+					ixy="0.00015366" iyy="0.00113572"
+					ixz="-0.00031848" iyz="-0.00037104" izz="0.00064743"/>
 			</inertial>
 		</link>
 		<joint name="${name}_joint1" type="revolute">
@@ -92,14 +102,18 @@
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link11_l_scissor01.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link11_l_scissor01.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link11_l_scissor01.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.03287850"/>
+				<origin xyz="0.08234859 -0.030246866 0.00514112" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00002277"
+					ixy="-0.00000014" iyy="0.00008197"
+					ixz="-0.00000058" iyz="-0.00000001" izz="0.00010105"/>
 			</inertial>
 		</link>
 		<joint name="${name}_joint2" type="revolute">
@@ -122,14 +136,18 @@
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link12_l_scissor02.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link12_l_scissor02.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link12_l_scissor02.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.02936110"/>
+				<origin xyz="0.07807033 0.02515230 -0.00665437" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00001452"
+					ixy="0.00000023" iyy="0.00006407"
+					ixz="-0.00000245" iyz="-0.00000002" izz="0.00008024"/>
 			</inertial>
 		</link>
 		<joint name="${name}_joint3" type="revolute">
@@ -142,18 +160,28 @@
 
 	  	<!-- LiDAR -->
 		<link name="${name}_urg_link">
+	    	<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/urg.stl"/>
+	    		</geometry>
+			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/urg.dae"/>
+	    			<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/urg.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/urg.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.16705492"/>
+				<origin xyz="-0.00014579 0.00000831 -0.02360505" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00008801"
+					ixy="0.00000000" iyy="0.00008854"
+					ixz="-0.00000049" iyz="-0.00000004" izz="0.00006019"/>
 			</inertial>
 		</link>
 		<joint name="${name}_urg_joint" type="fixed">
