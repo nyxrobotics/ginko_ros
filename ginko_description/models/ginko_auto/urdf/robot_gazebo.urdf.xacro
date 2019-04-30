@@ -13,9 +13,9 @@
   <!-- Used for fixing robot to Gazebo 'base_link' -->
   <link name="base"/>
 
-  <!-- <xacro:body name="body" parent="base"/> -->
+  <xacro:body name="body" parent="base"/>
   <!-- <xacro:body_gazebo name="body"/> -->
-<!--   <xacro:arm_l name="arm_l" parent="body_arm_l_link"/> -->
-  <xacro:arm_l name="arm_l" parent="base"/>
-  <!-- <xacro:arm_l_gazebo name="arm_l"/> -->
+  <!-- <xacro:arm_l name="arm_l" parent="body_arm_l_link"/> -->
+  <xacro:arm_l name="arm_l" parent="body_link0"/>
+  <xacro:arm_l_gazebo name="arm_l"/>
 </robot>

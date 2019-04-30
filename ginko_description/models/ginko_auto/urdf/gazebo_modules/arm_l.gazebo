@@ -6,39 +6,39 @@
 		<!-- shoulder pitch. -->
 
 		<gazebo reference="${name}_link0">
-			<kp>100000.0</kp>
+			<kp>10000.0</kp>
 			<kd>0.0</kd>
 			<mu1>0.0</mu1>
-			<maxVel>10.0</maxVel>
+			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
 			<selfCollide>false</selfCollide>
 		</gazebo>
 		<!-- shoulder roll -->
 		<gazebo reference="${name}_link1">
-			<kp>100000.0</kp>
+			<kp>10000.0</kp>
 			<kd>0.0</kd>
 			<mu1>0.0</mu1>
-			<maxVel>10.0</maxVel>
+			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
 			<selfCollide>true</selfCollide>
 		</gazebo>
 		<!-- scissors -->
 		<gazebo reference="${name}_link2">
-			<kp>100000.0</kp>
+			<kp>10000.0</kp>
 			<kd>0.0</kd>
 			<mu1>0.0</mu1>
-			<maxVel>10.0</maxVel>
+			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
 			<selfCollide>true</selfCollide>
 		</gazebo>
 		<gazebo reference="${name}_link3">
-			<kp>100000.0</kp>
+			<kp>10000.0</kp>
 			<kd>0.0</kd>
 			<mu1>0.0</mu1>
-			<maxVel>10.0</maxVel>
+			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
 			<selfCollide>true</selfCollide>
@@ -66,7 +66,7 @@
 				<mechanicalReduction>1</mechanicalReduction>
 			</actuator>
 		</transmission>
-		
+
 <!-- 		<transmission name="${name}_tran1_rev">
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${name}_joint1_rev">

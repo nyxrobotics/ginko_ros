@@ -11,16 +11,16 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link01_waist.stl"/>
-					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/> -->
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link01_waist.stl"/> -->
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/>
 				</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link01_waist.stl"/>
-					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/> -->
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link01_waist.stl"/> -->
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_l_arm01.stl"/>
 					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_l_arm01.dae"/> -->
 				</geometry>
 			</visual>
@@ -37,7 +37,7 @@
 		<joint name="${name}_joint0" type="revolute">
 		    <parent link="${parent}"/>
 			<child link="${name}_link0"/>
-		    <origin xyz="0 0 0" rpy="0 0.3927 0"/>
+		    <origin xyz="0 0.10683 0.05115" rpy="0 0.3927 0"/>
 		    <axis xyz="0 -1 0"/>
 			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
 		</joint>
