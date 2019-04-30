@@ -18,14 +18,18 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link00_chest.dae"/>
+					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link00_chest.stl"/>
+					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link00_chest.dae"/> -->
 				</geometry>
 			</visual>
-			<!-- nothing worth -->
+
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.45002697"/>
+				<origin xyz="0.00026100 0.00002855 0.04624115" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00220956"
+					ixy="-0.00000074" iyy="0.00093793"
+					ixz="0.00003667" iyz="-0.00000052" izz="0.00247546"/>
 			</inertial>
 		</link>
 		<joint name="${name}_joint0" type="fixed">
@@ -52,11 +56,14 @@
 					<mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link01_waist.dae"/>
 	    		</geometry>
 			</visual>
-			<!-- nothing worth -->
+
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.33312665"/>
+				<origin xyz="-0.01135452 -0.00000134 -0.02720222" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00015328"
+					ixy="0.00000003" iyy="0.00073745"
+					ixz="0.00001078" iyz="0.00000000" izz="0.00073107"/>
 			</inertial>
 		</link>
 		<joint name="${name}_joint1" type="revolute">
