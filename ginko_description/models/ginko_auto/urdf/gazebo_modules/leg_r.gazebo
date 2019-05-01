@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 
-<robot name="leg_l" xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="leg_l_gazebo" params="name">
+<robot name="leg_r" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:macro name="leg_r_gazebo" params="name">
 		<!-- Link conencts from body. Femoral first. -->
 		<gazebo reference="${name}_link0">
 			<kp>10000.0</kp>

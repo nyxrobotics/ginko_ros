@@ -95,13 +95,13 @@
 		    <axis xyz="0 1 0"/>
 		</joint> -->
 
-		<link name="${name}_leg_r_link"/>
+<!-- 		<link name="${name}_leg_r_link"/>
 		<joint name="${name}_joint4" type="fixed">
 		    <parent link="${name}_link1"/>
 			<child link="${name}_leg_r_link"/>
 		    <origin xyz="0.0205 0.0 -0.0409" rpy="0 0 0"/>
 		    <axis xyz="0 1 0"/>
-		</joint>
+		</joint> -->
 
 <!-- 		<link name="${name}_leg_l_link"/>
 		<joint name="${name}_joint5" type="fixed">

@@ -16,13 +16,14 @@
 		</link> -->
 
 		<gazebo reference="${name}_link0">
-			<kp>100000.0</kp>
+			<kp>1000.0</kp>
 			<kd>0.0</kd>
 			<mu1>0.3</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
-			<selfCollide>false</selfCollide>
+			<selfCollide>true</selfCollide>
+			<dampingFactor>0.01</dampingFactor>
 		</gazebo>
 
 		<transmission name="${name}_tran0">
@@ -48,13 +49,14 @@
 			</inertial>
 		</link> -->
 		<gazebo reference="${name}_link1">
-			<kp>100000.0</kp>
+			<kp>10000.0</kp>
 			<kd>0.0</kd>
 			<mu1>0.3</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
 			<selfCollide>false</selfCollide>
+			<dampingFactor>0.01</dampingFactor>
 		</gazebo>
 	</xacro:macro>
 </robot>

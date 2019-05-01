@@ -126,9 +126,12 @@
 	    		</geometry>
 			</visual>
 			<inertial>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-				<mass value="6.1"/>
-				<inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+				<mass value="0.01781176"/>
+				<origin xyz="0.00393357 0.02364163 -0.01930000" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00001301"
+					ixy="0.00000008" iyy="0.00000700"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00001388"/>
 			</inertial>
 		</link>
 		<joint name="${name}_joint3" type="revolute">
@@ -297,7 +300,7 @@
 	  	</joint>
 
  <!-- toe edges -->
-<!-- 		<link name="${name}_toe_link0"/>
+		<link name="${name}_toe_link0"/>
 		<joint name="${name}_toe_joint0" type="fixed">
 	    	<parent link="${name}_link8"/>
 	    	<child  link="${name}_toe_link0"/>
@@ -326,7 +329,7 @@
 	    	<parent link="${name}_link8"/>
 	    	<child  link="${name}_toe_center"/>
 	    	<origin xyz="0.0 0.0 -0.005" rpy="0 0 0"/>
-	  	</joint> -->
+	  	</joint>
 
 	</xacro:macro>
 </robot>

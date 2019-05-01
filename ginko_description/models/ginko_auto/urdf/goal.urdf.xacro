@@ -25,10 +25,10 @@
 
 
 	<xacro:body name="goal_body" parent="base"/>
-	<xacro:leg_r name="goal_leg_r" parent="goal_body_leg_r_link"/>
-	<xacro:leg_l name="goal_leg_l" parent="goal_body_leg_l_link"/>
-	<xacro:arm_r name="goal_arm_r" parent="goal_body_arm_r_link"/>
-	<xacro:arm_l name="goal_arm_l" parent="goal_body_arm_l_link"/>
+	<xacro:leg_r name="goal_leg_r" parent="goal_body_link1"/>
+	<xacro:leg_l name="goal_leg_l" parent="goal_body_link1"/>
+	<xacro:arm_r name="goal_arm_r" parent="goal_body_link0"/>
+	<xacro:arm_l name="goal_arm_l" parent="goal_body_link0"/>
 
 	<!-- <xacro:include filename="robot.transmission.xacro" /> -->
 	<!-- <xacro:include filename="robot.gazebo.xacro" /> -->
