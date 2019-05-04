@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<robot name="ginko" xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:include filename="$(find ginko_description)/models/ginko_auto/urdf/modules/leg_l_sdf.urdf.xacro"/>
-	<link name="base"/>
-	<xacro:leg_l name="leg_l" parent="base"/>
-</robot>

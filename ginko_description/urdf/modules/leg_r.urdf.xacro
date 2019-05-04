@@ -10,13 +10,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link02_r_femoral.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link02_r_femoral.stl"/>
 				</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link02_r_femoral.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link02_r_femoral.stl"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -42,13 +42,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link03_r_leg01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link03_r_leg01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -73,13 +73,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link04_r_leg02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link04_r_leg02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -106,13 +106,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link05_r_knee.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link05_r_knee.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link05_r_knee.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link05_r_knee.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -139,13 +139,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link03_r_leg01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link03_r_leg01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -170,13 +170,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link04_r_leg02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link04_r_leg02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -204,13 +204,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link06_r_toe01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link06_r_toe01.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link06_r_toe01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link06_r_toe01.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -235,13 +235,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link07_r_toe02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link07_r_toe02.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link07_r_toe02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link07_r_toe02.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>
@@ -265,13 +265,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link08_r_toe03.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link08_r_toe03.stl"/>
 	    		</geometry>
 			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link08_r_toe03.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link08_r_toe03.stl"/>
 	    		</geometry>
 			</visual>
 			<inertial>

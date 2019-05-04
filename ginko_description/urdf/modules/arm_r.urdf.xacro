@@ -11,15 +11,15 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_r_arm01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link09_r_arm01.stl"/>
 				</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link09_r_arm01.stl"/>
-					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link09_r_arm01.dae"/> -->
+					<mesh filename="package://ginko_description/meshes/stl/link09_r_arm01.stl"/>
+					<!-- <mesh filename="package://ginko_description/meshes/dae/link09_r_arm01.dae"/> -->
 				</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -44,15 +44,15 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link10_r_arm02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link10_r_arm02.stl"/>
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link10_r_arm02.stl"/>
-					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link10_r_arm02.dae"/> -->
+					<mesh filename="package://ginko_description/meshes/stl/link10_r_arm02.stl"/>
+					<!-- <mesh filename="package://ginko_description/meshes/dae/link10_r_arm02.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -87,15 +87,15 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link11_r_scissor01.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link11_r_scissor01.stl"/>
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link11_r_scissor01.stl"/>
-					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link11_r_scissor01.dae"/> -->
+					<mesh filename="package://ginko_description/meshes/stl/link11_r_scissor01.stl"/>
+					<!-- <mesh filename="package://ginko_description/meshes/dae/link11_r_scissor01.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -118,15 +118,15 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link12_r_scissor02.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/link12_r_scissor02.stl"/>
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/link12_r_scissor02.stl"/>
-					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/link12_r_scissor02.dae"/> -->
+					<mesh filename="package://ginko_description/meshes/stl/link12_r_scissor02.stl"/>
+					<!-- <mesh filename="package://ginko_description/meshes/dae/link12_r_scissor02.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -149,15 +149,15 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/urg.stl"/>
+					<mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-	    			<mesh filename="package://ginko_description/models/ginko_auto/meshes/stl/urg.stl"/>
-					<!-- <mesh filename="package://ginko_description/models/ginko_auto/meshes/dae/urg.dae"/> -->
+	    			<mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
+					<!-- <mesh filename="package://ginko_description/meshes/dae/urg.dae"/> -->
 	    		</geometry>
 			</visual>
 			<!-- nothing worth -->
