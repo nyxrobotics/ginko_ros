@@ -1,5 +1,6 @@
-<sdf version='1.6'>
-  <model name='ginko'>
+<!-- <sdf version='1.6'> -->
+  <robot name="ginko">
+  <!-- <model name='ginko'> -->
     <link name='body_link0'>
       <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
@@ -2347,5 +2348,6 @@
       </axis>
     </joint>
 
-  </model>
-</sdf>
+  <!-- </model> -->
+  </robot>
+<!-- </sdf> -->

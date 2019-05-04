@@ -15,6 +15,12 @@
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r.gazebo"/>
   <!-- Used for fixing robot to Gazebo 'base_link' -->
   <!-- <link name="base"/> -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/ginko</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
 
   <xacro:body name="body" parent="base"/>
   <xacro:body_gazebo name="body"/>

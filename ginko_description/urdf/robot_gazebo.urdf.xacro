@@ -18,15 +18,9 @@
 	    <robotNamespace>/ginko</robotNamespace>
 	  </plugin>
 	</gazebo>
-	<!-- <link name="world"/> -->
+
+	<!-- <xacro:include filename="$(find ginko_description)/gazebo/sdf/robot_gazebo_sdf.urdf"/> -->
 	<link name="base"/>
-
-<!-- 	<joint name="fixed1" type="fixed">
-		<parent link="world"/>
-		<child link="base"/>
-	</joint> -->
-
-
 	<xacro:body name="body" parent="base"/>
 	<xacro:leg_r name="leg_r" parent="body_link1"/>
 	<xacro:leg_l name="leg_l" parent="body_link1"/>

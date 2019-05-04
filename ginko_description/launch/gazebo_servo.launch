@@ -5,7 +5,7 @@
 
   <!-- load the controllers -->
   <node name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-    output="screen" ns="ginko" args="
+    output="screen" args="
     body_joint1_position_controller
 
     leg_l_joint0_position_controller
@@ -26,10 +26,10 @@
   </node>
 
   <!-- convert joint states to TF transforms for rviz, etc -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+<!--   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
     respawn="false" output="screen">
     <remap from="/joint_states" to="/ginko/joint_states" />
-    <!-- <remap from="robot_description" to="/robot_description_urdf" /> -->
-  </node>
+    <remap from="robot_description" to="/robot_description_urdf" />
+  </node> -->
 
 </launch>

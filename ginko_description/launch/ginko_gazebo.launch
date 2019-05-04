@@ -22,13 +22,16 @@
 
   <!-- load model with urdf for rviz -->
   <!-- Load the URDF into the ROS Parameter Server -->
-  <param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find ginko_description)/urdf/robot_gazebo.urdf.xacro'" />
 
+  <param name="robot_description_sdf" textfile="$(find ginko_description)/gazebo/sdf/robot_gazebo.sdf" />
+  <!-- <param name="robot_description" textfile="$(find ginko_description)/gazebo/sdf/robot_gazebo_sdf.urdf" /> -->
+  <param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find ginko_description)/gazebo/pre_urdf/robot_gazebo.urdf.xacro'" />
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model rrbot -param robot_description"/> -->
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model base -x -2.5 -y 0.33 -z 0.5" />
+  <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model base -x -2.0 -y 0.33 -z 0.4" /> -->
+  <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -param robot_description_sdf -model base -x -2.0 -y 0.33 -z 0.4" />
 <!--   <include file="$(find spawn_robot_tools_pkg)/launch/spawn_sdf_robotdesc.launch">
       <arg name="robot_name" value="ginko" />
       <arg name="x" value="0.0" />
@@ -36,7 +39,23 @@
       <arg name="z" value="1.0" />
       <arg name="sdf_robot_file" value="$(find ginko_description)/gazebo/sdf/robot_gazebo.sdf" />
   </include> -->
-
+<!--   <rosparam file="$(find ginko_description)/gazebo/config/joint_control.yaml" command="load"/>
+  <node name="controller_spawner" 
+    pkg="controller_manager" 
+    type="spawner" respawn="false" output="screen"
+    args="
+    body_joint1_position_controller
+    leg_l_joint0_position_controller
+    leg_l_joint1_position_controller
+    leg_l_joint4_position_controller
+    leg_l_joint7_position_controller
+    leg_l_joint8_position_controller
+    leg_r_joint0_position_controller
+    leg_r_joint1_position_controller
+    leg_r_joint4_position_controller
+    leg_r_joint7_position_controller
+    leg_r_joint8_position_controller
+    joint_state_controller"/> -->
 
   <!-- ros_control rrbot launch file -->
   <include file="$(find ginko_description)/launch/gazebo_servo.launch" />

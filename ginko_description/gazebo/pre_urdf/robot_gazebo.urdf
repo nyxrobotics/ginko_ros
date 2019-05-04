@@ -6,6 +6,11 @@
 <robot name="ginko" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <!-- Used for fixing robot to Gazebo 'base_link' -->
   <!-- <link name="base"/> -->
+  <gazebo>
+    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+      <robotNamespace>/ginko</robotNamespace>
+    </plugin>
+  </gazebo>
   <!-- chest -->
   <link name="body_link0">
     <collision>
@@ -901,25 +906,25 @@
     </actuator>
   </transmission>
   <!-- parallel link (upper-2nd) -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_l_joint1</joint>
-      <mimicJoint>leg_l_joint2</mimicJoint>
-      <link>leg_l_link1</link>
-      <mimicLink>leg_l_link2</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint1</joint>
+				<mimicJoint>${name}_joint2</mimicJoint>
+				<link>${name}_link1</link>
+				<mimicLink>${name}_link2</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <!-- knee -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_l_joint1</joint>
-      <mimicJoint>leg_l_joint3</mimicJoint>
-      <link>leg_l_link1</link>
-      <mimicLink>leg_l_link3</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint1</joint>
+				<mimicJoint>${name}_joint3</mimicJoint>
+				<link>${name}_link1</link>
+				<mimicLink>${name}_link3</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <!-- parallel link (lower-1st) -->
   <transmission name="leg_l_tran2">
     <type>transmission_interface/SimpleTransmission</type>
@@ -932,25 +937,25 @@
     </actuator>
   </transmission>
   <!-- parallel link (lower-2nd) -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_l_joint4</joint>
-      <mimicJoint>leg_l_joint5</mimicJoint>
-      <link>leg_l_link4</link>
-      <mimicLink>leg_l_link5</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint4</joint>
+				<mimicJoint>${name}_joint5</mimicJoint>
+				<link>${name}_link4</link>
+				<mimicLink>${name}_link5</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <!-- toe -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_l_joint4</joint>
-      <mimicJoint>leg_l_joint6</mimicJoint>
-      <link>leg_l_link4</link>
-      <mimicLink>leg_l_link6</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint4</joint>
+				<mimicJoint>${name}_joint6</mimicJoint>
+				<link>${name}_link4</link>
+				<mimicLink>${name}_link6</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <transmission name="leg_l_tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_l_joint7">
@@ -1360,25 +1365,25 @@
     </actuator>
   </transmission>
   <!-- parallel link (upper-2nd) -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_r_joint1</joint>
-      <mimicJoint>leg_r_joint2</mimicJoint>
-      <link>leg_r_link1</link>
-      <mimicLink>leg_r_link2</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint1</joint>
+				<mimicJoint>${name}_joint2</mimicJoint>
+				<link>${name}_link1</link>
+				<mimicLink>${name}_link2</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <!-- knee -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_r_joint1</joint>
-      <mimicJoint>leg_r_joint3</mimicJoint>
-      <link>leg_r_link1</link>
-      <mimicLink>leg_r_link3</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint1</joint>
+				<mimicJoint>${name}_joint3</mimicJoint>
+				<link>${name}_link1</link>
+				<mimicLink>${name}_link3</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <!-- parallel link (lower-1st) -->
   <transmission name="leg_r_tran2">
     <type>transmission_interface/SimpleTransmission</type>
@@ -1391,25 +1396,25 @@
     </actuator>
   </transmission>
   <!-- parallel link (lower-2nd) -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_r_joint4</joint>
-      <mimicJoint>leg_r_joint5</mimicJoint>
-      <link>leg_r_link4</link>
-      <mimicLink>leg_r_link5</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint4</joint>
+				<mimicJoint>${name}_joint5</mimicJoint>
+				<link>${name}_link4</link>
+				<mimicLink>${name}_link5</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <!-- toe -->
-  <gazebo>
-    <plugin filename="libgazebo_mimic_plugin.so" name="mimic_plugin">
-      <joint>leg_r_joint4</joint>
-      <mimicJoint>leg_r_joint6</mimicJoint>
-      <link>leg_r_link4</link>
-      <mimicLink>leg_r_link6</mimicLink>
-      <multiplier>1.0</multiplier>
-    </plugin>
-  </gazebo>
+  <!-- 		<gazebo>
+			<plugin name="mimic_plugin" filename="libgazebo_mimic_plugin.so">
+				<joint>${name}_joint4</joint>
+				<mimicJoint>${name}_joint6</mimicJoint>
+				<link>${name}_link4</link>
+				<mimicLink>${name}_link6</mimicLink>
+				<multiplier>1.0</multiplier>
+			</plugin>
+		</gazebo> -->
   <transmission name="leg_r_tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_r_joint7">
