@@ -7,6 +7,17 @@
 	<xacro:include filename="$(find ginko_description)/urdf/modules/arm_r.urdf.xacro"/>
 	<xacro:include filename="$(find ginko_description)/urdf/modules/arm_l.urdf.xacro"/>
 
+	<xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
+	<xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_l.gazebo"/>
+	<xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_r.gazebo"/>
+	<xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_l.gazebo"/>
+	<xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r.gazebo"/>
+
+	<gazebo>
+	  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+	    <robotNamespace>/ginko</robotNamespace>
+	  </plugin>
+	</gazebo>
 	<!-- <link name="world"/> -->
 	<link name="base"/>
 
@@ -22,6 +33,11 @@
 	<xacro:arm_r name="arm_r" parent="body_link0"/>
 	<xacro:arm_l name="arm_l" parent="body_link0"/>
 
+	<xacro:body_gazebo name="body"/>
+	<xacro:arm_l_gazebo name="arm_l"/>
+	<xacro:arm_r_gazebo name="arm_r"/>
+	<xacro:leg_l_gazebo name="leg_l"/>
+	<xacro:leg_r_gazebo name="leg_r"/>
 	<!-- <xacro:include filename="robot.transmission.xacro" /> -->
 	<!-- <xacro:include filename="robot.gazebo.xacro" /> -->
   

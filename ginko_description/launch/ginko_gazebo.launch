@@ -12,7 +12,7 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <!-- add file path to GINKO -->
     <env name="GAZEBO_MODEL_PATH" value="$(find ginko_description)/../:$(optenv GAZEBO_MODEL_PATH)" /> 
-    <arg name="world_name" value="$(find rrbot_gazebo)/worlds/rrbot.world"/>
+    <arg name="world_name" value="$(find ginko_description)/worlds/default.world"/>
     <arg name="debug" value="$(arg debug)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="paused" value="$(arg paused)"/>
@@ -20,23 +20,23 @@
     <arg name="headless" value="$(arg headless)"/>
   </include>
 
-
-  <!-- reload model with urdf for rviz -->
+  <!-- load model with urdf for rviz -->
   <!-- Load the URDF into the ROS Parameter Server -->
-  <param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
+  <param name="robot_description" command="$(find xacro)/xacro.py --inorder '$(find ginko_description)/urdf/robot_gazebo.urdf.xacro'" />
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model rrbot -param robot_description"/> -->
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-<!--   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model base -x -2.5 -y 0.33 -z 0.5" /> -->
-  <include file="$(find spawn_robot_tools_pkg)/launch/spawn_sdf_robotdesc.launch">
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model base -x -2.5 -y 0.33 -z 0.5" />
+<!--   <include file="$(find spawn_robot_tools_pkg)/launch/spawn_sdf_robotdesc.launch">
       <arg name="robot_name" value="ginko" />
       <arg name="x" value="0.0" />
       <arg name="y" value="0.0" />
       <arg name="z" value="1.0" />
       <arg name="sdf_robot_file" value="$(find ginko_description)/gazebo/sdf/robot_gazebo.sdf" />
-  </include>
+  </include> -->
+
 
   <!-- ros_control rrbot launch file -->
   <include file="$(find ginko_description)/launch/gazebo_servo.launch" />

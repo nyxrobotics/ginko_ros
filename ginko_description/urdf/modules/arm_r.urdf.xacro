@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 
-<robot name="arm_r" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 	<xacro:macro name="arm_r" params="name parent">
 	<!-- <xacro:property name="name" value="leg"/> -->
 

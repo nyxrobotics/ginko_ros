@@ -34,7 +34,6 @@ ginko:
     joint: leg_l_joint8
     pid: {p: 40.0, i: 0.0, d: 0.1}
 
-
   leg_r_joint0_position_controller:
     type: effort_controllers/JointPositionController
     joint: leg_r_joint0
