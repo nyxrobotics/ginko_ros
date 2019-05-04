@@ -1,29 +1,18 @@
 <?xml version="1.0"?>
 
 
-<robot name="body" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 	<xacro:macro name="body_gazebo" params="name">
 		<!-- chest -->
-<!-- 		<link name="${name}_link0">
-			<inertial>
-				<mass value="0.45002697"/>
-				<origin xyz="0.00026100 0.00002855 0.04624115" rpy="0 0 0"/>
-				<inertia
-					ixx="0.00220956"
-					ixy="-0.00000074" iyy="0.00093793"
-					ixz="0.00003667" iyz="-0.00000052" izz="0.00247546"/>
-			</inertial>
-		</link> -->
-
 		<gazebo reference="${name}_link0">
-			<kp>1000.0</kp>
+			<kp>10000.0</kp>
 			<kd>0.0</kd>
-			<mu1>0.3</mu1>
-			<maxVel>3.0</maxVel>
+			<mu1>1.0</mu1>
+			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
-			<selfCollide>true</selfCollide>
-			<dampingFactor>0.01</dampingFactor>
+			<selfCollide>false</selfCollide>
+			<!-- <dampingFactor>0.01</dampingFactor> -->
 		</gazebo>
 
 		<transmission name="${name}_tran0">
@@ -38,25 +27,15 @@
 		</transmission>
 
 		<!-- waist -->
-<!-- 		<link name="${name}_link1">
-			<inertial>
-				<mass value="0.33312665"/>
-				<origin xyz="-0.01135452 -0.00000134 -0.02720222" rpy="0 0 0"/>
-				<inertia
-					ixx="0.00015328"
-					ixy="0.00000003" iyy="0.00073745"
-					ixz="0.00001078" iyz="0.00000000" izz="0.00073107"/>
-			</inertial>
-		</link> -->
 		<gazebo reference="${name}_link1">
 			<kp>10000.0</kp>
 			<kd>0.0</kd>
-			<mu1>0.3</mu1>
-			<maxVel>3.0</maxVel>
+			<mu1>1.0</mu1>
+			<maxVel>1.0</maxVel>
 			<minDepth>0.0001</minDepth>
 			<maxContacts>5</maxContacts>
 			<selfCollide>false</selfCollide>
-			<dampingFactor>0.01</dampingFactor>
+			<!-- <dampingFactor>0.01</dampingFactor> -->
 		</gazebo>
 	</xacro:macro>
 </robot>
