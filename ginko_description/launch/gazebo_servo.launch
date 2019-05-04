@@ -1,0 +1,32 @@
+<launch>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find ginko_description)/gazebo/config/joint_control.yaml" command="load"/>
+
+  <!-- load the controllers -->
+  <node name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="ginko" args="
+    body_joint1_position_controller
+
+    leg_l_joint0_position_controller
+    leg_l_joint1_position_controller
+    leg_l_joint4_position_controller
+    leg_l_joint7_position_controller
+    leg_l_joint8_position_controller
+
+    leg_r_joint0_position_controller
+    leg_r_joint1_position_controller
+    leg_r_joint4_position_controller
+    leg_r_joint7_position_controller
+    leg_r_joint8_position_controller
+
+    joint_state_controller
+    "/>
+
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/ginko/joint_states" />
+  </node>
+
+</launch>
