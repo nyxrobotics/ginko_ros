@@ -2,7 +2,7 @@
 
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="body" params="name parent">
+	<xacro:macro name="body_sim" params="name">
 
 		<!-- chest -->
 		<link name="${name}_link0">
@@ -27,12 +27,6 @@
 					ixz="0.000003761" iyz="-0.00000042" izz="0.00287756"/>
 			</inertial>
 		</link>
-<!-- 		<joint name="${name}_joint0" type="fixed">
-		    <parent link="${parent}"/>
-			<child link="${name}_link0"/>
-		    <origin xyz="0 0 0" rpy="0 0 0"/>
-		    <axis xyz="0 0 1"/>
-		</joint> -->
 
 		<!-- waist -->
 		<link name="${name}_link1">
@@ -62,7 +56,7 @@
 			<child  link="${name}_link1"/>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<axis xyz="0 0 1"/>
-			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
+			<limit effort="100.0" lower="-2.6" upper="2.6" velocity="10.0"/>
 		</joint>
 
 	</xacro:macro>

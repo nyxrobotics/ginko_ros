@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 
 
-<robot name="leg_r" xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="leg_r" params="name parent">
-	<!-- <xacro:property name="name" value="leg"/> -->
-
-		<!-- Link conencts from body. Femoral first. -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:macro name="leg_r_sim" params="name parent">
+		<!-- Femoral -->
 		<link name="${name}_link0">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
@@ -33,9 +31,8 @@
 			<child link="${name}_link0"/>
 		    <origin xyz="0.0205 0.0 -0.0409" rpy="0 0 0"/>
 		    <axis xyz="1 0 0"/>
-			<limit effort="1000.0" lower="-1.1781" upper="0.8" velocity="0.5"/>
+			<limit effort="100.0" lower="-1.1781" upper="0.8" velocity="10.0"/>
 		</joint>
-
 
 		<!-- parallel link (upper-1st) -->
 		<link name="${name}_link1">
@@ -65,7 +62,7 @@
 			<child  link="${name}_link1"/>
 			<origin xyz="-0.0176 -0.0175 -0.0481" rpy="0 0.7854 0"/>
 			<axis xyz="0 1 0"/>
-			<limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="0.5"/>
+			<limit effort="100.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
 		</joint>
 
 		<!-- parallel link (upper-2nd) -->
@@ -96,10 +93,8 @@
 	    	<child  link="${name}_link2"/>
 	    	<origin xyz="-0.0389 -0.0175 -0.06015" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	    	<mimic joint="${name}_joint1" multiplier="1" offset="0"/> 
+	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
-
 
 		<!-- knee -->
 		<link name="${name}_link3">
@@ -129,10 +124,8 @@
 	    	<child  link="${name}_link3"/>
 	    	<origin xyz="0.1 0.0 0.0" rpy="0 -0.7854 0"/>
 	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	    	<!-- <mimic joint="${name}_joint1" multiplier="1" offset="0"/>  -->
+	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
-
 
 		<!-- parallel link (lower-1st) -->
 		<link name="${name}_link4">
@@ -162,7 +155,7 @@
 			<child  link="${name}_link4"/>
 			<origin xyz="0 0 -0.0386" rpy="0 2.3562 0"/>
 			<axis xyz="0 1 0"/>
-			<limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="0.5"/>
+			<limit effort="100.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
 		</joint>
 
 		<!-- parallel link (lower-2nd) -->
@@ -193,11 +186,8 @@
 	    	<child  link="${name}_link5"/>
 	    	<origin xyz="-0.0213 0 -0.02655" rpy="0 2.3562 0"/>
 	    	<axis xyz="0 1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	    	<mimic joint="${name}_joint4" multiplier="1" offset="0"/> 
+	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
-
-
 
 		<!-- toe -->
 		<link name="${name}_link6">
@@ -227,8 +217,7 @@
 	    	<child  link="${name}_link6"/>
 	    	<origin xyz="0.1 0.0 0.0" rpy="0 -2.3562 0"/>
 	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="0.5"/>
-	    	<!-- <mimic joint="${name}_joint4" multiplier="1" offset="0"/>  -->
+	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
 
 		<link name="${name}_link7">
@@ -258,7 +247,7 @@
 	    	<child  link="${name}_link7"/>
 	    	<origin xyz="-0.028 -0.02475 -0.0391" rpy="0 0 0"/>
 	    	<axis xyz="-1 0 0"/>
-	    	<limit effort="1000.0" lower="-1.6" upper="1.6" velocity="0.5"/>
+	    	<limit effort="100.0" lower="-1.6" upper="1.6" velocity="10.0"/>
 	  	</joint>
 
 		<link name="${name}_link8">
@@ -288,7 +277,7 @@
 	    	<child  link="${name}_link8"/>
 	    	<origin xyz="0.0342 0 -0.04" rpy="0 0 0"/>
 	    	<axis xyz="0 0 1"/>
-	    	<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
+	    	<limit effort="100.0" lower="-2.6" upper="2.6" velocity="10.0"/>
 	  	</joint>
 
 

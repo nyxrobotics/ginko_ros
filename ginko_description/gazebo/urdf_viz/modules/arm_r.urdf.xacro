@@ -2,8 +2,7 @@
 
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="arm_r" params="name parent">
-
+	<xacro:macro name="arm_r_sim" params="name parent">
 		<!-- shoulder pitch. -->
 		<link name="${name}_link0">
 			<collision>
@@ -32,9 +31,8 @@
 			<child link="${name}_link0"/>
 		    <origin xyz="0 -0.10683 0.05115" rpy="0 0.3927 0"/>
 		    <axis xyz="0 1 0"/>
-			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
+			<limit effort="100.0" lower="-2.6" upper="2.6" velocity="10.0"/>
 		</joint>
-
 
 		<!-- shoulder roll -->
 		<link name="${name}_link1">
@@ -64,7 +62,7 @@
 			<child  link="${name}_link1"/>
 			<origin xyz="0.035 -0.0246 0" rpy="-1.1781 0 0"/>
 			<axis xyz="1 0 0"/>
-			<limit effort="1000.0" lower="-0.85" upper="1.18" velocity="0.5"/>
+			<limit effort="100.0" lower="-0.85" upper="1.18" velocity="10.0"/>
 		</joint>
 
 		<!-- scissors -->
@@ -95,7 +93,7 @@
 	    	<child  link="${name}_link2"/>
 	    	<origin xyz="0.0092 -0.0547 -0.11295" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="0.5"/>
+	    	<limit effort="100.0" lower="-2.36" upper="2.36" velocity="10.0"/>
 	  	</joint>
 
 		<link name="${name}_link3">
@@ -125,7 +123,7 @@
 	    	<child  link="${name}_link3"/>
 	    	<origin xyz="0.0092 0.0018 -0.11295" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="0.5"/>
+	    	<limit effort="100.0" lower="-2.36" upper="2.36" velocity="10.0"/>
 	  	</joint>
 
 	  	<!-- LiDAR -->

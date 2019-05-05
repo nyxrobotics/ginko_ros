@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <robot name="ginko" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find ginko_description)/gazebo/pre_urdf/modules/body.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_viz/modules/body.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
 
-  <xacro:include filename="$(find ginko_description)/gazebo/pre_urdf/modules/arm_l.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_viz/modules/arm_l.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_l.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/pre_urdf/modules/arm_r.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_viz/modules/arm_r.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_r.gazebo"/>
 
-  <xacro:include filename="$(find ginko_description)/gazebo/pre_urdf/modules/leg_l.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_viz/modules/leg_l.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_l.gazebo"/>
 
-  <xacro:include filename="$(find ginko_description)/gazebo/pre_urdf/modules/leg_r.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_viz/modules/leg_r.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r.gazebo"/>
   <!-- Used for fixing robot to Gazebo 'base_link' -->
   <!-- <link name="base"/> -->
@@ -22,16 +22,16 @@
     </plugin>
   </gazebo>
 
-  <xacro:body name="body" parent="base"/>
+  <xacro:body_viz name="body" parent="base"/>
   <xacro:body_gazebo name="body"/>
 
-  <xacro:arm_l name="arm_l" parent="body_link0"/>
+  <xacro:arm_l_viz name="arm_l" parent="body_link0"/>
   <xacro:arm_l_gazebo name="arm_l"/>
-  <xacro:arm_r name="arm_r" parent="body_link0"/>
+  <xacro:arm_r_viz name="arm_r" parent="body_link0"/>
   <xacro:arm_r_gazebo name="arm_r"/>
 
-  <xacro:leg_l name="leg_l" parent="body_link1"/>
+  <xacro:leg_l_viz name="leg_l" parent="body_link1"/>
   <xacro:leg_l_gazebo name="leg_l"/>
-  <xacro:leg_r name="leg_r" parent="body_link1"/>
+  <xacro:leg_r_viz name="leg_r" parent="body_link1"/>
   <xacro:leg_r_gazebo name="leg_r"/>
 </robot>
