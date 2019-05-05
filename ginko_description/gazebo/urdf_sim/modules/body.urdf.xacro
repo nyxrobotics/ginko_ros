@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:macro name="body" params="name parent">
+
+		<!-- chest -->
+		<link name="${name}_link0">
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
+				</geometry>
+			</collision>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
+				</geometry>
+			</visual>
+			<inertial>
+				<mass value="1.41502697"/>
+				<origin xyz="0.00008301 0.00000908 0.03819562" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00248548"
+					ixy="-0.00000074" iyy="0.00121388"
+					ixz="0.000003761" iyz="-0.00000042" izz="0.00287756"/>
+			</inertial>
+		</link>
+<!-- 		<joint name="${name}_joint0" type="fixed">
+		    <parent link="${parent}"/>
+			<child link="${name}_link0"/>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <axis xyz="0 0 1"/>
+		</joint> -->
+
+		<!-- waist -->
+		<link name="${name}_link1">
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
+	    		</geometry>
+			</collision>
+	    	<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>
+					<mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
+	    		</geometry>
+			</visual>
+			<inertial>
+				<mass value="0.33312665"/>
+				<origin xyz="-0.01135452 -0.00000134 -0.02720222" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00015328"
+					ixy="0.00000003" iyy="0.00073745"
+					ixz="0.00001078" iyz="0.00000000" izz="0.00073107"/>
+			</inertial>
+		</link>
+		<joint name="${name}_joint1" type="revolute">
+			<parent link="${name}_link0"/>
+			<child  link="${name}_link1"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 0 1"/>
+			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="0.5"/>
+		</joint>
+
+	</xacro:macro>
+</robot>
