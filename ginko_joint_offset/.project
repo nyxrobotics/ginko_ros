@@ -2,12 +2,8 @@
 <projectDescription>
 	<name>ginko_joint_offset-Source@ginko_joint_offset</name>
 	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
-	<linkedResources>
-	</linkedResources>
+	<projects></projects>
+	<buildSpec></buildSpec>
+	<natures></natures>
+	<linkedResources/>
 </projectDescription>

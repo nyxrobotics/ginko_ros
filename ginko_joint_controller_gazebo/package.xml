@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>ginko_joint_controller_gazebo</name>
+  <version>0.0.1</version>
+  <description>controll gazebo joints</description>
+
+  <maintainer email="ginko@test.org">Ginko</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>control_msgs</depend>
+  
+</package>

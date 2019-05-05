@@ -2,27 +2,8 @@
 <projectDescription>
 	<name>ginko_battle_planner-Source@ginko_battle_planner</name>
 	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
-	<linkedResources>
-		<link>
-			<name>[Subprojects]</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>[Subprojects]/gmock</name>
-			<type>2</type>
-			<location>/usr/src/gmock</location>
-		</link>
-		<link>
-			<name>[Subprojects]/gtest</name>
-			<type>2</type>
-			<location>/usr/src/gtest</location>
-		</link>
-	</linkedResources>
+	<projects></projects>
+	<buildSpec></buildSpec>
+	<natures></natures>
+	<linkedResources/>
 </projectDescription>

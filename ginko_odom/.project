@@ -2,12 +2,8 @@
 <projectDescription>
 	<name>ginko_odom-Source@ginko_odom</name>
 	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
-	<linkedResources>
-	</linkedResources>
+	<projects></projects>
+	<buildSpec></buildSpec>
+	<natures></natures>
+	<linkedResources/>
 </projectDescription>

@@ -2,12 +2,8 @@
 <projectDescription>
 	<name>imu_euler_publisher-Source@imu_euler_publisher</name>
 	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
-	<linkedResources>
-	</linkedResources>
+	<projects></projects>
+	<buildSpec></buildSpec>
+	<natures></natures>
+	<linkedResources/>
 </projectDescription>

@@ -12,6 +12,15 @@
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
     </plugin>
   </gazebo>
+
+  <link name="base_link"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="body_link0"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
   <!-- chest -->
   <link name="body_link0">
     <collision>
@@ -32,6 +41,7 @@
       <inertia ixx="0.00248548" ixy="-0.00000074" ixz="0.000003761" iyy="0.00121388" iyz="-0.00000042" izz="0.00287756"/>
     </inertial>
   </link>
+
   <!-- waist -->
   <link name="body_link1">
     <collision>
