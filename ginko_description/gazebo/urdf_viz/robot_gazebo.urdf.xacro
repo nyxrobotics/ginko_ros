@@ -22,7 +22,7 @@
     </plugin>
   </gazebo>
 
-  <xacro:body_viz name="body" parent="base"/>
+  <xacro:body_viz name="body"/>
   <xacro:body_gazebo name="body"/>
 
   <xacro:arm_l_viz name="arm_l" parent="body_link0"/>

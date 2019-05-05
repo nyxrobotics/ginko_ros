@@ -27,7 +27,7 @@
 
   <xacro:arm_l_sim name="arm_l" parent="body_link0"/>
   <xacro:arm_l_gazebo name="arm_l"/>
-  <xacro:arm_r name="arm_r" parent="body_link0"/>
+  <xacro:arm_r_sim name="arm_r" parent="body_link0"/>
   <xacro:arm_r_gazebo name="arm_r"/>
 
   <xacro:leg_l_sim name="leg_l" parent="body_link1"/>
