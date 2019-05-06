@@ -56,7 +56,7 @@ void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::C
 		}
 		for (int index2 = 0; index2 < GAZEBO_JOINT_NUM; index2++){
 			if(ginko_params_._gazebo_joint_name[index2] == joint_name){
-				ROS_INFO("gazebo_joint_controller:Name matched");
+//				ROS_INFO("gazebo_joint_controller:Name matched");
 				std_msgs::Float64 target_angle;
 				target_angle.data = msg->position.at(index);
 				gazebo_joints_pub_[index2].publish(target_angle);

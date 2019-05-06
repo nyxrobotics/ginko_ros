@@ -26,10 +26,10 @@ public:
 
 //	const uint16_t _servo_count = 25;
 	const std::string _servo_joint_name[SERVO_NUM]={
-		"leg_r_joint8" , "leg_r_joint7"    ,"leg_r_joint6"    , "leg_r_joint4" , "leg_r_joint3" , "leg_r_joint1" , "leg_r_joint0",
-		"leg_l_joint8" , "leg_l_joint7"    ,"leg_l_joint6"    , "leg_l_joint4" , "leg_l_joint3" , "leg_l_joint1" , "leg_l_joint0",
-		"arm_r_joint1" , "arm_r_joint1_rev","arm_r_joint0"    ,"arm_r_joint2"  , "arm_r_joint3" ,
-		"body_joint1"  ,"arm_l_joint"      ,"arm_l_joint1_rev", "arm_l_joint0" , "arm_l_joint2" , "arm_l_joint3"
+		"leg_r_joint8" , "leg_r_joint7"    ,"leg_r_joint6"     , "leg_r_joint4"   ,"leg_r_joint3" ,"leg_r_joint1" ,"leg_r_joint0",
+		"leg_l_joint8" , "leg_l_joint7"    ,"leg_l_joint6"     , "leg_l_joint4"   ,"leg_l_joint3" ,"leg_l_joint1" ,"leg_l_joint0",
+		"arm_r_joint0" ,"arm_r_joint1"     , "arm_r_joint1_rev","arm_r_joint2"    ,"arm_r_joint3" ,
+		"body_joint1"  ,"arm_l_joint0"     ,"arm_l_joint1"      ,"arm_l_joint1_rev","arm_l_joint2" ,"arm_l_joint3"
 	};
 	const uint16_t _servo_id[SERVO_NUM]={
 		1 ,2 ,3 ,4 ,5 ,6 ,7,

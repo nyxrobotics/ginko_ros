@@ -25,8 +25,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -83,8 +83,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -159,8 +159,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -198,8 +198,8 @@
       <axis>
         <xyz>0.923879 -0 -0.382684</xyz>
         <limit>
-          <lower>-0.85</lower>
-          <upper>1.18</upper>
+          <lower>-2.6</lower>
+          <upper>2.6</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -235,8 +235,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -311,8 +311,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -438,8 +438,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -514,8 +514,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -553,8 +553,8 @@
       <axis>
         <xyz>0.923879 0 -0.382684</xyz>
         <limit>
-          <lower>-0.85</lower>
-          <upper>1.18</upper>
+          <lower>-2.6</lower>
+          <upper>2.6</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -590,8 +590,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -666,8 +666,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -793,8 +793,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -869,8 +869,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -949,7 +949,7 @@
           <contact>
             <ode>
               <kp>1000</kp>
-              <kd>0</kd>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1027,8 +1027,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1127,7 +1127,7 @@
           <contact>
             <ode>
               <kp>1000</kp>
-              <kd>0</kd>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1205,8 +1205,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1305,8 +1305,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1384,8 +1384,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1463,8 +1463,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1542,8 +1542,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1621,8 +1621,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1701,7 +1701,7 @@
           <contact>
             <ode>
               <kp>1000</kp>
-              <kd>0</kd>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1779,8 +1779,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1878,7 +1878,7 @@
           <contact>
             <ode>
               <kp>1000</kp>
-              <kd>0</kd>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -1956,8 +1956,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -2054,8 +2054,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -2133,8 +2133,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -2212,8 +2212,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
@@ -2291,8 +2291,8 @@
         <surface>
           <contact>
             <ode>
-              <kp>10000</kp>
-              <kd>0</kd>
+              <kp>1000000.0</kp>
+              <kd>100.0</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>

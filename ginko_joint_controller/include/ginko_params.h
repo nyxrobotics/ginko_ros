@@ -31,10 +31,10 @@ public:
 	const uint16_t _servo_count[_com_count] = {7,7,5,6};
 	static const uint16_t _servo_count_max = 7; //_servo_countの要素のうち、最大値(実行ループのボトルネックになる)
 	const std::string _joint_name[_com_count][_servo_count_max]={
-			{"leg_r_joint8" , "leg_r_joint7"    ,"leg_r_joint6"    , "leg_r_joint4" , "leg_r_joint3" , "leg_r_joint1" , "leg_r_joint0"},
-			{"leg_l_joint8" , "leg_l_joint7"    ,"leg_l_joint6"    , "leg_l_joint4" , "leg_l_joint3" , "leg_l_joint1" , "leg_l_joint0"},
-			{"arm_r_joint1" , "arm_r_joint1_rev","arm_r_joint0"    ,"arm_r_joint2"  ,"arm_r_joint3" },
-			{"body_joint1"  ,"arm_l_joint"      ,"arm_l_joint1_rev", "arm_l_joint0" , "arm_l_joint2" , "arm_l_joint3" }
+			{"leg_r_joint8" , "leg_r_joint7"    ,"leg_r_joint6"    ,"leg_r_joint4"    ,"leg_r_joint3" ,"leg_r_joint1" ,"leg_r_joint0"},
+			{"leg_l_joint8" , "leg_l_joint7"    ,"leg_l_joint6"    ,"leg_l_joint4"    ,"leg_l_joint3" ,"leg_l_joint1" ,"leg_l_joint0"},
+			{"arm_r_joint0" ,"arm_r_joint1"     ,"arm_r_joint1_rev","arm_r_joint2"    ,"arm_r_joint3" },
+			{"body_joint1"  ,"arm_l_joint0"     ,"arm_l_joint1"     ,"arm_l_joint1_rev","arm_l_joint2" ,"arm_l_joint3" }
 	};
 
 	const uint16_t _servo_id[_com_count][_servo_count_max]={
