@@ -10,7 +10,7 @@
     <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
       <robotNamespace>/ginko</robotNamespace>
       <legacyModeNS>true</legacyModeNS>
-      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      <robotSimType>gazebo_ros_control/GinkoRobotHWSim</robotSimType>
     </plugin>
   </gazebo>
 
