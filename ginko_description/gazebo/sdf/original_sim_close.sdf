@@ -200,12 +200,14 @@
         <limit>
           <lower>-2.6</lower>
           <upper>2.6</upper>
-          <effort>100</effort>
+          <effort>00</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
+          <spring_reference>3.0</spring_reference>
+          <spring_stiffness>0.1</spring_stiffness>
+          <friction>0.001</friction>
+          <damping>0.01</damping>
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>

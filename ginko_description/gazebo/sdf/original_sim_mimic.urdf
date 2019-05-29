@@ -84,10 +84,10 @@
   <transmission name="body_tran0">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="body_joint1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="body_motor0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -283,40 +283,40 @@
   <transmission name="arm_l_tran0">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_l_joint0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_l_motor0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="arm_l_tran1">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_l_joint1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_l_motor1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="arm_l_tran2">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_l_joint2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_l_motor2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="arm_l_tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_l_joint3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_l_motor3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -501,40 +501,40 @@
   <transmission name="arm_r_tran0">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_r_joint0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_r_motor0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="arm_r_tran1">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_r_joint1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_r_motor1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="arm_r_tran2">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_r_joint2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_r_motor2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="arm_r_tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="arm_r_joint3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="arm_r_motor3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -884,10 +884,10 @@
   <transmission name="leg_l_tran0">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_l_joint0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_l_motor0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -895,10 +895,10 @@
   <transmission name="leg_l_tran1">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_l_joint1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_l_motor1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -906,10 +906,10 @@
   <transmission name="leg_l_tran2">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_l_joint4">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_l_motor2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -917,20 +917,20 @@
   <transmission name="leg_l_tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_l_joint7">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_l_motor3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="leg_l_tran4">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_l_joint8">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_l_motor4">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -1280,10 +1280,10 @@
   <transmission name="leg_r_tran0">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_r_joint0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_r_motor0">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -1291,10 +1291,10 @@
   <transmission name="leg_r_tran1">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_r_joint1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_r_motor1">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -1302,10 +1302,10 @@
   <transmission name="leg_r_tran2">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_r_joint4">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_r_motor2">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
@@ -1313,20 +1313,20 @@
   <transmission name="leg_r_tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_r_joint7">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_r_motor3">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="leg_r_tran4">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="leg_r_joint8">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
     </joint>
     <actuator name="leg_r_motor4">
-      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
