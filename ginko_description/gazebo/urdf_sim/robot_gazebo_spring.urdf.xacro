@@ -9,7 +9,7 @@
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_r.gazebo"/>
 
   <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/leg_l_spring.urdf.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_l_sprong.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_l_spring.gazebo"/>
 
   <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/leg_r_spring.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r_spring.gazebo"/>

@@ -94,6 +94,67 @@
 	    	<axis xyz="0 -1 0"/>
 	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
+	  	<!-- spring -->
+	  	<link name="${name}_spring_link0">
+	    	<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+	    		</geometry>
+			</collision>
+	    	<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+	    		</geometry>
+			</visual>
+			<inertial>
+				<mass value="0.00143865"/>
+				<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00000001"
+					ixy="0.00000000" iyy="0.00000060"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+			</inertial>
+		</link>
+		<joint name="${name}_spring_joint0" type="revolute">
+	    	<parent link="${name}_link0"/>
+	    	<child  link="${name}_spring_link0"/>
+	    	<origin xyz="0.022 0.0755 -0.06015" rpy="0 0.56756754 0"/>
+	    	<axis xyz="0 -1 0"/>
+	    	<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	  	</joint>
+
+	  	<link name="${name}_spring_link1">
+	    	<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+	    		</geometry>
+			</collision>
+	    	<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+	    		</geometry>
+			</visual>
+			<inertial>
+				<mass value="0.00143865"/>
+				<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00000001"
+					ixy="0.00000000" iyy="0.00000060"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+			</inertial>
+		</link>
+		<joint name="${name}_spring_joint1" type="prismatic">
+	    	<parent link="${name}_spring_link0"/>
+	    	<child  link="${name}_spring_link1"/>
+	    	<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
+	    	<axis xyz="0 -1 0"/>
+	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	  	</joint>
+
 
 		<!-- knee -->
 		<link name="${name}_link3">
@@ -187,6 +248,70 @@
 	    	<axis xyz="0 -1 0"/>
 	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
+
+
+	  	<!-- spring -->
+	  	<link name="${name}_spring_link2">
+	    	<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+	    		</geometry>
+			</collision>
+	    	<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+	    		</geometry>
+			</visual>
+			<inertial>
+				<mass value="0.00143865"/>
+				<origin xyz="0.03091683 0.0 0.0" rpy="0 2.138363867 0"/>
+				<inertia
+					ixx="0.00000001"
+					ixy="0.00000000" iyy="0.00000060"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+			</inertial>
+		</link>
+		<joint name="${name}_spring_joint2" type="revolute">
+	    	<parent link="${name}_link3"/>
+	    	<child  link="${name}_spring_link2"/>
+			<origin xyz="0 0.058 -0.0386" rpy="0 2.574025114 0"/>
+	    	<axis xyz="0 -1 0"/>
+	    	<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	  	</joint>
+
+	  	<link name="${name}_spring_link3">
+	    	<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+	    		</geometry>
+			</collision>
+	    	<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+	    		<geometry>                                                              
+					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+	    		</geometry>
+			</visual>
+			<inertial>
+				<mass value="0.00143865"/>
+				<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00000001"
+					ixy="0.00000000" iyy="0.00000060"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+			</inertial>
+		</link>
+		<joint name="${name}_spring_joint3" type="prismatic">
+	    	<parent link="${name}_spring_link2"/>
+	    	<child  link="${name}_spring_link3"/>
+	    	<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
+	    	<axis xyz="0 -1 0"/>
+	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	  	</joint>
+
+
 
 		<!-- toe -->
 		<link name="${name}_link6">

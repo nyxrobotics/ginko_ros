@@ -2,7 +2,7 @@
 <launch>
 	<arg name="gui" default="True"/>
 	<param name="robot_description"
-		command="$(find xacro)/xacro.py '$(find ginko_description)/models/ginko_auto/urdf/robot_gazebo.urdf.xacro'" />
+		command="$(find xacro)/xacro.py '$(find ginko_description)/gazebo/urdf_sim/robot_gazebo_spring.urdf.xacro'" />
 	<param name="use_gui" value="$(arg gui)"/>
 	
 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
