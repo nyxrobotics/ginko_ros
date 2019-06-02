@@ -1445,19 +1445,18 @@
         </inertia>
       </inertial>
       <collision name='leg_l_link8_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 -0.003 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_l_toe03.stl</uri>
-          </mesh>
+          <box>
+            <size>0.128 0.08 0.006</size>
+          </box>
         </geometry>
         <surface>
           <contact>
             <ode>
               <kp>1e+06</kp>
               <kd>100</kd>
-              <max_vel>3</max_vel>
+              <max_vel>10</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
           </contact>
@@ -1467,7 +1466,7 @@
             </ode>
           </friction>
         </surface>
-        <max_contacts>5</max_contacts>
+        <max_contacts>8</max_contacts>
       </collision>
       <visual name='leg_l_link8_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
@@ -1489,7 +1488,7 @@
         <linear>0.01</linear>
         <angular>0.01</angular>
       </velocity_decay>
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
     <joint name='leg_l_joint8' type='revolute'>
       <child>leg_l_link8</child>
@@ -2574,19 +2573,18 @@
         </inertia>
       </inertial>
       <collision name='leg_r_link8_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 -0.003 0 0 0</pose>
         <geometry>
-          <mesh>
-            <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_r_toe03.stl</uri>
-          </mesh>
+          <box>
+            <size>0.128 0.08 0.006</size>
+          </box>
         </geometry>
         <surface>
           <contact>
             <ode>
               <kp>1e+06</kp>
               <kd>100</kd>
-              <max_vel>3</max_vel>
+              <max_vel>10</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
           </contact>
@@ -2596,7 +2594,7 @@
             </ode>
           </friction>
         </surface>
-        <max_contacts>5</max_contacts>
+        <max_contacts>8</max_contacts>
       </collision>
       <visual name='leg_r_link8_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
@@ -2618,7 +2616,7 @@
         <linear>0.01</linear>
         <angular>0.01</angular>
       </velocity_decay>
-      <self_collide>0</self_collide>
+      <self_collide>1</self_collide>
     </link>
     <joint name='leg_r_joint8' type='revolute'>
       <child>leg_r_link8</child>
