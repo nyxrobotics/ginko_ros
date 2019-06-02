@@ -96,12 +96,12 @@
 	  	</joint>
 	  	<!-- spring -->
 	  	<link name="${name}_spring_link0">
-<!-- 	    	<collision>
+	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
 	    		</geometry>
-			</collision> -->
+			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
@@ -126,12 +126,12 @@
 	  	</joint>
 
 	  	<link name="${name}_spring_link1">
-<!-- 	    	<collision>
+	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
 	    		</geometry>
-			</collision> -->
+			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
@@ -252,12 +252,12 @@
 
 	  	<!-- spring -->
 	  	<link name="${name}_spring_link2">
-<!-- 	    	<collision>
+	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
 	    		</geometry>
-			</collision> -->
+			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
@@ -282,12 +282,12 @@
 	  	</joint>
 
 	  	<link name="${name}_spring_link3">
-<!-- 	    	<collision>
+	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
 	    		</geometry>
-			</collision> -->
+			</collision>
 	    	<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
