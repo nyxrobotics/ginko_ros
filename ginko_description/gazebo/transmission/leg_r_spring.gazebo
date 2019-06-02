@@ -5,8 +5,8 @@
 	<xacro:macro name="leg_r_gazebo" params="name">
 		<!-- Link conencts from body. Femoral first. -->
 		<gazebo reference="${name}_link0">
-			<kp>10000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -16,8 +16,8 @@
 		</gazebo>
 		<!-- parallel link (upper-1st) -->
 		<gazebo reference="${name}_link1">
-			<kp>1000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -27,8 +27,8 @@
 		</gazebo>
 		<!-- parallel link (upper-2nd) -->
 		<gazebo reference="${name}_link2">
-			<kp>10000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -38,8 +38,8 @@
 		</gazebo>
 		<!-- knee -->
 		<gazebo reference="${name}_link3">
-			<kp>10000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.3</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -49,8 +49,8 @@
 		</gazebo>
 		<!-- parallel link (lower-1st) -->
 		<gazebo reference="${name}_link4">
-			<kp>1000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -60,8 +60,8 @@
 		</gazebo>
 		<!-- parallel link (lower-2nd) -->
 		<gazebo reference="${name}_link5">
-			<kp>10000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -71,8 +71,8 @@
 		</gazebo>
 		<!-- toe -->
 		<gazebo reference="${name}_link6">
-			<kp>10000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -82,8 +82,8 @@
 		</gazebo>
 
 		<gazebo reference="${name}_link7">
-			<kp>10000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>0.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -93,8 +93,8 @@
 		</gazebo>
 
 		<gazebo reference="${name}_link8">
-			<kp>10000.0</kp>
-			<kd>0.0</kd>
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
 			<mu1>1.0</mu1>
 			<maxVel>3.0</maxVel>
 			<minDepth>0.0001</minDepth>
@@ -102,6 +102,49 @@
 			<selfCollide>false</selfCollide>
 			<dampingFactor>0.01</dampingFactor>
 		</gazebo>
+
+
+		<gazebo reference="${name}_spring_link0">
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
+			<mu1>1.0</mu1>
+			<maxVel>3.0</maxVel>
+			<minDepth>0.0001</minDepth>
+			<maxContacts>0</maxContacts>
+			<selfCollide>false</selfCollide>
+			<dampingFactor>0.01</dampingFactor>
+		</gazebo>
+		<gazebo reference="${name}_spring_link1">
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
+			<mu1>1.0</mu1>
+			<maxVel>3.0</maxVel>
+			<minDepth>0.0001</minDepth>
+			<maxContacts>0</maxContacts>
+			<selfCollide>false</selfCollide>
+			<dampingFactor>0.01</dampingFactor>
+		</gazebo>
+		<gazebo reference="${name}_spring_link2">
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
+			<mu1>1.0</mu1>
+			<maxVel>3.0</maxVel>
+			<minDepth>0.0001</minDepth>
+			<maxContacts>0</maxContacts>
+			<selfCollide>false</selfCollide>
+			<dampingFactor>0.01</dampingFactor>
+		</gazebo>
+		<gazebo reference="${name}_spring_link3">
+			<kp>1000000.0</kp>
+			<kd>100.0</kd>
+			<mu1>1.0</mu1>
+			<maxVel>3.0</maxVel>
+			<minDepth>0.0001</minDepth>
+			<maxContacts>0</maxContacts>
+			<selfCollide>false</selfCollide>
+			<dampingFactor>0.01</dampingFactor>
+		</gazebo>
+
 
 		<!-- Joints. Femoral first. -->
 		<transmission name="${name}_tran0">
