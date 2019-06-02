@@ -1081,6 +1081,27 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
+    <joint name='leg_l_joint3_sub' type='revolute'>
+      <pose>-0.021 0 -0.012 0 0 0</pose>
+      <child>leg_l_link3</child>
+      <parent>leg_l_link2</parent>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-3.14159</lower>
+          <upper>3.14159</upper>
+          <effort>1000</effort>
+          <velocity>0.5</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
     <link name='leg_l_link4'>
       <pose frame=''>0.073611 0.0175 -0.198311 3.14159 0.785393 3.14159</pose>
       <inertial>
@@ -1239,6 +1260,28 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
+    <joint name='leg_l_joint6_sub' type='revolute'>
+      <pose>-0.021 0 0.012 0 0 0</pose>
+      <child>leg_l_link6</child>
+      <parent>leg_l_link5</parent>
+      <pose>-0.1 0 0 0 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-3.14159</lower>
+          <upper>3.14159</upper>
+          <effort>1000</effort>
+          <velocity>0.5</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
     <link name='leg_l_link7'>
       <pose frame=''>-0.025101 0.04225 -0.308121 0 -0 0</pose>
       <inertial>
@@ -2008,6 +2051,27 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
+    <joint name='leg_r_joint3_sub' type='revolute'>
+      <pose>-0.021 0 -0.012 0 0 0</pose>
+      <child>leg_r_link3</child>
+      <parent>leg_r_link2</parent>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-3.14159</lower>
+          <upper>3.14159</upper>
+          <effort>100</effort>
+          <velocity>10</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
     <link name='leg_r_link4'>
       <pose frame=''>0.073611 -0.0175 -0.198311 3.14159 0.785393 3.14159</pose>
       <inertial>
@@ -2166,6 +2230,27 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+
+    <joint name='leg_r_joint6_sub' type='revolute'>
+      <pose>-0.021 0 0.012 0 0 0</pose>
+      <child>leg_r_link6</child>
+      <parent>leg_r_link5</parent>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-3.14159</lower>
+          <upper>3.14159</upper>
+          <effort>100</effort>
+          <velocity>10</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    
     <link name='leg_r_link7'>
       <pose frame=''>-0.025101 -0.04225 -0.308121 0 -0 0</pose>
       <inertial>
