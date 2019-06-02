@@ -1006,7 +1006,7 @@
         <linear>0.01</linear>
         <angular>0.01</angular>
       </velocity_decay>
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
     <joint name='leg_l_joint1' type='revolute'>
       <child>leg_l_link1</child>
@@ -1095,8 +1095,8 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-1.3</lower>
+          <upper>0.7854</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -1117,8 +1117,8 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-1.3</lower>
+          <upper>0.7854</upper>
           <effort>1000</effort>
           <velocity>0.5</velocity>
         </limit>
@@ -1208,7 +1208,7 @@
         <linear>0.01</linear>
         <angular>0.01</angular>
       </velocity_decay>
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
     <joint name='leg_l_joint4' type='revolute'>
       <child>leg_l_link4</child>
@@ -1536,7 +1536,7 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+07</kp>
+              <kp>1e+06</kp>
               <kd>100</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
@@ -1659,8 +1659,8 @@
       <axis>
         <xyz>0 -1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-3.14</lower>
+          <upper>3.14</upper>
           <effort>0</effort>
           <velocity>10</velocity>
         </limit>
@@ -1779,7 +1779,7 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+07</kp>
+              <kp>1e+06</kp>
               <kd>100</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
@@ -1821,8 +1821,8 @@
       <axis>
         <xyz>0 -1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-1.3</lower>
+          <upper>0.7854</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -2137,7 +2137,7 @@
         <linear>0.01</linear>
         <angular>0.01</angular>
       </velocity_decay>
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
     <joint name='leg_r_joint1' type='revolute'>
       <child>leg_r_link1</child>
@@ -2226,8 +2226,8 @@
       <axis>
         <xyz>0 -1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-0.7854</lower>
+          <upper>1.3</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -2248,8 +2248,8 @@
       <axis>
         <xyz>0 -1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-0.7854</lower>
+          <upper>1.3</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -2338,7 +2338,7 @@
         <linear>0.01</linear>
         <angular>0.01</angular>
       </velocity_decay>
-      <self_collide>1</self_collide>
+      <self_collide>0</self_collide>
     </link>
     <joint name='leg_r_joint4' type='revolute'>
       <child>leg_r_link4</child>
@@ -2427,8 +2427,8 @@
       <axis>
         <xyz>0 -1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-0.7854</lower>
+          <upper>1.3</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -2449,8 +2449,8 @@
       <axis>
         <xyz>0 -1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-0.7854</lower>
+          <upper>1.3</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
@@ -2665,7 +2665,7 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+07</kp>
+              <kp>1e+06</kp>
               <kd>100</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
@@ -2908,7 +2908,7 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+07</kp>
+              <kp>1e+06</kp>
               <kd>100</kd>
               <max_vel>3</max_vel>
               <min_depth>0.0001</min_depth>
@@ -2950,8 +2950,8 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit>
-          <lower>-3.14159</lower>
-          <upper>3.14159</upper>
+          <lower>-0.7854</lower>
+          <upper>1.3</upper>
           <effort>100</effort>
           <velocity>10</velocity>
         </limit>
