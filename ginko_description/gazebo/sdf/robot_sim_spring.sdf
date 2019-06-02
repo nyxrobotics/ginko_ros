@@ -1490,6 +1490,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_l_spring_link2_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_l_spring_link2_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -1544,6 +1569,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_l_spring_link3_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_l_spring_link3_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -1570,7 +1620,7 @@
       <child>leg_l_spring_link3</child>
       <parent>leg_l_spring_link2</parent>
       <axis>
-        <xyz>0 -1 -0</xyz>
+        <xyz>0.843211 0 0.537582</xyz>
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
@@ -1677,6 +1727,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_l_spring_link0_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_l_spring_link0_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -1731,6 +1806,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_l_spring_link1_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_l_spring_link1_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -1757,7 +1857,7 @@
       <child>leg_l_spring_link1</child>
       <parent>leg_l_spring_link0</parent>
       <axis>
-        <xyz>0 -1 -0</xyz>
+        <xyz>-0.843211 0 0.537583</xyz>
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
@@ -2417,6 +2517,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_r_spring_link2_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_r_spring_link2_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -2471,6 +2596,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_r_spring_link3_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_r_spring_link3_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -2497,7 +2647,7 @@
       <child>leg_r_spring_link3</child>
       <parent>leg_r_spring_link2</parent>
       <axis>
-        <xyz>0 -1 -0</xyz>
+        <xyz>0.843211 0 0.537582</xyz>
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
@@ -2604,6 +2754,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_r_spring_link0_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_r_spring_link0_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -2658,6 +2833,31 @@
           <izz>6e-07</izz>
         </inertia>
       </inertial>
+      <collision name='leg_r_spring_link1_collision'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://ginko_description/meshes/stl/spring2.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>1e+06</kp>
+              <kd>100</kd>
+              <max_vel>3</max_vel>
+              <min_depth>0.0001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1</mu>
+            </ode>
+          </friction>
+        </surface>
+        <max_contacts>0</max_contacts>
+      </collision>
       <visual name='leg_r_spring_link1_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
@@ -2684,7 +2884,7 @@
       <child>leg_r_spring_link1</child>
       <parent>leg_r_spring_link0</parent>
       <axis>
-        <xyz>0 -1 -0</xyz>
+        <xyz>-0.843211 0 0.537583</xyz>
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>

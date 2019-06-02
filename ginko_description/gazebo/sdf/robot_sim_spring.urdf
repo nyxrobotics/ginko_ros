@@ -609,12 +609,12 @@
   </joint>
   <!-- spring -->
   <link name="leg_l_spring_link0">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -635,12 +635,12 @@
     <limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <link name="leg_l_spring_link1">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -657,7 +657,7 @@
     <parent link="leg_l_spring_link0"/>
     <child link="leg_l_spring_link1"/>
     <origin rpy="0 3.141593 0" xyz="0.10911938 0.0 0.0"/>
-    <axis xyz="0 -1 0"/>
+    <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <!-- knee -->
@@ -743,12 +743,12 @@
   </joint>
   <!-- spring -->
   <link name="leg_l_spring_link2">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -769,12 +769,12 @@
     <limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <link name="leg_l_spring_link3">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -791,7 +791,7 @@
     <parent link="leg_l_spring_link2"/>
     <child link="leg_l_spring_link3"/>
     <origin rpy="0 3.141593 0" xyz="0.10911938 0.0 0.0"/>
-    <axis xyz="0 -1 0"/>
+    <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <!-- toe -->
@@ -1209,12 +1209,12 @@
   </joint>
   <!-- spring -->
   <link name="leg_r_spring_link0">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -1235,12 +1235,12 @@
     <limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <link name="leg_r_spring_link1">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -1257,7 +1257,7 @@
     <parent link="leg_r_spring_link0"/>
     <child link="leg_r_spring_link1"/>
     <origin rpy="0 3.141593 0" xyz="0.10911938 0.0 0.0"/>
-    <axis xyz="0 -1 0"/>
+    <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <!-- knee -->
@@ -1343,12 +1343,12 @@
   </joint>
   <!-- spring -->
   <link name="leg_r_spring_link2">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -1369,12 +1369,12 @@
     <limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <link name="leg_r_spring_link3">
-    <!-- 	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
-	    		</geometry>
-			</collision> -->
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+      </geometry>
+    </collision>
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -1391,7 +1391,7 @@
     <parent link="leg_r_spring_link2"/>
     <child link="leg_r_spring_link3"/>
     <origin rpy="0 3.141593 0" xyz="0.10911938 0.0 0.0"/>
-    <axis xyz="0 -1 0"/>
+    <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
   </joint>
   <!-- toe -->

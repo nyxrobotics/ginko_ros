@@ -152,7 +152,7 @@
 	    	<parent link="${name}_spring_link0"/>
 	    	<child  link="${name}_spring_link1"/>
 	    	<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
-	    	<axis xyz="0 -1 0"/>
+	    	<axis xyz="1 0 0"/>
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
 
@@ -308,7 +308,7 @@
 	    	<parent link="${name}_spring_link2"/>
 	    	<child  link="${name}_spring_link3"/>
 	    	<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
-	    	<axis xyz="0 -1 0"/>
+	    	<axis xyz="1 0 0"/>
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
 

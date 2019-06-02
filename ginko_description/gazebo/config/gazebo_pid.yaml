@@ -113,7 +113,7 @@ gazebo_ros_control:
       antiwindup: false
       publish_state: true
     leg_l_joint1:
-      p: 6.70
+      p: 6.7
       i: 0.0
       d: 0.0
       i_clamp: 0.2
