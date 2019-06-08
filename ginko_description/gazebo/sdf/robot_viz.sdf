@@ -44,7 +44,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link00_chest.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link00_chest.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -102,7 +102,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link09_l_arm01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link09_l_arm01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -124,7 +124,7 @@
         <limit>
           <lower>-2.6</lower>
           <upper>2.6</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -178,7 +178,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link10_l_arm02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link10_l_arm02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -200,7 +200,7 @@
         <limit>
           <lower>-0.85</lower>
           <upper>1.18</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -254,7 +254,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link11_l_scissor01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link11_l_scissor01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -276,7 +276,7 @@
         <limit>
           <lower>-2.36</lower>
           <upper>2.36</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -330,7 +330,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link12_l_scissor02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link12_l_scissor02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -352,7 +352,7 @@
         <limit>
           <lower>-2.36</lower>
           <upper>2.36</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -390,7 +390,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/urg.stl</uri>
+            <uri>model://ginko_description/meshes/obj/urg.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -457,7 +457,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link09_r_arm01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link09_r_arm01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -479,7 +479,7 @@
         <limit>
           <lower>-2.6</lower>
           <upper>2.6</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -533,7 +533,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link10_r_arm02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link10_r_arm02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -555,7 +555,7 @@
         <limit>
           <lower>-0.85</lower>
           <upper>1.18</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -609,7 +609,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link11_r_scissor01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link11_r_scissor01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -631,7 +631,7 @@
         <limit>
           <lower>-2.36</lower>
           <upper>2.36</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -685,7 +685,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link12_r_scissor02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link12_r_scissor02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -707,7 +707,7 @@
         <limit>
           <lower>-2.36</lower>
           <upper>2.36</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -745,7 +745,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/urg.stl</uri>
+            <uri>model://ginko_description/meshes/obj/urg.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -812,7 +812,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link01_waist.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link01_waist.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -834,7 +834,7 @@
         <limit>
           <lower>-2.6</lower>
           <upper>2.6</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -888,7 +888,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link02_l_femoral.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link02_l_femoral.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -913,7 +913,7 @@
         <limit>
           <lower>-0.8</lower>
           <upper>1.1781</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -967,7 +967,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_l_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_l_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -992,7 +992,7 @@
         <limit>
           <lower>-1.3</lower>
           <upper>0.7854</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1046,7 +1046,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link05_l_knee.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link05_l_knee.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1071,7 +1071,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1125,7 +1125,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_l_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_l_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1150,7 +1150,7 @@
         <limit>
           <lower>-0.7854</lower>
           <upper>1.3</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1179,7 +1179,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link06_l_toe01.stl</uri>
+            <uri>model://ginko_description/meshes/stl/link06_r_toe01.stl</uri>
           </mesh>
         </geometry>
         <surface>
@@ -1204,7 +1204,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link06_l_toe01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link06_l_toe01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1229,7 +1229,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1283,7 +1283,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link07_l_toe02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link07_l_toe02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1308,7 +1308,7 @@
         <limit>
           <lower>-1.6</lower>
           <upper>1.6</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1333,12 +1333,11 @@
         </inertia>
       </inertial>
       <collision name='leg_l_link8_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 -0.003 0 -0 0</pose>
         <geometry>
-          <mesh>
-            <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_l_toe03.stl</uri>
-          </mesh>
+          <box>
+            <size>0.128 0.08 0.006</size>
+          </box>
         </geometry>
         <surface>
           <contact>
@@ -1362,7 +1361,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_l_toe03.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link08_l_toe03.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1387,7 +1386,7 @@
         <limit>
           <lower>-2.6</lower>
           <upper>2.6</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1441,7 +1440,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_l_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_l_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1466,7 +1465,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1520,7 +1519,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_l_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_l_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1545,7 +1544,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1599,7 +1598,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link02_r_femoral.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link02_r_femoral.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1624,7 +1623,7 @@
         <limit>
           <lower>-1.1781</lower>
           <upper>0.8</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1678,7 +1677,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_r_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_r_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1703,7 +1702,7 @@
         <limit>
           <lower>-0.7854</lower>
           <upper>1.3</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1757,7 +1756,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link05_r_knee.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link05_r_knee.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1782,7 +1781,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1836,7 +1835,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_r_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_r_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1861,7 +1860,7 @@
         <limit>
           <lower>-1.3</lower>
           <upper>0.7854</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1915,7 +1914,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link06_r_toe01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link06_r_toe01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1940,7 +1939,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -1994,7 +1993,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link07_r_toe02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link07_r_toe02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2019,7 +2018,7 @@
         <limit>
           <lower>-1.6</lower>
           <upper>1.6</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -2044,12 +2043,11 @@
         </inertia>
       </inertial>
       <collision name='leg_r_link8_collision'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 -0.003 0 -0 0</pose>
         <geometry>
-          <mesh>
-            <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_r_toe03.stl</uri>
-          </mesh>
+          <box>
+            <size>0.128 0.08 0.006</size>
+          </box>
         </geometry>
         <surface>
           <contact>
@@ -2073,7 +2071,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_r_toe03.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link08_r_toe03.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2098,7 +2096,7 @@
         <limit>
           <lower>-2.6</lower>
           <upper>2.6</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -2152,7 +2150,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_r_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_r_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2177,7 +2175,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>
@@ -2231,7 +2229,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_r_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_r_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2256,7 +2254,7 @@
         <limit>
           <lower>-3.14159</lower>
           <upper>3.14159</upper>
-          <effort>100</effort>
+          <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
         <dynamics>

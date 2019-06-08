@@ -3,7 +3,7 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 	<xacro:macro name="leg_r_sim" params="name parent">
-		<!-- Femoral -->
+		<!-- Link conencts from body. Femoral first. -->
 		<link name="${name}_link0">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
@@ -14,7 +14,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link02_r_femoral.stl"/>
+					<mesh filename="package://ginko_description/meshes/obj/link02_r_femoral.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -31,8 +31,9 @@
 			<child link="${name}_link0"/>
 		    <origin xyz="0.0205 0.0 -0.0409" rpy="0 0 0"/>
 		    <axis xyz="1 0 0"/>
-			<limit effort="100.0" lower="-1.1781" upper="0.8" velocity="10.0"/>
+			<limit effort="1000.0" lower="-1.1781" upper="0.8" velocity="10.0"/>
 		</joint>
+
 
 		<!-- parallel link (upper-1st) -->
 		<link name="${name}_link1">
@@ -42,11 +43,11 @@
 					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link03_r_leg01.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.18525690"/>
@@ -62,7 +63,7 @@
 			<child  link="${name}_link1"/>
 			<origin xyz="-0.0176 -0.0175 -0.0481" rpy="0 0.7854 0"/>
 			<axis xyz="0 1 0"/>
-			<limit effort="100.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
+			<limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
 		</joint>
 
 		<!-- parallel link (upper-2nd) -->
@@ -73,11 +74,11 @@
 					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link04_r_leg02.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.01646643"/>
@@ -93,7 +94,8 @@
 	    	<child  link="${name}_link2"/>
 	    	<origin xyz="-0.0389 -0.0175 -0.06015" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 1 0"/>
-	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+			<mimic joint="${name}_joint1" multiplier="1" offset="0"/> 
 	  	</joint>
 	  	<!-- spring -->
 	  	<link name="${name}_spring_link0">
@@ -156,8 +158,6 @@
 	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
 	  	</joint>
 
-
-
 		<!-- knee -->
 		<link name="${name}_link3">
 	    	<collision>
@@ -166,11 +166,11 @@
 					<mesh filename="package://ginko_description/meshes/stl/link05_r_knee.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link05_r_knee.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link05_r_knee.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.01781176"/>
@@ -186,7 +186,8 @@
 	    	<child  link="${name}_link3"/>
 	    	<origin xyz="0.1 0.0 0.0" rpy="0 -0.7854 0"/>
 	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+			<mimic joint="${name}_joint1" multiplier="1" offset="0"/>
 	  	</joint>
 
 		<!-- parallel link (lower-1st) -->
@@ -197,11 +198,11 @@
 					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link03_r_leg01.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.18525690"/>
@@ -217,7 +218,7 @@
 			<child  link="${name}_link4"/>
 			<origin xyz="0 0 -0.0386" rpy="0 2.3562 0"/>
 			<axis xyz="0 1 0"/>
-			<limit effort="100.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
+			<limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
 		</joint>
 
 		<!-- parallel link (lower-2nd) -->
@@ -228,11 +229,11 @@
 					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link04_r_leg02.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.01646643"/>
@@ -248,7 +249,8 @@
 	    	<child  link="${name}_link5"/>
 	    	<origin xyz="-0.0213 0 -0.02655" rpy="0 2.3562 0"/>
 	    	<axis xyz="0 1 0"/>
-	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	    	<mimic joint="${name}_joint4" multiplier="1" offset="0"/> 
 	  	</joint>
 
 	  	<!-- spring -->
@@ -313,21 +315,19 @@
 	  	</joint>
 
 
-
-
 		<!-- toe -->
 		<link name="${name}_link6">
-	    	<collision>
+			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
+				<geometry>
 					<mesh filename="package://ginko_description/meshes/stl/link06_r_toe01.stl"/>
-	    		</geometry>
+				</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link06_r_toe01.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link06_r_toe01.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.08799204"/>
@@ -343,7 +343,8 @@
 	    	<child  link="${name}_link6"/>
 	    	<origin xyz="0.1 0.0 0.0" rpy="0 -2.3562 0"/>
 	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="100.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+	    	<mimic joint="${name}_joint4" multiplier="1" offset="0"/> 
 	  	</joint>
 
 		<link name="${name}_link7">
@@ -353,11 +354,11 @@
 					<mesh filename="package://ginko_description/meshes/stl/link07_r_toe02.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link07_r_toe02.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link07_r_toe02.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.10920041"/>
@@ -373,21 +374,21 @@
 	    	<child  link="${name}_link7"/>
 	    	<origin xyz="-0.028 -0.02475 -0.0391" rpy="0 0 0"/>
 	    	<axis xyz="-1 0 0"/>
-	    	<limit effort="100.0" lower="-1.6" upper="1.6" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-1.6" upper="1.6" velocity="10.0"/>
 	  	</joint>
 
 		<link name="${name}_link8">
-	    	<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link08_r_toe03.stl"/>
-	    		</geometry>
+			<collision>
+				<origin xyz="0 0 -0.003" rpy="0 0 0"/>
+				<geometry>
+					<box size="0.128 0.08 0.006"/>                                                    
+				</geometry>
 			</collision>
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link08_r_toe03.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link08_r_toe03.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.05363111"/>
@@ -403,9 +404,8 @@
 	    	<child  link="${name}_link8"/>
 	    	<origin xyz="0.0342 0 -0.04" rpy="0 0 0"/>
 	    	<axis xyz="0 0 1"/>
-	    	<limit effort="100.0" lower="-2.6" upper="2.6" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
 	  	</joint>
-
 
 	</xacro:macro>
 </robot>

@@ -6,16 +6,18 @@
 
 		<!-- chest -->
 		<link name="${name}_link0">
+			<!-- Collision created from STL mesh without color -->
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
 				</geometry>
 			</collision>
+			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
+					<mesh filename="package://ginko_description/meshes/obj/link00_chest.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -30,17 +32,19 @@
 
 		<!-- waist -->
 		<link name="${name}_link1">
+			<!-- Collision created from STL mesh without color -->
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<!-- Visualisation created from Color dae -->
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link01_waist.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.33312665"/>
@@ -56,7 +60,7 @@
 			<child  link="${name}_link1"/>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<axis xyz="0 0 1"/>
-			<limit effort="100.0" lower="-2.6" upper="2.6" velocity="10.0"/>
+			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
 		</joint>
 
 	</xacro:macro>

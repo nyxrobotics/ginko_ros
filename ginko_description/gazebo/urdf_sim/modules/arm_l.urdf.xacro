@@ -5,16 +5,18 @@
 	<xacro:macro name="arm_l_sim" params="name parent">
 		<!-- shoulder pitch. -->
 		<link name="${name}_link0">
+			<!-- Collision created from STL mesh without color -->
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
 					<mesh filename="package://ginko_description/meshes/stl/link09_l_arm01.stl"/>
 				</geometry>
 			</collision>
+			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link09_l_arm01.stl"/>
+					<mesh filename="package://ginko_description/meshes/obj/link09_l_arm01.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -31,22 +33,25 @@
 			<child link="${name}_link0"/>
 		    <origin xyz="0 0.10683 0.05115" rpy="0 0.3927 0"/>
 		    <axis xyz="0 -1 0"/>
-			<limit effort="100.0" lower="-2.6" upper="2.6" velocity="10.0"/>
+			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
 		</joint>
+
 
 		<!-- shoulder roll -->
 		<link name="${name}_link1">
+			<!-- Collision created from STL mesh without color -->
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link10_l_arm02.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<!-- Visualisation created from Color dae -->
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link10_l_arm02.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link10_l_arm02.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.33139947"/>
@@ -62,22 +67,24 @@
 			<child  link="${name}_link1"/>
 			<origin xyz="0.035 0.0246 0" rpy="1.1781 0 0"/>
 			<axis xyz="1 0 0"/>
-			<limit effort="100.0" lower="-0.85" upper="1.18" velocity="10.0"/>
+			<limit effort="1000.0" lower="-0.85" upper="1.18" velocity="10.0"/>
 		</joint>
 
 		<!-- scissors -->
 		<link name="${name}_link2">
+			<!-- Collision created from STL mesh without color -->
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link11_l_scissor01.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<!-- Visualisation created from Color dae -->
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link11_l_scissor01.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link11_l_scissor01.obj"/>
+				</geometry>
 			</visual>
 			<inertial>
 				<mass value="0.03287850"/>
@@ -93,22 +100,25 @@
 	    	<child  link="${name}_link2"/>
 	    	<origin xyz="0.0092 0.0547 -0.11295" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 1 0"/>
-	    	<limit effort="100.0" lower="-2.36" upper="2.36" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="10.0"/>
 	  	</joint>
 
 		<link name="${name}_link3">
+			<!-- Collision created from STL mesh without color -->
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link12_l_scissor02.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<!-- Visualisation created from Color dae -->
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link12_l_scissor02.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link12_l_scissor02.obj"/>
+				</geometry>
 			</visual>
+			<!-- nothing worth -->
 			<inertial>
 				<mass value="0.02936110"/>
 				<origin xyz="0.07807033 0.02515230 -0.00665437" rpy="0 0 0"/>
@@ -123,7 +133,7 @@
 	    	<child  link="${name}_link3"/>
 	    	<origin xyz="0.0092 -0.0018 -0.11295" rpy="0 0.7854 0"/>
 	    	<axis xyz="0 1 0"/>
-	    	<limit effort="100.0" lower="-2.36" upper="2.36" velocity="10.0"/>
+	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="10.0"/>
 	  	</joint>
 
 	  	<!-- LiDAR -->
@@ -134,12 +144,14 @@
 					<mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
 	    		</geometry>
 			</collision>
-	    	<visual>
+			<!-- Visualisation created from Color dae -->
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-	    			<mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/urg.obj"/>
+				</geometry>
 			</visual>
+			<!-- nothing worth -->
 			<inertial>
 				<mass value="0.16705492"/>
 				<origin xyz="-0.00014579 0.00000831 -0.02360505" rpy="0 0 0"/>
@@ -157,6 +169,7 @@
 	    	<axis xyz="0 0 1"/>
 	    	<limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
 		</joint>
+
 
 	</xacro:macro>
 </robot>
