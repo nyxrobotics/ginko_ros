@@ -44,7 +44,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link00_chest.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link00_chest.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -102,7 +102,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link09_l_arm01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link09_l_arm01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -180,7 +180,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link10_l_arm02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link10_l_arm02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -258,7 +258,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link11_l_scissor01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link11_l_scissor01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -336,7 +336,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link12_l_scissor02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link12_l_scissor02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -398,7 +398,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/urg.stl</uri>
+            <uri>model://ginko_description/meshes/obj/urg.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -467,7 +467,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link09_r_arm01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link09_r_arm01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -545,7 +545,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link10_r_arm02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link10_r_arm02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -623,7 +623,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link11_r_scissor01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link11_r_scissor01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -701,7 +701,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link12_r_scissor02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link12_r_scissor02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -763,7 +763,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/urg.stl</uri>
+            <uri>model://ginko_description/meshes/obj/urg.obj</uri>
           </mesh>
         </geometry>
       </visual>
@@ -832,7 +832,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link01_waist.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link01_waist.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -910,7 +910,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link02_l_femoral.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link02_l_femoral.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -991,7 +991,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_l_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_l_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1072,7 +1072,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link05_l_knee.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link05_l_knee.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1193,7 +1193,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_l_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_l_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1274,7 +1274,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link06_l_toe01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link06_l_toe01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1393,7 +1393,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link07_l_toe02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link07_l_toe02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1473,7 +1473,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_l_toe03.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link08_l_toe03.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1554,7 +1554,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_l_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_l_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -1797,7 +1797,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_l_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_l_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2040,7 +2040,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link02_r_femoral.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link02_r_femoral.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2121,7 +2121,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_r_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_r_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2202,7 +2202,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link05_r_knee.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link05_r_knee.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2322,7 +2322,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link03_r_leg01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link03_r_leg01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2403,7 +2403,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link06_r_toe01.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link06_r_toe01.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2521,7 +2521,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link07_r_toe02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link07_r_toe02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2601,7 +2601,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link08_r_toe03.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link08_r_toe03.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2682,7 +2682,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_r_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_r_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
@@ -2925,7 +2925,7 @@
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://ginko_description/meshes/stl/link04_r_leg02.stl</uri>
+            <uri>model://ginko_description/meshes/obj/link04_r_leg02.obj</uri>
           </mesh>
         </geometry>
         <material>
