@@ -33,7 +33,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link00_chest.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -54,7 +54,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link01_waist.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -113,7 +113,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link09_l_arm01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link09_l_arm01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -140,7 +140,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link10_l_arm02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link10_l_arm02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -167,7 +167,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link11_l_scissor01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link11_l_scissor01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -193,7 +193,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link12_l_scissor02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link12_l_scissor02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -220,7 +220,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/urg.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -331,7 +331,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link09_r_arm01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link09_r_arm01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -358,7 +358,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link10_r_arm02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link10_r_arm02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -385,7 +385,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link11_r_scissor01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link11_r_scissor01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -411,7 +411,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link12_r_scissor02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link12_r_scissor02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -438,7 +438,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/urg.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -549,7 +549,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link02_l_femoral.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link02_l_femoral.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -576,7 +576,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link03_l_leg01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link03_l_leg01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -603,7 +603,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link04_l_leg02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link04_l_leg02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -631,7 +631,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link05_l_knee.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link05_l_knee.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -659,7 +659,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link03_l_leg01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link03_l_leg01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -686,7 +686,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link04_l_leg02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link04_l_leg02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -714,7 +714,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link06_l_toe01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link06_l_toe01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -741,7 +741,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link07_l_toe02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link07_l_toe02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -767,7 +767,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link08_l_toe03.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link08_l_toe03.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -945,7 +945,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link02_r_femoral.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link02_r_femoral.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -972,7 +972,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link03_r_leg01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -999,7 +999,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link04_r_leg02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -1027,7 +1027,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link05_r_knee.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link05_r_knee.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -1055,7 +1055,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link03_r_leg01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -1082,7 +1082,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link04_r_leg02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -1110,7 +1110,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link06_r_toe01.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link06_r_toe01.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -1137,7 +1137,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link07_r_toe02.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link07_r_toe02.obj"/>
       </geometry>
     </visual>
     <inertial>
@@ -1163,7 +1163,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://ginko_description/meshes/stl/link08_r_toe03.stl"/>
+        <mesh filename="package://ginko_description/meshes/obj/link08_r_toe03.obj"/>
       </geometry>
     </visual>
     <inertial>
