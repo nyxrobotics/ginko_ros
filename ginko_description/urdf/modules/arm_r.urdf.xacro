@@ -18,8 +18,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link09_r_arm01.stl"/>
-					<!-- <mesh filename="package://ginko_description/meshes/dae/link09_r_arm01.dae"/> -->
+					<mesh filename="package://ginko_description/meshes/obj/link09_r_arm01.obj"/>
 				</geometry>
 			</visual>
 			<!-- nothing worth -->
@@ -48,12 +47,11 @@
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link10_r_arm02.stl"/>
-					<!-- <mesh filename="package://ginko_description/meshes/dae/link10_r_arm02.dae"/> -->
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link10_r_arm02.obj"/>
+				</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
@@ -91,12 +89,11 @@
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link11_r_scissor01.stl"/>
-					<!-- <mesh filename="package://ginko_description/meshes/dae/link11_r_scissor01.dae"/> -->
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link11_r_scissor01.obj"/>
+				</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
@@ -122,12 +119,11 @@
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link12_r_scissor02.stl"/>
-					<!-- <mesh filename="package://ginko_description/meshes/dae/link12_r_scissor02.dae"/> -->
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link12_r_scissor02.obj"/>
+				</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>
@@ -153,12 +149,11 @@
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-	    			<mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
-					<!-- <mesh filename="package://ginko_description/meshes/dae/urg.dae"/> -->
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/urg.obj"/>
+				</geometry>
 			</visual>
 			<!-- nothing worth -->
 			<inertial>

@@ -18,9 +18,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<!-- <mesh filename="package://ginko_description/meshes/obj/link00_chest.obj"/> -->
-					<mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
-					<!-- <mesh filename="package://ginko_description/meshes/dae/link00_chest.dae"/> -->
+					<mesh filename="package://ginko_description/meshes/obj/link00_chest.obj"/>
 				</geometry>
 			</visual>
 
@@ -51,13 +49,11 @@
 	    		</geometry>
 			</collision>
 			<!-- Visualisation created from Color dae -->
-	    	<visual>
+			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>
-	    			<!-- <mesh filename="package://ginko_description/meshes/obj/link01_waist.obj"/> -->
-					<mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
-					<!-- <mesh filename="package://ginko_description/meshes/dae/link01_waist.dae"/> -->
-	    		</geometry>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/obj/link01_waist.obj"/>
+				</geometry>
 			</visual>
 
 			<inertial>

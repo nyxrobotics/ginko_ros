@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="ginko" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="mode" default="rviz"/>
+
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/body.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/arm_l.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_l.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/arm_r.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_r.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/leg_l_spring.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_l_spring.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/leg_r_spring.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r_spring.gazebo"/>
+
+  <xacro:macro name="if_macro" params="rviz_or_gazebo">
+    <xacro:if value="${rviz_or_gazebo=='rviz'}">
+      <xacro:body_sim name="body"/>
+      <xacro:body_gazebo name="body"/>
+      <xacro:leg_l_sim name="leg_l" parent="body_link1"/>
+      <xacro:leg_l_gazebo name="leg_l"/>
+      <xacro:leg_r_sim name="leg_r" parent="body_link1"/>
+      <xacro:leg_r_gazebo name="leg_r"/>
+    </xacro:if>
+    <xacro:if value="${rviz_or_gazebo=='gazebo'}">
+      <xacro:body_sim name="body"/>
+      <xacro:body_gazebo name="body"/>
+      <xacro:arm_l_sim name="arm_l" parent="body_link0"/>
+      <xacro:arm_l_gazebo name="arm_l"/>
+    </xacro:if>
+
+    <xacro:if value="${rviz_or_gazebo=='left_arm'}">
+      <xacro:body_sim name="body"/>
+      <xacro:body_gazebo name="body"/>
+      <xacro:leg_l_sim name="leg_l" parent="body_link1"/>
+      <xacro:leg_l_gazebo name="leg_l"/>
+      <xacro:leg_r_sim name="leg_r" parent="body_link1"/>
+      <xacro:leg_r_gazebo name="leg_r"/>
+      <xacro:arm_l_sim name="arm_l" parent="body_link0"/>
+      <xacro:arm_l_gazebo name="arm_l"/>
+    </xacro:if>
+
+    <xacro:if value="${rviz_or_gazebo=='right_arm'}">
+      <xacro:body_sim name="body"/>
+      <xacro:body_gazebo name="body"/>
+      <xacro:leg_l_sim name="leg_l" parent="body_link1"/>
+      <xacro:leg_l_gazebo name="leg_l"/>
+      <xacro:leg_r_sim name="leg_r" parent="body_link1"/>
+      <xacro:leg_r_gazebo name="leg_r"/>
+      <xacro:arm_r_sim name="arm_r" parent="body_link0"/>
+      <xacro:arm_r_gazebo name="arm_r"/>
+    </xacro:if>
+
+  </xacro:macro>
+
+  <xacro:if_macro rviz_or_gazebo="$(arg mode)"/>
+
+</robot>
