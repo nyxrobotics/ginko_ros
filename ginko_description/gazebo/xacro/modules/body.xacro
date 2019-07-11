@@ -2,7 +2,7 @@
 
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="body_sim" params="name">
+	<xacro:macro name="body_xacro" params="name model_mode">
 
 		<!-- chest -->
 		<link name="${name}_link0">
