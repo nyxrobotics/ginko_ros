@@ -25,6 +25,9 @@
   <param name="robot_description_sdf" textfile="$(find ginko_description)/gazebo/sdf/robot_sim_spring_close.sdf" />
   <param name="robot_description"     textfile="$(find ginko_description)/gazebo/sdf/original_sim_mimic.urdf" />
 
+  <!-- <param name="robot_description_sdf" textfile="$(find ginko_description)/gazebo/sdf/robot_if_right_left.sdf" /> -->
+  <!-- <param name="robot_description"     textfile="$(find ginko_description)/gazebo/sdf/robot_if_right_left.urdf" /> -->
+
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model rrbot -param robot_description"/> -->
 

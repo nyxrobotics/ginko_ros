@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <robot name="ginko" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:arg name="mode" default="rviz"/>
+  <xacro:arg name="model_mode" default="rviz"/>
 
-  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/body.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/body.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/arm_l.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/arm_l.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_l.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/arm_r.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/arm_r.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_r.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/leg_l_spring.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/leg_l_spring.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_l_spring.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/urdf_sim/modules/leg_r_spring.urdf.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/leg_r_spring.urdf.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r_spring.gazebo"/>
 
   <xacro:macro name="if_macro" params="rviz_or_gazebo">
