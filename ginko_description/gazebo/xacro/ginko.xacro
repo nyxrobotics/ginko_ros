@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <robot name="ginko_xacro" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:arg name="model_mode" default="rviz"/>
+  <xacro:arg name="gazebo_control_mode" default="ginko"/>
 
   <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/body.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
@@ -13,13 +14,55 @@
   <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/leg_r.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r.gazebo"/>
 
-  <xacro:macro name="ginko_xacro" params="model_mode">
-    <xacro:if value="${model_mode=='rviz'}">
-      <xacro:body_xacro name="body" model_mode="rviz" />
-      <xacro:body_gazebo name="body"/>
+  <!-- MACRO:Loading Gazebo Controllers for joints -->
+  <xacro:macro name="gazebo_plugin_xacro" params="gazebo_control_mode">
+    <xacro:if value="${gazebo_control_mode=='ginko'}">
+      <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"> 
+          <robotNamespace>/ginko</robotNamespace> 
+          <robotSimType>gazebo_ros_control/GinkoRobotHWSim</robotSimType>
+          <legacyModeNS>true</legacyModeNS> 
+        </plugin>
+      </gazebo>
+    </xacro:if>
+    <xacro:if value="${gazebo_control_mode!='ginko'}">
+      <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"> 
+          <robotNamespace>/ginko</robotNamespace> 
+          <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+          <legacyModeNS>true</legacyModeNS> 
+        </plugin>
+      </gazebo>
     </xacro:if>
   </xacro:macro>
 
-  <xacro:ginko_xacro model_mode="$(arg model_mode)"/>
+  <!-- MACRO:Setting up a Robot Model -->
+  <xacro:macro name="ginko_xacro" params="model_mode gazebo_control_mode">
+    <xacro:body_xacro model_mode="${model_mode}"/>
+    <xacro:body_gazebo gazebo_control_mode="${gazebo_control_mode}"/>
+    <xacro:leg_r model_mode="${model_mode}"/>
+    <xacro:leg_r_gazebo name="leg_r" gazebo_control_mode="${gazebo_control_mode}"/>
 
+<!--     <xacro:if value="${model_mode=='rviz'}">
+      <xacro:leg_r model_mode="common"/>
+      <xacro:leg_r_gazebo name="leg_r"/>
+    </xacro:if>
+    <xacro:if value="${model_mode=='common'}">
+      <xacro:leg_r model_mode="common"/>
+      <xacro:leg_r_gazebo name="leg_r"/>
+    </xacro:if>
+    <xacro:if value="${model_mode=='gazebo_part1'}">
+      <xacro:leg_r model_mode="gazebo_part1"/>
+      <xacro:leg_r_gazebo name="leg_r"/>
+    </xacro:if>
+    <xacro:if value="${model_mode=='gazebo_part2'}">
+      <xacro:leg_r model_mode="common"/>
+      <xacro:leg_r_gazebo name="leg_r"/>
+    </xacro:if> -->
+
+  </xacro:macro>
+
+  <!-- Load Macros -->
+  <xacro:ginko_xacro model_mode="$(arg model_mode)" gazebo_control_mode="$(arg gazebo_control_mode)"/>
+  <xacro:gazebo_plugin_xacro gazebo_control_mode="$(arg gazebo_control_mode)"/>
 </robot>

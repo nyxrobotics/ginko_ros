@@ -2,18 +2,15 @@
 
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="body_xacro" params="name model_mode">
-
+	<xacro:macro name="body_xacro" params="model_mode">
 		<!-- chest -->
-		<link name="${name}_link0">
-			<!-- Collision created from STL mesh without color -->
+		<link name="body_link0">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
 				</geometry>
 			</collision>
-			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
@@ -29,17 +26,23 @@
 					ixz="0.000003761" iyz="-0.00000042" izz="0.00287756"/>
 			</inertial>
 		</link>
-
+		<!-- Joint1 -->
+		<joint name="body_joint1" type="revolute">
+			<parent link="body_link0"/>
+			<child  link="body_link1"/>
+			<origin xyz="0.0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 0 1"/>
+			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
 		<!-- waist -->
-		<link name="${name}_link1">
-			<!-- Collision created from STL mesh without color -->
+		<link name="body_link1">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
 	    		</geometry>
 			</collision>
-			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
@@ -55,13 +58,5 @@
 					ixz="0.00001078" iyz="0.00000000" izz="0.00073107"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint1" type="revolute">
-			<parent link="${name}_link0"/>
-			<child  link="${name}_link1"/>
-			<origin xyz="0 0 0" rpy="0 0 0"/>
-			<axis xyz="0 0 1"/>
-			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
-		</joint>
-
 	</xacro:macro>
 </robot>

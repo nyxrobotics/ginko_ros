@@ -2,10 +2,17 @@
 
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="leg_r_sim" params="name parent">
-		<!-- Femoral -->
+	<xacro:macro name="leg_r" params="model_mode">
 		<!-- Link conencts from body. Femoral first. -->
-		<link name="${name}_link0">
+		<joint name="leg_r_joint0" type="revolute">
+		    <parent link="body_link1"/>
+			<child link="leg_r_link0"/>
+		    <origin xyz="0.0205 0.0 -0.0409" rpy="0 0 0"/>
+		    <axis xyz="1 0 0"/>
+			<limit effort="1000.0" lower="-1.0" upper="0.8" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="leg_r_link0">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
@@ -27,17 +34,18 @@
 					ixz="0.00000021" iyz="0.00000391" izz="0.00002980"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint0" type="revolute">
-		    <parent link="${parent}"/>
-			<child link="${name}_link0"/>
-		    <origin xyz="0.0205 0.0 -0.0409" rpy="0 0 0"/>
-		    <axis xyz="1 0 0"/>
-			<limit effort="1000.0" lower="-1.1781" upper="0.8" velocity="10.0"/>
-		</joint>
 
 
 		<!-- parallel link (upper-1st) -->
-		<link name="${name}_link1">
+		<joint name="leg_r_joint1" type="revolute">
+			<parent link="leg_r_link0"/>
+			<child  link="leg_r_link1"/>
+			<origin xyz="-0.0176 -0.0175 -0.0481" rpy="0 0.7854 0"/>
+			<axis xyz="0 1 0"/>
+			<limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="leg_r_link1">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
@@ -59,16 +67,30 @@
 					ixz="0.00000000" iyz="-0.00000175" izz="0.00081028"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint1" type="revolute">
-			<parent link="${name}_link0"/>
-			<child  link="${name}_link1"/>
-			<origin xyz="-0.0176 -0.0175 -0.0481" rpy="0 0.7854 0"/>
-			<axis xyz="0 1 0"/>
+		<joint name="leg_r_joint3" type="revolute">
+			<parent link="leg_r_link1"/>
+			<child  link="leg_r_link3"/>
+			<origin xyz="0.1 0.0 0.0" rpy="0 -0.7854 0"/>
+			<axis xyz="0 -1 0"/>
 			<limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+			<xacro:if value="${model_mode=='rviz'}">
+				<mimic joint="leg_r_joint1" multiplier="1" offset="0"/>
+    		</xacro:if>
 		</joint>
 
 		<!-- parallel link (upper-2nd) -->
-		<link name="${name}_link2">
+		<joint name="leg_r_joint2" type="revolute">
+			<parent link="leg_r_link0"/>
+			<child  link="leg_r_link2"/>
+			<origin xyz="-0.0389 -0.0175 -0.06015" rpy="0 0.7854 0"/>
+			<axis xyz="0 1 0"/>
+			<limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
+			<xacro:if value="${model_mode=='rviz'}">
+				<mimic joint="leg_r_joint1" multiplier="1" offset="0"/>
+    		</xacro:if>
+		</joint>
+		<link name="leg_r_link2">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
@@ -90,17 +112,28 @@
 					ixz="0.00000000" iyz="0.00000000" izz="0.00002264"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint2" type="revolute">
-	    	<parent link="${name}_link0"/>
-	    	<child  link="${name}_link2"/>
-	    	<origin xyz="-0.0389 -0.0175 -0.06015" rpy="0 0.7854 0"/>
-	    	<axis xyz="0 1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-			<mimic joint="${name}_joint1" multiplier="1" offset="0"/> 
-	  	</joint>
-
+		<joint name="close_leg_r_joint0" type="revolute">
+			<parent link="leg_r_link2"/>
+			<child  link="dummy0_leg_r_link3"/>
+			<origin xyz="0.1 0.0 0.0" rpy="0 -0.7854 0"/>
+			<axis xyz="0 -1 0"/>
+			<limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
+			<xacro:if value="${model_mode=='rviz'}">
+				<mimic joint="leg_r_joint1" multiplier="1" offset="0"/>
+			</xacro:if>
+		</joint>
+		<link name="dummy0_leg_r_link3">
+			<inertial>
+				<mass value="0.00001"/>
+				<origin xyz="-0.021 0 -0.012" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00000001"
+					ixy="0.00000000" iyy="0.00000001"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00000001"/>
+			</inertial>
+		</link>
 		<!-- knee -->
-		<link name="${name}_link3">
+		<link name="leg_r_link3">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
@@ -122,20 +155,105 @@
 					ixz="0.00000000" iyz="0.00000000" izz="0.00001388"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint3" type="revolute">
-	    	<parent link="${name}_link1"/>
-	    	<child  link="${name}_link3"/>
-	    	<origin xyz="0.1 0.0 0.0" rpy="0 -0.7854 0"/>
-	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-			<mimic joint="${name}_joint1" multiplier="1" offset="0"/>
-	  	</joint>
+
+
+		<!-- spring -->
+		<xacro:if value="${model_mode!='rviz'}">
+			<joint name="leg_r_spring0_joint0" type="revolute">
+				<parent link="leg_r_link0"/>
+				<child  link="leg_r_spring0_link0"/>
+				<origin xyz="-0.0389 -0.0755 -0.06015" rpy="0 0.56756754 0"/>
+				<axis xyz="0 -1 0"/>
+				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+			</joint>
+			<link name="leg_r_spring0_link0">
+				<collision>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+					<geometry>                                                              
+						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+					</geometry>
+				</collision>
+				<visual>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+					<geometry>                                                              
+						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+					</geometry>
+					<color rgba="1.0 1.0 1.0 0.5"/>
+				</visual>
+				<inertial>
+					<mass value="0.00143865"/>
+					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
+					<inertia
+						ixx="0.00000001"
+						ixy="0.00000000" iyy="0.00000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+				</inertial>
+			</link>
+			<joint name="leg_r_spring0_joint1" type="prismatic">
+				<parent link="leg_r_spring0_link0"/>
+				<child  link="leg_r_spring0_link1"/>
+				<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
+				<axis xyz="1 0 0"/>
+				<limit effort="1000.0" lower="-0.035" upper="0.055" velocity="10.0"/>
+				<dynamics damping="0.0" friction="0.0"/>
+			</joint>
+		  	<link name="leg_r_spring0_link1">
+		    	<collision>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+		    		<geometry>                                                              
+						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+		    		</geometry>
+					<color rgba="1.0 1.0 1.0 0.5"/>
+				</collision>
+		    	<visual>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+		    		<geometry>                                                              
+						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+		    		</geometry>
+		    		<color rgba="1.0 1.0 1.0 0.5"/>
+				</visual>
+				<inertial>
+					<mass value="0.00143865"/>
+					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
+					<inertia
+						ixx="0.00000001"
+						ixy="0.00000000" iyy="0.00000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+				</inertial>
+			</link>
+			<joint name="close_leg_r_spring0_joint2" type="revolute">
+				<parent link="leg_r_spring0_link1"/>
+				<child  link="dummy1_leg_r_link3"/>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<axis xyz="0 -1 0"/>
+				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+			</joint>
+			<link name="dummy1_leg_r_link3">
+				<inertial>
+					<mass value="0.00001"/>
+					<origin xyz="0 -0.058 0" rpy="0 0 0"/>
+					<inertia
+						ixx="0.00000001"
+						ixy="0.00000000" iyy="0.00000001"
+						ixz="0.00000000" iyz="0.00000000" izz="0.00000001"/>
+				</inertial>
+			</link>
+		</xacro:if>
+
 
 		<!-- parallel link (lower-1st) -->
-		<link name="${name}_link4">
+		<joint name="leg_r_joint4" type="revolute">
+			<parent link="leg_r_link3"/>
+			<child  link="leg_r_link4"/>
+			<origin xyz="0 0 -0.0386" rpy="0 2.3562 0"/>
+			<axis xyz="0 1 0"/>
+			<limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="leg_r_link4">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
+	    		<geometry>
 					<mesh filename="package://ginko_description/meshes/stl/link03_r_leg01.stl"/>
 	    		</geometry>
 			</collision>
@@ -154,21 +272,36 @@
 					ixz="0.00000000" iyz="-0.00000175" izz="0.00081028"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint4" type="revolute">
-			<parent link="${name}_link3"/>
-			<child  link="${name}_link4"/>
-			<origin xyz="0 0 -0.0386" rpy="0 2.3562 0"/>
-			<axis xyz="0 1 0"/>
+		<joint name="leg_r_joint6" type="revolute">
+			<parent link="leg_r_link4"/>
+			<child  link="leg_r_link6"/>
+			<origin xyz="0.1 0.0 0.0" rpy="0 -2.3562 0"/>
+			<axis xyz="0 -1 0"/>
 			<limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+			<xacro:if value="${model_mode=='rviz'}">
+				<mimic joint="leg_r_joint4" multiplier="1" offset="0"/>
+			</xacro:if>
 		</joint>
 
 		<!-- parallel link (lower-2nd) -->
-		<link name="${name}_link5">
-	    	<collision>
+
+		<joint name="leg_r_joint5" type="revolute">
+			<parent link="leg_r_link3"/>
+			<child  link="leg_r_link5"/>
+			<origin xyz="-0.0213 0 -0.02655" rpy="0 2.3562 0"/>
+			<axis xyz="0 1 0"/>
+			<limit effort="0.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
+			<xacro:if value="${model_mode=='rviz'}">
+				<mimic joint="leg_r_joint4" multiplier="1" offset="0"/>
+			</xacro:if>
+		</joint>
+		<link name="leg_r_link5">
+			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
-	    		<geometry>                                                              
+				<geometry>
 					<mesh filename="package://ginko_description/meshes/stl/link04_r_leg02.stl"/>
-	    		</geometry>
+				</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
@@ -185,19 +318,114 @@
 					ixz="0.00000000" iyz="0.00000000" izz="0.00002264"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint5" type="revolute">
-	    	<parent link="${name}_link3"/>
-	    	<child  link="${name}_link5"/>
-	    	<origin xyz="-0.0213 0 -0.02655" rpy="0 2.3562 0"/>
-	    	<axis xyz="0 1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-	    	<mimic joint="${name}_joint4" multiplier="1" offset="0"/> 
-	  	</joint>
+		<joint name="close_leg_r_joint1" type="revolute">
+			<parent link="leg_r_link5"/>
+			<child  link="dummy2_leg_r_link6"/>
+			<origin xyz="0.1 0.0 0.0" rpy="0 -2.3562 0"/>
+			<axis xyz="0 -1 0"/>
+			<limit effort="0.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
+			<xacro:if value="${model_mode=='rviz'}">
+				<mimic joint="leg_r_joint4" multiplier="1" offset="0"/>
+			</xacro:if>
+		</joint>
+		<link name="dummy2_leg_r_link6">
+			<inertial>
+				<mass value="0.00001"/>
+				<origin xyz="-0.021 0 0.012" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00000001"
+					ixy="0.00000000" iyy="0.00000001"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00000001"/>
+			</inertial>
+		</link>
 
+		<!-- spring -->
+		<xacro:if value="${model_mode!='rviz'}">
+			<joint name="leg_r_spring1_joint0" type="revolute">
+				<parent link="leg_r_link3"/>
+				<child  link="leg_r_spring1_link0"/>
+				<origin xyz="0 -0.058 -0.0386" rpy="0 2.574025114 0"/>
+				<axis xyz="0 -1 0"/>
+				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+			</joint>
 
+			<link name="leg_r_spring1_link0">
+				<collision>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+					<geometry>
+						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+					</geometry>
+				</collision>
+				<visual>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+					<geometry>
+						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+					</geometry>
+					<color rgba="1.0 1.0 1.0 0.5"/>
+				</visual>
+				<inertial>
+					<mass value="0.00143865"/>
+					<origin xyz="0.03091683 0.0 0.0" rpy="0 2.138363867 0"/>
+					<inertia
+						ixx="0.00000001"
+						ixy="0.00000000" iyy="0.00000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+				</inertial>
+			</link>
+
+			<joint name="leg_r_spring1_joint1" type="prismatic">
+				<parent link="leg_r_spring1_link0"/>
+				<child  link="leg_r_spring1_link1"/>
+				<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
+				<axis xyz="1 0 0"/>
+				<limit effort="1000.0" lower="-0.035" upper="0.055" velocity="10.0"/>
+			</joint>
+
+			<link name="leg_r_spring1_link1">
+				<collision>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+					<geometry>                                                              
+						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+					</geometry>
+				</collision>
+				<visual>
+					<origin xyz="0 0 0" rpy="0 0 0"/>
+					<geometry>                                                              
+						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+					</geometry>
+					<color rgba="1.0 1.0 1.0 0.5"/>
+				</visual>
+				<inertial>
+					<mass value="0.00143865"/>
+					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
+					<inertia
+						ixx="0.00000001"
+						ixy="0.00000000" iyy="0.00000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+				</inertial>
+			</link>
+			<joint name="close_leg_r_spring1_joint2" type="revolute">
+				<parent link="leg_r_spring1_link1"/>
+				<child  link="dummy3_leg_r_link6"/>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<axis xyz="0 -1 0"/>
+				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+			</joint>
+			<link name="dummy3_leg_r_link6">
+				<inertial>
+					<mass value="0.00001"/>
+					<origin xyz="-0.021 -0.058 0.012" rpy="0 0 0"/>
+					<inertia
+						ixx="0.00000001"
+						ixy="0.00000000" iyy="0.00000001"
+						ixz="0.00000000" iyz="0.00000000" izz="0.00000001"/>
+				</inertial>
+			</link>
+
+		</xacro:if>
 
 		<!-- toe -->
-		<link name="${name}_link6">
+		<link name="leg_r_link6">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
@@ -219,16 +447,8 @@
 					ixz="0.00000980" iyz="0.00000026" izz="0.00006529"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint6" type="revolute">
-	    	<parent link="${name}_link4"/>
-	    	<child  link="${name}_link6"/>
-	    	<origin xyz="0.1 0.0 0.0" rpy="0 -2.3562 0"/>
-	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-	    	<mimic joint="${name}_joint4" multiplier="1" offset="0"/> 
-	  	</joint>
 
-		<link name="${name}_link7">
+		<link name="leg_r_link7">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
@@ -250,15 +470,15 @@
 					ixz="-0.00000479" iyz="0.00000000" izz="0.00003521"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint7" type="revolute">
-	    	<parent link="${name}_link6"/>
-	    	<child  link="${name}_link7"/>
+		<joint name="leg_r_joint7" type="revolute">
+	    	<parent link="leg_r_link6"/>
+	    	<child  link="leg_r_link7"/>
 	    	<origin xyz="-0.028 -0.02475 -0.0391" rpy="0 0 0"/>
 	    	<axis xyz="-1 0 0"/>
 	    	<limit effort="1000.0" lower="-1.6" upper="1.6" velocity="10.0"/>
 	  	</joint>
 
-		<link name="${name}_link8">
+		<link name="leg_r_link8">
 			<collision>
 				<origin xyz="0 0 -0.003" rpy="0 0 0"/>
 				<geometry>
@@ -280,14 +500,13 @@
 					ixz="0.00000000" iyz="-0.00000000" izz="0.00009934"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint8" type="revolute">
-	    	<parent link="${name}_link7"/>
-	    	<child  link="${name}_link8"/>
+		<joint name="leg_r_joint8" type="revolute">
+	    	<parent link="leg_r_link7"/>
+	    	<child  link="leg_r_link8"/>
 	    	<origin xyz="0.0342 0 -0.04" rpy="0 0 0"/>
 	    	<axis xyz="0 0 1"/>
 	    	<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
 	  	</joint>
-
 
 	</xacro:macro>
 </robot>

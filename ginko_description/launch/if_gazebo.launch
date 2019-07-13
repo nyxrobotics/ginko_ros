@@ -22,24 +22,23 @@
 
   <!-- load model with sdf for simulation,urdf for vizualization -->
   <!-- Load the URDF into the ROS Parameter Server -->
-  <param name="robot_description_sdf" textfile="$(find ginko_description)/gazebo/sdf/robot_sim_spring_close.sdf" />
-  <param name="robot_description"     textfile="$(find ginko_description)/gazebo/sdf/original_sim_mimic.urdf" />
-
-  <!-- <param name="robot_description_sdf" textfile="$(find ginko_description)/gazebo/sdf/robot_if_right_left.sdf" /> -->
-  <!-- <param name="robot_description"     textfile="$(find ginko_description)/gazebo/sdf/robot_if_right_left.urdf" /> -->
+  <param name="robot_description_sdf" textfile="$(find ginko_description)/gazebo/sdf/ginko_gazebo.sdf" />
+  <param name="robot_description"     textfile="$(find ginko_description)/gazebo/urdf/ginko_rviz.urdf" />
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model rrbot -param robot_description"/> -->
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description -model base -x -2.0 -y 0.33 -z 0.4" /> -->
   <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -param robot_description_sdf -model base -x -2.0 -y 0.33 -z 0.4" />
   <rosparam file="$(find ginko_description)/gazebo/config/gazebo_pid.yaml" command="load"/>
-  <rosparam file="$(find ginko_description)/gazebo/config/joint_control.yaml" command="load"/>
+  <rosparam file="$(find ginko_description)/gazebo/config/joint_control_position.yaml" command="load"/>
   <node name="controller_spawner" 
     pkg="controller_manager" 
     type="spawner" respawn="false" output="screen" ns="/ginko"
-    args="joint_state_controller"/>
+    args="
+        body_joint1_position_controller
+        joint_state_controller
+        "/>
 
   <!-- convert joint states to TF transforms for rviz, etc -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
