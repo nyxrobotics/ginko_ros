@@ -68,7 +68,7 @@ gazebo_ros_control:
       antiwindup: false
       publish_state: true
 
-    #arm right
+    #Leg right
     leg_r_joint0:
       p: 6.7
       i: 0.0
@@ -83,7 +83,21 @@ gazebo_ros_control:
       i_clamp: 0.2
       antiwindup: false
       publish_state: true
+    leg_r_joint3:
+      p: 6.7
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
     leg_r_joint4:
+      p: 6.7
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    leg_r_joint6:
       p: 6.7
       i: 0.0
       d: 0.0
@@ -104,7 +118,7 @@ gazebo_ros_control:
       i_clamp: 0.2
       antiwindup: false
       publish_state: true
-    #arm left
+    #Leg left
     leg_l_joint0:
       p: 6.7
       i: 0.0
@@ -119,7 +133,21 @@ gazebo_ros_control:
       i_clamp: 0.2
       antiwindup: false
       publish_state: true
+    leg_l_joint3:
+      p: 6.7
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
     leg_l_joint4:
+      p: 6.7
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    leg_l_joint6:
       p: 6.7
       i: 0.0
       d: 0.0

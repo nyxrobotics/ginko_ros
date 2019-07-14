@@ -41,8 +41,11 @@
     <xacro:body_xacro model_mode="${model_mode}"/>
     <xacro:body_gazebo gazebo_control_mode="${gazebo_control_mode}"/>
     <xacro:leg_r model_mode="${model_mode}"/>
-    <xacro:leg_r_gazebo name="leg_r" gazebo_control_mode="${gazebo_control_mode}"/>
-
+    <xacro:leg_r_gazebo gazebo_control_mode="${gazebo_control_mode}"/>
+    <xacro:leg_l model_mode="${model_mode}"/>
+    <xacro:leg_l_gazebo gazebo_control_mode="${gazebo_control_mode}"/>
+    <!-- <xacro:leg_l model_mode="${model_mode}"/> -->
+    <!-- <xacro:leg_l_gazebo name="leg_l" gazebo_control_mode="${gazebo_control_mode}"/> -->
 <!--     <xacro:if value="${model_mode=='rviz'}">
       <xacro:leg_r model_mode="common"/>
       <xacro:leg_r_gazebo name="leg_r"/>

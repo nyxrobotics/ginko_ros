@@ -43,9 +43,15 @@ ginko:
   leg_r_joint1_position_controller:
     type: position_controllers/JointPositionController
     joint: leg_r_joint1
+  leg_r_joint3_position_controller:
+    type: position_controllers/JointPositionController
+    joint: leg_r_joint3
   leg_r_joint4_position_controller:
     type: position_controllers/JointPositionController
     joint: leg_r_joint4
+  leg_r_joint6_position_controller:
+    type: position_controllers/JointPositionController
+    joint: leg_r_joint6
   leg_r_joint7_position_controller:
     type: position_controllers/JointPositionController
     joint: leg_r_joint7

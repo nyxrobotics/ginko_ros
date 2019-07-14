@@ -37,6 +37,9 @@
     type="spawner" respawn="false" output="screen" ns="/ginko"
     args="
         body_joint1_position_controller
+        leg_r_joint0_position_controller
+        leg_r_joint1_position_controller
+        leg_r_joint3_position_controller
         joint_state_controller
         "/>
 
