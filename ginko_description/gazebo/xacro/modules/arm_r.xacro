@@ -1,18 +1,22 @@
 <?xml version="1.0"?>
-
-
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="arm_r_sim" params="name parent">
+	<xacro:macro name="arm_r" params="model_mode">
 		<!-- shoulder pitch. -->
-		<link name="${name}_link0">
-			<!-- Collision created from STL mesh without color -->
+		<joint name="arm_r_joint0" type="revolute">
+		    <parent link="body_link1"/>
+			<child link="arm_r_link0"/>
+		    <origin xyz="0 -0.10683 0.05115" rpy="0 0.3927 0"/>
+		    <axis xyz="0 1 0"/>
+			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="arm_r_link0">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link09_r_arm01.stl"/>
 				</geometry>
 			</collision>
-			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
@@ -28,25 +32,23 @@
 					ixz="0.00000000" iyz="0.00000000" izz="0.00001606"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint0" type="revolute">
-		    <parent link="${parent}"/>
-			<child link="${name}_link0"/>
-		    <origin xyz="0 -0.10683 0.05115" rpy="0 0.3927 0"/>
-		    <axis xyz="0 1 0"/>
-			<limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
-		</joint>
-
 
 		<!-- shoulder roll -->
-		<link name="${name}_link1">
-			<!-- Collision created from STL mesh without color -->
+		<joint name="arm_r_joint1" type="revolute">
+			<parent link="arm_r_link0"/>
+			<child  link="arm_r_link1"/>
+			<origin xyz="0.035 -0.0246 0" rpy="-1.1781 0 0"/>
+			<axis xyz="1 0 0"/>
+			<limit effort="1000.0" lower="-0.85" upper="1.18" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="arm_r_link1">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link10_r_arm02.stl"/>
 	    		</geometry>
 			</collision>
-			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
@@ -62,31 +64,29 @@
 					ixz="-0.00031848" iyz="0.00037104" izz="0.00064743"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint1" type="revolute">
-			<parent link="${name}_link0"/>
-			<child  link="${name}_link1"/>
-			<origin xyz="0.035 -0.0246 0" rpy="-1.1781 0 0"/>
-			<axis xyz="1 0 0"/>
-			<limit effort="1000.0" lower="-0.85" upper="1.18" velocity="10.0"/>
-		</joint>
 
 		<!-- scissors -->
-		<link name="${name}_link2">
-			<!-- Collision created from STL mesh without color -->
+		<joint name="arm_r_joint2" type="revolute">
+			<parent link="arm_r_link1"/>
+			<child  link="arm_r_link2"/>
+			<origin xyz="0.0092 -0.0547 -0.11295" rpy="0 0.7854 0"/>
+			<axis xyz="0 -1 0"/>
+			<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="arm_r_link2">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link11_r_scissor01.stl"/>
 	    		</geometry>
 			</collision>
-			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
 					<mesh filename="package://ginko_description/meshes/obj/link11_r_scissor01.obj"/>
 				</geometry>
 			</visual>
-			<!-- nothing worth -->
 			<inertial>
 				<mass value="0.03287850"/>
 				<origin xyz="0.08234859 0.030246866 0.00514112" rpy="0 0 0"/>
@@ -96,23 +96,21 @@
 					ixz="-0.00000058" iyz="0.00000001" izz="0.00010105"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint2" type="revolute">
-	    	<parent link="${name}_link1"/>
-	    	<child  link="${name}_link2"/>
-	    	<origin xyz="0.0092 -0.0547 -0.11295" rpy="0 0.7854 0"/>
-	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="10.0"/>
-	  	</joint>
-
-		<link name="${name}_link3">
-			<!-- Collision created from STL mesh without color -->
+		<joint name="arm_r_joint3" type="revolute">
+			<parent link="arm_r_link1"/>
+			<child  link="arm_r_link3"/>
+			<origin xyz="0.0092 0.0018 -0.11295" rpy="0 0.7854 0"/>
+			<axis xyz="0 -1 0"/>
+			<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="arm_r_link3">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/link12_r_scissor02.stl"/>
 	    		</geometry>
 			</collision>
-			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
@@ -128,30 +126,30 @@
 					ixz="-0.00000245" iyz="0.00000002" izz="0.00008024"/>
 			</inertial>
 		</link>
-		<joint name="${name}_joint3" type="revolute">
-	    	<parent link="${name}_link1"/>
-	    	<child  link="${name}_link3"/>
-	    	<origin xyz="0.0092 0.0018 -0.11295" rpy="0 0.7854 0"/>
-	    	<axis xyz="0 -1 0"/>
-	    	<limit effort="1000.0" lower="-2.36" upper="2.36" velocity="10.0"/>
-	  	</joint>
 
 	  	<!-- LiDAR -->
-		<link name="${name}_urg_link">
+		<!-- use zero-limited revolute joint for fixed joint (SDF) -->
+		<joint name="arm_r_urg_joint"  type="revolute">
+	    	<parent link="arm_r_link1"/>
+	    	<child  link="arm_r_urg_link"/>
+	    	<origin xyz="-0.0456 0.01715 -0.06795" rpy="0 1.57 1.57"/>
+	    	<axis xyz="0 0 1"/>
+	    	<limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<link name="arm_r_urg_link">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
 					<mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
 	    		</geometry>
 			</collision>
-			<!-- Visualisation created from Color dae -->
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
 					<mesh filename="package://ginko_description/meshes/obj/urg.obj"/>
 				</geometry>
 			</visual>
-			<!-- nothing worth -->
 			<inertial>
 				<mass value="0.16705492"/>
 				<origin xyz="-0.00014579 0.00000831 -0.02360505" rpy="0 0 0"/>
@@ -161,15 +159,5 @@
 					ixz="-0.00000049" iyz="-0.00000004" izz="0.00006019"/>
 			</inertial>
 		</link>
-		<!-- use zero-limited revolute joint for fixed joint (SDF) -->
-		<joint name="${name}_urg_joint"  type="revolute">
-	    	<parent link="${name}_link1"/>
-	    	<child  link="${name}_urg_link"/>
-	    	<origin xyz="-0.0456 0.01715 -0.06795" rpy="0 1.57 1.57"/>
-	    	<axis xyz="0 0 1"/>
-	    	<limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-		</joint>
-
-
 	</xacro:macro>
 </robot>
