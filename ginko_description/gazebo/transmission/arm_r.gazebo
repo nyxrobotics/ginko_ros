@@ -12,6 +12,7 @@
 
 		<xacro:default_motor_transmission joint_name="arm_r_joint0" gazebo_control_mode="${gazebo_control_mode}"/>
 		<xacro:default_motor_transmission joint_name="arm_r_joint1" gazebo_control_mode="${gazebo_control_mode}"/>
+		<xacro:default_motor_transmission joint_name="arm_r_joint1_rev" gazebo_control_mode="${gazebo_control_mode}"/>
 		<xacro:default_motor_transmission joint_name="arm_r_joint2" gazebo_control_mode="${gazebo_control_mode}"/>
 		<xacro:default_motor_transmission joint_name="arm_r_joint3" gazebo_control_mode="${gazebo_control_mode}"/>
 	</xacro:macro>

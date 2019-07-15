@@ -24,6 +24,13 @@ gazebo_ros_control:
       i_clamp: 0.2
       antiwindup: false
       publish_state: true
+    arm_r_joint1_rev:
+      p: 6.70
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
     arm_r_joint2:
       p: 6.7
       i: 0.0
@@ -48,6 +55,13 @@ gazebo_ros_control:
       publish_state: true
     arm_l_joint1:
       p: 6.7
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    arm_l_joint1_rev:
+      p: 6.70
       i: 0.0
       d: 0.0
       i_clamp: 0.2

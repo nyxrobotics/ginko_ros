@@ -34,7 +34,6 @@
 			<selfCollide>true</selfCollide>
 			<dampingFactor>0.00</dampingFactor>
 		</gazebo>
-
 		<!-- Joints. Femoral first. -->
 		<xacro:default_motor_transmission joint_name="leg_l_joint0" gazebo_control_mode="${gazebo_control_mode}"/>
 		<!-- parallel link (upper-1st) -->

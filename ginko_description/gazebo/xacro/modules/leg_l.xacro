@@ -158,7 +158,7 @@
 
 	  	<!-- spring -->
 		<xacro:if value="${model_mode!='rviz'}">
-			<joint name="leg_l_spring_joint0" type="revolute">
+			<joint name="leg_l_spring0_joint0" type="revolute">
 		    	<parent link="leg_l_link0"/>
 		    	<child  link="leg_l_spring0_link0"/>
 		    	<origin xyz="0.022 0.0755 -0.06015" rpy="0 0.56756754 0"/>
@@ -170,7 +170,7 @@
 		    	<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 		    		<geometry>                                                              
-						<!-- <mesh filename="package://ginko_description/meshes/stl/spring1.stl"/> -->
+						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
 		    		</geometry>
 				</collision>
 		    	<visual>
@@ -203,7 +203,7 @@
 		    	<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 		    		<geometry>                                                              
-						<!-- <mesh filename="package://ginko_description/meshes/stl/spring2.stl"/> -->
+						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
 		    		</geometry>
 				</collision>
 		    	<visual>
@@ -224,7 +224,7 @@
 						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
 				</inertial>
 			</link>
-			<joint name="close_leg_l_spring0_joint2" type="revolute">
+			<joint name="close_leg_l_spring0_joint1" type="revolute">
 				<parent link="leg_l_spring0_link1"/>
 				<child  link="dummy1_leg_l_link3"/>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
@@ -346,18 +346,18 @@
 	  	<!-- spring -->
 		<xacro:if value="${model_mode!='rviz'}">
 			<joint name="leg_l_spring1_joint0" type="revolute">
-				<parent link="leg_l_link3"/>
+				<parent link="leg_l_link4"/>
 				<child  link="leg_l_spring1_link0"/>
-				<origin xyz="0 0.058 -0.0386" rpy="0 2.574025114 0"/>
+				<origin xyz="0 0.058 0" rpy="0 0.217830624 0"/>
 				<axis xyz="0 -1 0"/>
-				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-				<dynamics damping="0.0" friction="0.0"/>
+				<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+				<dynamics damping="0.01" friction="0.01"/>
 			</joint>
 			<link name="leg_l_spring1_link0">
 				<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<geometry>                                                              
-						<!-- <mesh filename="package://ginko_description/meshes/stl/spring1.stl"/> -->
+						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
 					</geometry>
 				</collision>
 				<visual>
@@ -384,13 +384,13 @@
 				<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
 				<axis xyz="1 0 0"/>
 				<limit effort="1000.0" lower="-0.03" upper="0.06" velocity="10.0"/>
-				<dynamics damping="0.0" friction="0.0"/>
+				<dynamics damping="0.01" friction="0.01"/>
 			</joint>
 			<link name="leg_l_spring1_link1">
 				<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<geometry>                                                              
-						<!-- <mesh filename="package://ginko_description/meshes/stl/spring2.stl"/> -->
+						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
 					</geometry>
 				</collision>
 				<visual>
@@ -411,13 +411,13 @@
 						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
 				</inertial>
 			</link>
-			<joint name="close_leg_l_spring1_joint2" type="revolute">
+			<joint name="close_leg_l_spring1_joint1" type="revolute">
 				<parent link="leg_l_spring1_link1"/>
 				<child  link="dummy3_leg_l_link6"/>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<axis xyz="0 -1 0"/>
-				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-				<dynamics damping="0.0" friction="0.0"/>
+				<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+				<dynamics damping="0.01" friction="0.01"/>
 			</joint>
 			<link name="dummy3_leg_l_link6">
 				<inertial>
