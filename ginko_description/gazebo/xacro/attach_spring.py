@@ -46,7 +46,7 @@ out_text = re.sub(r"""
           <damping>\10</damping>
           <friction>\11</friction>
           <spring_reference>0.0517</spring_reference>
-          <spring_stiffness>457.0</spring_stiffness>
+          <spring_stiffness>914.0</spring_stiffness>
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>

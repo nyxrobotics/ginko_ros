@@ -345,13 +345,13 @@
 
 	  	<!-- spring -->
 		<xacro:if value="${model_mode!='rviz'}">
-			<joint name="leg_l_spring1_joint0" type="revolute">
+			<joint name="leg_l_spring1_joint0" type="continuous">
 				<parent link="leg_l_link4"/>
 				<child  link="leg_l_spring1_link0"/>
 				<origin xyz="0 0.058 0" rpy="0 0.217830624 0"/>
 				<axis xyz="0 -1 0"/>
-				<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-				<dynamics damping="0.01" friction="0.01"/>
+				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+				<dynamics damping="0.01" friction="0.0"/>
 			</joint>
 			<link name="leg_l_spring1_link0">
 				<collision>
@@ -371,7 +371,7 @@
 				</visual>
 				<inertial>
 					<mass value="0.00143865"/>
-					<origin xyz="0.03091683 0.0 0.0" rpy="0 2.138363867 0"/>
+					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
 					<inertia
 						ixx="0.00000001"
 						ixy="0.00000000" iyy="0.00000060"
@@ -384,7 +384,7 @@
 				<origin xyz="0.10911938 0.0 0.0" rpy="0 3.141593 0"/>
 				<axis xyz="1 0 0"/>
 				<limit effort="1000.0" lower="-0.03" upper="0.06" velocity="10.0"/>
-				<dynamics damping="0.01" friction="0.01"/>
+				<dynamics damping="0.01" friction="0.0"/>
 			</joint>
 			<link name="leg_l_spring1_link1">
 				<collision>
@@ -411,13 +411,13 @@
 						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
 				</inertial>
 			</link>
-			<joint name="close_leg_l_spring1_joint1" type="revolute">
+			<joint name="close_leg_l_spring1_joint1" type="continuous">
 				<parent link="leg_l_spring1_link1"/>
 				<child  link="dummy3_leg_l_link6"/>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<origin xyz="0 0 0" rpy="0 -2.574025114 0"/>
 				<axis xyz="0 -1 0"/>
-				<limit effort="1000.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
-				<dynamics damping="0.01" friction="0.01"/>
+				<limit effort="0.0" lower="-3.141593" upper="3.141593" velocity="10.0"/>
+				<dynamics damping="0.01" friction="0.0"/>
 			</joint>
 			<link name="dummy3_leg_l_link6">
 				<inertial>
