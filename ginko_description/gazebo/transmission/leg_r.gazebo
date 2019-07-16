@@ -4,25 +4,25 @@
   	<xacro:include filename="$(find ginko_description)/gazebo/transmission/default_gazebo_params.xacro"/>
 	<xacro:macro name="leg_r_gazebo" params="gazebo_control_mode">
 		<!-- Link conencts from body. Femoral first. -->
-		<xacro:default_link_collision link_name="leg_r_link0" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_link0" friction="0.01"/>
 		<!-- parallel link (upper-1st) -->
-		<xacro:default_link_collision link_name="leg_r_link1" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_link1" friction="0.01"/>
 		<!-- parallel link (upper-2nd) -->
-		<xacro:default_link_collision link_name="leg_r_link2" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_link2" friction="0.01"/>
 		<!-- knee -->
-		<xacro:default_link_collision link_name="leg_r_link3" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_link3" friction="0.01"/>
 		<!-- spring -->
-		<xacro:default_link_collision link_name="leg_r_spring0_link0" friction="0.1"/>
-		<xacro:default_link_collision link_name="leg_r_spring0_link1" friction="0.1"/>
-		<xacro:default_link_collision link_name="leg_r_spring1_link0" friction="0.1"/>
-		<xacro:default_link_collision link_name="leg_r_spring1_link1" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_spring0_link0" friction="0.01"/>
+		<xacro:default_link_collision link_name="leg_r_spring0_link1" friction="0.01"/>
+		<xacro:default_link_collision link_name="leg_r_spring1_link0" friction="0.01"/>
+		<xacro:default_link_collision link_name="leg_r_spring1_link1" friction="0.01"/>
 		<!-- parallel link (lower-1st) -->
-		<xacro:default_link_collision link_name="leg_r_link4" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_link4" friction="0.01"/>
 		<!-- parallel link (lower-2nd) -->
-		<xacro:default_link_collision link_name="leg_r_link5" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_link5" friction="0.01"/>
 		<!-- toe -->
-		<xacro:default_link_collision link_name="leg_r_link6" friction="0.1"/>
-		<xacro:default_link_collision link_name="leg_r_link7" friction="0.1"/>
+		<xacro:default_link_collision link_name="leg_r_link6" friction="0.01"/>
+		<xacro:default_link_collision link_name="leg_r_link7" friction="0.01"/>
 		<!-- <xacro:default_link_collision link_name="leg_r_link8" friction="1.0"/> -->
 		<gazebo reference="leg_r_link8">
 			<kp>1000000.0</kp>
