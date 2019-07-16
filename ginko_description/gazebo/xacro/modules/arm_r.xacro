@@ -147,14 +147,24 @@
 
 	  	<!-- LiDAR -->
 		<!-- use zero-limited revolute joint for fixed joint (SDF) -->
-		<joint name="arm_r_urg_joint"  type="revolute">
-	    	<parent link="arm_r_link1"/>
-	    	<child  link="arm_r_urg_link"/>
-	    	<origin xyz="-0.0456 0.01715 -0.06795" rpy="0 1.57 1.57"/>
-	    	<axis xyz="0 0 1"/>
-	    	<limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-			<dynamics damping="0.1" friction="0.1"/>
-		</joint>
+		<xacro:if value="${model_mode!='rviz'}">
+			<joint name="arm_r_urg_joint"  type="revolute">
+				<parent link="arm_r_link1"/>
+				<child  link="arm_r_urg_link"/>
+				<origin xyz="-0.0456 0.01715 -0.06795" rpy="0 1.57 1.57"/>
+				<axis xyz="0 0 1"/>
+				<limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+				<dynamics damping="0.1" friction="0.1"/>
+			</joint>
+		</xacro:if>
+		<xacro:if value="${model_mode=='rviz'}">
+			<joint name="arm_r_urg_joint" type="fixed">
+				<parent link="arm_r_link1"/>
+				<child  link="arm_r_urg_link"/>
+				<origin xyz="-0.0456 0.01715 -0.06795" rpy="0 1.57 1.57"/>
+			</joint>
+		</xacro:if>
+		
 		<link name="arm_r_urg_link">
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>

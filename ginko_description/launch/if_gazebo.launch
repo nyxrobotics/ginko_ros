@@ -37,15 +37,35 @@
     type="spawner" respawn="false" output="screen" ns="/ginko"
     args="
         body_joint1_position_controller
+
         leg_r_joint0_position_controller
         leg_r_joint1_position_controller
         leg_r_joint3_position_controller
+        leg_r_joint4_position_controller
+        leg_r_joint6_position_controller
+        leg_r_joint7_position_controller
+        leg_r_joint8_position_controller
+
         leg_l_joint0_position_controller
         leg_l_joint1_position_controller
         leg_l_joint3_position_controller
+        leg_l_joint4_position_controller
+        leg_l_joint6_position_controller
+        leg_l_joint7_position_controller
+        leg_l_joint8_position_controller
+
         arm_r_joint0_position_controller
         arm_r_joint1_position_controller
         arm_r_joint1_rev_position_controller
+        arm_r_joint2_position_controller
+        arm_r_joint3_position_controller
+
+        arm_l_joint0_position_controller
+        arm_l_joint1_position_controller
+        arm_l_joint1_rev_position_controller
+        arm_l_joint2_position_controller
+        arm_l_joint3_position_controller
+
         joint_state_controller
         "/>
 

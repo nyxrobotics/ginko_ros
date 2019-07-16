@@ -73,7 +73,7 @@
 			<dynamics damping="0.1" friction="0.1"/>
 			<xacro:if value="${model_mode=='rviz'}">
 				<mimic joint="leg_r_joint1" multiplier="1" offset="0"/>
-    		</xacro:if>
+			</xacro:if>
 		</joint>
 
 		<!-- parallel link (upper-2nd) -->
@@ -183,12 +183,12 @@
 					</material>
 				</visual>
 				<inertial>
-					<mass value="0.00143865"/>
+					<mass value="0.0143865"/>
 					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
 					<inertia
-						ixx="0.00000001"
-						ixy="0.00000000" iyy="0.00000060"
-						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+						ixx="0.0000001"
+						ixy="0.00000000" iyy="0.0000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.0000060"/>
 				</inertial>
 			</link>
 			<joint name="spring0_leg_r_joint" type="prismatic">
@@ -216,12 +216,12 @@
 					</material>
 				</visual>
 				<inertial>
-					<mass value="0.00143865"/>
+					<mass value="0.0143865"/>
 					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
 					<inertia
-						ixx="0.00000001"
-						ixy="0.00000000" iyy="0.00000060"
-						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+						ixx="0.0000001"
+						ixy="0.00000000" iyy="0.0000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.0000060"/>
 				</inertial>
 			</link>
 			<joint name="close_leg_r_spring0_joint1" type="revolute">
@@ -370,12 +370,12 @@
 					</material>
 				</visual>
 				<inertial>
-					<mass value="0.00143865"/>
+					<mass value="0.0143865"/>
 					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
 					<inertia
-						ixx="0.00000001"
-						ixy="0.00000000" iyy="0.00000060"
-						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+						ixx="0.0000001"
+						ixy="0.00000000" iyy="0.0000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.0000060"/>
 				</inertial>
 			</link>
 			<joint name="spring1_leg_r_joint" type="prismatic">
@@ -403,12 +403,12 @@
 					</material>
 				</visual>
 				<inertial>
-					<mass value="0.00143865"/>
+					<mass value="0.0143865"/>
 					<origin xyz="0.03091683 0.0 0.0" rpy="0 0 0"/>
 					<inertia
-						ixx="0.00000001"
-						ixy="0.00000000" iyy="0.00000060"
-						ixz="0.00000000" iyz="0.00000000" izz="0.00000060"/>
+						ixx="0.0000001"
+						ixy="0.00000000" iyy="0.0000060"
+						ixz="0.00000000" iyz="0.00000000" izz="0.0000060"/>
 				</inertial>
 			</link>
 			<joint name="close_leg_r_spring1_joint1" type="continuous">
@@ -514,5 +514,38 @@
 					ixz="0.00000000" iyz="-0.00000000" izz="0.00009934"/>
 			</inertial>
 		</link>
+		<!-- toe edges -->
+		<xacro:if value="${model_mode=='rviz'}">
+			<joint name="leg_r_toe_joint0" type="fixed">
+				<parent link="leg_r_link8"/>
+				<child  link="leg_r_toe_link0"/>
+				<origin xyz="0.064 0.040 -0.005" rpy="0 0 0"/>
+			</joint>
+			<link name="leg_r_toe_link0"/>
+			<joint name="leg_r_toe_joint1" type="fixed">
+				<parent link="leg_r_link8"/>
+				<child  link="leg_r_toe_link1"/>
+				<origin xyz="-0.064 0.040 -0.005" rpy="0 0 0"/>
+			</joint>
+			<link name="leg_r_toe_link1"/>
+			<joint name="leg_r_toe_joint2" type="fixed">
+				<parent link="leg_r_link8"/>
+				<child  link="leg_r_toe_link2"/>
+				<origin xyz="-0.064 -0.040 -0.005" rpy="0 0 0"/>
+			</joint>
+			<link name="leg_r_toe_link2"/>
+			<joint name="leg_r_toe_joint3" type="fixed">
+				<parent link="leg_r_link8"/>
+				<child  link="leg_r_toe_link3"/>
+				<origin xyz="0.064 -0.040 -0.005" rpy="0 0 0"/>
+			</joint>
+			<link name="leg_r_toe_link3"/>
+			<joint name="leg_r_toe_center_joint" type="fixed">
+				<parent link="leg_r_link8"/>
+				<child  link="leg_r_toe_center"/>
+				<origin xyz="0.0 0.0 -0.005" rpy="0 0 0"/>
+			</joint>
+			<link name="leg_r_toe_center"/>
+		</xacro:if>
 	</xacro:macro>
 </robot>
