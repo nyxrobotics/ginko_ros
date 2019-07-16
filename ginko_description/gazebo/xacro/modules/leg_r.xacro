@@ -56,12 +56,12 @@
 				</geometry>
 			</visual>
 			<inertial>
-				<mass value="0.18525690"/>
-				<origin xyz="0.05000000 -0.01719078 0.00068146" rpy="0 0 0"/>
+				<mass value="0.15115113"/>
+				<origin xyz="0.05000000 -0.02587267 0.00000000" rpy="0 0 0"/>
 				<inertia
-					ixx="0.00055489"
-					ixy="-0.00004242" iyy="0.00027917"
-					ixz="0.00000000" iyz="-0.00000175" izz="0.00081028"/>
+					ixx="0.00003721"
+					ixy="0.00000000" iyy="0.00026035"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00028077"/>
 			</inertial>
 		</link>
 		<joint name="leg_r_joint3" type="revolute">
@@ -267,12 +267,12 @@
 				</geometry>
 			</visual>
 			<inertial>
-				<mass value="0.18525690"/>
-				<origin xyz="0.05000000 -0.01719078 0.00068146" rpy="0 0 0"/>
+				<mass value="0.15115113"/>
+				<origin xyz="0.05000000 -0.02587267 0.00000000" rpy="0 0 0"/>
 				<inertia
-					ixx="0.00055489"
-					ixy="-0.00004242" iyy="0.00027917"
-					ixz="0.00000000" iyz="-0.00000175" izz="0.00081028"/>
+					ixx="0.00003721"
+					ixy="0.00000000" iyy="0.00026035"
+					ixz="0.00000000" iyz="0.00000000" izz="0.00028077"/>
 			</inertial>
 		</link>
 		<joint name="leg_r_joint6" type="revolute">
