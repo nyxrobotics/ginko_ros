@@ -16,7 +16,7 @@ void GinkoController::initPublisher() {
 	//	joint_states_pub_ = node_handle_.advertise<sensor_msgs::JointState>("joint_states", 10);
 	for (int index = 0; index < GAZEBO_JOINT_NUM; index++){
 		std::string topic_name = ginko_params_._gazebo_joint_name[index] + ginko_params_._gazebo_target_topic_footer;
-		gazebo_joints_pub_[index] = node_handle_.advertise<std_msgs::Float64>(topic_name, 1);
+		gazebo_joints_pub_[index] = node_handle_.advertise<std_msgs::Float64>(topic_name, 10);
 	}
 	//	body_joint1_pub_ = node_handle_.advertise<std_msgs::Float64>("body_joint1_position_controller/command", 10);
 	//	arm_r_joint0_pub_ = node_handle_.advertise<std_msgs::Float64>("arm_r_joint0_position_controller/command", 10);
