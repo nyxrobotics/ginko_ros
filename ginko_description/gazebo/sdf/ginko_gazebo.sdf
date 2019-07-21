@@ -210,7 +210,7 @@
         <xyz>0.923879 -0 -0.382684</xyz>
         <limit>
           <lower>-1.18</lower>
-          <upper>1.5</upper>
+          <upper>1.6</upper>
           <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
@@ -445,7 +445,7 @@
       <axis>
         <xyz>-0.923879 0 0.382684</xyz>
         <limit>
-          <lower>-1.5</lower>
+          <lower>-1.6</lower>
           <upper>1.18</upper>
           <effort>1000</effort>
           <velocity>10</velocity>
@@ -607,7 +607,7 @@
       <axis>
         <xyz>0.923879 0 -0.382684</xyz>
         <limit>
-          <lower>-1.5</lower>
+          <lower>-1.6</lower>
           <upper>1.18</upper>
           <effort>1000</effort>
           <velocity>10</velocity>
@@ -844,7 +844,7 @@
         <xyz>-0.923879 -0 0.382684</xyz>
         <limit>
           <lower>-1.18</lower>
-          <upper>1.5</upper>
+          <upper>1.6</upper>
           <effort>1000</effort>
           <velocity>10</velocity>
         </limit>
@@ -1448,15 +1448,15 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+06</kp>
-              <kd>100</kd>
-              <max_vel>10</max_vel>
+              <kp>2e+06</kp>
+              <kd>200</kd>
+              <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
           </contact>
           <friction>
             <ode>
-              <mu>1</mu>
+              <mu>10</mu>
             </ode>
           </friction>
         </surface>
@@ -1559,7 +1559,7 @@
       <pose frame=''>-0.0184 0.0755 -0.256971 0 -0.567562 0</pose>
       <inertial>
         <pose frame=''>0.030917 0 0 0 -0 0</pose>
-        <mass>0.00143865</mass>
+        <mass>0.0143865</mass>
         <inertia>
           <ixx>1e-07</ixx>
           <ixy>0</ixy>
@@ -2412,15 +2412,15 @@
         <surface>
           <contact>
             <ode>
-              <kp>1e+06</kp>
-              <kd>100</kd>
-              <max_vel>10</max_vel>
+              <kp>2e+06</kp>
+              <kd>200</kd>
+              <max_vel>1</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
           </contact>
           <friction>
             <ode>
-              <mu>1</mu>
+              <mu>10</mu>
             </ode>
           </friction>
         </surface>
