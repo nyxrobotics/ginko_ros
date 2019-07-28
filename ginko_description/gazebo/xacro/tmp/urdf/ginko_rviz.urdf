@@ -466,7 +466,7 @@
     <mu1>10.0</mu1>
     <maxVel>1.0</maxVel>
     <minDepth>0.0001</minDepth>
-    <maxContacts>6</maxContacts>
+    <maxContacts>20</maxContacts>
     <selfCollide>true</selfCollide>
     <dampingFactor>0.0</dampingFactor>
   </gazebo>
@@ -923,7 +923,7 @@
     <mu1>10.0</mu1>
     <maxVel>1.0</maxVel>
     <minDepth>0.0001</minDepth>
-    <maxContacts>6</maxContacts>
+    <maxContacts>20</maxContacts>
     <selfCollide>true</selfCollide>
     <dampingFactor>0.0</dampingFactor>
   </gazebo>

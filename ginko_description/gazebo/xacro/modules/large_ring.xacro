@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="small_ring" params="model_mode">
-		<link name="small_ring_link0">
+<robot name="large_ring"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:include filename="$(find ginko_description)/gazebo/transmission/large_ring.gazebo"/>
+
+	<xacro:macro name="large_ring">
+		<link name="large_ring_link0">
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/large_ring.obj"/>
+        			<mesh filename="package://ginko_description/meshes/stl/large_ring.stl"/>
 				</geometry>
 			</collision>
 			<visual>
@@ -24,4 +26,7 @@
 			</inertial>
 		</link>
 	</xacro:macro>
+
+	<xacro:large_ring />
+	<xacro:large_ring_gazebo />
 </robot>

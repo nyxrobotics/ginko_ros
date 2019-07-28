@@ -1488,7 +1488,7 @@
             </ode>
           </friction>
         </surface>
-        <max_contacts>6</max_contacts>
+        <max_contacts>20</max_contacts>
       </collision>
       <visual name='leg_l_link8_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
@@ -2508,7 +2508,7 @@
             </ode>
           </friction>
         </surface>
-        <max_contacts>6</max_contacts>
+        <max_contacts>20</max_contacts>
       </collision>
       <visual name='leg_r_link8_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
