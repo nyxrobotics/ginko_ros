@@ -35,8 +35,6 @@
 #include <decision_making/ROSTask.h>
 #include <decision_making/DecisionMaking.h>
 
-
-
 #include <decision_making/SynchCout.h>
 #include <decision_making/BT.h>
 
@@ -46,14 +44,20 @@
 
 #include "ginko_timer.h"
 #include "ginko_player.h"
+
 #include "standing.h"
-#include "walkFront.h"
-#include "walkBack.h"
-#include "turnRight.h"
-#include "turnLeft.h"
 #include "wakeupFront.h"
 #include "wakeupBack.h"
 
+#include "walkFront.h"
+#include "walkBack.h"
+#include "walkRight.h"
+#include "walkLeft.h"
+#include "turnRight.h"
+#include "turnLeft.h"
+
+#include "atkFront.h"
+#include "atkBack.h"
 #include "atkRight1.h"
 #include "atkRight2.h"
 #include "atkRightBack1.h"
