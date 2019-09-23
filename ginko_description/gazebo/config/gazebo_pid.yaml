@@ -182,3 +182,186 @@ gazebo_ros_control:
       i_clamp: 0.2
       antiwindup: false
       publish_state: true
+
+  motor_characteristics:
+    #body
+    body_joint1:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 4.76 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 5.5
+      stall_current: 1.90
+    #arm right
+    arm_r_joint0:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_r_joint1:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_r_joint1_rev:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_r_joint2:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_r_joint3:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    #arm left
+    arm_l_joint0:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_l_joint1:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_l_joint1_rev:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_l_joint2:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    arm_l_joint3:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+
+    #Leg right
+    leg_r_joint0:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 4.76 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 5.5
+      stall_current: 1.90
+    leg_r_joint1:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_r_joint3:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_r_joint4:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_r_joint6:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_r_joint7:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 4.76 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 5.5
+      stall_current: 1.90
+    leg_r_joint8:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    #Leg left
+    leg_l_joint0:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 4.76 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 5.5
+      stall_current: 1.90
+    leg_l_joint1:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_l_joint3:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_l_joint4:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_l_joint6:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
+    leg_l_joint7:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 4.76 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 5.5
+      stall_current: 1.90
+    leg_l_joint8:
+      rated_voltage: 11.1
+      supply_voltage: 12.0
+      noload_speed: 9.52 #[rad/sec]
+      noload_current: 0.30
+      stall_torque: 2.75
+      stall_current: 1.90
