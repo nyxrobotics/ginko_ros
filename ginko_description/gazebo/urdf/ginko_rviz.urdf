@@ -4,6 +4,12 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="ginko_xacro" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <link name="root_link"/>
+  <joint name="root_joint" type="fixed">
+    <parent link="root_link"/>
+    <child link="body_link0"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
   <!-- chest -->
   <link name="body_link0">
     <collision>
@@ -1500,6 +1506,28 @@
       <robotNamespace>/ginko</robotNamespace>
       <robotSimType>gazebo_ros_control/GinkoRobotHWSim</robotSimType>
       <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+  <link name="body_imu_attached_link"/>
+  <joint name="body_imu_attached_joint" type="fixed">
+    <parent link="body_link1"/>
+    <child link="body_imu_attached_link"/>
+    <origin rpy="0 1.5708 0" xyz="-0.09 0 -0.0379"/>
+  </joint>
+  <link name="body_imu_base_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="body_link1"/>
+    <child link="body_imu_base_link"/>
+    <origin rpy="0 1.5708 0" xyz="-0.09 0 -0.0379"/>
+  </joint>
+  <gazebo>
+    <plugin filename="libgazebo_ros_imu.so" name="imu_plugin">
+      <alwaysOn>true</alwaysOn>
+      <bodyName>body_imu_base_link</bodyName>
+      <topicName>/sensor/imu/raw/data</topicName>
+      <serviceName>gazebo_imu_service</serviceName>
+      <gaussianNoise>0.0</gaussianNoise>
+      <updateRate>50.0</updateRate>
     </plugin>
   </gazebo>
 </robot>
