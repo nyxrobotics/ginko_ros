@@ -61,8 +61,8 @@ FSM(Ginko)
 		wakeupFront,wakeupBack,
 		walkFront,walkBack,
 		turnRight,turnLeft,
-		attackRight1,attackRight2,attackRightBack1,attackRightBack2,
-		attackLeft1,attackLeft2,attackLeftBack1,attackLeftBack2,
+		atkRight1,atkRight2,atkRightBack1,atkRightBack2,
+		atkLeft1,atkLeft2,atkLeftBack1,atkLeftBack2,
 		moveUrg
 
 	}
@@ -91,14 +91,14 @@ FSM(Ginko)
 				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(walkBack));
 				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(turnRight));
 				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(turnLeft));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackRight1));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackRight2));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackRightBack1));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackRightBack2));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackLeft1));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackLeft2));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackLeftBack1));
-				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(attackLeftBack2));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkRight1));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkRight2));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkRightBack1));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkRightBack2));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkLeft1));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkLeft2));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkLeftBack1));
+				FSM_ON_CONDITION(_motiomCommand == WALK_FRONT , FSM_NEXT(atkLeftBack2));
 				FSM_ON_CONDITION(_motiomCommand == WAKEUP_FRONT && _motiomCommandChanged ==1 , FSM_NEXT(wakeupFront));
 				FSM_ON_CONDITION(_motiomCommand == WAKEUP_BACK && _motiomCommandChanged ==1 , FSM_NEXT(wakeupBack));
 				FSM_ON_CONDITION(_motiomCommand == MOVE_URG && _motiomCommandChanged ==1 , FSM_NEXT(moveUrg));
@@ -149,57 +149,57 @@ FSM(Ginko)
             }
         }
 
-        FSM_STATE(attackRight1){
-            FSM_CALL_TASK(attackRight1Task)
+        FSM_STATE(atkRight1){
+            FSM_CALL_TASK(atkRight1Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(attackRight2){
-            FSM_CALL_TASK(attackRight2Task)
+        FSM_STATE(atkRight2){
+            FSM_CALL_TASK(atkRight2Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(attackRightBack1){
-            FSM_CALL_TASK(attackRightBack1Task)
+        FSM_STATE(atkRightBack1){
+            FSM_CALL_TASK(atkRightBack1Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(attackRightBack2){
-            FSM_CALL_TASK(attackRightBack2Task)
+        FSM_STATE(atkRightBack2){
+            FSM_CALL_TASK(atkRightBack2Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(attackLeft1){
-            FSM_CALL_TASK(attackLeft1Task)
+        FSM_STATE(atkLeft1){
+            FSM_CALL_TASK(atkLeft1Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(attackLeft2){
-            FSM_CALL_TASK(attackLeft2Task)
+        FSM_STATE(atkLeft2){
+            FSM_CALL_TASK(atkLeft2Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(attackLeftBack1){
-            FSM_CALL_TASK(attackLeftBack1Task)
+        FSM_STATE(atkLeftBack1){
+            FSM_CALL_TASK(atkLeftBack1Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(attackLeftBack2){
-            FSM_CALL_TASK(attackLeftBack2Task)
+        FSM_STATE(atkLeftBack2){
+            FSM_CALL_TASK(atkLeftBack2Task)
             FSM_TRANSITIONS{
 				FSM_ON_CONDITION(_motiomCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
@@ -408,58 +408,58 @@ decision_making::TaskResult turnLeftCallback(string name, const FSMCallContext& 
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackRight1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackRight1Task...");
-    ginko_player_.playMotion(attackRight1_Motion_Start);
+decision_making::TaskResult atkRight1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkRight1Task...");
+    ginko_player_.playMotion(atkRight1_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackRight2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackRight2Task...");
-    ginko_player_.playMotion(attackRight2_Motion_Start);
+decision_making::TaskResult atkRight2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkRight2Task...");
+    ginko_player_.playMotion(atkRight2_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackRightBack1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackRightBack1Task...");
-    ginko_player_.playMotion(attackRightBack1_Motion_Start);
+decision_making::TaskResult atkRightBack1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkRightBack1Task...");
+    ginko_player_.playMotion(atkRightBack1_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackRightBack2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackRightBack2Task...");
-    ginko_player_.playMotion(attackRightBack2_Motion_Start);
+decision_making::TaskResult atkRightBack2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkRightBack2Task...");
+    ginko_player_.playMotion(atkRightBack2_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackLeft1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackLeft1Task...");
-    ginko_player_.playMotion(attackLeft1_Motion_Start);
+decision_making::TaskResult atkLeft1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkLeft1Task...");
+    ginko_player_.playMotion(atkLeft1_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackLeft2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackLeft2Task...");
-    ginko_player_.playMotion(attackLeft2_Motion_Start);
+decision_making::TaskResult atkLeft2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkLeft2Task...");
+    ginko_player_.playMotion(atkLeft2_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackLeftBack1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackLeftBack1Task...");
-    ginko_player_.playMotion(attackLeftBack1_Motion_Start);
+decision_making::TaskResult atkLeftBack1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkLeftBack1Task...");
+    ginko_player_.playMotion(atkLeftBack1_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-decision_making::TaskResult attackLeftBack2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("attackLeftBack2Task...");
-    ginko_player_.playMotion(attackLeftBack2_Motion_Start);
+decision_making::TaskResult atkLeftBack2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("atkLeftBack2Task...");
+    ginko_player_.playMotion(atkLeftBack2_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motiomCommandChanged = 0;
     return TaskResult::SUCCESS();
@@ -521,14 +521,14 @@ int main(int argc, char** argv){
     LocalTasks::registrate("walkFrontTask",	walkFrontCallback);
     LocalTasks::registrate("walkBackTask",	walkBackCallback);
     LocalTasks::registrate("moveUrgTask",	moveUrgCallback);
-    LocalTasks::registrate("attackRight1Task",	attackRight1Callback);
-    LocalTasks::registrate("attackRight2Task",	attackRight2Callback);
-    LocalTasks::registrate("attackRightBack1Task",	attackRightBack1Callback);
-    LocalTasks::registrate("attackRightBack2Task",	attackRightBack2Callback);
-    LocalTasks::registrate("attackLeft1Task",	attackLeft1Callback);
-    LocalTasks::registrate("attackLeft2Task",	attackLeft2Callback);
-    LocalTasks::registrate("attackLeftBack1Task",	attackLeftBack1Callback);
-    LocalTasks::registrate("attackLeftBack2Task",	attackLeftBack2Callback);
+    LocalTasks::registrate("atkRight1Task",	atkRight1Callback);
+    LocalTasks::registrate("atkRight2Task",	atkRight2Callback);
+    LocalTasks::registrate("atkRightBack1Task",	atkRightBack1Callback);
+    LocalTasks::registrate("atkRightBack2Task",	atkRightBack2Callback);
+    LocalTasks::registrate("atkLeft1Task",	atkLeft1Callback);
+    LocalTasks::registrate("atkLeft2Task",	atkLeft2Callback);
+    LocalTasks::registrate("atkLeftBack1Task",	atkLeftBack1Callback);
+    LocalTasks::registrate("atkLeftBack2Task",	atkLeftBack2Callback);
 //    LocalTasks::registrate("moveURG2Task",	moveURG2Callback);
 //    LocalTasks::registrate("moveURG3Task",	moveURG3Callback);
 
