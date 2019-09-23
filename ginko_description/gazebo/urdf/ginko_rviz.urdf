@@ -96,7 +96,7 @@
     <origin rpy="0 0 0" xyz="0.0205 0.0 -0.0409"/>
     <axis xyz="1 0 0"/>
     <limit effort="1000.0" lower="-1.0" upper="0.8" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_r_link0">
     <collision>
@@ -124,7 +124,7 @@
     <origin rpy="0 0.7854 0" xyz="-0.0176 -0.0175 -0.0481"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_r_link1">
     <collision>
@@ -151,7 +151,7 @@
     <origin rpy="0 -0.7854 0" xyz="0.1 0.0 0.0"/>
     <axis xyz="0 -1 0"/>
     <limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
     <mimic joint="leg_r_joint1" multiplier="1" offset="0"/>
   </joint>
   <!-- parallel link (upper-2nd) -->
@@ -226,7 +226,7 @@
     <origin rpy="0 2.3562 0" xyz="0 0 -0.0386"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_r_link4">
     <collision>
@@ -253,7 +253,7 @@
     <origin rpy="0 -2.3562 0" xyz="0.1 0.0 0.0"/>
     <axis xyz="0 -1 0"/>
     <limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
     <mimic joint="leg_r_joint4" multiplier="1" offset="0"/>
   </joint>
   <!-- parallel link (lower-2nd) -->
@@ -327,7 +327,7 @@
     <origin rpy="0 0 0" xyz="-0.028 -0.02475 -0.0391"/>
     <axis xyz="-1 0 0"/>
     <limit effort="1000.0" lower="-1.6" upper="1.6" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_r_link7">
     <collision>
@@ -354,7 +354,7 @@
     <origin rpy="0 0 0" xyz="0.0342 0 -0.04"/>
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_r_link8">
     <collision>
@@ -553,7 +553,7 @@
     <origin rpy="0 0 0" xyz="-0.0404 0.0 -0.0409"/>
     <axis xyz="-1 0 0"/>
     <limit effort="1000.0" lower="-0.8" upper="1.0" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_l_link0">
     <collision>
@@ -581,7 +581,7 @@
     <origin rpy="0 0.7854 0" xyz="0.0433 0.0175 -0.0481"/>
     <axis xyz="0 -1 0"/>
     <limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_l_link1">
     <collision>
@@ -608,7 +608,7 @@
     <origin rpy="0 -0.7854 0" xyz="0.1 0.0 0.0"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
     <mimic joint="leg_l_joint1" multiplier="1" offset="0"/>
   </joint>
   <!-- parallel link (upper-2nd) -->
@@ -618,7 +618,7 @@
     <origin rpy="0 0.7854 0" xyz="0.022 0.0175 -0.06015"/>
     <axis xyz="0 -1 0"/>
     <limit effort="1000.0" lower="-1.3" upper="0.7854" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
     <mimic joint="leg_l_joint1" multiplier="1" offset="0"/>
   </joint>
   <link name="leg_l_link2">
@@ -683,7 +683,7 @@
     <origin rpy="0 2.3562 0" xyz="0 0 -0.0386"/>
     <axis xyz="0 -1 0"/>
     <limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_l_link4">
     <collision>
@@ -710,7 +710,7 @@
     <origin rpy="0 -2.3562 0" xyz="0.1 0.0 0.0"/>
     <axis xyz="0 1 0"/>
     <limit effort="1000.0" lower="-0.7854" upper="1.3" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
     <mimic joint="leg_l_joint4" multiplier="1" offset="0"/>
   </joint>
   <!-- parallel link (lower-2nd) -->
@@ -784,7 +784,7 @@
     <origin rpy="0 0 0" xyz="-0.028 0.02475 -0.0391"/>
     <axis xyz="-1 0 0"/>
     <limit effort="1000.0" lower="-1.6" upper="1.6" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_l_link7">
     <collision>
@@ -811,7 +811,7 @@
     <origin rpy="0 0 0" xyz="0.0342 0 -0.04"/>
     <axis xyz="0 0 1"/>
     <limit effort="1000.0" lower="-2.6" upper="2.6" velocity="10.0"/>
-    <dynamics damping="0.1" friction="0.1"/>
+    <dynamics damping="0.0" friction="0.3"/>
   </joint>
   <link name="leg_l_link8">
     <collision>
@@ -1524,7 +1524,7 @@
     <plugin filename="libgazebo_ros_imu.so" name="imu_plugin">
       <alwaysOn>true</alwaysOn>
       <bodyName>body_imu_base_link</bodyName>
-      <topicName>/sensor/imu/raw/data</topicName>
+      <topicName>/sensor/imu/madgwick</topicName>
       <serviceName>gazebo_imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
       <updateRate>50.0</updateRate>
