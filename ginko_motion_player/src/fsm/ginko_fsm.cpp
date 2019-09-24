@@ -374,17 +374,16 @@ decision_making::TaskResult torqueOnCallback(string name, const FSMCallContext& 
     ginko_player_.torqueEnable(1);
     usleep(100000);
     ginko_player_.torqueEnable(0);
-//    usleep(100000);
+    //usleep(100000);
     sleep(1);
     ginko_player_.torqueEnable(1);
     usleep(100000);
-//    sleep(1);
-//    ginko_player_.playPose(standing_Motion_Start,0);
-    ginko_player_.playPose(standing_Motion_Loop,0);
-//    ginko_player_.playPose(walkFront_Motion_Start,0);
-//    ginko_player_.torqueEnable(1);
+
+    ginko_player_.playPose(standing_Motion_Start,0);
+
     eventQueue.riseEvent("/MOTION_FINISH");
     _motionCommand = STANDING;
+    _motionCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult torqueOffCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
@@ -399,6 +398,7 @@ decision_making::TaskResult standingCallback(string name, const FSMCallContext& 
     ROS_INFO("standingTask...");
 //    sleep(1);
 //    ginko_player_.playPose(standing_Motion_Start,0);
+    ginko_player_.playPose(standing_Motion_Loop,0);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motionCommandChanged = 0;
     return TaskResult::SUCCESS();
@@ -406,17 +406,19 @@ decision_making::TaskResult standingCallback(string name, const FSMCallContext& 
 decision_making::TaskResult wakeupFrontCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("wakeupFrontTask...");
     ginko_player_.playMotion(wakeupFront_Motion_Start);
+    ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult wakeupBackCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("wakeupBackTask...");
     ginko_player_.playMotion(wakeupBack_Motion_Start);
+    ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
     _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 
@@ -434,8 +436,8 @@ decision_making::TaskResult walkFrontCallback(string name, const FSMCallContext&
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult walkBackCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
@@ -451,8 +453,8 @@ decision_making::TaskResult walkBackCallback(string name, const FSMCallContext& 
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 
@@ -469,8 +471,8 @@ decision_making::TaskResult walkRightCallback(string name, const FSMCallContext&
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult walkLeftCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
@@ -486,8 +488,8 @@ decision_making::TaskResult walkLeftCallback(string name, const FSMCallContext& 
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult turnRightCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
@@ -503,8 +505,8 @@ decision_making::TaskResult turnRightCallback(string name, const FSMCallContext&
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult turnLeftCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
@@ -520,8 +522,8 @@ decision_making::TaskResult turnLeftCallback(string name, const FSMCallContext& 
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 
@@ -629,8 +631,8 @@ decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& c
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommand = STANDING;
-    _motionCommandChanged = 0;
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
 
