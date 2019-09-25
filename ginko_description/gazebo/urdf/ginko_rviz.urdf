@@ -1500,13 +1500,13 @@
   <joint name="imu_joint" type="fixed">
     <parent link="body_link1"/>
     <child link="body_imu_base_link"/>
-    <origin rpy="0 1.5708 0" xyz="-0.09 0 -0.0379"/>
+    <origin rpy="0 0 0" xyz="-0.09 0 -0.0379"/>
   </joint>
   <gazebo>
     <plugin filename="libgazebo_ros_imu.so" name="imu_plugin">
       <alwaysOn>true</alwaysOn>
-      <bodyName>body_imu_base_link</bodyName>
-      <topicName>/sensor/imu/raw/data</topicName>
+      <bodyName>body_imu_attached_link</bodyName>
+      <topicName>/sensor/imu/raw/gazebo</topicName>
       <serviceName>gazebo_imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
       <updateRate>400.0</updateRate>

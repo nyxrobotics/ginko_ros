@@ -20,7 +20,7 @@
 				<origin xyz="-0.09 0 -0.0379" rpy="0 1.5708 0"/>
 				<axis xyz="0 0 1"/>
 				<limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-				<dynamics damping="0.1" friction="0.1"/>
+				<dynamics damping="0.0" friction="0.0"/>
 			</joint>
 
 			<link name="body_imu_base_link">
@@ -36,10 +36,10 @@
 			<joint name="imu_joint" type="revolute">
 				<parent link="body_link1"/>
 				<child  link="body_imu_base_link"/>
-			<origin xyz="-0.09 0 -0.0379" rpy="0 0 0"/>
+				<origin xyz="-0.09 0 -0.0379" rpy="0 0 0"/>
 				<axis xyz="0 0 1"/>
 				<limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-				<dynamics damping="0.1" friction="0.1"/>
+				<dynamics damping="0.0" friction="0.0"/>
 			</joint>
 		</xacro:if>
 
@@ -56,7 +56,7 @@
 			<joint name="imu_joint" type="fixed">
 				<parent link="body_link1"/>
 				<child  link="body_imu_base_link"/>
-				<origin xyz="-0.09 0 -0.0379" rpy="0 1.5708 0"/>
+				<origin xyz="-0.09 0 -0.0379" rpy="0 0 0"/>
 			</joint>
 		</xacro:if>
 
@@ -64,8 +64,8 @@
 		<gazebo>
 			<plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
 				<alwaysOn>true</alwaysOn>
-				<bodyName>body_imu_base_link</bodyName>
-				<topicName>/sensor/imu/raw/data</topicName>
+				<bodyName>body_imu_attached_link</bodyName>
+				<topicName>/sensor/imu/raw/gazebo</topicName>
 				<serviceName>gazebo_imu_service</serviceName>
 				<gaussianNoise>0.0</gaussianNoise>
 				<updateRate>400.0</updateRate>

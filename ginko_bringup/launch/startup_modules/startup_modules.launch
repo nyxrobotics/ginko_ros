@@ -1,8 +1,8 @@
 <!-- -*- mode: XML -*- -->
 <launch>
 	<include file="$(find ginko_bringup)/launch/startup_modules/modules/imu_filter.launch" />
-	<!-- <include file="$(find ginko_bringup)/launch/startup_modules/modules/urg_filter.launch" /> -->
+	<include file="$(find ginko_bringup)/launch/startup_modules/modules/urg_filter.launch" />
 	<!-- <include file="$(find ginko_bringup)/launch/startup_modules/modules/laser_assembler.launch" /> -->
-	<!-- <include file="$(find ginko_bringup)/launch/startup_modules/modules/footstep_odometry.launch" /> -->
-	<!-- <include file="$(find ginko_bringup)/launch/startup_modules/modules/target_detector.launch" /> -->
+	<include file="$(find ginko_bringup)/launch/startup_modules/modules/footstep_odometry.launch" />
+	<include file="$(find ginko_bringup)/launch/startup_modules/modules/target_detector.launch" />
 </launch>

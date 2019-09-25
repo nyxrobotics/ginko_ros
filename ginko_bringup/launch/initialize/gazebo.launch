@@ -71,12 +71,15 @@
         "/>
 
   <!-- convert joint states to TF transforms for rviz, etc -->
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-    respawn="false" output="screen">
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"  launch-prefix="nice -n 0">
+    <param name="publish_frequency" value="100"/>
+    <param name="ignore_timestamp" value="true"/>
     <remap from="/joint_states" to="/ginko/joint_states" />
-    <!-- <remap from="robot_description" to="/robot_description" /> -->
+    <!-- use_tf_staticがtrueだとめっちゃ遅くなる。60Hzくらいしか出ない。 -->
+    <param name="use_tf_static" value="false"/>
   </node>
 
   <param name="ring_urdf" command="$(find xacro)/xacro --inorder '$(find ginko_description)/gazebo/xacro/modules/large_ring.xacro'"/>
   <node name="spawn_ring_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param ring_urdf -model ring_model -x 0.0 -y 0.0 -z 0.0" />
+  <include file="$(find gazebo_imu_accel_filter)/launch/imu_filter.launch" />
 </launch>
