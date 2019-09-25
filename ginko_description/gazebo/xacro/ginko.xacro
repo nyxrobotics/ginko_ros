@@ -3,7 +3,8 @@
   <xacro:arg name="model_mode" default="rviz"/>
   <xacro:arg name="gazebo_control_mode" default="ginko"/>
 
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/imu_macro.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/sensors/imu.xacro"/>
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/sensors/urg.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/body.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
   <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/arm_l.xacro"/>
@@ -55,29 +56,13 @@
     <xacro:arm_r_gazebo gazebo_control_mode="${gazebo_control_mode}"/>
     <xacro:arm_l model_mode="${model_mode}"/>
     <xacro:arm_l_gazebo gazebo_control_mode="${gazebo_control_mode}"/>
-    <!-- <xacro:leg_l model_mode="${model_mode}"/> -->
-    <!-- <xacro:leg_l_gazebo name="leg_l" gazebo_control_mode="${gazebo_control_mode}"/> -->
-<!--     <xacro:if value="${model_mode=='rviz'}">
-      <xacro:leg_r model_mode="common"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if>
-    <xacro:if value="${model_mode=='common'}">
-      <xacro:leg_r model_mode="common"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if>
-    <xacro:if value="${model_mode=='gazebo_part1'}">
-      <xacro:leg_r model_mode="gazebo_part1"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if>
-    <xacro:if value="${model_mode=='gazebo_part2'}">
-      <xacro:leg_r model_mode="common"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if> -->
-
   </xacro:macro>
 
   <!-- Load Macros -->
   <xacro:ginko_xacro model_mode="$(arg model_mode)" gazebo_control_mode="$(arg gazebo_control_mode)"/>
   <xacro:gazebo_plugin_xacro gazebo_control_mode="$(arg gazebo_control_mode)"/>
-  <xacro:imu_macro model_mode="$(arg model_mode)"/>
+  <xacro:imu_xacro model_mode="$(arg model_mode)"/>
+  <xacro:urg_xacro firame_id="arm_r_urg_link" topic_name="/sensor/urg/right/scan_raw" sensor_name="urg_right"/>
+  <xacro:urg_xacro firame_id="arm_l_urg_link" topic_name="/sensor/urg/left/scan_raw" sensor_name="urg_left"/>
+
 </robot>

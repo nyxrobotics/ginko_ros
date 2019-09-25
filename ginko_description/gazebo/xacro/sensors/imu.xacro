@@ -2,7 +2,7 @@
 
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="imu_macro" params="model_mode">
+	<xacro:macro name="imu_xacro" params="model_mode">
 		<xacro:if value="${model_mode!='rviz'}">
 			<link name="body_imu_attached_link">
 				<inertial>
@@ -65,7 +65,7 @@
 			<plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
 				<alwaysOn>true</alwaysOn>
 				<bodyName>body_imu_base_link</bodyName>
-				<topicName>/sensor/imu/madgwick</topicName>
+				<topicName>/sensor/imu/raw</topicName>
 				<serviceName>gazebo_imu_service</serviceName>
 				<gaussianNoise>0.0</gaussianNoise>
 				<updateRate>50.0</updateRate>
