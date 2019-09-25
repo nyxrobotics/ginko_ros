@@ -1506,10 +1506,10 @@
     <plugin filename="libgazebo_ros_imu.so" name="imu_plugin">
       <alwaysOn>true</alwaysOn>
       <bodyName>body_imu_base_link</bodyName>
-      <topicName>/sensor/imu/madgwick</topicName>
+      <topicName>/sensor/imu/raw/data</topicName>
       <serviceName>gazebo_imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
-      <updateRate>50.0</updateRate>
+      <updateRate>400.0</updateRate>
     </plugin>
   </gazebo>
   <gazebo reference="arm_r_urg_link">

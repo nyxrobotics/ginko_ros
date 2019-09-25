@@ -6,7 +6,7 @@
 		<xacro:if value="${model_mode!='rviz'}">
 			<link name="body_imu_attached_link">
 				<inertial>
-					<mass value="0.00052271"/>
+					<mass value="0.0005"/>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<inertia
 						ixx="0.00000001"
@@ -25,7 +25,7 @@
 
 			<link name="body_imu_base_link">
 				<inertial>
-					<mass value="0.00052271"/>
+					<mass value="0.0005"/>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<inertia
 						ixx="0.00000001"
@@ -65,10 +65,10 @@
 			<plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
 				<alwaysOn>true</alwaysOn>
 				<bodyName>body_imu_base_link</bodyName>
-				<topicName>/sensor/imu/raw</topicName>
+				<topicName>/sensor/imu/raw/data</topicName>
 				<serviceName>gazebo_imu_service</serviceName>
 				<gaussianNoise>0.0</gaussianNoise>
-				<updateRate>50.0</updateRate>
+				<updateRate>400.0</updateRate>
 			</plugin>
 		</gazebo>
 	</xacro:macro> 
