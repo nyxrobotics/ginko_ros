@@ -59,7 +59,33 @@ void GinkoController::goalJointPositionCallback(const sensor_msgs::JointState::C
 				// ROS_INFO("gazebo_joint_controller:Name matched");
 				std_msgs::Float64 target_angle;
 				target_angle.data = msg->position.at(index);
-				gazebo_joints_pub_[index2].publish(target_angle);
+				// gazeboだとキャリブレーションなどが不要なので従属リンクは親と同じ値を上書き
+				if(gazebo_joints_pub_[index2].getTopic() == "leg_r_joint1" ||
+						gazebo_joints_pub_[index2].getTopic() == "leg_r_joint4" ||
+						gazebo_joints_pub_[index2].getTopic() == "leg_l_joint1" ||
+						gazebo_joints_pub_[index2].getTopic() == "leg_l_joint4"
+				){
+					gazebo_joints_pub_[index2].publish(target_angle);
+					gazebo_joints_pub_[index2+1].publish(target_angle);
+				}else if(
+						gazebo_joints_pub_[index2].getTopic() == "arm_r_joint1" ||
+						gazebo_joints_pub_[index2].getTopic() == "arm_l_joint1"
+				){
+					gazebo_joints_pub_[index2].publish(target_angle);
+					target_angle.data *= -1.0;
+					gazebo_joints_pub_[index2+1].publish(target_angle);
+				}else if(gazebo_joints_pub_[index2].getTopic() == "leg_r_joint3" ||
+						gazebo_joints_pub_[index2].getTopic() == "leg_r_joint6" ||
+						gazebo_joints_pub_[index2].getTopic() == "leg_l_joint3" ||
+						gazebo_joints_pub_[index2].getTopic() == "leg_l_joint6" ||
+						gazebo_joints_pub_[index2].getTopic() == "arm_r_joint1_rev" ||
+						gazebo_joints_pub_[index2].getTopic() == "arm_l_joint1_rev"
+				){
+
+				}else{
+					gazebo_joints_pub_[index2].publish(target_angle);
+				}
+
 				index2 = GAZEBO_JOINT_NUM;
 			}
 		}

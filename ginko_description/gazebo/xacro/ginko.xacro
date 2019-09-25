@@ -3,6 +3,7 @@
   <xacro:arg name="model_mode" default="rviz"/>
   <xacro:arg name="gazebo_control_mode" default="ginko"/>
 
+  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/imu_macro.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/body.xacro"/>
   <xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
   <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/arm_l.xacro"/>
@@ -38,6 +39,12 @@
 
   <!-- MACRO:Setting up a Robot Model -->
   <xacro:macro name="ginko_xacro" params="model_mode gazebo_control_mode">
+    <link name="root_link"/>
+    <joint name="root_joint" type="fixed">
+        <parent link="root_link"/>
+        <child  link="body_link0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
     <xacro:body_xacro model_mode="${model_mode}"/>
     <xacro:body_gazebo gazebo_control_mode="${gazebo_control_mode}"/>
     <xacro:leg_r model_mode="${model_mode}"/>
@@ -72,4 +79,5 @@
   <!-- Load Macros -->
   <xacro:ginko_xacro model_mode="$(arg model_mode)" gazebo_control_mode="$(arg gazebo_control_mode)"/>
   <xacro:gazebo_plugin_xacro gazebo_control_mode="$(arg gazebo_control_mode)"/>
+  <xacro:imu_macro model_mode="$(arg model_mode)"/>
 </robot>
