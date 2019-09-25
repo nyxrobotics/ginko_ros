@@ -1,0 +1,48 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<!-- laser assembler(move lidar -> create pointcloud) -->
+	<group ns="laser_assembler">
+		<group ns="right">
+			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/right/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="odom" />
+			</node>
+			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="right_cloud"/>
+			</node>
+		</group>
+		<group ns="left">
+			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler">
+				<remap from="scan" to="/sensor/urg/left/scan"/>
+				<param name="max_scans" type="int" value="400" />
+				<param name="fixed_frame" type="string" value="odom" />
+			</node>
+			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client">
+				<remap from="cloud" to="left_cloud"/>
+			</node>
+		</group>
+	</group>
+	<!-- voxelgrid -->
+	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/>
+	<group ns="voxelgrid">
+		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" />
+		<group ns="right">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/right/right_cloud"/>
+			    <remap from="~output" to="right_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
+	
+		<group ns="left">
+			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)">
+			    <remap from="~input" to="/laser_assembler/left/left_cloud"/>
+			    <remap from="~output" to="left_mark"/>
+				<param name="~resolution" value="0.02" />
+				<param name="~publish_marker" value="false" />
+			</node>
+		</group>
+	</group>	
+</launch>
