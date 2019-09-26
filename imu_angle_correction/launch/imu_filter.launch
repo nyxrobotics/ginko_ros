@@ -3,12 +3,9 @@
 		<group ns="imu">
 		    <node name="imu_angle" pkg="imu_angle_correction" type="imu_angle_correction" required="true">
 		        <remap from="imu_raw_in" to="raw/data"/>
-   		        <param name="parent_link" value="body_imu_base_link" />
-   		        <!-- ロボットの座標系に向きを合わせる -->
-   		        <param name="fixture_euler_x" value="0.0" />
-		        <param name="fixture_euler_y" value="1.57" />
-   		        <param name="fixture_euler_z" value="0.0" />
-   		        <!-- ジンバルロックして調整できないので調整用を別途用意 -->
+   		        <param name="attached_link" value="body_imu_attached_link" />
+   		        <param name="target_link" value="body_imu_base_link" />
+   		        <!-- 調整用 -->
    		        <param name="calib_euler_x" value="0.018" />
 		        <param name="calib_euler_y" value="-0.05" />
    		        <param name="calib_euler_z" value="0.0" />

@@ -10,7 +10,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_msgs
-  nodelet
+  nodelet  
+  tf2_geometry_msgs
+  tf2_msgs
+  tf2_ros
 )
 
 catkin_package(
