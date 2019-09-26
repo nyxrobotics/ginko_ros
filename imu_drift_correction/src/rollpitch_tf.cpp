@@ -15,20 +15,30 @@ void RollPitchTF::initPublisher(ros::NodeHandle main_nh){
 }
 
 tf2::Quaternion RollPitchTF::calcRollPitchQuaternion(const sensor_msgs::Imu imu_in){
-//	sensor_msgs::Imu imu_out = imu_in;
 	tf2::Quaternion imu_in_quaternion;
 	imu_in_quaternion.setX(imu_in.orientation.x);
 	imu_in_quaternion.setY(imu_in.orientation.y);
 	imu_in_quaternion.setZ(imu_in.orientation.z);
 	imu_in_quaternion.setW(imu_in.orientation.w);
 	tf2::Matrix3x3 rotation_matrix_in(imu_in_quaternion);
-	double euler_z, euler_y, euler_x;
-	rotation_matrix_in.getEulerZYX(euler_z, euler_y, euler_x);
-	tf2::Matrix3x3 rotation_matrix_out;
-	rotation_matrix_in.setEulerZYX(0.0, euler_y, euler_x);
-	tf2::Quaternion imu_out_quaternion;
-	rotation_matrix_in.getRotation(imu_out_quaternion);
-	return imu_out_quaternion;
+	tf2::Vector3 x_axis_vector(1.0, 0.0, 0.0);
+	tf2::Vector3 y_axis_vector(0.0, 1.0, 0.0);
+	tf2::Vector3 z_axis_vector(0.0, 0.0, 1.0);
+	tf2::Vector3 front_vector  = rotation_matrix_in * x_axis_vector;
+	tf2::Vector3 left_vector  = rotation_matrix_in * y_axis_vector;
+	tf2::Vector3 up_vector  = rotation_matrix_in * z_axis_vector;
+	double theta_z = std::atan2(front_vector.getY(),front_vector.getX());
+	tf2::Matrix3x3 rotation_matrix_yaw;
+	rotation_matrix_yaw.setEulerZYX(theta_z, 0.0, 0.0);
+	tf2::Matrix3x3 rotation_matrix_rollpitch;
+	rotation_matrix_rollpitch = rotation_matrix_yaw.inverse() * rotation_matrix_in;
+
+	tf2::Quaternion yaw_quaternion;
+	rotation_matrix_yaw.getRotation(yaw_quaternion);
+	tf2::Quaternion rollpitch_quaternion;
+	rotation_matrix_rollpitch.getRotation(rollpitch_quaternion);
+
+	return rollpitch_quaternion;
 }
 
 tf2::Quaternion RollPitchTF::calcYawQuaternion(const sensor_msgs::Imu imu_in){
