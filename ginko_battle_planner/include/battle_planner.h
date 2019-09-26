@@ -47,11 +47,11 @@ private:
 	boost::shared_ptr<tf2_ros::Buffer> tfBuffer_ptr;
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr;
 
-	std::string robot_tf_ = "ground_foot_center_link";	//ジャイロのTF
+	std::string robot_tf_ = "body_imu_base_link";	//"ground_foot_center_link";	//ジャイロのTF
 	std::string target_tf_ = "target_slow";	//ジャイロのTF
 
 	double area_distance_threth_ = 0.45;
-	double area_angle_threth_ = 1.0472;
+	double area_angle_threth_ = 0.7;//1.0472;
 
 
 public:

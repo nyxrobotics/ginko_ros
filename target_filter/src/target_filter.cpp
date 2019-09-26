@@ -46,7 +46,7 @@ void TargetFilter::initTF2() {
 
 int TargetFilter::mainLoop(){
 	ros::Time time_now  = ros::Time::now();
-	static ros::Time time_last  = ros::Time::now();
+	static ros::Time time_last  = time_now;
 	//データが古い時はスキップ
 	ros::Duration r_dutarion = time_now - r_latest_time_;
 	ros::Duration l_dutarion = time_now - l_latest_time_;
@@ -59,14 +59,17 @@ int TargetFilter::mainLoop(){
 
 	//初期化途中の場合はスキップ
 	if(tf_initialized_ == 0){
+		 time_last = time_now;
 		return 0;
 	}
 	if(r_updated_ == 0 && l_updated_ == 0){
+		 time_last = time_now;
 		return 0;
 	}
 
 	//転倒時はスキップ
 	if( tfBuffer_ptr->canTransform("body_imu_base_link" , "odom",ros::Time(0)) == false){
+		 time_last = time_now;
 		return 0;
 	}else{
 		geometry_msgs::TransformStamped transformDiff = tfBuffer_ptr->lookupTransform("body_imu_base_link" , "odom",ros::Time(0));
@@ -81,6 +84,7 @@ int TargetFilter::mainLoop(){
 		double dy = single_z_rot.y();
 		double xy_norm_tmp = sqrt(dx*dx + dy*dy);
 		if(xy_norm_tmp > 0.4){
+			 time_last = time_now;
 			return 0;
 		}
 	}
@@ -111,6 +115,9 @@ int TargetFilter::mainLoop(){
 	}else{
 		ros::Duration ros_duration  =  time_now -  time_last;
 		double dt = ros_duration.toSec();
+		if(dt<0.000001){
+			dt = 0.000001;
+		}
 		double dx = target_pose_tmp_.pose.position.x - target_pose_slow_.pose.position.x;
 		double dy = target_pose_tmp_.pose.position.y - target_pose_slow_.pose.position.y;
 		double dnorm = sqrt(dx*dx + dy*dy);
@@ -140,7 +147,7 @@ int TargetFilter::mainLoop(){
 		l_updated_ = 0;
 		r_updated_ = 0;
 	}
-	 time_last  = ros::Time::now();
+	 time_last = time_now;
 	return 0;
 }
 

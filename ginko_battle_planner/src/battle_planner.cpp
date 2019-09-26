@@ -202,21 +202,23 @@ int BattlePlanner::battleMotionSelect(){
 	double area_distance = sqrt(dx*dx + dy*dy);
 	//左右旋回
 	if(fabs(area_theta)>area_angle_threth_ && fabs(area_theta)< (3.1416 - area_angle_threth_)){
-		if(area_theta < 0.){
-			if(area_distance>0.5){
-				ROS_FATAL("Battle Planner: Send Command: WALK_RIGHT");
-				motion_command_.data = "WALK_RIGHT";	motion_command_pub_.publish(motion_command_);
-			}else{
+		if(area_distance < 0.7){
+			if( (area_theta < 0. && dx > 0.0)
+			||(area_theta > 0. && dx < 0.0)
+			){
 				ROS_FATAL("Battle Planner: Send Command: TURN_RIGHT");
 				motion_command_.data = "TURN_RIGHT";	motion_command_pub_.publish(motion_command_);
-			}
-		}else{
-			if(area_distance>0.5){
-				ROS_FATAL("Battle Planner: Send Command: WALK_LEFT");
-				motion_command_.data = "WALK_LEFT";	motion_command_pub_.publish(motion_command_);
 			}else{
 				ROS_FATAL("Battle Planner: Send Command: TURN_LEFT");
 				motion_command_.data = "TURN_LEFT";	motion_command_pub_.publish(motion_command_);
+			}
+		}else{
+			if(area_theta < 0.){
+				ROS_FATAL("Battle Planner: Send Command: WALK_RIGHT");
+				motion_command_.data = "WALK_RIGHT";	motion_command_pub_.publish(motion_command_);
+			}else{
+				ROS_FATAL("Battle Planner: Send Command: WALK_LEFT");
+				motion_command_.data = "WALK_LEFT";	motion_command_pub_.publish(motion_command_);
 			}
 		}
 		return 0;

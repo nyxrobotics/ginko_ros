@@ -53,7 +53,7 @@ private:
 //	//出力
 	std::string target_tf_out_name_ = "target";
 
-	double speed_limit_ = 1.0;
+	double speed_limit_ = 5.0;
 	bool r_updated_ = 0;
 	bool l_updated_ = 0;
 	ros::Time r_latest_time_;
