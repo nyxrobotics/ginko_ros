@@ -7,12 +7,12 @@
 
 
 TargetFilter::TargetFilter(ros::NodeHandle main_nh){
+	latest_updated_time_ = ros::Time::now();
 	readParams(main_nh);
 	initSubscriber();
 	initPublisher();
 	initTF2();
 	ROS_INFO("TargetFilter : Init OK!");
-
 }
 
 TargetFilter::~TargetFilter() {
@@ -44,12 +44,41 @@ void TargetFilter::initTF2() {
 }
 
 int TargetFilter::mainLoop(){
+	ros::Time time_now  = ros::Time::now();
+	static ros::Time time_last  = ros::Time::now();
+
 	if(tf_initialized_ == 0){
 		return 0;
 	}
 	if(r_updated_ == 0 && l_updated_ == 0){
 		return 0;
 	}
+	//データが古い時は終了
+	ros::Duration latest_dutarion = time_now - latest_updated_time_;
+	if( latest_dutarion.toSec() > 5.0){
+		return 0;
+	}
+	//転倒時は計算しない
+	if( tfBuffer_ptr->canTransform("body_imu_base_link" , "odom",ros::Time(0)) == false){
+		return 0;
+	}else{
+		geometry_msgs::TransformStamped transformDiff = tfBuffer_ptr->lookupTransform("body_imu_base_link" , "odom",ros::Time(0));
+		tf2::Quaternion quat_diff(transformDiff.transform.rotation.x,
+				transformDiff.transform.rotation.y,
+				transformDiff.transform.rotation.z,
+				transformDiff.transform.rotation.z);
+		tf2::Vector3 single_z(0,0,1.0);
+		tf2::Matrix3x3 rotation_matrix(quat_diff);
+		tf2::Vector3 single_z_rot = rotation_matrix * single_z;
+		double dx = single_z_rot.x();
+		double dy = single_z_rot.y();
+		double xy_norm_tmp = sqrt(dx*dx + dy*dy);
+		if(xy_norm_tmp > 0.4){
+			return 0;
+		}
+	}
+
+
 
 	if(r_updated_ == 1 && l_updated_ == 1){
 		double r_norm = (r_target_pose_.pose.position.x * r_target_pose_.pose.position.x) + (r_target_pose_.pose.position.y * r_target_pose_.pose.position.y);
@@ -67,8 +96,7 @@ int TargetFilter::mainLoop(){
 		target_pose_tmp_ = l_target_pose_;
 	}
 //	target_pose_tmp_.pose.position.z = 0;
-	ros::Time time_now  = ros::Time::now();
-	static ros::Time time_last  = ros::Time::now();
+
 	static int init_flag = 0;
 	if(init_flag < 1){
 		//最初の1回は速度が計算できないので何もしない
@@ -89,8 +117,6 @@ int TargetFilter::mainLoop(){
 		target_pose_slow_.pose.position.z = target_pose_tmp_.pose.position.z;
 
 		target_pub_.publish(target_pose_slow_);
-
-
 		geometry_msgs::TransformStamped transformStamped;
 		transformStamped.header.stamp = ros::Time::now();
 		transformStamped.header.frame_id = target_pose_slow_.header.frame_id;
@@ -102,9 +128,10 @@ int TargetFilter::mainLoop(){
 		transformStamped.transform.rotation.y		= 0.0;
 		transformStamped.transform.rotation.z		= 0.0;
 		transformStamped.transform.rotation.w		= 1.0;
-		staticBroadcaster.sendTransform(transformStamped);
+//		staticBroadcaster.sendTransform(transformStamped);
+		tfBroadcaster.sendTransform(transformStamped);
 	}
-	time_last = time_now;
+	 time_last  = ros::Time::now();
 	return 0;
 }
 
@@ -119,6 +146,7 @@ void TargetFilter::getRightTargetCallback(const geometry_msgs::PoseStamped::Cons
 		target_pose_slow_.pose.position.y = 0;
 	}
 	r_updated_ = 1;
+	latest_updated_time_ = ros::Time::now();
 }
 
 void TargetFilter::getLeftTargetCallback(const geometry_msgs::PoseStamped::ConstPtr& msg){
@@ -131,4 +159,5 @@ void TargetFilter::getLeftTargetCallback(const geometry_msgs::PoseStamped::Const
 		target_pose_slow_.pose.position.y = 0;
 	}
 	l_updated_ = 1;
+	latest_updated_time_ = ros::Time::now();
 }

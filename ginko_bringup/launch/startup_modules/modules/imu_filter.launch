@@ -24,8 +24,8 @@
 
    			<!-- Madgwick filter calculates quaternion from imu raw data -->
 		    <node name="imu_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true" launch-prefix="nice -n 0">
-		        <!-- <remap from="imu/data_raw" to="drift"/> -->
-		        <remap from="imu/data_raw" to="base"/>
+		        <remap from="imu/data_raw" to="drift"/>
+		        <!-- <remap from="imu/data_raw" to="base"/> -->
 		        <!-- <remap from="imu/data_raw" to="raw/gazebo"/> -->
 		        <remap from="imu/data" to="madgwick"/>
 		        <param name="use_mag" value="false"/>

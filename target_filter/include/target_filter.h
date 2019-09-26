@@ -56,7 +56,7 @@ private:
 	double speed_limit_ = 1.0;
 	bool r_updated_ = 0;
 	bool l_updated_ = 0;
-
+	ros::Time latest_updated_time_;
 
 public:
 	TargetFilter(ros::NodeHandle main_nh);
