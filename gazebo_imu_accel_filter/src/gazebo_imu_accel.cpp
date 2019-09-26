@@ -29,6 +29,30 @@ void AccelOverwrite::getImuRawCallback(const sensor_msgs::Imu::ConstPtr& msg){
 	imu_out.linear_acceleration.x = gravity_rotated.getX();
 	imu_out.linear_acceleration.y = gravity_rotated.getY();
 	imu_out.linear_acceleration.z = gravity_rotated.getZ();
+
+	// overwrite angular_velocity
+	ros::Time time_now  = ros::Time::now();
+	static ros::Time time_last  = ros::Time::now();
+	static tf2::Quaternion imu_quaternion_last = imu_quaternion;
+	ros::Duration ros_duration  =  time_now -  time_last;
+	double dt = ros_duration.toSec();
+	if(dt<0.000001){
+		dt = 0.000001;
+		imu_out.angular_velocity.x = 0.0;
+		imu_out.angular_velocity.y = 0.0;
+		imu_out.angular_velocity.z = 0.0;
+	}else{
+		tf2::Quaternion imu_quaternion_diff = imu_quaternion_last.inverse() * imu_quaternion;
+		tf2::Matrix3x3 imu_matrix_diff(imu_quaternion_diff);
+		double diff_x,diff_y,diff_z;
+		imu_matrix_diff.getEulerYPR(diff_z, diff_y, diff_x);
+		imu_out.angular_velocity.x = diff_x / dt;
+		imu_out.angular_velocity.y = diff_y / dt;
+		imu_out.angular_velocity.z = diff_z / dt;
+		imu_quaternion_last = imu_quaternion;
+	}
+	time_last = time_now;
+
 	imu_base_pub_.publish(imu_out);
 }
 
