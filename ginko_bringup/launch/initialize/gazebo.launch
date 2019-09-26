@@ -82,4 +82,5 @@
   <param name="ring_urdf" command="$(find xacro)/xacro --inorder '$(find ginko_description)/gazebo/xacro/modules/large_ring.xacro'"/>
   <node name="spawn_ring_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param ring_urdf -model ring_model -x 0.0 -y 0.0 -z 0.0" />
   <include file="$(find gazebo_imu_accel_filter)/launch/imu_filter.launch" />
+  <include file="$(find ginko_joint_controller_gazebo)/launch/ginko_joint_controller.launch" />
 </launch>

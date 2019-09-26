@@ -3,16 +3,15 @@
 //RobooneRing here
 RobooneRing::RobooneRing(ros::NodeHandle main_nh){
 	readParams(main_nh);
-	initSubscriber(main_nh);
-//	initPublisher(main_nh);
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
-	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
+	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(10.0), false));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
-	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
-	tfBuffer_ptr->lookupTransform(foots_center_tf_in_name_ ,odom_tf_in_name_, ros::Time::now(), ros::Duration(1.0));
-	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
-
+	//sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
+	tfBuffer_ptr->canTransform(foots_center_tf_in_name_ ,odom_tf_in_name_, ros::Time::now(), ros::Duration(10.0));
+	//tfBuffer_ptr->lookupTransform(foots_center_tf_in_name_ ,odom_tf_in_name_, ros::Time::now(), ros::Duration(1.0));
+	//sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
+	initSubscriber(main_nh);
 }
 
 RobooneRing::~RobooneRing() {
@@ -39,7 +38,7 @@ int RobooneRing::ringMainLoop(){
 	//新しいデータが来るまで待機
 	//usleep(500);//不要なsleep
 	geometry_msgs::TransformStamped transformStamped;
-	transformStamped = tfBuffer_ptr->lookupTransform(odom_tf_in_name_, foots_center_tf_in_name_ , ros::Time::now(), ros::Duration(1.0));
+	transformStamped = tfBuffer_ptr->lookupTransform(odom_tf_in_name_, foots_center_tf_in_name_ , ros::Time::now(), ros::Duration(10.0));
 	tf2::Quaternion quaternion(transformStamped.transform.rotation.x,transformStamped.transform.rotation.y,transformStamped.transform.rotation.z,transformStamped.transform.rotation.w);
 	tf2::Vector3 ring_translation(0.9,0,0);
 //	ring_translation.setX(0.9);

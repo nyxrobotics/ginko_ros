@@ -8,6 +8,13 @@ GinkoOdometry::GinkoOdometry(ros::NodeHandle main_nh){
 	for (int index = 0;index < 9;index++){
 		subscriber_callback_init_flag_[index] = 0;
 	}
+//	ground_pose_data_.pose.position.x=0.0;
+//	ground_pose_data_.pose.position.y=0.0;
+//	ground_pose_data_.pose.position.z=0.0;
+//	ground_pose_data_.pose.orientation.x=0.0;
+//	ground_pose_data_.pose.orientation.y=0.0;
+//	ground_pose_data_.pose.orientation.z=0.0;
+//	ground_pose_data_.pose.orientation.w=1.0;
 	usleep(100000);
 }
 
@@ -43,7 +50,7 @@ void GinkoOdometry::initSubscriber(ros::NodeHandle node_handle_){
 
 
 void GinkoOdometry::initPublisher(ros::NodeHandle node_handle_){
-	odom_pub_     = node_handle_.advertise<nav_msgs::Odometry>("odom_out", 1);
+	odom_pub_     = node_handle_.advertise<nav_msgs::Odometry>("odom_out", 10);
 //	odom_data_.header.frame_id = odom_parent_name_;
 	odom_data_.header.frame_id = "body_imu_base_link";
 	odom_data_.child_frame_id = odom_name_;
@@ -160,15 +167,15 @@ int GinkoOdometry::odomLoop(){
 void GinkoOdometry::odomTfPublish(const nav_msgs::Odometry odom){
 	geometry_msgs::TransformStamped transformStamped;
 	transformStamped.header.stamp = ros::Time::now();
-	transformStamped.header.frame_id = odom_data_.header.frame_id;
-	transformStamped.child_frame_id  = odom_data_.child_frame_id;
-	transformStamped.transform.translation.x = odom_data_.pose.pose.position.x;
-	transformStamped.transform.translation.y = odom_data_.pose.pose.position.y;
-	transformStamped.transform.translation.z = odom_data_.pose.pose.position.z;
-	transformStamped.transform.rotation.x	= odom_data_.pose.pose.orientation.x;
-	transformStamped.transform.rotation.y	= odom_data_.pose.pose.orientation.y;
-	transformStamped.transform.rotation.z	= odom_data_.pose.pose.orientation.z;
-	transformStamped.transform.rotation.w	= odom_data_.pose.pose.orientation.w;
+	transformStamped.header.frame_id = odom.header.frame_id;
+	transformStamped.child_frame_id  = odom.child_frame_id;
+	transformStamped.transform.translation.x = odom.pose.pose.position.x;
+	transformStamped.transform.translation.y = odom.pose.pose.position.y;
+	transformStamped.transform.translation.z = odom.pose.pose.position.z;
+	transformStamped.transform.rotation.x	= odom.pose.pose.orientation.x;
+	transformStamped.transform.rotation.y	= odom.pose.pose.orientation.y;
+	transformStamped.transform.rotation.z	= odom.pose.pose.orientation.z;
+	transformStamped.transform.rotation.w	= odom.pose.pose.orientation.w;
 	tfBroadcaster.sendTransform(transformStamped);
 
 }

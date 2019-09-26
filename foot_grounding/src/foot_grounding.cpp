@@ -3,7 +3,6 @@
 //FootGrounding here
 FootGrounding::FootGrounding(ros::NodeHandle main_nh){
 	readParams(main_nh);
-//	initSubscriber(main_nh);
 	initPublisher(main_nh);
 
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
@@ -11,12 +10,8 @@ FootGrounding::FootGrounding(ros::NodeHandle main_nh){
 	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(2.0), true));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
 //	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
-//	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(1.0));
-//	sleep(2);
 	tfBuffer_ptr->canTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(10.0));
 	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(10.0));
-//	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
-
 }
 
 FootGrounding::~FootGrounding() {
