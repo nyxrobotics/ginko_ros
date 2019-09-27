@@ -1,0 +1,11 @@
+scan_filter_chain:
+- name: box_human_floor
+  type: LaserScanBoxFilter
+  params:
+    box_frame: ring
+    min_x: -1.8
+    max_x: 1.8
+    min_y: -1.8
+    max_y: 1.8
+    min_z: 0.05
+    max_z: 0.8
