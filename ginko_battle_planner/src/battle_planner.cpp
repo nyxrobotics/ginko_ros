@@ -51,7 +51,7 @@ int BattlePlanner::mainLoop(){
 			battle_state_ = "standby";
 			battle_command_.data = "";
 			sleep(5);
-			motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+			motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 			// sleep(5);
 			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
 		}else{
@@ -80,7 +80,7 @@ int BattlePlanner::mainLoop(){
 		sleep(3);
 		ros::spinOnce();
 		if(imu_fall_direction_ == 0){
-			motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+			motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 			imu_fall_direction_prev = imu_fall_direction_;
 			sleep(1);
 		}
@@ -118,7 +118,7 @@ int BattlePlanner::mainLoop(){
 		motion_command_.data = "WAKEUP_FRONT";	motion_command_pub_.publish(motion_command_);
 		sleep(3);
 		 motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
-//		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+//		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		// sleep(5);
 		return 0;
 	}
@@ -127,7 +127,7 @@ int BattlePlanner::mainLoop(){
 		motion_command_.data = "WAKEUP_BACK";	motion_command_pub_.publish(motion_command_);
 		sleep(3);
 		 motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
-//		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+//		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		// sleep(5);
 		return 0;
 	}
@@ -177,7 +177,7 @@ void BattlePlanner::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& m
 int BattlePlanner::battleMotionSelect(){
 	//TFが来ていない場合は探索
 	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_,ros::Time(0)) == false){
-		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		return 0;
 	}
 	//measuring the time interval of the TF
@@ -191,7 +191,7 @@ int BattlePlanner::battleMotionSelect(){
 	//TFが古すぎる場合は探索
 	ROS_FATAL("target passed time: %f", latest_dutarion.toSec());
 	if( latest_dutarion.toSec() > 5.0){
-		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		return 0;
 	}
 
@@ -250,7 +250,7 @@ int BattlePlanner::battleMotionSelect(){
 			ROS_FATAL("Battle Planner: Send Command: ATK_RB1");
 			motion_command_.data = "ATK_RB1";	motion_command_pub_.publish(motion_command_);
 		}
-		//motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		//motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		return 0;
 	}else{//左
 		if(area_theta < 0.25 * (3.1416 - area_angle_threth_) ){
@@ -266,7 +266,7 @@ int BattlePlanner::battleMotionSelect(){
 			ROS_FATAL("Battle Planner: Send Command: ATK_LB1");
 			motion_command_.data = "ATK_LB1";	motion_command_pub_.publish(motion_command_);
 		}
-		//motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		//motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		return 0;
 	}
 
