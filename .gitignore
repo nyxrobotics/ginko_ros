@@ -35,3 +35,5 @@ target_filter/\.project
 urg_nearest_detector/\.project
 
 gazebo_imu_accel_filter/.project
+
+ginko_regulation_planner/.project
