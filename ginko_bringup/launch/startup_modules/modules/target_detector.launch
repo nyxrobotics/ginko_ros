@@ -1,6 +1,9 @@
 <!-- -*- mode: XML -*- -->
 <launch>
-	<include file="$(find roboone_ring_tf)/launch/roboone_ring.launch" />
-	<include file="$(find urg_nearest_detector)/launch/urg_nearest.launch" />
-	<include file="$(find target_filter)/launch/target_filter.launch" />
+	<!-- <include file="$(find urg_nearest_detector)/launch/urg_nearest.launch" /> -->
+	<!-- <include file="$(find target_filter)/launch/target_filter.launch" /> -->
+	<include file="$(find urg_nearest_detector)/launch/human_nearest.launch" />
+	<include file="$(find urg_nearest_detector)/launch/robot_standing_nearest.launch" />
+	<include file="$(find urg_nearest_detector)/launch/robot_laying_nearest.launch" />
+	<include file="$(find target_filter)/launch/standing_target_filter.launch" />
 </launch>
