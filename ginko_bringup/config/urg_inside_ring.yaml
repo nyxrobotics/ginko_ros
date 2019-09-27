@@ -17,7 +17,7 @@ scan_filter_chain:
     max_x: 1.8
     min_y: -1.8
     max_y: 1.8
-    min_z: 0.5
+    min_z: 2.0
     max_z: 6.0
 - name: box_edge_0
   type: LaserScanBoxFilter

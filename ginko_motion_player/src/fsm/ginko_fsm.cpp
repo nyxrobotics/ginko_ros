@@ -30,7 +30,13 @@ enum MOTIN_NUM
 	ATK_LB1,
 	ATK_LB2,
 
-	MOVE_URG,
+    MOVE_URG1,
+    MOVE_URG2,
+    MOVE_URG3,
+
+    DETECT_HUMAN,
+    DETECT_ROBOT_STANDING,
+    DETECT_ROBOT_LAYING
 
 };
 
@@ -65,8 +71,8 @@ FSM(Ginko)
         atkFront,atkBack,
 		atkRight1,atkRight2,atkRightBack1,atkRightBack2,
 		atkLeft1,atkLeft2,atkLeftBack1,atkLeftBack2,
-		moveUrg
-
+		moveUrg1,moveUrg2,moveUrg3,
+        detectHuman,detectRobotStanding,detectRobotLaying
 	}
 	FSM_START(torqueOff);
 	FSM_BGN
@@ -106,8 +112,13 @@ FSM(Ginko)
 				FSM_ON_CONDITION(_motionCommand == ATK_LB1    , FSM_NEXT(atkLeftBack1));
 				FSM_ON_CONDITION(_motionCommand == ATK_LB2    , FSM_NEXT(atkLeftBack2));
 				FSM_ON_CONDITION(_motionCommand == WAKEUP_FRONT && _motionCommandChanged ==1 , FSM_NEXT(wakeupFront));
-				FSM_ON_CONDITION(_motionCommand == WAKEUP_BACK && _motionCommandChanged ==1 , FSM_NEXT(wakeupBack));
-				FSM_ON_CONDITION(_motionCommand == MOVE_URG && _motionCommandChanged ==1 , FSM_NEXT(moveUrg));
+				FSM_ON_CONDITION(_motionCommand == WAKEUP_BACK  && _motionCommandChanged ==1 , FSM_NEXT(wakeupBack));
+                FSM_ON_CONDITION(_motionCommand == MOVE_URG1    , FSM_NEXT(moveUrg1));
+                FSM_ON_CONDITION(_motionCommand == MOVE_URG2    , FSM_NEXT(moveUrg2));
+                FSM_ON_CONDITION(_motionCommand == MOVE_URG3    , FSM_NEXT(moveUrg3));
+                FSM_ON_CONDITION(_motionCommand == DETECT_HUMAN , FSM_NEXT(detectHuman));
+                FSM_ON_CONDITION(_motionCommand == DETECT_ROBOT_STANDING , FSM_NEXT(detectRobotStanding));
+                FSM_ON_CONDITION(_motionCommand == DETECT_ROBOT_LAYING   , FSM_NEXT(detectRobotLaying));
             }
         }
         FSM_STATE(wakeupFront){
@@ -125,7 +136,6 @@ FSM(Ginko)
 
             }
         }
-
 
         FSM_STATE(walkFront){
             FSM_CALL_TASK(walkFrontTask)
@@ -242,10 +252,45 @@ FSM(Ginko)
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
-        FSM_STATE(moveUrg){
-            FSM_CALL_TASK(moveUrgTask)
+        FSM_STATE(moveUrg1){
+            FSM_CALL_TASK(moveUrg1Task)
             FSM_TRANSITIONS{
-				FSM_ON_CONDITION(_motionCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+                FSM_ON_CONDITION(_motionCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+            }
+        }
+        FSM_STATE(moveUrg2){
+            FSM_CALL_TASK(moveUrg2Task)
+            FSM_TRANSITIONS{
+                FSM_ON_CONDITION(_motionCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+            }
+        }
+        FSM_STATE(moveUrg3){
+            FSM_CALL_TASK(moveUrg3Task)
+            FSM_TRANSITIONS{
+                FSM_ON_CONDITION(_motionCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+            }
+        }
+        FSM_STATE(detectHuman){
+            FSM_CALL_TASK(detectHumanTask)
+            FSM_TRANSITIONS{
+                FSM_ON_CONDITION(_motionCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+            }
+        }
+        FSM_STATE(detectRobotStanding){
+            FSM_CALL_TASK(detectRobotStandingTask)
+            FSM_TRANSITIONS{
+                FSM_ON_CONDITION(_motionCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
+                FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
+            }
+        }
+        FSM_STATE(detectRobotLaying){
+            FSM_CALL_TASK(detectRobotLayingTask)
+            FSM_TRANSITIONS{
+                FSM_ON_CONDITION(_motionCommand == TORQUE_OFF , FSM_NEXT(torqueOff));
                 FSM_ON_EVENT("/MOTION_FINISH", FSM_NEXT(standing));
             }
         }
@@ -263,7 +308,7 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 	string tmpCommandString = msg->data.c_str();
 	static string preCommandString = "TORQUE_OFF";
     //ここであえて連続でコマンドを送れるようにした
-    if(_motionCommand = STANDING){
+    if(_motionCommand == STANDING){
         preCommandString = "STANDING";
     }
 
@@ -351,13 +396,31 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 		_motionCommandChanged = 1;
 		_motionCommand = ATK_LB2;
 	    ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
-	}
-
-	else if(tmpCommandString  == "MOVE_URG" && preCommandString != tmpCommandString){
-		_motionCommandChanged = 1;
-		_motionCommand = MOVE_URG;
-	    ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
-	}
+	}else if(tmpCommandString  == "MOVE_URG1" && preCommandString != tmpCommandString){
+        _motionCommandChanged = 1;
+        _motionCommand = MOVE_URG1;
+        ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
+    }else if(tmpCommandString  == "MOVE_URG2" && preCommandString != tmpCommandString){
+        _motionCommandChanged = 1;
+        _motionCommand = MOVE_URG2;
+        ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
+    }else if(tmpCommandString  == "MOVE_URG3" && preCommandString != tmpCommandString){
+        _motionCommandChanged = 1;
+        _motionCommand = MOVE_URG3;
+        ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
+    }else if(tmpCommandString  == "DETECT_HUMAN" && preCommandString != tmpCommandString){
+        _motionCommandChanged = 1;
+        _motionCommand = DETECT_HUMAN;
+        ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
+    }else if(tmpCommandString  == "DETECT_ROBOT_STANDING" && preCommandString != tmpCommandString){
+        _motionCommandChanged = 1;
+        _motionCommand = DETECT_ROBOT_STANDING;
+        ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
+    }else if(tmpCommandString  == "DETECT_ROBOT_LAYING" && preCommandString != tmpCommandString){
+        _motionCommandChanged = 1;
+        _motionCommand = DETECT_ROBOT_LAYING;
+        ROS_INFO("GetMotionCommand: [%s]", msg->data.c_str());
+    }
 
 	else if(preCommandString != tmpCommandString){
 		_motionCommandChanged = 1;
@@ -607,27 +670,15 @@ decision_making::TaskResult atkLeftBack2Callback(string name, const FSMCallConte
     _motionCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-/*
-decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("moveUrgStart...");
-    ginko_player_.playMotion(move_urg3_Motion_Loop);
-    eventQueue.riseEvent("/MOTION_FINISH");
-    _motionCommandChanged = 0;
-    return TaskResult::SUCCESS();
-}
-*/
 
-decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
-    ROS_INFO("moveUrgStart...");
-//    ginko_player_.playMotion(walkFront_Motion_Start);
-    while(_motionCommand == MOVE_URG){
-        ROS_INFO("moveUrgLoop...");
-       ginko_player_.playMotion(move_urg2_Motion_Loop);
-        // ginko_player_.playMotion(move_urg3_Motion_Loop);
+decision_making::TaskResult moveUrg1Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("moveUrg1Start...");
+    while(_motionCommand == MOVE_URG1){
+        ROS_INFO("moveUrg1Loop...");
+       ginko_player_.playMotion(moveUrg1_Motion_Loop);
     }
     if(_motionCommand != TORQUE_OFF){
-        ROS_INFO("moveUrgEnd...");
-//        ginko_player_.playMotion(walkFront_Motion_End);
+        ROS_INFO("moveUrg1End...");
     }
     ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
@@ -635,12 +686,60 @@ decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& c
     _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
-
-
-
-
-
-
+decision_making::TaskResult moveUrg2Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("moveUrg2Start...");
+    while(_motionCommand == MOVE_URG2){
+        ROS_INFO("moveUrg2Loop...");
+       ginko_player_.playMotion(moveUrg2_Motion_Loop);
+    }
+    if(_motionCommand != TORQUE_OFF){
+        ROS_INFO("moveUrg2End...");
+    }
+    ginko_timer_.msleepCyclic(1000);
+    eventQueue.riseEvent("/MOTION_FINISH");
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
+    return TaskResult::SUCCESS();
+}
+decision_making::TaskResult moveUrg3Callback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("moveUrg3Start...");
+    while(_motionCommand == MOVE_URG3){
+        ROS_INFO("moveUrg3Loop...");
+       ginko_player_.playMotion(moveUrg3_Motion_Loop);
+    }
+    if(_motionCommand != TORQUE_OFF){
+        ROS_INFO("moveUrg3End...");
+    }
+//    ginko_timer_.msleepCyclic(1000);
+    eventQueue.riseEvent("/MOTION_FINISH");
+    // _motionCommand = STANDING;
+    _motionCommandChanged = 1;
+    return TaskResult::SUCCESS();
+}
+decision_making::TaskResult detectHumanCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("detectHumanStart...");
+    ginko_player_.playMotion(detectHuman_Motion_Start);
+    eventQueue.riseEvent("/MOTION_FINISH");
+     _motionCommand = STANDING;
+    _motionCommandChanged = 0;
+    return TaskResult::SUCCESS();
+}
+decision_making::TaskResult detectRobotStandingCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("detectRobotStandingStart...");
+    ginko_player_.playMotion(detectRobotStanding_Motion_Start);
+    eventQueue.riseEvent("/MOTION_FINISH");
+     _motionCommand = STANDING;
+    _motionCommandChanged = 0;
+    return TaskResult::SUCCESS();
+}
+decision_making::TaskResult detectRobotLayingCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
+    ROS_INFO("detectRobotLayingStart...");
+    ginko_player_.playMotion(detectRobotLaying_Motion_Start);
+    eventQueue.riseEvent("/MOTION_FINISH");
+     _motionCommand = STANDING;
+    _motionCommandChanged = 0;
+    return TaskResult::SUCCESS();
+}
 
 //main
 int main(int argc, char** argv){
@@ -668,7 +767,6 @@ int main(int argc, char** argv){
     LocalTasks::registrate("walkLeftTask",  walkLeftCallback);
     LocalTasks::registrate("turnRightTask", turnRightCallback);
     LocalTasks::registrate("turnLeftTask",  turnLeftCallback);
-    LocalTasks::registrate("moveUrgTask",	moveUrgCallback);
     LocalTasks::registrate("atkFrontTask", atkFrontCallback);
     LocalTasks::registrate("atkBackTask", atkBackCallback);
     LocalTasks::registrate("atkRight1Task", atkRight1Callback);
@@ -679,8 +777,12 @@ int main(int argc, char** argv){
     LocalTasks::registrate("atkLeft2Task",	atkLeft2Callback);
     LocalTasks::registrate("atkLeftBack1Task",	atkLeftBack1Callback);
     LocalTasks::registrate("atkLeftBack2Task",	atkLeftBack2Callback);
-//    LocalTasks::registrate("moveURG2Task",	moveURG2Callback);
-//    LocalTasks::registrate("moveURG3Task",	moveURG3Callback);
+    LocalTasks::registrate("moveUrg1Task",  moveUrg1Callback);
+    LocalTasks::registrate("moveUrg2Task",  moveUrg2Callback);
+    LocalTasks::registrate("moveUrg3Task",  moveUrg3Callback);
+    LocalTasks::registrate("detectHumanTask",         detectHumanCallback);
+    LocalTasks::registrate("detectRobotStandingTask", detectRobotStandingCallback);
+    LocalTasks::registrate("detectRobotLayingTask",   detectRobotLayingCallback);
 
 	ros::AsyncSpinner spinner(2);
 	spinner.start();

@@ -5,7 +5,7 @@
 	    <!-- ================================================================== -->
 		<arg name="example_name" default="fsm_ginko"/>
 		<arg name="events" default="true" />
-		<arg name="gui" default="true" />
+		<arg name="gui" default="false" />
 	
 	
 	    <!-- ================================================================== -->

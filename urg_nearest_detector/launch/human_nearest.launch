@@ -1,0 +1,22 @@
+<launch>
+	<group ns="sensor">
+		<group ns="urg">
+			<group ns="right">
+				<node name="human_nearest_detector_node" pkg="urg_nearest_detector" type="urg_nearest_detector" required="true" output="screen">
+					<remap from="scan" to="scan_human" />
+					<remap from="target_pose" to="target_human" />
+					<param name="target_tf" value="human_r" />
+					<param name="fixed_tf" value="ring" />
+			    </node>
+   			</group>
+   			<group ns="left">
+				<node name="human_nearest_detector_node" pkg="urg_nearest_detector" type="urg_nearest_detector" required="true" output="screen">
+					<remap from="scan" to="scan_human" />
+					<remap from="target_pose" to="target_human" />
+					<param name="target_tf" value="human_l" />
+					<param name="fixed_tf" value="ring" />
+			    </node>
+   			</group>
+		</group>
+	</group>
+</launch>

@@ -71,6 +71,10 @@
 #include "moveUrg2.h"
 #include "moveUrg3.h"
 
+#include "detectHuman.h"
+#include "detectRobotStanding.h"
+#include "detectRobotLaying.h"
+
 namespace ginko_fsm {
 using namespace std;
 using namespace decision_making;

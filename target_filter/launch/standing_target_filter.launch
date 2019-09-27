@@ -1,0 +1,12 @@
+<launch>
+	<group ns="motion_planning">
+		<group ns="target_detector">
+			<node name="target_filter_node" pkg="target_filter" type="target_filter" required="true" output="screen">
+				<remap from="target_r" to="/sensor/urg/right/target_robot_standing" />
+				<remap from="target_l" to="/sensor/urg/left/target_robot_standing" />
+				<remap from="target_out" to="target_pose" />
+				<param name="target_tf" value="target_slow" />
+		    </node>
+		</group>
+	</group>
+</launch>
