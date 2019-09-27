@@ -26,9 +26,9 @@ void BattlePlanner::initSubscriber(ros::NodeHandle node_handle_){
 void BattlePlanner::initTF2(){
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
-	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(2.0), true));
+	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(10.0), true));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
-	sleep(2);//TFが安定するまで待つ
+	//sleep(10);//TFが安定するまで待つ
 }
 
 void BattlePlanner::initPublisher(ros::NodeHandle node_handle_){
@@ -50,9 +50,9 @@ int BattlePlanner::mainLoop(){
 			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
 			battle_state_ = "standby";
 			battle_command_.data = "";
-			sleep(3);
+			sleep(5);
 			motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
-			sleep(1);
+			// sleep(5);
 			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
 		}else{
 //			ROS_FATAL("Battle Planner: Send Command: TORQUE_OFF");
@@ -72,6 +72,20 @@ int BattlePlanner::mainLoop(){
 		usleep(100000);
 		return 0;
 	}
+
+
+	ros::spinOnce();
+	static int imu_fall_direction_prev = imu_fall_direction_;
+	if(imu_fall_direction_prev != 0 && imu_fall_direction_ == 0){
+		sleep(3);
+		ros::spinOnce();
+		if(imu_fall_direction_ == 0){
+			motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+			imu_fall_direction_prev = imu_fall_direction_;
+			sleep(1);
+		}
+	}
+	imu_fall_direction_prev = imu_fall_direction_;
 
 	if(imu_fall_direction_ == 0){
 		if(battle_command_.data == "battle"){
@@ -94,6 +108,7 @@ int BattlePlanner::mainLoop(){
 		usleep(100000);
 		return 0;
 	}
+
 	if(imu_fall_direction_ == 0){
 		usleep(100000);
 		return 0;
@@ -102,14 +117,18 @@ int BattlePlanner::mainLoop(){
 		ROS_FATAL("Battle Planner: Send Command: WAKEUP_FRONT");
 		motion_command_.data = "WAKEUP_FRONT";	motion_command_pub_.publish(motion_command_);
 		sleep(3);
-		motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+		 motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+//		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		// sleep(5);
 		return 0;
 	}
 	if(imu_fall_direction_ == 2){
 		ROS_FATAL("Battle Planner: Send Command: WAKEUP_BACK");
 		motion_command_.data = "WAKEUP_BACK";	motion_command_pub_.publish(motion_command_);
 		sleep(3);
-		motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+		 motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+//		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		// sleep(5);
 		return 0;
 	}
 	usleep(100000);
@@ -143,8 +162,12 @@ void BattlePlanner::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& m
 
 	if(dx > 0.4){
 		imu_fall_direction_ = 1;
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
 	}else if(dx < -0.4){
 		imu_fall_direction_ = 2;
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
 	}else{
 		imu_fall_direction_ = 0;
 	}
@@ -152,7 +175,26 @@ void BattlePlanner::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& m
 }
 
 int BattlePlanner::battleMotionSelect(){
-	tfBuffer_ptr->canTransform(robot_tf_, target_tf_, ros::Time::now(), ros::Duration(0.5));
+	//TFが来ていない場合は探索
+	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_,ros::Time(0)) == false){
+		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		return 0;
+	}
+	//measuring the time interval of the TF
+	ros::Time latest_time;
+	int err;
+	std::string err_string;
+	tf2::CompactFrameID compact_id;
+	compact_id = tfBuffer_ptr->_lookupFrameNumber(target_tf_);
+	err = tfBuffer_ptr->_getLatestCommonTime(compact_id, compact_id, latest_time, &err_string);
+	ros::Duration latest_dutarion = ros::Time::now() - latest_time;
+	//TFが古すぎる場合は探索
+	ROS_FATAL("target passed time: %f", latest_dutarion.toSec());
+	if( latest_dutarion.toSec() > 5.0){
+		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		return 0;
+	}
+
 	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(robot_tf_, target_tf_, ros::Time(0));
 	double dx = tf_diff.transform.translation.x;
 	double dy = tf_diff.transform.translation.y;
@@ -160,14 +202,24 @@ int BattlePlanner::battleMotionSelect(){
 	double area_distance = sqrt(dx*dx + dy*dy);
 	//左右旋回
 	if(fabs(area_theta)>area_angle_threth_ && fabs(area_theta)< (3.1416 - area_angle_threth_)){
-		if(area_theta < 0.){
-			ROS_FATAL("Battle Planner: Send Command: TURN_RIGHT");
-			motion_command_.data = "TURN_RIGHT";	motion_command_pub_.publish(motion_command_);
-			motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		if(area_distance < 0.7){
+			if( (area_theta < 0. && dx > 0.0)
+			||(area_theta > 0. && dx < 0.0)
+			){
+				ROS_FATAL("Battle Planner: Send Command: TURN_RIGHT");
+				motion_command_.data = "TURN_RIGHT";	motion_command_pub_.publish(motion_command_);
+			}else{
+				ROS_FATAL("Battle Planner: Send Command: TURN_LEFT");
+				motion_command_.data = "TURN_LEFT";	motion_command_pub_.publish(motion_command_);
+			}
 		}else{
-			ROS_FATAL("Battle Planner: Send Command: TURN_LEFT");
-			motion_command_.data = "TURN_LEFT";	motion_command_pub_.publish(motion_command_);
-			motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+			if(area_theta < 0.){
+				ROS_FATAL("Battle Planner: Send Command: WALK_RIGHT");
+				motion_command_.data = "WALK_RIGHT";	motion_command_pub_.publish(motion_command_);
+			}else{
+				ROS_FATAL("Battle Planner: Send Command: WALK_LEFT");
+				motion_command_.data = "WALK_LEFT";	motion_command_pub_.publish(motion_command_);
+			}
 		}
 		return 0;
 	}
@@ -186,35 +238,35 @@ int BattlePlanner::battleMotionSelect(){
 
 	if(area_theta < 0.){//右
 		if(area_theta > -0.25 * (3.1416 - area_angle_threth_) ){
-			ROS_FATAL("Battle Planner: Send Command: ATK_RIGHT_1");
-			motion_command_.data = "ATK_RIGHT_1";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_R1");
+			motion_command_.data = "ATK_R1";	motion_command_pub_.publish(motion_command_);
 		}else if(area_theta > -0.5 * (3.1416 - area_angle_threth_)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_RIGHT_2");
-			motion_command_.data = "ATK_RIGHT_2";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_R2");
+			motion_command_.data = "ATK_R2";	motion_command_pub_.publish(motion_command_);
 		}else if(area_theta > (-3.1416 + area_angle_threth_*0.5)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_RIGHT_BACK_2");
-			motion_command_.data = "ATK_RIGHT_BACK_2";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_RB2");
+			motion_command_.data = "ATK_RB2";	motion_command_pub_.publish(motion_command_);
 		}else{
-			ROS_FATAL("Battle Planner: Send Command: ATK_RIGHT_BACK_1");
-			motion_command_.data = "ATK_RIGHT_BACK_1";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_RB1");
+			motion_command_.data = "ATK_RB1";	motion_command_pub_.publish(motion_command_);
 		}
-		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		//motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
 		return 0;
 	}else{//左
 		if(area_theta < 0.25 * (3.1416 - area_angle_threth_) ){
-			ROS_FATAL("Battle Planner: Send Command: ATK_LEFT_1");
-			motion_command_.data = "ATK_LEFT_1";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_L1");
+			motion_command_.data = "ATK_L1";	motion_command_pub_.publish(motion_command_);
 		}else if(area_theta < 0.5 * (3.1416 - area_angle_threth_)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_LEFT_2");
-			motion_command_.data = "ATK_LEFT_2";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_L2");
+			motion_command_.data = "ATK_L2";	motion_command_pub_.publish(motion_command_);
 		}else if(area_theta < (3.1416 - area_angle_threth_*0.5)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_LEFT_BACK_2");
-			motion_command_.data = "ATK_LEFT_BACK_2";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_LB2");
+			motion_command_.data = "ATK_LB2";	motion_command_pub_.publish(motion_command_);
 		}else{
-			ROS_FATAL("Battle Planner: Send Command: ATK_LEFT_BACK_1");
-			motion_command_.data = "ATK_LEFT_BACK_1";	motion_command_pub_.publish(motion_command_);
+			ROS_FATAL("Battle Planner: Send Command: ATK_LB1");
+			motion_command_.data = "ATK_LB1";	motion_command_pub_.publish(motion_command_);
 		}
-		motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
+		//motion_command_.data = "MOVE_URG";	motion_command_pub_.publish(motion_command_);
 		return 0;
 	}
 

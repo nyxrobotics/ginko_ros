@@ -3,7 +3,6 @@
 //FootGrounding here
 FootGrounding::FootGrounding(ros::NodeHandle main_nh){
 	readParams(main_nh);
-//	initSubscriber(main_nh);
 	initPublisher(main_nh);
 
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
@@ -11,12 +10,8 @@ FootGrounding::FootGrounding(ros::NodeHandle main_nh){
 	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(2.0), true));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
 //	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
-//	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0], ros::Time::now(), ros::Duration(1.0));
-	sleep(2);
-//	tfBuffer_ptr->lookupTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(1.0));
-//	tfBuffer_ptr->lookupTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(1.0));
-//	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
-
+	tfBuffer_ptr->canTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(10.0));
+	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(10.0));
 }
 
 FootGrounding::~FootGrounding() {
@@ -206,6 +201,9 @@ geometry_msgs::TransformStamped FootGrounding::calcRightGroundpoint(){
 		tf2::Matrix3x3(quaternion_diff).getEulerYPR(euler.z, euler.y, euler.x);
 		ros::Duration ros_duration  =  time_now -  time_last;
 		double dt = ros_duration.toSec();
+		if(dt<0.000001){
+			dt = 0.000001;
+		}
 		double euler_z_vel = euler.z/dt;
 		double edge_ratio = fabs(z2_z3_diff / foot_center_edg_thresh_);
 		double euler_ratio = fabs(euler_z_vel / foot_center_rotation_thresh_);
@@ -319,6 +317,9 @@ geometry_msgs::TransformStamped FootGrounding::calcLeftGroundpoint(){
 		tf2::Matrix3x3(quaternion_diff).getEulerYPR(euler.z, euler.y, euler.x);
 		ros::Duration ros_duration  =  time_now -  time_last;
 		double dt = ros_duration.toSec();
+		if(dt<0.000001){
+			dt = 0.000001;
+		}
 		double euler_z_vel = euler.z/dt;
 		double edge_ratio = fabs(z2_z3_diff / foot_center_edg_thresh_);
 		double euler_ratio = fabs(euler_z_vel / foot_center_rotation_thresh_);

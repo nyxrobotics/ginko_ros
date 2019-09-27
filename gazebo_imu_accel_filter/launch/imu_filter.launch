@@ -1,0 +1,10 @@
+<launch>
+	<group ns="sensor">
+		<group ns="imu">
+		    <node name="gazebo_imu_accel_filter" pkg="gazebo_imu_accel_filter" type="gazebo_imu_accel_filter" required="true">
+		        <remap from="imu_in" to="raw/gazebo"/>
+		        <remap from="imu_out" to="raw/data"/>
+		    </node>
+		</group>
+	</group>
+</launch>

@@ -1,0 +1,34 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<group ns="sensor">
+		<!-- LiDAR (HOKUYO) -->
+		<group ns="urg">
+			<!-- Right LiDAR -->
+			<group ns="right">
+				<node name="urg_r_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_r.yaml" />
+				   <remap from="scan" to="scan_raw" />
+				   <remap from="scan_filtered" to="scan" />
+				</node>
+				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
+				   <remap from="scan" to="scan" />
+				   <remap from="scan_filtered" to="scan_inside" />
+				</node>
+			</group>
+			<!-- Left LiDAR -->
+			<group ns="left">
+				<node name="urg_l_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_l.yaml" />
+				   <remap from="scan" to="scan_raw" />
+				   <remap from="scan_filtered" to="scan" />
+				</node>
+				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
+				   <remap from="scan" to="scan" />
+				   <remap from="scan_filtered" to="scan_inside" />
+				</node>
+			</group>
+		</group>
+	</group>
+</launch>

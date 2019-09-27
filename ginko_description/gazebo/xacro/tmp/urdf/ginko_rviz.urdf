@@ -1483,24 +1483,6 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <!-- <xacro:leg_l model_mode="${model_mode}"/> -->
-  <!-- <xacro:leg_l_gazebo name="leg_l" gazebo_control_mode="${gazebo_control_mode}"/> -->
-  <!--     <xacro:if value="${model_mode=='rviz'}">
-      <xacro:leg_r model_mode="common"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if>
-    <xacro:if value="${model_mode=='common'}">
-      <xacro:leg_r model_mode="common"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if>
-    <xacro:if value="${model_mode=='gazebo_part1'}">
-      <xacro:leg_r model_mode="gazebo_part1"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if>
-    <xacro:if value="${model_mode=='gazebo_part2'}">
-      <xacro:leg_r model_mode="common"/>
-      <xacro:leg_r_gazebo name="leg_r"/>
-    </xacro:if> -->
   <gazebo>
     <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
       <robotNamespace>/ginko</robotNamespace>
@@ -1518,16 +1500,78 @@
   <joint name="imu_joint" type="fixed">
     <parent link="body_link1"/>
     <child link="body_imu_base_link"/>
-    <origin rpy="0 1.5708 0" xyz="-0.09 0 -0.0379"/>
+    <origin rpy="0 0 0" xyz="-0.09 0 -0.0379"/>
   </joint>
   <gazebo>
     <plugin filename="libgazebo_ros_imu.so" name="imu_plugin">
       <alwaysOn>true</alwaysOn>
-      <bodyName>body_imu_base_link</bodyName>
-      <topicName>/sensor/imu/madgwick</topicName>
+      <bodyName>body_imu_attached_link</bodyName>
+      <topicName>/sensor/imu/raw/gazebo</topicName>
       <serviceName>gazebo_imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
-      <updateRate>50.0</updateRate>
+      <updateRate>400.0</updateRate>
     </plugin>
+  </gazebo>
+  <gazebo reference="arm_r_urg_link">
+    <sensor name="urg_right" type="gpu_ray">
+      <update_rate>10.0</update_rate>
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>666</samples>
+            <resolution>1</resolution>
+            <min_angle>-2.094</min_angle>
+            <max_angle>2.094</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.02</min>
+          <max>5.6</max>
+          <resolution>0.001</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin filename="libgazebo_ros_gpu_laser.so" name="urg_right_gazebo_plugin">
+        <frameName>arm_r_urg_link</frameName>
+        <topicName>/sensor/urg/right/scan_raw</topicName>
+      </plugin>
+    </sensor>
+  </gazebo>
+  <gazebo reference="arm_l_urg_link">
+    <sensor name="urg_left" type="gpu_ray">
+      <update_rate>10.0</update_rate>
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>666</samples>
+            <resolution>1</resolution>
+            <min_angle>-2.094</min_angle>
+            <max_angle>2.094</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.02</min>
+          <max>5.6</max>
+          <resolution>0.001</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin filename="libgazebo_ros_gpu_laser.so" name="urg_left_gazebo_plugin">
+        <frameName>arm_l_urg_link</frameName>
+        <topicName>/sensor/urg/left/scan_raw</topicName>
+      </plugin>
+    </sensor>
   </gazebo>
 </robot>

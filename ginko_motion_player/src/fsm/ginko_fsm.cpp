@@ -622,8 +622,8 @@ decision_making::TaskResult moveUrgCallback(string name, const FSMCallContext& c
 //    ginko_player_.playMotion(walkFront_Motion_Start);
     while(_motionCommand == MOVE_URG){
         ROS_INFO("moveUrgLoop...");
-//        ginko_player_.playMotion(move_urg2_Motion_Loop);
-        ginko_player_.playMotion(move_urg3_Motion_Loop);
+       ginko_player_.playMotion(move_urg2_Motion_Loop);
+        // ginko_player_.playMotion(move_urg3_Motion_Loop);
     }
     if(_motionCommand != TORQUE_OFF){
         ROS_INFO("moveUrgEnd...");

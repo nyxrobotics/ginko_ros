@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
-# Package name: imu_angle_correction
-project(imu_angle_correction)
+# Package name: gazebo_imu_accel_filter
+project(gazebo_imu_accel_filter)
 
 #add_compile_options(-std=c++11)
 add_compile_options(-std=c++17 -O3)
@@ -10,10 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_msgs
-  nodelet  
-  tf2_geometry_msgs
-  tf2_msgs
-  tf2_ros
+  nodelet
 )
 
 catkin_package(

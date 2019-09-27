@@ -1,0 +1,18 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<!-- Odometry nodes -->
+	<group ns="odom">
+	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true" launch-prefix="nice -n 0" />
+   	    <node name="odometry" pkg="ginko_odom" type="ginko_odom" required="true">
+			<remap from="~imu_height_in" to="/odom/odom_foot/imu_height_out"/>
+			<remap from="~imu_height_vel_in" to="/odom/odom_foot/imu_height_vel_out"/>
+			<remap from="~imu_height_acc_in" to="/odom/odom_foot/imu_height_acc_out"/>
+			<remap from="~r_pose_in" to="/odom/odom_foot/r_pose_out"/>
+			<remap from="~l_pose_in" to="/odom/odom_foot/l_pose_out"/>
+			<remap from="~r_ratio_in" to="/odom/odom_foot/r_ratio_out"/>
+			<remap from="~l_ratio_in" to="/odom/odom_foot/l_ratio_out"/>
+			<remap from="~imu_in" to="/sensor/imu/madgwick"/>
+			<remap from="~ground_pose_in" to="/odom/odom_foot/ground_pose_out"/>
+	    </node>
+	</group>
+</launch>

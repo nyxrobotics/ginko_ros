@@ -1,0 +1,217 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
+	<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
+	<!-- Publish Default tf2 of imu callibrated -->
+<!-- 	<arg name="imu_calibrated_tf"   default="imu_calib_link"/> -->
+<!-- 	<node name="imu_tf2_ofs" pkg="tf2_ros" type="static_transform_publisher" args="0.2 0 0 0 0 0 1 body_imu_attached_link $(arg imu_calibrated_tf)" /> -->
+
+	
+	<group ns="servo_motor">
+	    <!-- servo controller -->
+		<include file="$(find ginko_joint_controller)/launch/ginko_joint_controller.launch" >
+			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+		</include>
+		<include file="$(find ginko_joint_offset)/launch/ginko_joint_offset.launch" >
+			<!-- <rosparam file="$(find ginko_joint_controller)/cfg/servo_offsets.yaml" command="load"/> -->
+		</include>
+	
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"  launch-prefix="nice -n 0">
+			<param name="publish_frequency" value="100"/>
+			<param name="ignore_timestamp" value="true"/>
+	    	<!-- use_tf_staticがtrueだとめっちゃ遅くなる。60Hzくらいしか出ない。 -->
+			<param name="use_tf_static" value="false"/>
+		</node>
+	</group>
+
+	<group ns="sensor">
+	
+		<!-- IMU -->
+		<group ns="imu">
+			<!-- Connect under USB-Serial with rosserial-arduino -->
+		    <node name="imu_node" pkg="mpu6050_serial_to_imu" type="mpu6050_serial_to_imu_node" required="true" launch-prefix="nice -n 0">
+		        <param name="port" value="/dev/ttyCH340_1.3"/>
+		        <param name="frame_id" value="body_imu_attached_link"/>
+		        <param name="broadcast_tf" value="false"/>
+		        <remap from="imu" to="raw"/>
+		    </node>
+<!-- 		    <node name="imu_throttler" pkg="topic_tools" type="throttle" args="messages /sensor/imu/raw/data 100 /sensor/imu/raw_slow" /> -->
+		    <!-- fixture changing and z-axis drift filtering. -->
+   		    <node name="angle_correction" pkg="imu_angle_correction" type="imu_angle_correction" required="true" launch-prefix="nice -n 0">
+		        <remap from="imu_raw_in" to="raw/data"/>
+<!-- 		        <remap from="imu_raw_in" to="raw_slow"/> -->
+   		        <remap from="imu_base_out" to="base"/>
+<!--    		        <remap from="imu_drift_correction_out" to="drift"/> -->
+   		        <param name="parent_link" value="body_imu_base_link" />
+   		        <param name="fixture_euler_x" value="0.0" />
+		        <param name="fixture_euler_y" value="1.57" />
+   		        <param name="fixture_euler_z" value="0.0" />
+   		        <!-- ジンバルロックして調整できないので調整用を別途用意 -->
+   		        <!-- x・yはまっすぐの姿勢で rostopic echo /sensor/imu/madgwick_eulerで出てくる数字をそのまま足せばいい -->
+   		        <param name="calib_euler_x" value="0.018" />
+		        <param name="calib_euler_y" value="-0.05" />
+   		        <param name="calib_euler_z" value="0.0" />
+		    </node>
+		    
+   		    <!-- IMUのドリフト補正。関節が動いていない時に重力方向周りのジャイロドリフトを補正する。 -->
+		    <node name="drift_correction" pkg="imu_drift_correction" type="imu_drift_correction" required="true" launch-prefix="nice -n 0">
+		        <remap from="imu_raw_in" to="base"/>
+   		        <remap from="imu_quaternion_in" to="madgwick"/>
+   		        <remap from="imu_drift_correction_out" to="drift"/>
+   		        <remap from="joint_goals_in" to="/servo_motor/goal_joint_position"/>
+   		        <remap from="joint_states_in" to="/servo_motor/joint_states"/>
+		    </node>
+
+   			<!-- Madgwick filter calculates quaternion from imu raw data -->
+		    <node name="imu_madgwick" pkg="imu_filter_madgwick" type="imu_filter_node" required="true" launch-prefix="nice -n 0">
+<!-- 		        <remap from="imu/data_raw" to="raw/data"/> -->
+<!-- 		        <remap from="imu/data_raw" to="base"/> -->
+		        <remap from="imu/data_raw" to="drift"/>
+		        <remap from="imu/data" to="madgwick"/>
+		        <param name="use_mag" value="false"/>
+   		        <param name="use_mag" value="false"/>
+<!-- 		        <param name="publish_tf" value="false"/> -->
+		        <param name="fixed_frame" value="body_imu_reverse"/>
+		        <param name="reverse_tf" value="true"/>
+		    </node>
+		    
+			<!-- publish euler -->
+		    <node name="euler_publisher" pkg="imu_euler_publisher" type="imu_euler_publisher" required="true" launch-prefix="nice -n 0">
+		        <remap from="imu_quaternion_in" to="madgwick"/>
+		        <remap from="euler_out" to="madgwick_euler"/>
+		    </node>
+
+		</group>
+		
+		<!-- LiDAR (HOKUYO) -->
+		<group ns="urg">
+			<!-- Right LiDAR -->
+			<group ns="right">
+				<!-- Connect under USB-Serial -->
+			    <node name="urg_right_node" pkg="urg_node" type="urg_node">
+    				<!-- Topic name: /sensor/urg/right/scan -->
+					<remap from="scan" to="scan_raw" />
+					<param name="serial_port" value="/dev/ttyURG_1.4" />
+					<param name="frame_id" value="arm_r_urg_link" />
+					<param name="time_calib" value="-0.07" />
+					<param name="ofs_const_calib" value="0.0" />
+					<param name="ofs_linear_calib" value="0.0" />
+<!-- 					<param name="ofs_const_calib" value="0.02" /> -->
+<!-- 					<param name="ofs_linear_calib" value="0.0" /> -->
+					<!-- <param name="angle_min" value="-2.2" /> -->
+					<!-- <param name="angle_max" value="2.2" /> -->
+				</node>
+				<node name="urg_r_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_r.yaml" />
+				   <remap from="scan" to="scan_raw" />
+				   <remap from="scan_filtered" to="scan" />
+				</node>
+				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
+				   <remap from="scan" to="scan" />
+				   <remap from="scan_filtered" to="scan_inside" />
+				</node>
+			</group>
+			<!-- Left LiDAR -->
+			<group ns="left">
+				<!-- Connect under USB-Serial -->
+			    <node name="urg_left_node" pkg="urg_node" type="urg_node">
+       				<!-- Topic name: /sensor/urg/left/scan -->
+					<remap from="scan" to="scan_raw" />
+					<param name="serial_port" value="/dev/ttyURG_1.1" />
+					<param name="frame_id" value="arm_l_urg_link" />
+					<param name="time_calib" value="-0.07" />
+					<param name="ofs_const_calib" value="0.03" />
+					<param name="ofs_linear_calib" value="0.05" />
+<!-- 					<param name="ofs_const_calib" value="0.08" /> -->
+<!-- 					<param name="ofs_linear_calib" value="0.01" /> -->
+			     	<!-- <param name="angle_min" value="-2.2" /> -->
+			        <!-- <param name="angle_max" value="2.2" /> -->
+				</node>
+				<node name="urg_l_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_l.yaml" />
+				   <remap from="scan" to="scan_raw" />
+				   <remap from="scan_filtered" to="scan" />
+				</node>
+				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
+				   <remap from="scan" to="scan" />
+				   <remap from="scan_filtered" to="scan_inside" />
+				</node>
+			</group>
+		</group>
+	</group>
+
+	
+	<!-- Odometry nodes -->
+	<group ns="odom">
+	    <node name="odom_foot" pkg="foot_grounding" type="foot_grounding" required="true" launch-prefix="nice -n 0" />
+   	    <node name="odometry" pkg="ginko_odom" type="ginko_odom" required="true">
+			<remap from="~imu_height_in" to="/odom/odom_foot/imu_height_out"/>
+			<remap from="~imu_height_vel_in" to="/odom/odom_foot/imu_height_vel_out"/>
+			<remap from="~imu_height_acc_in" to="/odom/odom_foot/imu_height_acc_out"/>
+			<remap from="~r_pose_in" to="/odom/odom_foot/r_pose_out"/>
+			<remap from="~l_pose_in" to="/odom/odom_foot/l_pose_out"/>
+			<remap from="~r_ratio_in" to="/odom/odom_foot/r_ratio_out"/>
+			<remap from="~l_ratio_in" to="/odom/odom_foot/l_ratio_out"/>
+			<remap from="~imu_in" to="/sensor/imu/madgwick"/>
+			<remap from="~ground_pose_in" to="/odom/odom_foot/ground_pose_out"/>
+	    </node>
+	</group>
+	
+	<include file="$(find roboone_ring_tf)/launch/roboone_ring.launch" />
+	<include file="$(find urg_nearest_detector)/launch/urg_nearest.launch" />
+	<include file="$(find target_filter)/launch/target_filter.launch" />
+
+	
+	<!-- laser assembler(move lidar -> create pointcloud) -->
+<!-- 	<group ns="laser_assembler"> -->
+<!-- 		<group ns="right"> -->
+<!-- 			<node name="urg_right_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
+<!-- 				<remap from="scan" to="/sensor/urg/right/scan"/> -->
+<!-- 				<param name="max_scans" type="int" value="400" /> -->
+<!-- 				<param name="fixed_frame" type="string" value="odom" /> -->
+<!-- 			</node> -->
+<!-- 			<node name="urg_right_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
+<!-- 				<remap from="cloud" to="right_cloud"/> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+<!-- 		<group ns="left"> -->
+<!-- 			<node name="urg_left_assembler" pkg="laser_assembler" type="laser_scan_assembler"> -->
+<!-- 				<remap from="scan" to="/sensor/urg/left/scan"/> -->
+<!-- 				<param name="max_scans" type="int" value="400" /> -->
+<!-- 				<param name="fixed_frame" type="string" value="odom" /> -->
+<!-- 			</node> -->
+<!-- 			<node name="urg_left_assembler_client" pkg="laser_assembler_client" type="laser_assembler_client"> -->
+<!-- 				<remap from="cloud" to="left_cloud"/> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+<!-- 	</group> -->
+	
+	<!-- voxelgrid -->
+<!-- 	<arg name="nodelet_manager"   default="voxelgrid_nodelet"/> -->
+<!-- 	<group ns="voxelgrid"> -->
+<!-- 		<node name="$(arg nodelet_manager)" pkg="nodelet" type="nodelet" args="manager" output="screen" /> -->
+<!-- 		<group ns="right"> -->
+<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
+<!-- 			    <remap from="~input" to="/laser_assembler/right/right_cloud"/> -->
+<!-- 			    <remap from="~output" to="right_mark"/> -->
+<!-- 				<param name="~resolution" value="0.02" /> -->
+<!-- 				<param name="~publish_marker" value="false" /> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+	
+<!-- 		<group ns="left"> -->
+<!-- 			<node name="octree_voxel_grid" pkg="nodelet" type="nodelet" args="load jsk_pcl/OctreeVoxelGrid /voxelgrid/$(arg nodelet_manager)"> -->
+<!-- 			    <remap from="~input" to="/laser_assembler/left/left_cloud"/> -->
+<!-- 			    <remap from="~output" to="left_mark"/> -->
+<!-- 				<param name="~resolution" value="0.02" /> -->
+<!-- 				<param name="~publish_marker" value="false" /> -->
+<!-- 			</node> -->
+<!-- 		</group> -->
+<!-- 	</group> -->
+	
+
+	
+	
+</launch>

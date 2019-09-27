@@ -4,7 +4,7 @@ scan_filter_chain:
   params:
     min_angle: 10
     max_angle: 170
-    neighbors: 20
+    neighbors: 3
     window: 1
 - name: box_toe
   type: LaserScanBoxFilter

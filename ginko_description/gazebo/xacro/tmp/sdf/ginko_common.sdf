@@ -407,6 +407,14 @@
             <uri>model://ginko_description/meshes/stl/urg.stl</uri>
           </mesh>
         </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
       </collision>
       <visual name='arm_l_urg_link_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
@@ -416,7 +424,44 @@
             <uri>model://ginko_description/meshes/obj/urg.obj</uri>
           </mesh>
         </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
       </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <sensor name='urg_left' type='gpu_ray'>
+        <update_rate>10</update_rate>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <visualize>1</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>666</samples>
+              <resolution>1</resolution>
+              <min_angle>-2.094</min_angle>
+              <max_angle>2.094</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.02</min>
+            <max>5.6</max>
+            <resolution>0.001</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name='urg_left_gazebo_plugin' filename='libgazebo_ros_gpu_laser.so'>
+          <frameName>arm_l_urg_link</frameName>
+          <topicName>/sensor/urg/left/scan_raw</topicName>
+        </plugin>
+      </sensor>
     </link>
     <joint name='arm_l_urg_joint' type='revolute'>
       <child>arm_l_urg_link</child>
@@ -819,6 +864,14 @@
             <uri>model://ginko_description/meshes/stl/urg.stl</uri>
           </mesh>
         </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
       </collision>
       <visual name='arm_r_urg_link_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
@@ -828,7 +881,44 @@
             <uri>model://ginko_description/meshes/obj/urg.obj</uri>
           </mesh>
         </geometry>
+        <material>
+          <script>
+            <uri>__default__</uri>
+            <name>__default__</name>
+          </script>
+        </material>
       </visual>
+      <gravity>1</gravity>
+      <velocity_decay/>
+      <sensor name='urg_right' type='gpu_ray'>
+        <update_rate>10</update_rate>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <visualize>1</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>666</samples>
+              <resolution>1</resolution>
+              <min_angle>-2.094</min_angle>
+              <max_angle>2.094</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.02</min>
+            <max>5.6</max>
+            <resolution>0.001</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <plugin name='urg_right_gazebo_plugin' filename='libgazebo_ros_gpu_laser.so'>
+          <frameName>arm_r_urg_link</frameName>
+          <topicName>/sensor/urg/right/scan_raw</topicName>
+        </plugin>
+      </sensor>
     </link>
     <joint name='arm_r_urg_joint' type='revolute'>
       <child>arm_r_urg_link</child>
@@ -970,7 +1060,7 @@
       <pose frame=''>-0.09 0 -0.0379 3.14159 1.57079 3.14159</pose>
       <inertial>
         <pose frame=''>0 0 0 0 -0 0</pose>
-        <mass>0.00052271</mass>
+        <mass>0.0005</mass>
         <inertia>
           <ixx>1e-08</ixx>
           <ixy>0</ixy>
@@ -993,8 +1083,8 @@
           <velocity>0</velocity>
         </limit>
         <dynamics>
-          <damping>0.1</damping>
-          <friction>0.1</friction>
+          <damping>0</damping>
+          <friction>0</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -1005,7 +1095,7 @@
       <pose frame=''>-0.09 0 -0.0379 0 -0 0</pose>
       <inertial>
         <pose frame=''>0 0 0 0 -0 0</pose>
-        <mass>0.00052271</mass>
+        <mass>0.0005</mass>
         <inertia>
           <ixx>1e-08</ixx>
           <ixy>0</ixy>
@@ -1028,8 +1118,8 @@
           <velocity>0</velocity>
         </limit>
         <dynamics>
-          <damping>0.1</damping>
-          <friction>0.1</friction>
+          <damping>0</damping>
+          <friction>0</friction>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -3084,11 +3174,11 @@
     <static>0</static>
     <plugin name='imu_plugin' filename='libgazebo_ros_imu.so'>
       <alwaysOn>1</alwaysOn>
-      <bodyName>body_imu_base_link</bodyName>
-      <topicName>/sensor/imu/madgwick</topicName>
+      <bodyName>body_imu_attached_link</bodyName>
+      <topicName>/sensor/imu/raw/gazebo</topicName>
       <serviceName>gazebo_imu_service</serviceName>
       <gaussianNoise>0.0</gaussianNoise>
-      <updateRate>50.0</updateRate>
+      <updateRate>400.0</updateRate>
     </plugin>
   </model>
 </sdf>
