@@ -2,7 +2,6 @@
 	<group ns="battle">
 	    <node name="regulation_node" pkg="ginko_regulation_planner" type="ginko_regulation_planner" required="true">
 			<remap from="~motion_command_out" to="/motion_command" />
-			<remap from="~imu_quaternion_in" to="/sensor/imu/madgwick" />
 	    </node>
 	</group>
 </launch>

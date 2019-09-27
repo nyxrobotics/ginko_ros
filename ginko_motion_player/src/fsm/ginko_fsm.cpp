@@ -308,7 +308,7 @@ void motionCommandCallback(const std_msgs::String::ConstPtr& msg)
 	string tmpCommandString = msg->data.c_str();
 	static string preCommandString = "TORQUE_OFF";
     //ここであえて連続でコマンドを送れるようにした
-    if(_motionCommand = STANDING){
+    if(_motionCommand == STANDING){
         preCommandString = "STANDING";
     }
 
@@ -710,62 +710,36 @@ decision_making::TaskResult moveUrg3Callback(string name, const FSMCallContext& 
     if(_motionCommand != TORQUE_OFF){
         ROS_INFO("moveUrg3End...");
     }
-    ginko_timer_.msleepCyclic(1000);
+//    ginko_timer_.msleepCyclic(1000);
     eventQueue.riseEvent("/MOTION_FINISH");
     // _motionCommand = STANDING;
     _motionCommandChanged = 1;
     return TaskResult::SUCCESS();
 }
-
 decision_making::TaskResult detectHumanCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("detectHumanStart...");
-    while(_motionCommand == DETECT_HUMAN){
-        ROS_INFO("detectHumanLoop...");
-       ginko_player_.playMotion(detectHuman_Motion_Start);
-    }
-    if(_motionCommand != TORQUE_OFF){
-        ROS_INFO("detectHumanEnd...");
-    }
-    ginko_timer_.msleepCyclic(1000);
+    ginko_player_.playMotion(detectHuman_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
-    // _motionCommand = STANDING;
-    _motionCommandChanged = 1;
+     _motionCommand = STANDING;
+    _motionCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult detectRobotStandingCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("detectRobotStandingStart...");
-    while(_motionCommand == DETECT_ROBOT_STANDING){
-        ROS_INFO("detectRobotStandingLoop...");
-       ginko_player_.playMotion(detectRobotStanding_Motion_Start);
-    }
-    if(_motionCommand != TORQUE_OFF){
-        ROS_INFO("detectRobotStandingEnd...");
-    }
-    ginko_timer_.msleepCyclic(1000);
+    ginko_player_.playMotion(detectRobotStanding_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
-    // _motionCommand = STANDING;
-    _motionCommandChanged = 1;
+     _motionCommand = STANDING;
+    _motionCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
 decision_making::TaskResult detectRobotLayingCallback(string name, const FSMCallContext& context, EventQueue& eventQueue) {
     ROS_INFO("detectRobotLayingStart...");
-    while(_motionCommand == DETECT_ROBOT_LAYING){
-        ROS_INFO("detectRobotLayingLoop...");
-       ginko_player_.playMotion(detectRobotLaying_Motion_Start);
-    }
-    if(_motionCommand != TORQUE_OFF){
-        ROS_INFO("detectRobotLayingEnd...");
-    }
-    ginko_timer_.msleepCyclic(1000);
+    ginko_player_.playMotion(detectRobotLaying_Motion_Start);
     eventQueue.riseEvent("/MOTION_FINISH");
-    // _motionCommand = STANDING;
-    _motionCommandChanged = 1;
+     _motionCommand = STANDING;
+    _motionCommandChanged = 0;
     return TaskResult::SUCCESS();
 }
-
-
-
-
 
 //main
 int main(int argc, char** argv){
@@ -806,9 +780,9 @@ int main(int argc, char** argv){
     LocalTasks::registrate("moveUrg1Task",  moveUrg1Callback);
     LocalTasks::registrate("moveUrg2Task",  moveUrg2Callback);
     LocalTasks::registrate("moveUrg3Task",  moveUrg3Callback);
-    LocalTasks::registrate("detectHuman",         detectHumanCallback);
-    LocalTasks::registrate("detectRobotStanding", detectRobotStandingCallback);
-    LocalTasks::registrate("detectRobotLaying",   detectRobotLayingCallback);
+    LocalTasks::registrate("detectHumanTask",         detectHumanCallback);
+    LocalTasks::registrate("detectRobotStandingTask", detectRobotStandingCallback);
+    LocalTasks::registrate("detectRobotLayingTask",   detectRobotLayingCallback);
 
 	ros::AsyncSpinner spinner(2);
 	spinner.start();

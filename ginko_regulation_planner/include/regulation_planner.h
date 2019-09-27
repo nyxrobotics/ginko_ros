@@ -28,31 +28,26 @@
 class RegulationPlanner {
 private:
 	//動作:
-
-
-//	ros::NodeHandle node_handle_;
-	ros::Subscriber imu_quaternion_sub_;
+	//ros::NodeHandle node_handle_;
 	ros::Subscriber regulation_command_sub_;
-	int imu_ready_ = 0;
-	int imu_fall_direction_ = 0;//0:直立、1:前転倒、2:後転倒
 	int regulation_command_ready_ = 0;
 	int regulation_command_update_ = 0;
 	ros::Publisher motion_command_pub_;
 	std_msgs::String motion_command_;
 
-	sensor_msgs::Imu imu_quaternion_;
 	std_msgs::String regulation_command_;
 	std::string regulation_state_;
 
 	boost::shared_ptr<tf2_ros::Buffer> tfBuffer_ptr;
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr;
 
-	std::string robot_tf_ = "body_imu_base_link";	//"ground_foot_center_link";	//ジャイロのTF
-	std::string target_tf_ = "target_slow";	//ジャイロのTF
-
-	double area_distance_threth_ = 0.45;
-	double area_angle_threth_ = 0.7;//1.0472;
-
+	std::string robot_tf_ = "body_imu_base_link";	//ロボットのTF
+	std::string human_r_tf_ = "human_r";
+	std::string human_l_tf_ = "human_l";
+	std::string robot_standing_r_tf_ = "robot_standing_r";
+	std::string robot_standing_l_tf_ = "robot_standing_l";
+	std::string robot_laying_r_tf_ = "robot_laying_r";
+	std::string robot_laying_l_tf_ = "robot_laying_l";
 
 public:
 	RegulationPlanner(ros::NodeHandle main_nh);
@@ -64,8 +59,8 @@ private:
 	void initPublisher(ros::NodeHandle node_handle_);
 	void initSubscriber(ros::NodeHandle node_handle_);
 	void initTF2();
+	bool checkTfAlive(std::string tf_name);
 	void getRegulationCommandCallback(const std_msgs::String::ConstPtr& msg);
-	void getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg);
 	int regulationMotionSelect();
 };
 
