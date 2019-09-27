@@ -5,6 +5,7 @@
 int main(int argc, char **argv) {
 	// Init ROS node
 	ros::init(argc, argv, "ginko_controller");
+	ros::NodeHandle node_handle_("~");
 	GinkoController ginko_controller; //宣言のタイミングでginko_controllerのコンストラクタが呼ばれる。
 	//loop_rateはポートごとに個別に呼ばないと周期がバグる
 	//各ポートのタイミングは思ったより揃う。(100us以内くらい)
