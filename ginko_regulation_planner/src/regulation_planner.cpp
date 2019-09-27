@@ -72,10 +72,13 @@ int RegulationPlanner::mainLoop(){
 	//"start"コマンドを受け取った際の処理
 	if(regulation_command_.data == "start" && regulation_state_ == "standby"){
 		ROS_INFO("Regulation Planner: Status: START regulation test");
-		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
-		sleep(4);
-//		ros::spinOnce();
+		motion_command_.data = "MOVE_URG1";	motion_command_pub_.publish(motion_command_);
+		sleep(1.5);
 		regulationMotionSelect();
+		sleep(6.0);
+		for(int i = 0 ; i<10 ; i++){
+			ros::spinOnce();
+		}
 		regulation_state_ = "standby";
 		regulation_command_.data = "";
 		usleep(100000);
