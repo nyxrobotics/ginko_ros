@@ -177,12 +177,12 @@ void GinkoOffsets::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
 void GinkoOffsets::initTF2() {
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
-	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
+	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(10.0), false));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
-	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
-	tfBuffer_ptr->lookupTransform(crotch_tf_ ,r_toe_center_tf_, ros::Time::now(), ros::Duration(1.0));
-	tfBuffer_ptr->lookupTransform(crotch_tf_ ,l_toe_center_tf_, ros::Time::now(), ros::Duration(1.0));
-	sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
+	sleep(10);//TFが安定するまで待つ(ないと落ちる。良くわからない)
+	tfBuffer_ptr->canTransform(crotch_tf_ ,r_toe_center_tf_, ros::Time::now(), ros::Duration(10.0));
+	tfBuffer_ptr->canTransform(crotch_tf_ ,l_toe_center_tf_, ros::Time::now(), ros::Duration(10.0));
+	// sleep(1);//TFが安定するまで待つ(ないとたまに起動時からずっと更新周期が低くなる。良くわからない)
 }
 
 

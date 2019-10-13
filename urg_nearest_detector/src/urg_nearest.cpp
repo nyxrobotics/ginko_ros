@@ -52,7 +52,7 @@ void UrgNearest::initTF2() {
 
 int UrgNearest::mainLoop(){
 	//転倒時は計算しない
-	if( tfBuffer_ptr->canTransform("body_imu_base_link" , "odom",ros::Time(0)) == false){
+	if(tfBuffer_ptr->canTransform("body_imu_base_link" , "odom",ros::Time(0)) == false || tfBuffer_ptr->canTransform(odom_tf_in_name_, urg_tf_in_name_,ros::Time(0)) == false){
 		return 0;
 	}else{
 		geometry_msgs::TransformStamped transformDiff = tfBuffer_ptr->lookupTransform("body_imu_base_link" , "odom",ros::Time(0));

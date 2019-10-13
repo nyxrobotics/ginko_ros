@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sensor_msgs
-  nodelet
 )
 # let cmake find OpenMP and set some variables(https://stackoverflow.com/questions/17633513/cmake-cannot-find-openmp)
 OPTION (USE_OpenMP "Use OpenMP" ON)
@@ -27,14 +26,12 @@ ENDIF()
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs nodelet
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs
 )
 
 ###########
 ## Build ##
 ###########
-
-
 
 
 include_directories(
@@ -51,32 +48,7 @@ file(GLOB MY_SOURCES "src/*.cpp")
 #add_executable(${PROJECT_NAME} src/ginko_controller.cpp)
 add_executable(${PROJECT_NAME} ${MY_SOURCES})
 
-add_dependencies(${PROJECT_NAME}
-  ${${PROJECT_NAME}_EXPORTED_TARGETS} 
-  ${catkin_EXPORTED_TARGETS}
-  ginko_joint_controller_gencfg #for rqt_reconfigure 
-)
 target_link_libraries(${PROJECT_NAME} 
   ${catkin_LIBRARIES} 
 )
 
-
-
-#############
-## Install ##
-#############
-
-install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-install(DIRECTORY include/
-  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
-)
-
-install(DIRECTORY launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)

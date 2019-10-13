@@ -1,10 +1,7 @@
 <!-- -*- mode: XML -*- -->
 <launch>
 	<!-- urdf xml robot description loaded on the Parameter Server, converting the xacro into a proper urdf file-->
-	<param name="robot_description" command="$(find xacro)/xacro '$(find ginko_description)/models/ginko_auto/urdf/robot.urdf.xacro'" />
-	<!-- Publish Default tf2 of imu callibrated -->
-<!-- 	<arg name="imu_calibrated_tf"   default="imu_calib_link"/> -->
-<!-- 	<node name="imu_tf2_ofs" pkg="tf2_ros" type="static_transform_publisher" args="0.2 0 0 0 0 0 1 body_imu_attached_link $(arg imu_calibrated_tf)" /> -->
+	<param name="robot_description"     textfile="$(find ginko_description)/gazebo/urdf/ginko_rviz.urdf" />
 
 	
 	<group ns="servo_motor">
@@ -39,10 +36,9 @@
 		    <!-- fixture changing and z-axis drift filtering. -->
    		    <node name="angle_correction" pkg="imu_angle_correction" type="imu_angle_correction" required="true" launch-prefix="nice -n 0">
 		        <remap from="imu_raw_in" to="raw/data"/>
-<!-- 		        <remap from="imu_raw_in" to="raw_slow"/> -->
    		        <remap from="imu_base_out" to="base"/>
-<!--    		        <remap from="imu_drift_correction_out" to="drift"/> -->
-   		        <param name="parent_link" value="body_imu_base_link" />
+   		        <param name="attached_link" value="body_imu_attached_link" />
+   		        <param name="target_link" value="body_imu_base_link" />
    		        <param name="fixture_euler_x" value="0.0" />
 		        <param name="fixture_euler_y" value="1.57" />
    		        <param name="fixture_euler_z" value="0.0" />
@@ -101,7 +97,7 @@
 					<!-- <param name="angle_min" value="-2.2" /> -->
 					<!-- <param name="angle_max" value="2.2" /> -->
 				</node>
-				<node name="urg_r_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+<!-- 				<node name="urg_r_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_r.yaml" />
 				   <remap from="scan" to="scan_raw" />
 				   <remap from="scan_filtered" to="scan" />
@@ -110,7 +106,7 @@
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
 				   <remap from="scan" to="scan" />
 				   <remap from="scan_filtered" to="scan_inside" />
-				</node>
+				</node> -->
 			</group>
 			<!-- Left LiDAR -->
 			<group ns="left">
@@ -128,7 +124,7 @@
 			     	<!-- <param name="angle_min" value="-2.2" /> -->
 			        <!-- <param name="angle_max" value="2.2" /> -->
 				</node>
-				<node name="urg_l_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+<!-- 				<node name="urg_l_filter" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_l.yaml" />
 				   <remap from="scan" to="scan_raw" />
 				   <remap from="scan_filtered" to="scan" />
@@ -137,7 +133,7 @@
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
 				   <remap from="scan" to="scan" />
 				   <remap from="scan_filtered" to="scan_inside" />
-				</node>
+				</node> -->
 			</group>
 		</group>
 	</group>
@@ -160,9 +156,11 @@
 	</group>
 	
 	<include file="$(find roboone_ring_tf)/launch/roboone_ring.launch" />
-	<include file="$(find urg_nearest_detector)/launch/urg_nearest.launch" />
-	<include file="$(find target_filter)/launch/target_filter.launch" />
-
+	<!-- <include file="$(find urg_nearest_detector)/launch/urg_nearest.launch" /> -->
+	<!-- <include file="$(find target_filter)/launch/target_filter.launch" /> -->
+	<include file="$(find ginko_bringup)/launch/startup_modules/modules/urg_filter.launch" />
+	<include file="$(find ginko_bringup)/launch/startup_modules/modules/target_detector.launch" />
+	<include file="$(find ginko_bringup)/launch/startup_modules/modules/motion_player.launch" />
 	
 	<!-- laser assembler(move lidar -> create pointcloud) -->
 <!-- 	<group ns="laser_assembler"> -->

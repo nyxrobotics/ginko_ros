@@ -3029,11 +3029,11 @@
     <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
       <robotNamespace>/ginko</robotNamespace>
       <robotSimType>gazebo_ros_control/GinkoRobotHWSim</robotSimType>
-      <legacyModeNS>1</legacyModeNS>
+      <legacyModeNS>true</legacyModeNS>
     </plugin>
     <static>0</static>
     <plugin name='imu_plugin' filename='libgazebo_ros_imu.so'>
-      <alwaysOn>1</alwaysOn>
+      <alwaysOn>true</alwaysOn>
       <bodyName>body_imu_attached_link</bodyName>
       <topicName>/sensor/imu/raw/gazebo</topicName>
       <serviceName>gazebo_imu_service</serviceName>
