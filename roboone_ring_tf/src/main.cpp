@@ -15,9 +15,9 @@ int main(int argc, char **argv) {
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
 	sleep(5);
 	EdgePointDetector edge_detector(node_handle_);
-	ros::Rate rate_(100); // 1 hz
+	ros::Rate rate_(10); // 1 hz
 	while (ros::ok()) {
-		edge_detector.ringMainLoop();
+		edge_detector.mainLoop();
 		ros::spinOnce();
 		rate_.sleep();
 	}
