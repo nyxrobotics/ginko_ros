@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
 
 	//ノードハンドラを渡さないと、rosparamで受け取ろうとする名前空間がノード名の一層上になってしまい、launchの中でかけない。
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
-	sleep(5);
+//	sleep(5);
 	EdgePointDetector edge_detector(node_handle_);
 	ros::Rate rate_(10); // 1 hz
 	while (ros::ok()) {

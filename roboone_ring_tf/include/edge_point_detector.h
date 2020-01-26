@@ -46,6 +46,12 @@ private:
 	std::vector<tf2::Vector3> left_detected_edges_;
 	std::vector<int> right_detected_edges_flag_;
 	std::vector<int> left_detected_edges_flag_;
+	sensor_msgs::LaserScan right_scan_;
+	geometry_msgs::TransformStamped right_tf_;
+	bool right_scan_ready_ = false, right_tf_ready_ = false;
+	sensor_msgs::LaserScan left_scan_;
+	geometry_msgs::TransformStamped left_tf_;
+	bool left_scan_ready_ = false, left_tf_ready_ = false;
 
 	//ROS Parameters
 	double edge_detection_angle_thresh_ = 0.0873; //[rad] エッジ検出をする際に、URGの距離データが空の部分を「データ抜け」/「無限遠」のどちらかを判別するしきい値
@@ -53,6 +59,7 @@ private:
 	double self_ignore_thickness_ = 0.15; //[m] ロボット周辺の無視する半径。不要かも。
 	double init_pose_x_ = -0.9; //[m] 初期位置x成分(リング中心→ロボット位置)
 	double init_pose_y_ =  0.0; //[m] 初期位置y成分(リング中心→ロボット位置)
+	int floor_block_num_;
 
 	//入力
 	std::string robot_center_tf_ = "body_link1"; //ロボットの中心として計算するTF。主に太ももの付け根(胴体側)。
@@ -81,8 +88,9 @@ private:
 	void getRightUrgCallback(const sensor_msgs::LaserScan& msg);
 	void getLeftUrgCallback(const sensor_msgs::LaserScan& msg);
 
-	void detectEdge(const sensor_msgs::LaserScan laserscan_in, visualization_msgs::MarkerArray& markerarray_out);
-
+	void detectEdge(const sensor_msgs::LaserScan laserscan_in,
+			geometry_msgs::TransformStamped odomToUrgTF,
+			visualization_msgs::MarkerArray& markerarray_out);
 	void debugMessageLoop(const ros::TimerEvent&);
 };
 
