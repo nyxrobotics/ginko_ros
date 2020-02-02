@@ -23,6 +23,11 @@
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <visualization_msgs/MarkerArray.h>
+//extract laserscan into pointcloud
+//#include <laser_geometry/laser_geometry.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <geometry_msgs/PoseArray.h>
+#include <geometry_msgs/Pose.h>
 
 class EdgePointDetector {
 private:
@@ -46,12 +51,16 @@ private:
 	std::vector<tf2::Vector3> left_detected_edges_;
 	std::vector<int> right_detected_edges_flag_;
 	std::vector<int> left_detected_edges_flag_;
+
 	sensor_msgs::LaserScan right_scan_;
 	geometry_msgs::TransformStamped right_tf_;
 	bool right_scan_ready_ = false, right_tf_ready_ = false;
 	sensor_msgs::LaserScan left_scan_;
 	geometry_msgs::TransformStamped left_tf_;
 	bool left_scan_ready_ = false, left_tf_ready_ = false;
+	//LaserScan into PointCloud2
+//	laser_geometry::LaserProjection laser_projector_;
+//	sensor_msgs::PointCloud2 right_cloud_, left_cloud_;
 
 	//ROS Parameters
 	double edge_detection_angle_thresh_ = 0.0873; //[rad] エッジ検出をする際に、URGの距離データが空の部分を「データ抜け」/「無限遠」のどちらかを判別するしきい値
@@ -74,6 +83,10 @@ private:
     visualization_msgs::MarkerArray right_edge_marker_array_;
     visualization_msgs::MarkerArray left_edge_marker_array_;
 
+    geometry_msgs::PoseArray right_poses_, left_poses_;
+	ros::Publisher right_poses_pub_, left_poses_pub_;
+	bool left_poses_ready_ = false, right_poses_ready_ = false;
+
 public:
 	EdgePointDetector(ros::NodeHandle main_nh);
 	~EdgePointDetector();
@@ -88,22 +101,24 @@ private:
 	void getRightUrgCallback(const sensor_msgs::LaserScan& msg);
 	void getLeftUrgCallback(const sensor_msgs::LaserScan& msg);
 
-	void detectEdge(const sensor_msgs::LaserScan laserscan_in,
+	void getMarkerArray(const sensor_msgs::LaserScan laserscan_in,
 			geometry_msgs::TransformStamped odomToUrgTF,
 			visualization_msgs::MarkerArray& markerarray_out);
+	void getLaserscanPoses(
+			const sensor_msgs::LaserScan laserscan_in,
+			geometry_msgs::TransformStamped odomToUrgTF,
+			geometry_msgs::PoseArray& poses_out);
+	void tfToOffsetAndRotationMatrix(
+			geometry_msgs::TransformStamped tf_in,
+			tf2::Vector3& offset_out,
+			tf2::Matrix3x3& rotation_matrix_out);
+	void transformPoint(
+			tf2::Vector3 point_in,
+			tf2::Vector3 offset_in,
+			tf2::Matrix3x3 rotation_matrix_in,
+			tf2::Vector3& point_out);
 	void debugMessageLoop(const ros::TimerEvent&);
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
 
