@@ -22,10 +22,7 @@
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <visualization_msgs/MarkerArray.h>
 //extract laserscan into pointcloud
-//#include <laser_geometry/laser_geometry.h>
-#include <sensor_msgs/PointCloud2.h>
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/Pose.h>
 
@@ -78,13 +75,9 @@ private:
 	std::string ring_tf_out_name_	 = "ring_center";
 	//デバッグ用変数
 	ros::Timer debug_loop_timer_;
-	ros::Publisher right_edge_marker_pub_;
-	ros::Publisher left_edge_marker_pub_;
-    visualization_msgs::MarkerArray right_edge_marker_array_;
-    visualization_msgs::MarkerArray left_edge_marker_array_;
-
+	//エッジ点表示用
     geometry_msgs::PoseArray right_poses_, left_poses_;
-	ros::Publisher right_poses_pub_, left_poses_pub_;
+	ros::Publisher right_poses_pub_, left_poses_pub_, edge_poses_pub_;
 	bool left_poses_ready_ = false, right_poses_ready_ = false;
 
 public:
@@ -101,13 +94,17 @@ private:
 	void getRightUrgCallback(const sensor_msgs::LaserScan& msg);
 	void getLeftUrgCallback(const sensor_msgs::LaserScan& msg);
 
-	void getMarkerArray(const sensor_msgs::LaserScan laserscan_in,
-			geometry_msgs::TransformStamped odomToUrgTF,
-			visualization_msgs::MarkerArray& markerarray_out);
 	void getLaserscanPoses(
 			const sensor_msgs::LaserScan laserscan_in,
 			geometry_msgs::TransformStamped odomToUrgTF,
 			geometry_msgs::PoseArray& poses_out);
+	void getEdgePoses(
+			const sensor_msgs::LaserScan laserscan_in,
+			geometry_msgs::TransformStamped odomToUrgTF,
+			geometry_msgs::PoseArray& poses_out);
+	int getLaserscanCenterCount(
+			const sensor_msgs::LaserScan laserscan_in,
+			geometry_msgs::TransformStamped odomToUrgTF);
 	void tfToOffsetAndRotationMatrix(
 			geometry_msgs::TransformStamped tf_in,
 			tf2::Vector3& offset_out,

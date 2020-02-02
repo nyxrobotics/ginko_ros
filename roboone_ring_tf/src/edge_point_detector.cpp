@@ -56,11 +56,9 @@ void EdgePointDetector::initSubscriber(ros::NodeHandle node_handle_){
 }
 
 void EdgePointDetector::initPublisher(ros::NodeHandle node_handle_){
-	right_edge_marker_pub_ = node_handle_.advertise<visualization_msgs::MarkerArray>("right_edge_marker", 1);
-	left_edge_marker_pub_ = node_handle_.advertise<visualization_msgs::MarkerArray>("left_edge_marker", 1);
-
 	right_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("right_poses", 1);
 	left_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("left_poses", 1);
+	edge_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("edge_poses", 10);
 }
 void EdgePointDetector::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
 	//init_flag = msg -> data;
@@ -93,6 +91,7 @@ void EdgePointDetector::getLeftUrgCallback(const sensor_msgs::LaserScan& msg){
 	left_scan_ = laserscan_data;
 	left_scan_ready_ = true;
 }
+
 void EdgePointDetector::getLaserscanPoses(
 		const sensor_msgs::LaserScan laserscan_in,
 		geometry_msgs::TransformStamped odomToUrgTF,
@@ -124,10 +123,24 @@ void EdgePointDetector::getLaserscanPoses(
 		pose_tmp.orientation.z = 0;
 		pose_tmp.orientation.w = 1;
 
-//		poses_out.poses.push_back(pose_tmp);
 		poses_out.poses[i]=pose_tmp;
 	}
 }
+
+void EdgePointDetector::getEdgePoses(
+		const sensor_msgs::LaserScan laserscan_in,
+		geometry_msgs::TransformStamped odomToUrgTF,
+		geometry_msgs::PoseArray& poses_out) {
+
+}
+
+int EdgePointDetector::getLaserscanCenterCount(
+		const sensor_msgs::LaserScan laserscan_in,
+		geometry_msgs::TransformStamped odomToUrgTF) {
+
+	return 0;
+}
+
 void EdgePointDetector::tfToOffsetAndRotationMatrix(
 		geometry_msgs::TransformStamped tf_in,
 		tf2::Vector3& offset_out,
@@ -142,6 +155,7 @@ void EdgePointDetector::tfToOffsetAndRotationMatrix(
 	quaternion.setW(tf_in.transform.rotation.w);
 	rotation_matrix_out.setRotation(quaternion);
 }
+
 void EdgePointDetector::transformPoint(
 		tf2::Vector3 point_in,
 		tf2::Vector3 offset_in,
@@ -152,87 +166,9 @@ void EdgePointDetector::transformPoint(
 	point_out.setY(offset_in.getY()+xyz_rot.getY());
 	point_out.setZ(offset_in.getZ()+xyz_rot.getZ());
 }
-void EdgePointDetector::getMarkerArray(
-		const sensor_msgs::LaserScan laserscan_in,
-		geometry_msgs::TransformStamped odomToUrgTF,
-		visualization_msgs::MarkerArray& markerarray_out) {
-	std::string parent_tf_name = laserscan_in.header.frame_id;
-	double angle_min = laserscan_in.angle_min;
-	double angle_max = laserscan_in.angle_max;
-	double angle_increment = laserscan_in.angle_increment;
-	int points_num_total = laserscan_in.ranges.size();
-	markerarray_out.markers.resize(points_num_total);
 
-	for (int i = 0; i < points_num_total; i++) {
-		if(laserscan_in.ranges[i] > laserscan_in.range_min + 0.001
-				&& laserscan_in.range_max > laserscan_in.ranges[i] + 0.1){
-			geometry_msgs::Point start_point, end_pont;
-			start_point.x = 0;
-			start_point.y = 0;
-			start_point.z = 0;
-			double angle = angle_min + i * angle_increment;
-			start_point.x = cos(angle) * laserscan_in.ranges[i];
-			start_point.y = sin(angle) * laserscan_in.ranges[i];
-			start_point.z = 0;
 
-			geometry_msgs::Vector3 arrow_shape;  //config arrow shape
-			arrow_shape.x = 0.002;
-			arrow_shape.y = 0.004;
-			arrow_shape.z = 0.01;
 
-			markerarray_out.markers[i].header.frame_id = parent_tf_name;
-			markerarray_out.markers[i].header.stamp = ros::Time::now();
-			markerarray_out.markers[i].ns = "laserscan_num_" + std::to_string(i); //std::to_string(i);
-			markerarray_out.markers[i].id = i;
-			markerarray_out.markers[i].lifetime = ros::Duration();
-
-			markerarray_out.markers[i].type = visualization_msgs::Marker::ARROW;
-			markerarray_out.markers[i].action = visualization_msgs::Marker::ADD;
-			markerarray_out.markers[i].scale = arrow_shape;
-
-			markerarray_out.markers[i].points.resize(2);
-			markerarray_out.markers[i].points[0] = start_point;
-			markerarray_out.markers[i].points[1] = end_pont;
-
-			markerarray_out.markers[i].color.r = 0.0f;
-			markerarray_out.markers[i].color.g = 1.0f;
-			markerarray_out.markers[i].color.b = 0.0f;
-			markerarray_out.markers[i].color.a = 1.0f;
-		}else{
-			geometry_msgs::Point start_point, end_pont;
-			start_point.x = 0;
-			start_point.y = 0;
-			start_point.z = 0;
-			double angle = angle_min + i * angle_increment;
-			start_point.x = cos(angle) * laserscan_in.range_max;
-			start_point.y = sin(angle) * laserscan_in.range_max;
-			start_point.z = 0;
-			geometry_msgs::Vector3 arrow_shape;  //config arrow shape
-			arrow_shape.x = 0.002;
-			arrow_shape.y = 0.004;
-			arrow_shape.z = 0.01;
-
-			markerarray_out.markers[i].header.frame_id = parent_tf_name;
-			markerarray_out.markers[i].header.stamp = ros::Time::now();
-			markerarray_out.markers[i].ns = "laserscan_num_" + std::to_string(i);
-			markerarray_out.markers[i].id = i;
-			markerarray_out.markers[i].lifetime = ros::Duration();
-
-			markerarray_out.markers[i].type = visualization_msgs::Marker::ARROW;
-			markerarray_out.markers[i].action = visualization_msgs::Marker::ADD;
-			markerarray_out.markers[i].scale = arrow_shape;
-
-			markerarray_out.markers[i].points.resize(2);
-			markerarray_out.markers[i].points[0] = start_point;
-			markerarray_out.markers[i].points[1] = end_pont;
-
-			markerarray_out.markers[i].color.r = 0.0f;
-			markerarray_out.markers[i].color.g = 1.0f;
-			markerarray_out.markers[i].color.b = 0.0f;
-			markerarray_out.markers[i].color.a = 1.0f;
-		}
-	}
-}
 int EdgePointDetector::mainLoop(){
 	//wait for topics
 	while (false == right_scan_ready_ || false == left_scan_ready_){
@@ -256,9 +192,6 @@ int EdgePointDetector::mainLoop(){
 	//Start calculation
 	ros::spinOnce();
 
-//	getMarkerArray(right_scan_, right_tf_, right_edge_marker_array_);
-//	getMarkerArray(left_scan_, left_tf_, left_edge_marker_array_);
-
 	getLaserscanPoses(	right_scan_,right_tf_,right_poses_);
 	getLaserscanPoses(left_scan_,left_tf_,left_poses_);
 
@@ -271,12 +204,6 @@ int EdgePointDetector::mainLoop(){
 	return true;
 }
 void EdgePointDetector::debugMessageLoop(const ros::TimerEvent&){
-//	if(right_edge_marker_array_.markers.size() != 0){
-//		right_edge_marker_pub_.publish(right_edge_marker_array_);
-//	}
-//	if(left_edge_marker_array_.markers.size() != 0){
-//		left_edge_marker_pub_.publish(left_edge_marker_array_);
-//	}
 	if(right_poses_.poses.size() != 0){
 		right_poses_pub_.publish(right_poses_);
 	}
