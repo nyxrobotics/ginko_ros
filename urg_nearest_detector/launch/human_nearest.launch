@@ -6,7 +6,7 @@
 					<remap from="scan" to="scan_human" />
 					<remap from="target_pose" to="target_human" />
 					<param name="target_tf" value="human_r" />
-					<param name="fixed_tf" value="ring" />
+					<param name="fixed_tf" value="ring_center" />
 			    </node>
    			</group>
    			<group ns="left">
@@ -14,7 +14,7 @@
 					<remap from="scan" to="scan_human" />
 					<remap from="target_pose" to="target_human" />
 					<param name="target_tf" value="human_l" />
-					<param name="fixed_tf" value="ring" />
+					<param name="fixed_tf" value="ring_center" />
 			    </node>
    			</group>
 		</group>

@@ -48,13 +48,13 @@ void EdgePointDetector::readParams(ros::NodeHandle node_handle_){
 
 	//	node_handle_.param<int>("floor_block_num", floor_block_num_, 30);
 	node_handle_.param<int>("window_size", window_size_, 30);
-	node_handle_.param<int>("center_ignore_count",center_ignore_count_, 0);
+	node_handle_.param<int>("center_ignore_count",center_ignore_count_, 100);
 	node_handle_.param<int>("floor_count_threshold",floor_count_threshold_, 3);
+	node_handle_.param<int>("bottom_count_threshold_",bottom_count_threshold_, 20);
 
 }
 
 void EdgePointDetector::initSubscriber(ros::NodeHandle node_handle_){
-//	init_flag_sub_ = node_handle_.subscribe("ring_init_in", 1,&EdgePointDetector::getInitFlagCallback, this);
 	right_urg_sub_ = node_handle_.subscribe("right_scan", 1,&EdgePointDetector::getRightUrgCallback, this);
 	left_urg_sub_ = node_handle_.subscribe("left_scan", 1,&EdgePointDetector::getLeftUrgCallback, this);
 }
@@ -62,12 +62,11 @@ void EdgePointDetector::initSubscriber(ros::NodeHandle node_handle_){
 void EdgePointDetector::initPublisher(ros::NodeHandle node_handle_){
 	right_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("right_poses", 1);
 	left_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("left_poses", 1);
-	edge_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("edge_poses", 10);
+	right_edges_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("right_edges", 10);
+	left_edges_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("left_edges", 10);
+//	merged_edges_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("merged_edges", 10);
 	right_center_pub_ = node_handle_.advertise<geometry_msgs::PointStamped>("right_center", 1);
 	left_center_pub_ = node_handle_.advertise<geometry_msgs::PointStamped>("left_center", 1);
-}
-void EdgePointDetector::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
-	//init_flag = msg -> data;
 }
 
 void EdgePointDetector::getRightUrgCallback(const sensor_msgs::LaserScan& msg){
@@ -163,9 +162,15 @@ void EdgePointDetector::getEdgePoses(
 			int floor_count = 0, edge_num = 0;
 			for(int i = window_size_ - 1; i < center_cont - center_ignore_count_; i++){
 				poses_z_tmp[0] = laserscan_poses_in.poses[i + window_size_].position.z;
-				floor_count = 0;
+				floor_count = -bottom_count_threshold_;
 				for(int j = window_size_ - 1; j >= 0 ; j--){
-					if(fabs(poses_z_tmp[j]) < floor_thickness_){
+					if(floor_count < 0){ //床面より高い障害物の周辺→エッジ取れない
+						if(poses_z_tmp[j] < -floor_thickness_ ){
+							floor_count ++;
+						}else{
+							floor_count = -bottom_count_threshold_;
+						}
+					}else if(fabs(poses_z_tmp[j]) < floor_thickness_ ){
 						if(floor_count == 0){
 							edge_num = (i + window_size_) - j;
 						}
@@ -191,13 +196,21 @@ void EdgePointDetector::getEdgePoses(
 			int floor_count = 0, edge_num = 0;
 			for(int i = points_num_total - window_size_; i >= center_cont + center_ignore_count_; i--){
 				poses_z_tmp[0] = laserscan_poses_in.poses[i].position.z;
-				floor_count = 0;
+				floor_count = -bottom_count_threshold_;
 				for(int j = window_size_ - 1; j >= 0 ; j--){
-					if(fabs(poses_z_tmp[j]) < floor_thickness_){
+					if(floor_count < 0){ //床面より高い障害物の周辺→エッジ取れない
+						if(poses_z_tmp[j] < -floor_thickness_ ){
+							floor_count ++;
+						}else{
+							floor_count = -bottom_count_threshold_;
+						}
+					}else if(fabs(poses_z_tmp[j]) < floor_thickness_){
 						if(floor_count == 0){
 							edge_num = i + j;
 						}
 						floor_count ++;
+					}else if(poses_z_tmp[j] < - floor_thickness_){
+						floor_count = 0;
 					}
 				}
 				if(floor_count >= floor_count_threshold_){
@@ -328,7 +341,7 @@ int EdgePointDetector::mainLoop(){
 	left_tf_ = tfBuffer_ptr_->lookupTransform( odom_tf_ , left_scan_.header.frame_id ,ros::Time(0));
 
 	//Start calculation
-	ros::spinOnce();
+	// ros::spinOnce();
 
 	getLaserscanPoses(	right_scan_,right_tf_,right_poses_);
 	getLaserscanPoses(left_scan_,left_tf_,left_poses_);
@@ -340,9 +353,18 @@ int EdgePointDetector::mainLoop(){
 	getEdgePoses(left_scan_,left_poses_, left_center_count,left_pitch_ , left_tf_, left_edges_);
 
 	mergeEdges(right_edges_, left_edges_, merged_edges_);
-	if(merged_edges_.poses.size() > 0){
-		edge_poses_pub_.publish(merged_edges_);
+	if(right_edges_.poses.size() > 0){
+		right_edges_pub_.publish(right_edges_);
+		right_edges_.poses.resize(0);
 	}
+	if(left_edges_.poses.size() > 0){
+		left_edges_pub_.publish(left_edges_);
+		left_edges_.poses.resize(0);
+	}
+//	if(merged_edges_.poses.size() > 0){
+//		merged_edges_pub_.publish(merged_edges_);
+//		merged_edges_.poses.resize(0);
+//	}
 	//finish function
 	right_scan_ready_ = false;
 	left_scan_ready_ = false;
@@ -361,9 +383,5 @@ void EdgePointDetector::debugMessageLoop(const ros::TimerEvent&){
 	}
 	right_center_pub_.publish(right_center_);
 	left_center_pub_.publish(left_center_);
-//	if(merged_edges_.poses.size() > 0){
-//		edge_poses_pub_.publish(merged_edges_);
-//		merged_edges_.poses.resize(0);
-//	}
 }
 

@@ -4,7 +4,7 @@
 	<include file="$(find ginko_bringup)/launch/startup_modules/modules/urg_filter.launch" />
 	<!-- <include file="$(find ginko_bringup)/launch/startup_modules/modules/laser_assembler.launch" /> -->
 	<include file="$(find ginko_bringup)/launch/startup_modules/modules/footstep_odometry.launch" />
-	<!-- <include file="$(find roboone_ring_tf)/launch/roboone_ring_static.launch" /> -->
 	<!-- <include file="$(find ginko_bringup)/launch/startup_modules/modules/target_detector.launch" /> -->
 	<include file="$(find ginko_bringup)/launch/startup_modules/modules/motion_player.launch" />
+	<include file="$(find roboone_ring_edge_detector)/launch/ring_edge_detector.launch" />
 </launch>

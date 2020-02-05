@@ -63,14 +63,15 @@ void GinkoPlayer::playPose(int motion[][SERVO_NUM + 2], uint8_t pose_num) {
 		for (int j=0;j<SERVO_NUM;j++){
 			nextJoint[j] = prevJoint[j] + (endJoint[j] - prevJoint[j]) * ((double)(i+1)/(double)poseTimeStepTravel);
 		}
-//		nextJoint[4] = (double)nextJoint[3];
-//		nextJoint[6] = (double)nextJoint[5];
-//		nextJoint[11] = (double)nextJoint[10];
-//		nextJoint[13] = (double)nextJoint[12];
-//		nextJoint[18] = -(double)nextJoint[17];
-//		nextJoint[23] = -(double)nextJoint[22];
 
-	    ROS_INFO("travel_time_ms:%d, poseTimeStepTravel:%d, i:%d", travel_time_ms ,poseTimeStepTravel,i );
+		nextJoint[3] = (double)nextJoint[2];
+		nextJoint[5] = (double)nextJoint[4];
+		nextJoint[10] = (double)nextJoint[9];
+		nextJoint[12] = (double)nextJoint[11];
+		nextJoint[17] = -(double)nextJoint[16];
+		nextJoint[22] = -(double)nextJoint[21];
+
+//	    ROS_INFO("travel_time_ms:%d, poseTimeStepTravel:%d, i:%d", travel_time_ms ,poseTimeStepTravel,i );
 //	    ROS_INFO("SetJoint,%f,%f,%f,%f,%f",endJoint[1] ,nextJoint[1] ,nextJoint[2] ,nextJoint[3] ,nextJoint[4] );
 		posePublish(nextJoint);
 		ginko_timer_.usleepCyclic(1000000/LOOP_FREQUENCY);

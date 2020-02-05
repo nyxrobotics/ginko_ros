@@ -35,15 +35,11 @@ private:
 	//ring座標から見たロボット位置を受け取った時(実装予定)：
 
 	//初期化
-	int init_flag = 1; //最初は一回初期化する
-	ros::Subscriber init_flag_sub_;
 	ros::Subscriber right_urg_sub_;
 	ros::Subscriber left_urg_sub_;
 
 	boost::shared_ptr<tf2_ros::Buffer> tfBuffer_ptr_;
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr_;
-	tf2_ros::TransformBroadcaster tfBroadcaster_;
-	tf2_ros::StaticTransformBroadcaster static_broadcaster_;
 
 	//内部処理用変数
 	std::vector<tf2::Vector3> right_detected_edges_;
@@ -70,6 +66,7 @@ private:
 	double init_pose_y_ =  0.0; //[m] 初期位置y成分(リング中心→ロボット位置)
 //	int floor_block_num_;
 	int window_size_, floor_count_threshold_, center_ignore_count_;
+	int bottom_count_threshold_ = 10;
 
 	//入力
 	std::string robot_center_tf_ = "body_link1"; //ロボットの中心として計算するTF。主に太ももの付け根(胴体側)。
@@ -85,7 +82,7 @@ private:
     double right_pitch_,left_pitch_;
 	//エッジ点表示用
     geometry_msgs::PoseArray right_poses_, left_poses_;
-	ros::Publisher right_poses_pub_, left_poses_pub_, edge_poses_pub_;
+	ros::Publisher right_poses_pub_, left_poses_pub_, right_edges_pub_, left_edges_pub_, merged_edges_pub_;
 	bool left_poses_ready_ = false, right_poses_ready_ = false;
 
 public:
@@ -98,7 +95,6 @@ private:
 	void initPublisher(ros::NodeHandle node_handle_);
 	void initSubscriber(ros::NodeHandle node_handle_);
 
-	void getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg);
 	void getRightUrgCallback(const sensor_msgs::LaserScan& msg);
 	void getLeftUrgCallback(const sensor_msgs::LaserScan& msg);
 

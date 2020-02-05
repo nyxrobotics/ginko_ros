@@ -1,27 +1,20 @@
 #include "main.h"
 
-//#include <tf2_ros/transform_listener.h>
-//#include <geometry_msgs/TransformStamped.h>
-//#include <geometry_msgs/Twist.h>
-
 //main here
-
 int main(int argc, char **argv) {
 	// Init ROS node
-	ros::init(argc, argv, "edge_detector_node");
+	ros::init(argc, argv, "roboone_ring_tf_publisher");
 	ros::NodeHandle node_handle_("~");
-
 	//ノードハンドラを渡さないと、rosparamで受け取ろうとする名前空間がノード名の一層上になってしまい、launchの中でかけない。
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
-//	sleep(5);
-	EdgePointDetector edge_detector(node_handle_);
-//	 ros::Rate rate_(20); // 20 hz
+
+	RingTfPublisher ring_tf_publisher(node_handle_);
+	ros::Rate rate_(10); // 10 hz
 	while (ros::ok()) {
-		edge_detector.mainLoop();
+		ring_tf_publisher.mainLoop();
 		ros::spinOnce();
-//		 rate_.sleep();
+		rate_.sleep();
 	}
-//	ros::spin();
 	ros::shutdown();
 	return 0;
 }
