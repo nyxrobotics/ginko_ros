@@ -25,6 +25,8 @@
 //extract laserscan into pointcloud
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/Pose.h>
+//show urg center arrow
+#include <geometry_msgs/PointStamped.h>
 
 class EdgePointDetector {
 private:
@@ -60,12 +62,14 @@ private:
 //	sensor_msgs::PointCloud2 right_cloud_, left_cloud_;
 
 	//ROS Parameters
-	double edge_detection_angle_thresh_ = 0.0873; //[rad] エッジ検出をする際に、URGの距離データが空の部分を「データ抜け」/「無限遠」のどちらかを判別するしきい値
+//	double edge_detection_angle_thresh_ = 0.0873; //[rad] エッジ検出をする際に、URGの距離データが空の部分を「データ抜け」/「無限遠」のどちらかを判別するしきい値
 	double ring_radious_ = 1.273; //[m] リングのサイズ(予選：1.273、本戦：1.8)
-	double self_ignore_thickness_ = 0.15; //[m] ロボット周辺の無視する半径。不要かも。
+//	double self_ignore_thickness_ = 0.15; //[m] ロボット周辺の無視する半径。不要かも。
+	double floor_thickness_ = 0.025; //[m] 床判定の厚み。センサの誤差に合わせて調整
 	double init_pose_x_ = -0.9; //[m] 初期位置x成分(リング中心→ロボット位置)
 	double init_pose_y_ =  0.0; //[m] 初期位置y成分(リング中心→ロボット位置)
-	int floor_block_num_;
+//	int floor_block_num_;
+	int window_size_, floor_count_threshold_, center_ignore_count_;
 
 	//入力
 	std::string robot_center_tf_ = "body_link1"; //ロボットの中心として計算するTF。主に太ももの付け根(胴体側)。
@@ -75,6 +79,10 @@ private:
 	std::string ring_tf_out_name_	 = "ring_center";
 	//デバッグ用変数
 	ros::Timer debug_loop_timer_;
+	ros::Publisher right_center_pub_, left_center_pub_;
+	geometry_msgs::PointStamped right_center_, left_center_;
+    geometry_msgs::PoseArray right_edges_, left_edges_;
+    double right_pitch_,left_pitch_;
 	//エッジ点表示用
     geometry_msgs::PoseArray right_poses_, left_poses_;
 	ros::Publisher right_poses_pub_, left_poses_pub_, edge_poses_pub_;
@@ -100,11 +108,16 @@ private:
 			geometry_msgs::PoseArray& poses_out);
 	void getEdgePoses(
 			const sensor_msgs::LaserScan laserscan_in,
-			geometry_msgs::TransformStamped odomToUrgTF,
-			geometry_msgs::PoseArray& poses_out);
+			const geometry_msgs::PoseArray laserscan_poses_in,
+			const int center_cont,
+			const double urg_pitch,
+			const geometry_msgs::TransformStamped odomToUrgTF,
+			geometry_msgs::PoseArray& poses_out) ;
 	int getLaserscanCenterCount(
 			const sensor_msgs::LaserScan laserscan_in,
-			geometry_msgs::TransformStamped odomToUrgTF);
+			geometry_msgs::TransformStamped odomToUrgTF,
+			geometry_msgs::PointStamped& center_pose_out,
+			double& urg_pitch_out);
 	void tfToOffsetAndRotationMatrix(
 			geometry_msgs::TransformStamped tf_in,
 			tf2::Vector3& offset_out,
