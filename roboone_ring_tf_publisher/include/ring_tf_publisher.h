@@ -13,6 +13,7 @@
 //edge messages
 #include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
 //init flag
 #include <std_msgs/Int32.h>
 //
@@ -34,6 +35,7 @@ private:
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr_;
 	tf2_ros::TransformBroadcaster tfBroadcaster_;
 	tf2_ros::StaticTransformBroadcaster static_broadcaster_;
+	ros::Publisher center_pose_pub_;
 
 	//subscribed messages
 	geometry_msgs::PoseArray right_edges_, left_edges_;
@@ -49,6 +51,7 @@ private:
 	geometry_msgs::TransformStamped odom_to_robot_tf_;
 	//出力用
 	geometry_msgs::TransformStamped odom_to_ring_tf_lpf_;
+	geometry_msgs::PoseStamped ring_pose_;
 
 public:
 	RingTfPublisher(ros::NodeHandle main_nh);

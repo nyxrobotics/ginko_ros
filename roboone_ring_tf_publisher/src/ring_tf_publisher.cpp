@@ -8,7 +8,7 @@ RingTfPublisher::RingTfPublisher(ros::NodeHandle main_nh){
 	tfListener_ptr_.reset(new tf2_ros::TransformListener(*tfBuffer_ptr_));
 	sleep(1);//TFが安定するまで待つ(ないと落ちる?要検証)
 	initSubscriber(main_nh);
-//	initPublisher(main_nh);
+	initPublisher(main_nh);
 	//wait for TF
 	bool tf_ready_ = tfBuffer_ptr_->canTransform(odom_tf_name_, robot_tf_name_, ros::Time(0));
 	while (false == tf_ready_){
@@ -46,7 +46,7 @@ void RingTfPublisher::initSubscriber(ros::NodeHandle node_handle_){
 }
 
 void RingTfPublisher::initPublisher(ros::NodeHandle node_handle_){
-
+	center_pose_pub_= node_handle_.advertise<geometry_msgs::PoseStamped>("ring_pose", 1);
 }
 
 void RingTfPublisher::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
@@ -119,5 +119,17 @@ int RingTfPublisher::mainLoop(){
 	odom_to_ring_tf_lpf_.transform.translation.y = tf_offset_lpf_.getY();
 	odom_to_ring_tf_lpf_.transform.translation.z = tf_offset_lpf_.getZ();
 	tfBroadcaster_.sendTransform(odom_to_ring_tf_lpf_);
+
+	ring_pose_.header.frame_id = odom_tf_name_;
+	ring_pose_.header.stamp = ros::Time::now();
+	ring_pose_.pose.position.x = odom_to_ring_tf_lpf_.transform.translation.x;
+	ring_pose_.pose.position.y = odom_to_ring_tf_lpf_.transform.translation.y;
+	ring_pose_.pose.position.z = odom_to_ring_tf_lpf_.transform.translation.z;
+	tf2::Quaternion quaternion_tmp(1.5708,0,0);
+	ring_pose_.pose.orientation.x = quaternion_tmp.getX();
+	ring_pose_.pose.orientation.y = quaternion_tmp.getY();
+	ring_pose_.pose.orientation.z = quaternion_tmp.getZ();
+	ring_pose_.pose.orientation.w = quaternion_tmp.getW();
+	center_pose_pub_.publish(ring_pose_);
 	return true;
 }
