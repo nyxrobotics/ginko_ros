@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>roboone_ring_tf</name>
+  <name>roboone_ring_edge_detector</name>
   <version>0.0.1</version>
   <description>Setting roboone ring's TF(center,edge,vertex)</description>
 

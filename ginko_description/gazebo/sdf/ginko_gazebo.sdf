@@ -436,7 +436,6 @@
       <sensor name='urg_left' type='gpu_ray'>
         <update_rate>10</update_rate>
         <pose frame=''>0 0 0 0 -0 0</pose>
-        <visualize>1</visualize>
         <ray>
           <scan>
             <horizontal>
@@ -879,7 +878,6 @@
       <sensor name='urg_right' type='gpu_ray'>
         <update_rate>10</update_rate>
         <pose frame=''>0 0 0 0 -0 0</pose>
-        <visualize>1</visualize>
         <ray>
           <scan>
             <horizontal>
@@ -3029,11 +3027,11 @@
     <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
       <robotNamespace>/ginko</robotNamespace>
       <robotSimType>gazebo_ros_control/GinkoRobotHWSim</robotSimType>
-      <legacyModeNS>true</legacyModeNS>
+      <legacyModeNS>1</legacyModeNS>
     </plugin>
     <static>0</static>
     <plugin name='imu_plugin' filename='libgazebo_ros_imu.so'>
-      <alwaysOn>true</alwaysOn>
+      <alwaysOn>1</alwaysOn>
       <bodyName>body_imu_attached_link</bodyName>
       <topicName>/sensor/imu/raw/gazebo</topicName>
       <serviceName>gazebo_imu_service</serviceName>
