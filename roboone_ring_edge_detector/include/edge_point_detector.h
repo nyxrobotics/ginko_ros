@@ -70,6 +70,7 @@ private:
 	double init_pose_y_ =  0.0; //[m] 初期位置y成分(リング中心→ロボット位置)
 //	int floor_block_num_;
 	int window_size_, floor_count_threshold_, center_ignore_count_;
+	int bottom_count_threshold_ = 10;
 
 	//入力
 	std::string robot_center_tf_ = "body_link1"; //ロボットの中心として計算するTF。主に太ももの付け根(胴体側)。
