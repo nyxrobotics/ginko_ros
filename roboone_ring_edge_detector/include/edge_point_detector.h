@@ -86,7 +86,7 @@ private:
     double right_pitch_,left_pitch_;
 	//エッジ点表示用
     geometry_msgs::PoseArray right_poses_, left_poses_;
-	ros::Publisher right_poses_pub_, left_poses_pub_, edge_poses_pub_;
+	ros::Publisher right_poses_pub_, left_poses_pub_, right_edges_pub_, left_edges_pub_, merged_edges_pub_;
 	bool left_poses_ready_ = false, right_poses_ready_ = false;
 
 public:

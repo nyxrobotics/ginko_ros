@@ -63,7 +63,9 @@ void EdgePointDetector::initSubscriber(ros::NodeHandle node_handle_){
 void EdgePointDetector::initPublisher(ros::NodeHandle node_handle_){
 	right_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("right_poses", 1);
 	left_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("left_poses", 1);
-	edge_poses_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("edge_poses", 10);
+	right_edges_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("right_edges", 10);
+	left_edges_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("left_edges", 10);
+//	merged_edges_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("merged_edges", 10);
 	right_center_pub_ = node_handle_.advertise<geometry_msgs::PointStamped>("right_center", 1);
 	left_center_pub_ = node_handle_.advertise<geometry_msgs::PointStamped>("left_center", 1);
 }
@@ -355,12 +357,18 @@ int EdgePointDetector::mainLoop(){
 	getEdgePoses(left_scan_,left_poses_, left_center_count,left_pitch_ , left_tf_, left_edges_);
 
 	mergeEdges(right_edges_, left_edges_, merged_edges_);
-	if(merged_edges_.poses.size() > 0){
-		edge_poses_pub_.publish(merged_edges_);
-		merged_edges_.poses.resize(0);
+	if(right_edges_.poses.size() > 0){
+		right_edges_pub_.publish(merged_edges_);
 		right_edges_.poses.resize(0);
+	}
+	if(left_edges_.poses.size() > 0){
+		left_edges_pub_.publish(merged_edges_);
 		left_edges_.poses.resize(0);
 	}
+//	if(merged_edges_.poses.size() > 0){
+//		merged_edges_pub_.publish(merged_edges_);
+//		merged_edges_.poses.resize(0);
+//	}
 	//finish function
 	right_scan_ready_ = false;
 	left_scan_ready_ = false;
@@ -379,9 +387,5 @@ void EdgePointDetector::debugMessageLoop(const ros::TimerEvent&){
 	}
 	right_center_pub_.publish(right_center_);
 	left_center_pub_.publish(left_center_);
-//	if(merged_edges_.poses.size() > 0){
-//		edge_poses_pub_.publish(merged_edges_);
-//		merged_edges_.poses.resize(0);
-//	}
 }
 
