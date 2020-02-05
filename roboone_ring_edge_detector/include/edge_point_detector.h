@@ -35,15 +35,11 @@ private:
 	//ring座標から見たロボット位置を受け取った時(実装予定)：
 
 	//初期化
-	int init_flag = 1; //最初は一回初期化する
-	ros::Subscriber init_flag_sub_;
 	ros::Subscriber right_urg_sub_;
 	ros::Subscriber left_urg_sub_;
 
 	boost::shared_ptr<tf2_ros::Buffer> tfBuffer_ptr_;
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr_;
-	tf2_ros::TransformBroadcaster tfBroadcaster_;
-	tf2_ros::StaticTransformBroadcaster static_broadcaster_;
 
 	//内部処理用変数
 	std::vector<tf2::Vector3> right_detected_edges_;
@@ -99,7 +95,6 @@ private:
 	void initPublisher(ros::NodeHandle node_handle_);
 	void initSubscriber(ros::NodeHandle node_handle_);
 
-	void getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg);
 	void getRightUrgCallback(const sensor_msgs::LaserScan& msg);
 	void getLeftUrgCallback(const sensor_msgs::LaserScan& msg);
 

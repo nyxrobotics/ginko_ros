@@ -55,7 +55,6 @@ void EdgePointDetector::readParams(ros::NodeHandle node_handle_){
 }
 
 void EdgePointDetector::initSubscriber(ros::NodeHandle node_handle_){
-//	init_flag_sub_ = node_handle_.subscribe("ring_init_in", 1,&EdgePointDetector::getInitFlagCallback, this);
 	right_urg_sub_ = node_handle_.subscribe("right_scan", 1,&EdgePointDetector::getRightUrgCallback, this);
 	left_urg_sub_ = node_handle_.subscribe("left_scan", 1,&EdgePointDetector::getLeftUrgCallback, this);
 }
@@ -68,9 +67,6 @@ void EdgePointDetector::initPublisher(ros::NodeHandle node_handle_){
 //	merged_edges_pub_ = node_handle_.advertise<geometry_msgs::PoseArray>("merged_edges", 10);
 	right_center_pub_ = node_handle_.advertise<geometry_msgs::PointStamped>("right_center", 1);
 	left_center_pub_ = node_handle_.advertise<geometry_msgs::PointStamped>("left_center", 1);
-}
-void EdgePointDetector::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
-	//init_flag = msg -> data;
 }
 
 void EdgePointDetector::getRightUrgCallback(const sensor_msgs::LaserScan& msg){
