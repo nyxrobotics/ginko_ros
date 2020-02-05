@@ -1,0 +1,54 @@
+<launch>
+	<!-- Dummy TFs of ring_center edge -->
+	<arg name="large_ring" default="1"/>
+	<group ns="roboone_ring">
+		<group if="$(arg large_ring)">
+			<!-- reference: https://answers.ros.org/question/208002/static-transformation-publisher/ -->
+			<node name="ring_edge_0_tf" pkg="tf2_ros" type="static_transform_publisher" args="1.8 0 0 0 0 0 ring_center ring_edge_0" />
+			<node name="ring_vertex_0_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.9 0 0.7854 0 0 ring_edge_0 ring_vertex_0" />
+			<node name="ring_edge_1_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0 0 0 ring_vertex_0 ring_edge_1" />
+			<node name="ring_vertex_1_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_1 ring_vertex_1" />
+			
+			<node name="ring_edge_2_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.9 0 0 0 0 ring_vertex_1 ring_edge_2" />
+			<node name="ring_vertex_2_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.9 0 0.7854 0 0 ring_edge_2 ring_vertex_2" />
+			<node name="ring_edge_3_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0 0 0 ring_vertex_2 ring_edge_3" />
+			<node name="ring_vertex_3_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_3 ring_vertex_3" />
+			
+			<node name="ring_edge_4_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.9 0 0 0 0 ring_vertex_3 ring_edge_4" />
+			<node name="ring_vertex_4_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.9 0 0.7854 0 0 ring_edge_4 ring_vertex_4" />
+			<node name="ring_edge_5_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0 0 0 ring_vertex_4 ring_edge_5" />
+			<node name="ring_vertex_5_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_5 ring_vertex_5" />
+			
+			<node name="ring_edge_6_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.9 0 0 0 0 ring_vertex_5 ring_edge_6" />
+			<node name="ring_vertex_6_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.9 0 0.7854 0 0 ring_edge_6 ring_vertex_6" />
+			<node name="ring_edge_7_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0 0 0 ring_vertex_6 ring_edge_7" />
+			<node name="ring_vertex_7_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_7 ring_vertex_7" />
+		</group>
+		<group unless="$(arg large_ring)">
+			<node name="ring_tf" pkg="tf2_ros" type="static_transform_publisher" args="0.6365 0 0 0 0 0 1 odom ring" />
+			<node name="ring_edge_0_tf" pkg="tf2_ros" type="static_transform_publisher" args="1.2728 0 0 0 0 0 ring_center ring_edge_0" />
+			<node name="ring_vertex_0_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_0 ring_vertex_0" />
+			<node name="ring_edge_1_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0 0 0 ring_vertex_0 ring_edge_1" />
+			<node name="ring_vertex_1_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0.7854 0 0 ring_edge_1 ring_vertex_1" />
+			
+			<node name="ring_edge_2_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0 0 0 ring_vertex_1 ring_edge_2" />
+			<node name="ring_vertex_2_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_2 ring_vertex_2" />
+			<node name="ring_edge_3_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0 0 0 ring_vertex_2 ring_edge_3" />
+			<node name="ring_vertex_3_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0.7854 0 0 ring_edge_3 ring_vertex_3" />
+			
+			<node name="ring_edge_4_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0 0 0 ring_vertex_3 ring_edge_4" />
+			<node name="ring_vertex_4_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_4 ring_vertex_4" />
+			<node name="ring_edge_5_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0 0 0 ring_vertex_4 ring_edge_5" />
+			<node name="ring_vertex_5_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0.7854 0 0 ring_edge_5 ring_vertex_5" />
+			
+			<node name="ring_edge_6_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0 0 0 ring_vertex_5 ring_edge_6" />
+			<node name="ring_vertex_6_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_6 ring_vertex_6" />
+			<node name="ring_edge_7_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0 0 0 ring_vertex_6 ring_edge_7" />
+			<node name="ring_vertex_7_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0.7854 0 0 ring_edge_7 ring_vertex_7" />
+	
+		</group>
+		<node name="ring_node" pkg="roboone_ring_edge_detector" type="roboone_ring_edge_detector" required="true">
+	    </node>
+	</group>
+</launch>
+
