@@ -48,7 +48,7 @@ void EdgePointDetector::readParams(ros::NodeHandle node_handle_){
 
 	//	node_handle_.param<int>("floor_block_num", floor_block_num_, 30);
 	node_handle_.param<int>("window_size", window_size_, 30);
-	node_handle_.param<int>("center_ignore_count",center_ignore_count_, 30);
+	node_handle_.param<int>("center_ignore_count",center_ignore_count_, 0);
 	node_handle_.param<int>("floor_count_threshold",floor_count_threshold_, 3);
 
 }
@@ -148,18 +148,19 @@ void EdgePointDetector::getEdgePoses(
 		const geometry_msgs::TransformStamped odomToUrgTF,
 		geometry_msgs::PoseArray& poses_out) {
 	int points_num_total = laserscan_poses_in.poses.size();
-	//前半データ
+
 	std::vector<int> edge_counts_tmp;
 	edge_counts_tmp.resize(2);
 	int edge_detected = 0;
 	std::vector<float> poses_z_tmp;
 	poses_z_tmp.resize(window_size_);
-	if(center_cont >= (center_ignore_count_ + window_size_) ){
-		for(int i = window_size_-1; i > 0; i--){
-			poses_z_tmp[i] = laserscan_poses_in.poses[window_size_-1 - i].position.z;
-		}
-		int floor_count = 0, edge_num = 0;
-		if(urg_pitch > 0.0){
+	if(urg_pitch > 0.0){
+		//前半データ
+		if(center_cont >= (center_ignore_count_ + window_size_) ){
+			for(int i = window_size_-1; i > 0; i--){
+				poses_z_tmp[i] = laserscan_poses_in.poses[window_size_-1 - i].position.z;
+			}
+			int floor_count = 0, edge_num = 0;
 			for(int i = window_size_ - 1; i < center_cont - center_ignore_count_; i++){
 				poses_z_tmp[0] = laserscan_poses_in.poses[i + window_size_].position.z;
 				floor_count = 0;
@@ -181,36 +182,35 @@ void EdgePointDetector::getEdgePoses(
 				}
 			}
 		}
+
+		//後半データ
+		if( (points_num_total - center_cont) >= (center_ignore_count_ + window_size_) ){
+			for(int i = window_size_-1; i > 0; i--){
+				poses_z_tmp[i] = laserscan_poses_in.poses[ points_num_total - window_size_ + i].position.z;
+			}
+			int floor_count = 0, edge_num = 0;
+			for(int i = points_num_total - window_size_; i >= center_cont + center_ignore_count_; i--){
+				poses_z_tmp[0] = laserscan_poses_in.poses[i].position.z;
+				floor_count = 0;
+				for(int j = window_size_ - 1; j >= 0 ; j--){
+					if(fabs(poses_z_tmp[j]) < floor_thickness_){
+						if(floor_count == 0){
+							edge_num = i + j;
+						}
+						floor_count ++;
+					}
+				}
+				if(floor_count >= floor_count_threshold_){
+					edge_counts_tmp[edge_detected] = edge_num;// i + ( window_size_ / 2);
+					edge_detected ++;
+					i = center_cont; //for i 終了
+				}
+				for(int j = window_size_-1; j > 0 ; j--){
+					poses_z_tmp[j] = poses_z_tmp[j-1];
+				}
+			}
+		}
 	}
-
-
-	//後半データ
-//	counter_start = points_num_total;
-//	counter_end = center_cont;
-//	if( (counter_start - counter_end) >= (center_ignore_count_ + window_size_) ){
-//		counter_start -= (center_ignore_count_ + window_size_);
-//		for(int i =  0; i < window_size_; i++){
-//			poses_z_tmp[window_size_ - 1 - i] = laserscan_poses_in.poses[counter_start - i].position.z;
-//		}
-//		int floor_count = 0;
-//		for(int i = counter_start - 1 ; i > counter_end - 1; i-- ){
-//			poses_z_tmp[0] = laserscan_poses_in.poses[i].position.z;
-//			floor_count = 0;
-//			for(int j = 0; i < window_size_; i++){
-//				if(fabs(poses_z_tmp[j]) < floor_thickness_){
-//					floor_count ++;
-//				}
-//			}
-//			if(floor_count >= floor_count_threshold_){
-//				edge_counts_tmp[edge_detected] = i + ( window_size_ / 2);
-//				edge_detected ++;
-//				i = counter_end; //for i 終了
-//			}
-//			for(int j = window_size_-1; i > 0 ; i--){
-//				poses_z_tmp[j] = poses_z_tmp[j+1];
-//			}
-//		}
-//	}
 
 	if(edge_detected > 0){
 		poses_out.header.frame_id = odomToUrgTF.header.frame_id;
@@ -221,6 +221,26 @@ void EdgePointDetector::getEdgePoses(
 		}
 	}
 }
+
+void EdgePointDetector::mergeEdges(
+		const geometry_msgs::PoseArray right_poses_in,
+		const geometry_msgs::PoseArray left_poses_in,
+		geometry_msgs::PoseArray& poses_out) {
+	poses_out.header.frame_id = right_poses_in.header.frame_id;
+	poses_out.header.stamp = ros::Time::now();
+	int right_num = right_poses_in.poses.size();
+	int left_num = left_poses_in.poses.size();
+	int total_num = right_num + left_num;
+	poses_out.poses.resize(total_num);
+	for(int i = 0; i < right_num; i++){
+		poses_out.poses[i] = right_poses_in.poses[i];
+	}
+	for(int i = 0; i < left_num; i++){
+		poses_out.poses[i + right_num] = left_poses_in.poses[i];
+	}
+}
+
+
 
 int EdgePointDetector::getLaserscanCenterCount(
 		const sensor_msgs::LaserScan laserscan_in,
@@ -314,12 +334,15 @@ int EdgePointDetector::mainLoop(){
 	getLaserscanPoses(left_scan_,left_tf_,left_poses_);
 	int right_center_count, left_center_count;
 	right_center_count = getLaserscanCenterCount(right_scan_, right_tf_, right_center_,right_pitch_);
-//	left_center_count = getLaserscanCenterCount(left_scan_, left_tf_, left_center_);
-	getEdgePoses(right_scan_,right_poses_, right_center_count,right_pitch_ , right_tf_, right_edges_);
+	left_center_count = getLaserscanCenterCount(left_scan_, left_tf_, left_center_,left_pitch_);
 
-//	getEdgePoses(left_poses_, left_center_count, left_tf_, left_edges_);
-	//	getLaserscanCenterCount(right_scan_, right_tf_, right_center_);
-	//	getLaserscanCenterCount(left_scan_, left_tf_, left_center_);
+	getEdgePoses(right_scan_,right_poses_, right_center_count,right_pitch_ , right_tf_, right_edges_);
+	getEdgePoses(left_scan_,left_poses_, left_center_count,left_pitch_ , left_tf_, left_edges_);
+
+	mergeEdges(right_edges_, left_edges_, merged_edges_);
+	if(merged_edges_.poses.size() > 0){
+		edge_poses_pub_.publish(merged_edges_);
+	}
 	//finish function
 	right_scan_ready_ = false;
 	left_scan_ready_ = false;
@@ -338,9 +361,9 @@ void EdgePointDetector::debugMessageLoop(const ros::TimerEvent&){
 	}
 	right_center_pub_.publish(right_center_);
 	left_center_pub_.publish(left_center_);
-	if(right_edges_.poses.size() > 0){
-		edge_poses_pub_.publish(right_edges_);
-		right_edges_.poses.resize(0);
-	}
+//	if(merged_edges_.poses.size() > 0){
+//		edge_poses_pub_.publish(merged_edges_);
+//		merged_edges_.poses.resize(0);
+//	}
 }
 

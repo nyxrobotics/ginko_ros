@@ -81,7 +81,7 @@ private:
 	ros::Timer debug_loop_timer_;
 	ros::Publisher right_center_pub_, left_center_pub_;
 	geometry_msgs::PointStamped right_center_, left_center_;
-    geometry_msgs::PoseArray right_edges_, left_edges_;
+    geometry_msgs::PoseArray right_edges_, left_edges_, merged_edges_;
     double right_pitch_,left_pitch_;
 	//エッジ点表示用
     geometry_msgs::PoseArray right_poses_, left_poses_;
@@ -113,6 +113,10 @@ private:
 			const double urg_pitch,
 			const geometry_msgs::TransformStamped odomToUrgTF,
 			geometry_msgs::PoseArray& poses_out) ;
+	void mergeEdges(
+			const geometry_msgs::PoseArray right_poses_in,
+			const geometry_msgs::PoseArray left_poses_in,
+			geometry_msgs::PoseArray& poses_out);
 	int getLaserscanCenterCount(
 			const sensor_msgs::LaserScan laserscan_in,
 			geometry_msgs::TransformStamped odomToUrgTF,
