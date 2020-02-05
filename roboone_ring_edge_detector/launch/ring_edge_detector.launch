@@ -2,7 +2,7 @@
 	<!-- Dummy TFs of ring edge -->
 	<arg name="large_ring" default="1"/>
 	<group ns="roboone_ring">
-		<node name="ring_node" pkg="roboone_ring_edge_detector" type="roboone_ring_edge_detector" required="true">
+		<node name="ring_edge_node" pkg="roboone_ring_edge_detector" type="roboone_ring_edge_detector" required="true">
 			<remap from="~right_scan" to="/sensor/urg/right/scan" />
 			<remap from="~left_scan" to="/sensor/urg/left/scan" />
 	    </node>

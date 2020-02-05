@@ -354,11 +354,11 @@ int EdgePointDetector::mainLoop(){
 
 	mergeEdges(right_edges_, left_edges_, merged_edges_);
 	if(right_edges_.poses.size() > 0){
-		right_edges_pub_.publish(merged_edges_);
+		right_edges_pub_.publish(right_edges_);
 		right_edges_.poses.resize(0);
 	}
 	if(left_edges_.poses.size() > 0){
-		left_edges_pub_.publish(merged_edges_);
+		left_edges_pub_.publish(left_edges_);
 		left_edges_.poses.resize(0);
 	}
 //	if(merged_edges_.poses.size() > 0){
