@@ -126,11 +126,19 @@ int TargetFilter::mainLoop(){
 			dx = dx * dnorm_limit / dnorm;
 			dy = dy * dnorm_limit / dnorm;
 		}
+		//rviz表示用
+		target_pose_slow_.header.stamp =  ros::Time::now();
 		target_pose_slow_.pose.position.x = target_pose_slow_.pose.position.x + dx;
 		target_pose_slow_.pose.position.y = target_pose_slow_.pose.position.y + dy;
-		target_pose_slow_.pose.position.z = target_pose_tmp_.pose.position.z;
-
+		target_pose_slow_.pose.position.z = 0.5; // target_pose_tmp_.pose.position.z;
+		tf2::Quaternion quaternion_tmp(1.5708,0,0);
+		target_pose_slow_.pose.orientation.x = quaternion_tmp.getX();
+		target_pose_slow_.pose.orientation.y = quaternion_tmp.getY();
+		target_pose_slow_.pose.orientation.z = quaternion_tmp.getZ();
+		target_pose_slow_.pose.orientation.w = quaternion_tmp.getW();
 		target_pub_.publish(target_pose_slow_);
+
+		//Publish TF
 		geometry_msgs::TransformStamped transformStamped;
 		transformStamped.header.stamp = ros::Time::now();
 		transformStamped.header.frame_id = target_pose_slow_.header.frame_id;
@@ -144,6 +152,9 @@ int TargetFilter::mainLoop(){
 		transformStamped.transform.rotation.w		= 1.0;
 //		staticBroadcaster.sendTransform(transformStamped);
 		tfBroadcaster.sendTransform(transformStamped);
+
+
+
 		l_updated_ = 0;
 		r_updated_ = 0;
 	}
