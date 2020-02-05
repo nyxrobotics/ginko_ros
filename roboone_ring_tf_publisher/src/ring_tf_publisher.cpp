@@ -34,7 +34,7 @@ RingTfPublisher::~RingTfPublisher() {
 
 void RingTfPublisher::readParams(ros::NodeHandle node_handle_){
 	node_handle_.param<int>("median_num", median_num_, 5);
-	node_handle_.param<double>("lpf_constant", lpf_constant_, 0.001);
+	node_handle_.param<double>("lpf_constant", lpf_constant_, 0.05);
 	node_handle_.param<std::string>("robot_tf_name", robot_tf_name_, "ground_imu_link");
 	node_handle_.param<std::string>("odom_tf_name", odom_tf_name_, "odom");
 }
@@ -107,6 +107,21 @@ void RingTfPublisher::getLeftEdgeCallback(const geometry_msgs::PoseArray& msg){
 	}
 }
 
+void RingTfPublisher::updateOffset(){
+	double min_distance = 100.0;
+	double distance_tmp;
+	int min_num = 0;
+	for(int i = 0; i < median_num_;i++){
+		distance_tmp = sqrt ( pow(tf_offset_buffer_[i].getX(),2.0) + pow(tf_offset_buffer_[i].getY(),2.0) );
+		if(distance_tmp < min_distance){
+			min_distance = distance_tmp;
+			min_num = i;
+		}
+	}
+	tf_offset_lpf_ = tf_offset_lpf_*(1.0-lpf_constant_) + tf_offset_buffer_[min_num] * lpf_constant_;
+
+}
+
 int RingTfPublisher::mainLoop(){
 	odom_to_ring_tf_lpf_.header.stamp = ros::Time::now();
 	odom_to_ring_tf_lpf_.child_frame_id = "ring_center";
@@ -114,7 +129,9 @@ int RingTfPublisher::mainLoop(){
 	odom_to_ring_tf_lpf_.transform.rotation.y=0;
 	odom_to_ring_tf_lpf_.transform.rotation.z=0;
 	odom_to_ring_tf_lpf_.transform.rotation.w=1.0;
-	tf_offset_lpf_ = tf_offset_buffer_[0];
+//	tf_offset_lpf_ = tf_offset_buffer_[0];
+	updateOffset();
+
 	odom_to_ring_tf_lpf_.transform.translation.x = tf_offset_lpf_.getX();
 	odom_to_ring_tf_lpf_.transform.translation.y = tf_offset_lpf_.getY();
 	odom_to_ring_tf_lpf_.transform.translation.z = tf_offset_lpf_.getZ();

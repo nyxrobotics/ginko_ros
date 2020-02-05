@@ -65,6 +65,7 @@ private:
 	void getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg);
 	void getRightEdgeCallback(const geometry_msgs::PoseArray& msg);
 	void getLeftEdgeCallback(const geometry_msgs::PoseArray& msg);
+	void updateOffset();
 };
 
 #endif //RING_TF_PUBLISHER_H
