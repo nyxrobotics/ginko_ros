@@ -67,6 +67,34 @@ private:
 	void getBattleCommandCallback(const std_msgs::String::ConstPtr& msg);
 	void getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg);
 	int battleMotionSelect();
+	int approachTarget(const std::string target_tf_name,
+			const double distance_margin,
+			const double tf_timeout,
+			const double motion_timeout,
+			bool init_flag);
+	int attackTarget(const std::string target_tf_name,
+			const double distance_margin,
+			const double tf_timeout,
+			const double motion_timeout,
+			bool init_flag);
+	int avoidTarget(const std::string target_tf_name,
+			const double distance_margin,
+			const double tf_timeout,
+			const double motion_timeout,
+			bool init_flag);
+	int searchTarget(const std::string target_tf_name,
+			const double tf_timeout,
+			bool init_flag);
+};
+
+enum MOTION_STATUS {
+	CONTINUE,
+	SUCCEED,
+	FAILED,
+	TF_TIMEOUT,
+	MOTION_TIMEOUT,
+	INITIALIZED,
+	ERROR
 };
 
 #endif //BATTLE_PLANNER
