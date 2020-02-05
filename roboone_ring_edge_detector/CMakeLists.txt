@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
-# Package name: roboone_ring_tf
-project(roboone_ring_tf)
+# Package name: roboone_ring_edge_detector
+project(roboone_ring_edge_detector)
 
 #add_compile_options(-std=c++11)
 add_compile_options(-std=c++17 -O3)
