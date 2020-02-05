@@ -10,13 +10,13 @@
 				   <remap from="scan" to="scan_raw" />
 				   <remap from="scan_filtered" to="scan" />
 				</node>
-<!-- 				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				<node name="urg_r_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
 				   <remap from="scan" to="scan" />
 				   <remap from="scan_filtered" to="scan_inside" />
-				</node> -->
+				</node>
 				<!-- using for target detection -->
-<!-- 				<node name="urg_r_human_area" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				<node name="urg_r_human_area" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/detect_human_area.yaml" />
 				   <remap from="scan" to="scan_inside" />
 				   <remap from="scan_filtered" to="scan_human" />
@@ -30,7 +30,7 @@
 				   <rosparam command="load" file="$(find ginko_bringup)/config/detect_robot_laying_area.yaml" />
 				   <remap from="scan" to="scan_inside" />
 				   <remap from="scan_filtered" to="scan_robot_laying" />
-				</node> -->
+				</node>
 			</group>
 			<!-- Left LiDAR -->
 			<group ns="left">
@@ -39,13 +39,13 @@
 				   <remap from="scan" to="scan_raw" />
 				   <remap from="scan_filtered" to="scan" />
 				</node>
-<!-- 				<node name="urg_l_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				<node name="urg_l_inside_ring" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/urg_inside_ring.yaml" />
 				   <remap from="scan" to="scan" />
 				   <remap from="scan_filtered" to="scan_inside" />
-				</node> -->
+				</node>
 				<!-- using for target detection -->
-<!-- 				<node name="urg_l_human_area" pkg="laser_filters" type="scan_to_scan_filter_chain" >
+				<node name="urg_l_human_area" pkg="laser_filters" type="scan_to_scan_filter_chain" >
 				   <rosparam command="load" file="$(find ginko_bringup)/config/detect_human_area.yaml" />
 				   <remap from="scan" to="scan_inside" />
 				   <remap from="scan_filtered" to="scan_human" />
@@ -59,7 +59,7 @@
 				   <rosparam command="load" file="$(find ginko_bringup)/config/detect_robot_laying_area.yaml" />
 				   <remap from="scan" to="scan_inside" />
 				   <remap from="scan_filtered" to="scan_robot_laying" />
-				</node> -->
+				</node>
 			</group>
 		</group>
 	</group>

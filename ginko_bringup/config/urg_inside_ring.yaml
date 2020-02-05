@@ -2,7 +2,7 @@ scan_filter_chain:
 - name: box_floor
   type: LaserScanBoxFilter
   params:
-    box_frame: ring
+    box_frame: ring_center
     min_x: -1.8
     max_x: 1.8
     min_y: -1.8
@@ -12,7 +12,7 @@ scan_filter_chain:
 - name: box_roof
   type: LaserScanBoxFilter
   params:
-    box_frame: ring
+    box_frame: ring_center
     min_x: -1.8
     max_x: 1.8
     min_y: -1.8

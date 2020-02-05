@@ -6,7 +6,7 @@
 					<remap from="scan" to="scan_robot_laying" />
 					<remap from="target_pose" to="target_robot_laying" />
 					<param name="target_tf" value="robot_laying_r" />
-					<param name="fixed_tf" value="ring" />
+					<param name="fixed_tf" value="ring_center" />
 			    </node>
    			</group>
    			<group ns="left">
@@ -14,7 +14,7 @@
 					<remap from="scan" to="scan_robot_laying" />
 					<remap from="target_pose" to="target_robot_laying" />
 					<param name="target_tf" value="robot_laying_l" />
-					<param name="fixed_tf" value="ring" />
+					<param name="fixed_tf" value="ring_center" />
 			    </node>
    			</group>
 		</group>
