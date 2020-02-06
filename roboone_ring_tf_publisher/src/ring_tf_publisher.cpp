@@ -77,6 +77,8 @@ void RingTfPublisher::getRightEdgeCallback(const geometry_msgs::PoseArray& msg){
 			tf_offset_buffer_[i] = tf_offset_buffer_[i-1];
 		}
 		tf_offset_buffer_[0] = tf_offset_lpf_ + ring_to_line_offset;
+//		right_edge_ready_ = 1;
+		edge_ready_ = 1;
 	}
 }
 void RingTfPublisher::getLeftEdgeCallback(const geometry_msgs::PoseArray& msg){
@@ -104,6 +106,8 @@ void RingTfPublisher::getLeftEdgeCallback(const geometry_msgs::PoseArray& msg){
 			tf_offset_buffer_[i] = tf_offset_buffer_[i-1];
 		}
 		tf_offset_buffer_[0] = tf_offset_lpf_ + ring_to_line_offset;
+//		left_edge_ready_ = 1;
+		edge_ready_ = 1;
 	}
 }
 
@@ -118,7 +122,10 @@ void RingTfPublisher::updateOffset(){
 			min_num = i;
 		}
 	}
-	tf_offset_lpf_ = tf_offset_lpf_*(1.0-lpf_constant_) + tf_offset_buffer_[min_num] * lpf_constant_;
+	if(edge_ready_ == 1){
+		tf_offset_lpf_ = tf_offset_lpf_*(1.0-lpf_constant_) + tf_offset_buffer_[min_num] * lpf_constant_;
+		edge_ready_ = 0;
+	}
 
 }
 

@@ -39,6 +39,7 @@ private:
 
 	//subscribed messages
 	geometry_msgs::PoseArray right_edges_, left_edges_;
+	int right_edge_ready_ = 0, left_edge_ready_ = 0, edge_ready_ = 0;
 	int init_flag_ = 1; //最初は一回初期化する
 
 	//ROS params
