@@ -48,10 +48,12 @@ private:
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr;
 
 	std::string robot_tf_ = "body_imu_base_link";	//"ground_foot_center_link";	//ジャイロのTF
+	std::string ring_tf_ = "ring_center";	//"ground_foot_center_link";	//ジャイロのTF
 	std::string target_tf_ = "target_slow";	//ジャイロのTF
 
 	double area_distance_threth_ = 0.45;
 	double area_angle_threth_ = 0.7;//1.0472;
+	double ring_radious_, center_radious_, outer_radious;
 
 
 public:
@@ -67,6 +69,46 @@ private:
 	void getBattleCommandCallback(const std_msgs::String::ConstPtr& msg);
 	void getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg);
 	int battleMotionSelect();
+	int approachTarget(const std::string target_tf_name,
+			const double distance_margin,
+			const double angle_margin,
+			const double tf_timeout,
+			const double motion_timeout,
+			bool init_flag);
+	int attackTarget(const std::string target_tf_name,
+			const double distance_margin,
+			const double angle_margin,
+			const double tf_timeout,
+			const double motion_timeout,
+			bool init_flag);
+	int avoidTarget(const std::string target_tf_name,
+			const double distance_margin,
+			const double angle_margin,
+			const double tf_timeout,
+			const double motion_timeout,
+			bool init_flag);
+	int searchTarget(const std::string target_tf_name,
+			const double tf_timeout,
+			bool init_flag);
+	int checkArea(const std::string target_tf_name);
+};
+
+enum MOTION_STATUS {
+	CONTINUE,
+	SUCCEED,
+	FAILED,
+	TF_TIMEOUT,
+	MOTION_TIMEOUT,
+	INITIALIZED,
+	ERROR
+};
+
+enum RING_AREAS {
+	RING_CENTER,
+	RING_MIDDLE,
+	RING_OUTER,
+	RING_OUTSIDE,
+	RING_ERROR
 };
 
 #endif //BATTLE_PLANNER

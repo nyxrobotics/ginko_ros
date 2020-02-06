@@ -130,10 +130,18 @@ void EdgePointDetector::getLaserscanPoses(
 			pose_tmp.position.z = -1.0;
 		}
 
+		/*
 		pose_tmp.orientation.x = 0;
 		pose_tmp.orientation.y = 0;
 		pose_tmp.orientation.z = 0;
 		pose_tmp.orientation.w = 1;
+		*/
+		//rvizで見やすいよに下向けた
+		tf2::Quaternion quaternion_tmp(1.5708,0,0);
+		pose_tmp.orientation.x = quaternion_tmp.getX();
+		pose_tmp.orientation.y = quaternion_tmp.getY();
+		pose_tmp.orientation.z = quaternion_tmp.getZ();
+		pose_tmp.orientation.w = quaternion_tmp.getW();
 
 		poses_out.poses[i]=pose_tmp;
 	}

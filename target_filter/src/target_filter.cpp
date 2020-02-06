@@ -27,15 +27,18 @@ void TargetFilter::readParams(ros::NodeHandle main_nh){
 void TargetFilter::initPublisher() {
 	target_pub_ = node_handle_.advertise<geometry_msgs::PoseStamped>("target_out", 10);
 }
+
 void TargetFilter::initSubscriber() {
-	ros::TransportHints transport_hints;
-	transport_hints.tcpNoDelay(true);
-	r_target_sub_ = node_handle_.subscribe("target_r", 10, &TargetFilter::getRightTargetCallback, this, transport_hints);
-	l_target_sub_ = node_handle_.subscribe("target_l", 10, &TargetFilter::getLeftTargetCallback, this, transport_hints);
+//	ros::TransportHints transport_hints;
+//	transport_hints.tcpNoDelay(true);
+//	r_target_sub_ = node_handle_.subscribe("target_r", 10, &TargetFilter::getRightTargetCallback, this, transport_hints);
+//	l_target_sub_ = node_handle_.subscribe("target_l", 10, &TargetFilter::getLeftTargetCallback, this, transport_hints);
+	r_target_sub_ = node_handle_.subscribe("target_r", 10, &TargetFilter::getRightTargetCallback, this);
+	l_target_sub_ = node_handle_.subscribe("target_l", 10, &TargetFilter::getLeftTargetCallback, this);
 }
 
 void TargetFilter::initTF2() {
-	ROS_INFO("TargetFilter : Init 3");
+//	ROS_INFO("TargetFilter : Init 3");
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
 	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(1.0), false));
@@ -89,24 +92,26 @@ int TargetFilter::mainLoop(){
 		}
 	}
 
-
-
-	if(r_updated_ == 1 && l_updated_ == 1){
-		double r_norm = (r_target_pose_.pose.position.x * r_target_pose_.pose.position.x) + (r_target_pose_.pose.position.y * r_target_pose_.pose.position.y);
-		double l_norm = (l_target_pose_.pose.position.x * l_target_pose_.pose.position.x) + (l_target_pose_.pose.position.y * l_target_pose_.pose.position.y);
-		if(r_norm > l_norm){
-			r_updated_ = 0;
-		}else{
-			l_updated_ = 0;
-		}
-	}
+//	if(r_updated_ == 1 && l_updated_ == 1){
+//		double r_norm = (r_target_pose_.pose.position.x * r_target_pose_.pose.position.x) + (r_target_pose_.pose.position.y * r_target_pose_.pose.position.y);
+//		double l_norm = (l_target_pose_.pose.position.x * l_target_pose_.pose.position.x) + (l_target_pose_.pose.position.y * l_target_pose_.pose.position.y);
+//		if(r_norm > l_norm){
+//			r_updated_ = 0;
+//		}else{
+//			l_updated_ = 0;
+//		}
+//	}
 	geometry_msgs::PoseStamped target_pose_tmp_;
-	if(r_updated_ == 1 ){
+	if(r_updated_ == 1 && l_updated_ == 0){
 		target_pose_tmp_ = r_target_pose_;
-	}else{
+	}else if(r_updated_ == 0 && l_updated_ == 1){
 		target_pose_tmp_ = l_target_pose_;
+	}else if(r_updated_ == 1 && l_updated_ == 1){
+		target_pose_tmp_.pose.position.x = (r_target_pose_.pose.position.x + l_target_pose_.pose.position.x)*0.5;
+		target_pose_tmp_.pose.position.y = (r_target_pose_.pose.position.y + l_target_pose_.pose.position.y)*0.5;
+		target_pose_tmp_.pose.position.z = (r_target_pose_.pose.position.z + l_target_pose_.pose.position.z)*0.5;
 	}
-//	target_pose_tmp_.pose.position.z = 0;
+	//target_pose_tmp_.pose.position.z = 0;
 
 	static int init_flag = 0;
 	if(init_flag < 1){
@@ -117,6 +122,9 @@ int TargetFilter::mainLoop(){
 		double dt = ros_duration.toSec();
 		if(dt<0.000001){
 			dt = 0.000001;
+		}
+		if(r_updated_ == 0 && l_updated_ == 0){
+			return 0;
 		}
 		double dx = target_pose_tmp_.pose.position.x - target_pose_slow_.pose.position.x;
 		double dy = target_pose_tmp_.pose.position.y - target_pose_slow_.pose.position.y;
@@ -152,9 +160,6 @@ int TargetFilter::mainLoop(){
 		transformStamped.transform.rotation.w		= 1.0;
 //		staticBroadcaster.sendTransform(transformStamped);
 		tfBroadcaster.sendTransform(transformStamped);
-
-
-
 		l_updated_ = 0;
 		r_updated_ = 0;
 	}

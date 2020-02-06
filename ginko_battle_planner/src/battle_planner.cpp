@@ -14,6 +14,9 @@ BattlePlanner::~BattlePlanner() {
 }
 
 void BattlePlanner::readParams(ros::NodeHandle node_handle_){
+	node_handle_.param<double>("/roboone_ring/ring_radious", ring_radious_, 1.8);
+	outer_radious = ring_radious_ - 0.3;
+	center_radious_ = outer_radious * 0.5;
 }
 
 void BattlePlanner::initSubscriber(ros::NodeHandle node_handle_){
@@ -51,7 +54,8 @@ int BattlePlanner::mainLoop(){
 			battle_state_ = "standby";
 			battle_command_.data = "";
 			sleep(5);
-			motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+//			motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+			searchTarget(target_tf_, 5.0,true);
 			// sleep(5);
 			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
 		}else{
@@ -80,7 +84,8 @@ int BattlePlanner::mainLoop(){
 		sleep(3);
 		ros::spinOnce();
 		if(imu_fall_direction_ == 0){
-			motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+//			motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+			searchTarget(target_tf_, 5.0,true);
 			imu_fall_direction_prev = imu_fall_direction_;
 			sleep(1);
 		}
@@ -93,7 +98,7 @@ int BattlePlanner::mainLoop(){
 			battle_command_.data = "";
 		}
 		battleMotionSelect();
-		ROS_FATAL("Battle Planner: Status: BATTLE!!!");
+//		ROS_FATAL("Battle Planner: Status: BATTLE!!!");
 		usleep(100000);
 		return 0;
 	}
@@ -118,7 +123,7 @@ int BattlePlanner::mainLoop(){
 		motion_command_.data = "WAKEUP_FRONT";	motion_command_pub_.publish(motion_command_);
 		sleep(3);
 		 motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
-//		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+		// motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		// sleep(5);
 		return 0;
 	}
@@ -126,8 +131,8 @@ int BattlePlanner::mainLoop(){
 		ROS_FATAL("Battle Planner: Send Command: WAKEUP_BACK");
 		motion_command_.data = "WAKEUP_BACK";	motion_command_pub_.publish(motion_command_);
 		sleep(3);
-		 motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
-//		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+		motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+		// motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
 		// sleep(5);
 		return 0;
 	}
@@ -175,105 +180,464 @@ void BattlePlanner::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& m
 }
 
 int BattlePlanner::battleMotionSelect(){
-	//TFが来ていない場合は探索
-	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_,ros::Time(0)) == false){
-		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+	static int detect_flag = CONTINUE,
+			approach_flag = CONTINUE,
+			attack_flag = CONTINUE,
+			avoid_flag = CONTINUE,
+			centering_flag = CONTINUE;
+	static int detect_flag_pre = CONTINUE,
+			approach_flag_pre = CONTINUE,
+			attack_flag_pre = CONTINUE,
+			avoid_flag_pre = CONTINUE,
+			centering_flag_pre = CONTINUE;
+	static int attack_enable_count = 0, attack_enable_count_pre = 0;
+	static int centering_count = 0;//, attack_enable_count_pre = 0;
+
+	if(imu_fall_direction_ != 0){
 		return 0;
 	}
+	//※落ちそうなときは優先度最大で中央へ移動
+	int area_tmp = checkArea(robot_tf_);
+	if (RING_OUTER == area_tmp || RING_OUTSIDE == area_tmp ){
+		approachTarget(ring_tf_, 0, area_angle_threth_, 5.0, 30.0, true); //移動可能(初期化するだけで動かない)
+		centering_flag = approachTarget(ring_tf_, 0, area_angle_threth_, 5.0, 30.0, false);
+		if(attack_enable_count > 0){
+			attack_enable_count --;
+		}
+		centering_count = 30;
+		return 0;
+	}
+	if(centering_count == 30){
+		ROS_FATAL("Battle Planner: On Edge Detected ! -> Go to center (Count : %d)",centering_count);
+	}
+	if (centering_count > 0 ){
+		centering_count --;
+		approachTarget(ring_tf_, 0, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
+		centering_flag = approachTarget(ring_tf_, 0, area_angle_threth_, 5.0, 5.0, false);
+		if(attack_enable_count > 0){
+			attack_enable_count --;
+		}
+		return 0;
+	}
+
+	//見つかるまで探索
+	detect_flag_pre = detect_flag;
+	detect_flag = searchTarget(target_tf_,15.0,false);
+	if (SUCCEED != detect_flag){
+		return 0; //見つからない→再探索
+	}
+	if(detect_flag_pre != SUCCEED){
+		ROS_FATAL("Battle Planner: Target Detected -> Start Approach");
+		approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
+		attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能(初期化するだけで動かない)
+	}
+
+	//近寄るまで移動
+	approach_flag_pre = approach_flag;
+	approach_flag = approachTarget(target_tf_,area_distance_threth_,area_angle_threth_,30.0,10.0,false);
+	if (CONTINUE == approach_flag){
+		approach_flag_pre = approach_flag;
+		if(attack_enable_count > 0){
+			attack_enable_count --;
+		}
+		//attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //歩行後は攻撃可能
+		return 0;
+	}else if(SUCCEED != approach_flag){
+		ROS_FATAL("Battle Planner: Target Lost -> Start Detection");
+		detect_flag = searchTarget(target_tf_,5.0,true);//強制探索 -> 次ループ
+		approach_flag = approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
+		attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能(初期化するだけで動かない)
+		return 0;
+	}
+	if(CONTINUE == approach_flag_pre  && SUCCEED == approach_flag){
+		ROS_FATAL("Battle Planner: Approach Succeed -> Start Attack");
+		attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能
+	}
+
+	//※歩数足りない際は中央へ移動
+	if(attack_enable_count > 0){
+		approachTarget(ring_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
+		centering_flag = approachTarget(ring_tf_, area_distance_threth_, area_angle_threth_, 30.0, 3.0, false);
+		attack_enable_count --;
+		return 0;
+	}
+
+	if(attack_enable_count == 0 && attack_enable_count_pre != 0){
+		attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //歩行後は攻撃可能
+	}
+	attack_enable_count_pre = attack_enable_count;
+
+	//タイムアウトするまで攻撃
+	attack_flag_pre = attack_flag;
+	attack_flag = attackTarget(target_tf_,area_distance_threth_,area_angle_threth_,30.0,3.0,false);
+	if (CONTINUE == attack_flag){
+		return 0; //攻撃中→次のループへ
+	}
+	if(CONTINUE == attack_flag_pre  && MOTION_TIMEOUT == attack_flag){
+		ROS_FATAL("Battle Planner: Attack Timeout -> Start Avoid");
+		attack_enable_count = 20;
+		avoid_flag = avoidTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //回避動作可能(初期化するだけで動かない)
+	}
+
+	//タイムアウトするまで回避
+	avoid_flag_pre = avoid_flag;
+	if (RING_CENTER != area_tmp){
+		//中央に行けるときは中央に行く
+		avoid_flag = approachTarget(ring_tf_, 0, area_angle_threth_,30.0,3.0,false);
+//		if(attack_enable_count > 0){
+//			attack_enable_count --;
+//		}
+	}else{
+		//それ以外の時は退避行動
+		avoid_flag = avoidTarget(target_tf_,area_distance_threth_ + 0.3,area_angle_threth_,30.0,3.0,false);
+//		if(attack_enable_count > 0){
+//			attack_enable_count --;
+//		}
+	}
+
+	if (CONTINUE == avoid_flag){
+		return 0; //回避動作中→次のループへ
+	}
+	if(CONTINUE == avoid_flag_pre  && MOTION_TIMEOUT == avoid_flag ){
+		ROS_FATAL("Battle Planner: Avoid Timeout -> Restart Battle");
+		approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
+		attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能(初期化するだけで動かない)
+		return 0;
+	}
+	if(CONTINUE == avoid_flag_pre  && SUCCEED == avoid_flag){
+		ROS_FATAL("Battle Planner: Avoid Suceed -> Restart Battle");
+		approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
+		attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能(初期化するだけで動かない)
+		return 0;
+	}
+	ROS_FATAL("Battle Planner: NO PLAN FOUND !!!");
+	approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 5.0, 3.0, true); //移動可能(初期化するだけで動かない)
+	attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 5.0, 3.0, true); //攻撃可能(初期化するだけで動かない)
+	detect_flag = searchTarget(target_tf_,5.0,true);
+	return 0;
+}
+
+int BattlePlanner::approachTarget(const std::string target_tf_name,
+		const double distance_margin,
+		const double angle_margin,
+		const double tf_timeout,
+		const double motion_timeout,
+		bool init_flag){
+	//0 時刻計測
+	ros::Time now_time = ros::Time::now();
+	static ros::Time start_time = now_time;
+	if(init_flag == true){
+		start_time = now_time;
+		return INITIALIZED;
+	}
+	//1.1 TFが来ていない場合
+	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_name,ros::Time(0)) == false){
+		ROS_INFO("TF NOT FOUND");
+		return TF_TIMEOUT;
+	}
+	//1.2 TFが古すぎる場合
 	//measuring the time interval of the TF
 	ros::Time latest_time;
 	int err;
 	std::string err_string;
 	tf2::CompactFrameID compact_id;
-	compact_id = tfBuffer_ptr->_lookupFrameNumber(target_tf_);
+	compact_id = tfBuffer_ptr->_lookupFrameNumber(target_tf_name);
 	err = tfBuffer_ptr->_getLatestCommonTime(compact_id, compact_id, latest_time, &err_string);
-	ros::Duration latest_dutarion = ros::Time::now() - latest_time;
-	//TFが古すぎる場合は探索
-	ROS_FATAL("target passed time: %f", latest_dutarion.toSec());
-	if( latest_dutarion.toSec() > 5.0){
-		motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
-		return 0;
+	ros::Duration latest_dutarion = now_time - latest_time;
+	if( latest_dutarion.toSec() > tf_timeout){
+		ROS_INFO("TF_TIMEOUT: %f", latest_dutarion.toSec());
+		return TF_TIMEOUT;
 	}
 
-	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(robot_tf_, target_tf_, ros::Time(0));
+	//2 移動開始
+	ros::Duration time_passed = now_time - start_time ;
+	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(robot_tf_, target_tf_name, ros::Time(0));
 	double dx = tf_diff.transform.translation.x;
 	double dy = tf_diff.transform.translation.y;
 	double area_theta = atan2(dy,dx);
 	double area_distance = sqrt(dx*dx + dy*dy);
+
+	if(area_distance < distance_margin &&
+			(fabs(area_theta) < angle_margin || fabs(area_theta) > (3.1416 - angle_margin))
+			){
+		return SUCCEED; 	//2.1 既にゴールしている場合
+	}else if(motion_timeout < time_passed.toSec()){
+		return MOTION_TIMEOUT; //2.2 モーションを開始してから一定時間経過した場合
+	}
 	//左右旋回
-	if(fabs(area_theta)>area_angle_threth_ && fabs(area_theta)< (3.1416 - area_angle_threth_)){
+	if(fabs(area_theta)>angle_margin && fabs(area_theta)< (3.1416 - angle_margin)){
 		if(area_distance < 0.7){
 			if( (area_theta < 0. && dx > 0.0)
 			||(area_theta > 0. && dx < 0.0)
 			){
-				ROS_FATAL("Battle Planner: Send Command: TURN_RIGHT");
+//				ROS_INFO("Battle Planner: Send Command: TURN_RIGHT");
 				motion_command_.data = "TURN_RIGHT";	motion_command_pub_.publish(motion_command_);
 			}else{
-				ROS_FATAL("Battle Planner: Send Command: TURN_LEFT");
+//				ROS_INFO("Battle Planner: Send Command: TURN_LEFT");
 				motion_command_.data = "TURN_LEFT";	motion_command_pub_.publish(motion_command_);
 			}
 		}else{
 			if(area_theta < 0.){
-				ROS_FATAL("Battle Planner: Send Command: WALK_RIGHT");
+//				ROS_INFO("Battle Planner: Send Command: WALK_RIGHT");
 				motion_command_.data = "WALK_RIGHT";	motion_command_pub_.publish(motion_command_);
 			}else{
-				ROS_FATAL("Battle Planner: Send Command: WALK_LEFT");
+//				ROS_INFO("Battle Planner: Send Command: WALK_LEFT");
 				motion_command_.data = "WALK_LEFT";	motion_command_pub_.publish(motion_command_);
 			}
 		}
-		return 0;
+		return CONTINUE;
 	}
 	//前進・後退
-	if(area_distance > area_distance_threth_){
+	if(area_distance > distance_margin){
 		if(dx < 0.){
-			ROS_FATAL("Battle Planner: Send Command: WALK_BACK");
+//			ROS_FATAL("Battle Planner: Send Command: WALK_BACK");
 			motion_command_.data = "WALK_BACK";	motion_command_pub_.publish(motion_command_);
 		}else{
-			ROS_FATAL("Battle Planner: Send Command: WALK_FRONT");
+//			ROS_FATAL("Battle Planner: Send Command: WALK_FRONT");
 			motion_command_.data = "WALK_FRONT";	motion_command_pub_.publish(motion_command_);
 		}
-		return 0;
+		return CONTINUE;
 	}
-	//攻撃
-
-	if(area_theta < 0.){//右
-		if(area_theta > -0.25 * (3.1416 - area_angle_threth_) ){
-			ROS_FATAL("Battle Planner: Send Command: ATK_R1");
-			motion_command_.data = "ATK_R1";	motion_command_pub_.publish(motion_command_);
-		}else if(area_theta > -0.5 * (3.1416 - area_angle_threth_)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_R2");
-			motion_command_.data = "ATK_R2";	motion_command_pub_.publish(motion_command_);
-		}else if(area_theta > (-3.1416 + area_angle_threth_*0.5)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_RB2");
-			motion_command_.data = "ATK_RB2";	motion_command_pub_.publish(motion_command_);
-		}else{
-			ROS_FATAL("Battle Planner: Send Command: ATK_RB1");
-			motion_command_.data = "ATK_RB1";	motion_command_pub_.publish(motion_command_);
-		}
-		//motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
-		return 0;
-	}else{//左
-		if(area_theta < 0.25 * (3.1416 - area_angle_threth_) ){
-			ROS_FATAL("Battle Planner: Send Command: ATK_L1");
-			motion_command_.data = "ATK_L1";	motion_command_pub_.publish(motion_command_);
-		}else if(area_theta < 0.5 * (3.1416 - area_angle_threth_)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_L2");
-			motion_command_.data = "ATK_L2";	motion_command_pub_.publish(motion_command_);
-		}else if(area_theta < (3.1416 - area_angle_threth_*0.5)){
-			ROS_FATAL("Battle Planner: Send Command: ATK_LB2");
-			motion_command_.data = "ATK_LB2";	motion_command_pub_.publish(motion_command_);
-		}else{
-			ROS_FATAL("Battle Planner: Send Command: ATK_LB1");
-			motion_command_.data = "ATK_LB1";	motion_command_pub_.publish(motion_command_);
-		}
-		//motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
-		return 0;
-	}
-
-	return 0;
+	return ERROR;
 }
 
+int BattlePlanner::attackTarget(const std::string target_tf_name,
+		const double distance_margin,
+		const double angle_margin,
+		const double tf_timeout,
+		const double motion_timeout,
+		bool init_flag){
+	//0 時刻計測
+	ros::Time now_time = ros::Time::now();
+	static ros::Time start_time = now_time;
+	if(init_flag == true){
+		start_time = now_time;
+		return INITIALIZED;
+	}
+	//1.1 TFが来ていない場合
+	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_name,ros::Time(0)) == false){
+		ROS_INFO("TF NOT FOUND");
+		return TF_TIMEOUT;
+	}
+	//1.2 TFが古すぎる場合
+	//measuring the time interval of the TF
+	ros::Time latest_time;
+	int err;
+	std::string err_string;
+	tf2::CompactFrameID compact_id;
+	compact_id = tfBuffer_ptr->_lookupFrameNumber(target_tf_name);
+	err = tfBuffer_ptr->_getLatestCommonTime(compact_id, compact_id, latest_time, &err_string);
+	ros::Duration latest_dutarion = now_time - latest_time;
+	if( latest_dutarion.toSec() > tf_timeout){
+		ROS_INFO("TF_TIMEOUT: %f", latest_dutarion.toSec());
+		return TF_TIMEOUT;
+	}
 
+	//2 攻撃開始
+	ros::Duration time_passed = now_time - start_time ;
+	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(robot_tf_, target_tf_name, ros::Time(0));
+	double dx = tf_diff.transform.translation.x;
+	double dy = tf_diff.transform.translation.y;
+	double area_theta = atan2(dy,dx);
+	double area_distance = sqrt(dx*dx + dy*dy);
 
+	if(area_distance > distance_margin){
+		return SUCCEED; 	//2.1 距離が離れてしまった場合
+	}
+	if(motion_timeout < time_passed.toSec()){
+		return MOTION_TIMEOUT; //2.2 モーションを開始してから一定時間経過した場合
+	}
+	//攻撃モーション選択
+	if(area_theta < 0.){//右
+		if(area_theta > -0.25 * (3.1416 - angle_margin) ){
+//			ROS_FATAL("Battle Planner: Send Command: ATK_R1");
+			motion_command_.data = "ATK_R1";	motion_command_pub_.publish(motion_command_);
+		}else if(area_theta > -0.5 * (3.1416 - angle_margin)){
+//			ROS_FATAL("Battle Planner: Send Command: ATK_R2");
+			motion_command_.data = "ATK_R2";	motion_command_pub_.publish(motion_command_);
+		}else if(area_theta > (-3.1416 + angle_margin*0.5)){
+//			ROS_FATAL("Battle Planner: Send Command: ATK_RB2");
+			motion_command_.data = "ATK_RB2";	motion_command_pub_.publish(motion_command_);
+		}else{
+//			ROS_FATAL("Battle Planner: Send Command: ATK_RB1");
+			motion_command_.data = "ATK_RB1";	motion_command_pub_.publish(motion_command_);
+		}
+		return CONTINUE;
+	}else{//左
+		if(area_theta < 0.25 * (3.1416 - angle_margin) ){
+//			ROS_FATAL("Battle Planner: Send Command: ATK_L1");
+			motion_command_.data = "ATK_L1";	motion_command_pub_.publish(motion_command_);
+		}else if(area_theta < 0.5 * (3.1416 - angle_margin)){
+//			ROS_FATAL("Battle Planner: Send Command: ATK_L2");
+			motion_command_.data = "ATK_L2";	motion_command_pub_.publish(motion_command_);
+		}else if(area_theta < (3.1416 - angle_margin*0.5)){
+//			ROS_FATAL("Battle Planner: Send Command: ATK_LB2");
+			motion_command_.data = "ATK_LB2";	motion_command_pub_.publish(motion_command_);
+		}else{
+//			ROS_FATAL("Battle Planner: Send Command: ATK_LB1");
+			motion_command_.data = "ATK_LB1";	motion_command_pub_.publish(motion_command_);
+		}
+		return CONTINUE;
+	}
+	return ERROR;
+}
+
+int BattlePlanner::avoidTarget(const std::string target_tf_name,
+		const double distance_margin,
+		const double angle_margin,
+		const double tf_timeout,
+		const double motion_timeout,
+		bool init_flag){
+	//0 時刻計測
+	ros::Time now_time = ros::Time::now();
+	static ros::Time start_time = now_time;
+	if(init_flag == true){
+		start_time = now_time;
+		return INITIALIZED;
+	}
+	//1.1 TFが来ていない場合
+	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_name,ros::Time(0)) == false){
+		ROS_INFO("TF NOT FOUND");
+		return TF_TIMEOUT;
+	}
+	//1.2 TFが古すぎる場合
+	//measuring the time interval of the TF
+	ros::Time latest_time;
+	int err;
+	std::string err_string;
+	tf2::CompactFrameID compact_id;
+	compact_id = tfBuffer_ptr->_lookupFrameNumber(target_tf_name);
+	err = tfBuffer_ptr->_getLatestCommonTime(compact_id, compact_id, latest_time, &err_string);
+	ros::Duration latest_dutarion = now_time - latest_time;
+	if( latest_dutarion.toSec() > tf_timeout){
+		ROS_INFO("TF_TIMEOUT: %f", latest_dutarion.toSec());
+		return TF_TIMEOUT;
+	}
+
+	//2 移動開始
+	ros::Duration time_passed = now_time - start_time ;
+	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(robot_tf_, target_tf_name, ros::Time(0));
+	double dx = -tf_diff.transform.translation.x;
+	double dy = -tf_diff.transform.translation.y;
+	double area_theta = atan2(dy,dx);
+	double area_distance = sqrt(dx*dx + dy*dy);
+
+	if(area_distance > distance_margin){
+		return SUCCEED; 	//2.1 既にゴールしている場合
+	}else if(motion_timeout < time_passed.toSec()){
+		return MOTION_TIMEOUT; //2.2 モーションを開始してから一定時間経過した場合
+	}
+	//左右旋回
+	if(fabs(area_theta)>angle_margin && fabs(area_theta)< (3.1416 - angle_margin)){
+		if(area_distance < 0.7){
+			if( (area_theta < 0. && dx > 0.0)
+			||(area_theta > 0. && dx < 0.0)
+			){
+//				ROS_INFO("Battle Planner: Send Command: TURN_RIGHT");
+				motion_command_.data = "TURN_RIGHT";	motion_command_pub_.publish(motion_command_);
+			}else{
+//				ROS_INFO("Battle Planner: Send Command: TURN_LEFT");
+				motion_command_.data = "TURN_LEFT";	motion_command_pub_.publish(motion_command_);
+			}
+		}else{
+			if(area_theta < 0.){
+//				ROS_INFO("Battle Planner: Send Command: WALK_RIGHT");
+				motion_command_.data = "WALK_RIGHT";	motion_command_pub_.publish(motion_command_);
+			}else{
+//				ROS_INFO("Battle Planner: Send Command: WALK_LEFT");
+				motion_command_.data = "WALK_LEFT";	motion_command_pub_.publish(motion_command_);
+			}
+		}
+		return CONTINUE;
+	}
+	//前進・後退
+	if(area_distance < distance_margin){
+		if(dx < 0.){
+//			ROS_FATAL("Battle Planner: Send Command: WALK_BACK");
+			motion_command_.data = "WALK_BACK";	motion_command_pub_.publish(motion_command_);
+		}else{
+//			ROS_FATAL("Battle Planner: Send Command: WALK_FRONT");
+			motion_command_.data = "WALK_FRONT";	motion_command_pub_.publish(motion_command_);
+		}
+		return CONTINUE;
+	}
+	return ERROR;
+}
+
+int BattlePlanner::searchTarget(const std::string target_tf_name,
+		const double tf_timeout,
+		bool init_flag){
+	static int search_motion_counter = 0;//, search_motion_counter_pre = 0;
+	bool search_flag = false;
+	//0 時刻計測
+	ros::Time now_time = ros::Time::now();
+	if(init_flag == true){
+		search_flag = true;
+	}
+	//1.1 TFが来ていない場合
+	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_name,ros::Time(0)) == false){
+		search_flag = true;
+	}
+	//1.2 TFが古すぎる場合
+	//measuring the time interval of the TF
+	ros::Time latest_time;
+	int err;
+	std::string err_string;
+	tf2::CompactFrameID compact_id;
+	compact_id = tfBuffer_ptr->_lookupFrameNumber(target_tf_name);
+	err = tfBuffer_ptr->_getLatestCommonTime(compact_id, compact_id, latest_time, &err_string);
+	ros::Duration latest_dutarion = now_time - latest_time;
+	if( latest_dutarion.toSec() > tf_timeout){
+		search_flag = true;
+	}
+	if(true == search_flag){
+		if(search_motion_counter % 2 ==0){
+			motion_command_.data = "MOVE_URG2";
+			motion_command_pub_.publish(motion_command_);
+			search_motion_counter ++;
+			sleep(1.3);
+			motion_command_.data = "STANDING";
+			motion_command_pub_.publish(motion_command_);
+			sleep(1.2);
+		}else{
+			motion_command_.data = "MOVE_URG3";
+			motion_command_pub_.publish(motion_command_);
+			search_motion_counter ++;
+			sleep(1.3);
+			motion_command_.data = "STANDING";
+			motion_command_pub_.publish(motion_command_);
+			sleep(1.2);
+		}
+		return CONTINUE;
+	}else{
+		search_motion_counter = 0;
+		return SUCCEED;
+	}
+	return ERROR;
+}
+
+int BattlePlanner::checkArea(const std::string target_tf_name){
+	//1.1 TFが来ていない場合
+	if( tfBuffer_ptr->canTransform(ring_tf_, target_tf_name,ros::Time(0)) == false){
+		ROS_FATAL("Battle Planner: Can't get ring TF.");
+		return RING_ERROR;
+	}
+	//エリア位置特定
+	geometry_msgs::TransformStamped tf_diff = tfBuffer_ptr->lookupTransform(ring_tf_, target_tf_name, ros::Time(0));
+	double dx = -tf_diff.transform.translation.x;
+	double dy = -tf_diff.transform.translation.y;
+	double area_theta = atan2(dy,dx);
+	double area_distance = sqrt(dx*dx + dy*dy);
+	if(area_distance > ring_radious_){
+		return RING_OUTSIDE;
+	}else if(area_distance > outer_radious){
+		return RING_OUTER;
+	}else if(area_distance > center_radious_){
+		return RING_MIDDLE;
+	}else{
+		return RING_CENTER;
+	}
+	return RING_ERROR;
+}
 
 

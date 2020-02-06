@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
 	ros::init(argc, argv, "target_filter_detector");
 	ros::NodeHandle node_handle_("~");
 	TargetFilter target_filter(node_handle_);
-	ros::Rate rate_(100); // 100 hz
+	ros::Rate rate_(20); // 100 hz
 //	ros::spin();
 	while (ros::ok()) {
 		target_filter.mainLoop();
