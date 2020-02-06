@@ -275,7 +275,7 @@ int BattlePlanner::battleMotionSelect(){
 	}
 	if(CONTINUE == attack_flag_pre  && MOTION_TIMEOUT == attack_flag){
 		ROS_FATAL("Battle Planner: Attack Timeout -> Start Avoid");
-		attack_enable_count = 20;
+		attack_enable_count = 30;
 		avoid_flag = avoidTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //回避動作可能(初期化するだけで動かない)
 	}
 
