@@ -34,8 +34,12 @@ private:
 	boost::shared_ptr<tf2_ros::Buffer> tfBuffer_ptr_;
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr_;
 	tf2_ros::TransformBroadcaster tfBroadcaster_;
-//	tf2_ros::StaticTransformBroadcaster static_broadcaster_;
 	ros::Publisher center_pose_pub_;
+
+	//初期位置
+	int ring_tf_init_counter_ = 0;
+	const int ring_tf_init_countrt_max_ = 10;
+	geometry_msgs::TransformStamped odom_to_ring_init_tf_;
 
 	//subscribed messages
 	geometry_msgs::PoseArray right_edges_, left_edges_;
@@ -46,6 +50,7 @@ private:
 	int median_num_;
 	double lpf_constant_;
 	std::string robot_tf_name_, odom_tf_name_;
+	double ring_radious_;
 	//内部保持用
 	std::vector<tf2::Vector3> tf_offset_buffer_;
 	tf2::Vector3 tf_offset_median_, tf_offset_lpf_;
