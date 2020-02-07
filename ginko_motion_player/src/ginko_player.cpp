@@ -77,7 +77,7 @@ void GinkoPlayer::playPose(int motion[][SERVO_NUM + 2], uint8_t pose_num) {
 		ginko_timer_.usleepCyclic(1000000/LOOP_FREQUENCY);
 	}
 	for (int i=0;i<poseTimeStepWait;i++){
-	    ROS_INFO("wait_time_ms:%d, poseTimeStepWait:%d, i:%d", wait_time_ms ,poseTimeStepWait,i );
+//	    ROS_INFO("wait_time_ms:%d, poseTimeStepWait:%d, i:%d", wait_time_ms ,poseTimeStepWait,i );
 		posePublish(endJoint);
 		ginko_timer_.usleepCyclic(1000000/LOOP_FREQUENCY);
 	}

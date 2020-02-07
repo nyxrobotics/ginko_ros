@@ -1,0 +1,4 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<include file="$(find ginko_battle_planner)/launch/battle_planner.launch" />
+</launch>

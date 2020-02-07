@@ -26,7 +26,8 @@
 #include <tf2/LinearMath/Vector3.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include "geometry_msgs/PoseStamped.h"
-
+//detect robot falling
+#include <sensor_msgs/Imu.h>
 class UrgNearest {
 private:
 	// ROS NodeHandle
@@ -54,6 +55,11 @@ private:
 	double nearest_distance_;
 	double nearest_max_ = 3.6;
 	ros::Publisher target_pose_pub_;
+	//転倒検知
+	ros::Subscriber imu_quaternion_sub_;
+	sensor_msgs::Imu imu_quaternion_;
+	int imu_ready_ = 0;
+	int imu_fall_direction_ = 0;//0:直立、1:前転倒、2:後転倒
 
 public:
 	UrgNearest(ros::NodeHandle main_nh);
@@ -66,6 +72,7 @@ private:
 	void initTF2();
 	void readParams(ros::NodeHandle main_nh);
 	void getLaserScanCallback(const sensor_msgs::LaserScan::ConstPtr& msg);
+	void getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg);
 };
 
 

@@ -50,7 +50,7 @@ void TargetFilter::initTF2() {
 }
 
 int TargetFilter::mainLoop(){
-	ROS_FATAL("TargetFilter: Loop Start");
+//	ROS_FATAL("TargetFilter: Loop Start");
 	ros::Time time_now  = ros::Time::now();
 	static ros::Time time_last  = time_now;
 	//データが古い時はスキップ
@@ -63,22 +63,10 @@ int TargetFilter::mainLoop(){
 		 r_updated_ = 0;
 	}
 
-	//初期化途中の場合はスキップ
-//	if(tf_initialized_ == 0){
-//		time_last = time_now;
-//		return 0;
-//	}
-	if(r_updated_ == 0 && l_updated_ == 0){
-		time_last = time_now;
-		ROS_FATAL("TargetFilter: Part1.NODATA");
-		return 0;
-	}
-	ROS_FATAL("TargetFilter: Part1.Found Data");
-
 	//転倒時はスキップ
 	if(imu_fall_direction_  != 0){
 		 time_last = time_now;
-		ROS_FATAL("TargetFilter: Part2. Robot is not standing -> skip");
+//		ROS_FATAL("TargetFilter: Part2. Robot is not standing -> skip");
 		return 0;
 	}
 	/*
@@ -116,7 +104,7 @@ int TargetFilter::mainLoop(){
 		target_pose_tmp_.pose.position.y = (r_target_pose_.pose.position.y + l_target_pose_.pose.position.y)*0.5;
 		target_pose_tmp_.pose.position.z = (r_target_pose_.pose.position.z + l_target_pose_.pose.position.z)*0.5;
 	}else{
-		ROS_FATAL("TargetFilter: Part3.NODATA");
+//		ROS_FATAL("TargetFilter: Part3.NODATA");
 		return 0;
 	}
 	//target_pose_tmp_.pose.position.z = 0;
@@ -125,14 +113,14 @@ int TargetFilter::mainLoop(){
 	if(init_flag < 1){
 		//最初の1回は速度が計算できないので何もしない
 		init_flag++;
-		ROS_FATAL("TargetFilter: Part4. Timer is not ready -> skip");
+//		ROS_FATAL("TargetFilter: Part4. Timer is not ready -> skip");
 		return 0;
 	}else{
 		ros::Duration ros_duration  =  time_now -  time_last;
 		double dt = ros_duration.toSec();
 		if(dt<0.000001){
 			dt = 0.000001;
-			ROS_FATAL("TargetFilter: Part4. dt is wrong -> skip");
+//			ROS_FATAL("TargetFilter: Part4. dt is wrong -> skip");
 			return 0;
 		}
 		double dx = target_pose_tmp_.pose.position.x - target_pose_slow_.pose.position.x;
@@ -172,7 +160,7 @@ int TargetFilter::mainLoop(){
 		l_updated_ = 0;
 		r_updated_ = 0;
 
-		ROS_FATAL("TargetFilter: Part5. SUCCEED");
+//		ROS_FATAL("TargetFilter: Part5. SUCCEED");
 	}
 	return 0;
 }

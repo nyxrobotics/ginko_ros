@@ -37,7 +37,6 @@ private:
 	// ROS Topic Subscriber
 	ros::Subscriber r_target_sub_;
 	ros::Subscriber l_target_sub_;
-	ros::Subscriber imu_quaternion_sub_;
 	ros::Publisher target_pub_;
 
 	geometry_msgs::PoseStamped r_target_pose_;
@@ -63,6 +62,7 @@ private:
 	ros::Time r_latest_time_;
 	ros::Time l_latest_time_;
 	//転倒検知
+	ros::Subscriber imu_quaternion_sub_;
 	int imu_ready_ = 0;
 	int imu_fall_direction_ = 0;//0:直立、1:前転倒、2:後転倒
 	sensor_msgs::Imu imu_quaternion_;
