@@ -16,7 +16,8 @@ BattlePlanner::~BattlePlanner() {
 }
 
 void BattlePlanner::readParams(ros::NodeHandle node_handle_){
-	node_handle_.param<double>("/roboone_ring/ring_radious", ring_radious_, 1.8);
+	node_handle_.param<double>("/roboone_ring/ring_radious", ring_radious_ , 1.273);
+	ROS_FATAL("Battle Planner: Got Param: Ring Radious = %f",ring_radious_);
 	outer_radious = ring_radious_ - 0.5;
 	center_radious_ = outer_radious * 0.5;
 }
@@ -55,10 +56,19 @@ int BattlePlanner::mainLoop(){
 			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
 			battle_state_ = "standby";
 			battle_command_.data = "";
-			sleep(5);
-//			motion_command_.data = "MOVE_URG2";	motion_command_pub_.publish(motion_command_);
+			sleep(4);
 			searchTarget(target_tf_, 5.0,true);
 			// sleep(5);
+			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+		}else if(battle_command_.data == "standby"){
+			ROS_FATAL("Battle Planner: Standby Command");
+			motion_command_.data = "TORQUE_ON";	motion_command_pub_.publish(motion_command_);
+			usleep(100000);
+			ROS_FATAL("Battle Planner: Send Command: STANDING");
+			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+			battle_state_ = "standby";
+			battle_command_.data = "";
+			usleep(100000);
 			motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
 		}else{
 //			ROS_FATAL("Battle Planner: Send Command: TORQUE_OFF");
@@ -77,6 +87,15 @@ int BattlePlanner::mainLoop(){
 		battle_command_.data = "";
 		usleep(100000);
 		return 0;
+	}else if(battle_command_.data == "standby"){
+		ROS_FATAL("Battle Planner: Pause Battle");
+		motion_command_.data = "STANDING";	motion_command_pub_.publish(motion_command_);
+		battle_state_ = "standby";
+		battle_command_.data = "";
+	}else if(battle_command_.data == "start"){
+		ROS_FATAL("Battle Planner: Resume Battle");
+		battle_state_ = "start";
+		battle_command_.data = "";
 	}
 
 
@@ -94,7 +113,7 @@ int BattlePlanner::mainLoop(){
 	}
 	imu_fall_direction_prev = imu_fall_direction_;
 
-	if(imu_fall_direction_ == 0){
+	if(imu_fall_direction_ == 0 && battle_state_ == "start"){
 		if(battle_command_.data == "battle"){
 			battle_state_ = "battle";
 			battle_command_.data = "";
