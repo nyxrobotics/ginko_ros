@@ -66,6 +66,10 @@ private:
 	int imu_ready_ = 0;
 	int imu_fall_direction_ = 0;//0:直立、1:前転倒、2:後転倒
 	sensor_msgs::Imu imu_quaternion_;
+	//障害物周辺除去用
+	double ignore_radious_ = 0.3;
+	std::string ignore_01_name_ = "nearest_bottle";
+	std::string ignore_02_name_ = "nearest_person";
 
 public:
 	TargetFilter(ros::NodeHandle main_nh);
