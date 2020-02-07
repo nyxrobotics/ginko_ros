@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 	//参考:http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle
 
 	RingTfPublisher ring_tf_publisher(node_handle_);
-	ros::Rate rate_(10); // 10 hz
+	ros::Rate rate_(20); // 10 hz
 	while (ros::ok()) {
 		ring_tf_publisher.mainLoop();
 		ros::spinOnce();

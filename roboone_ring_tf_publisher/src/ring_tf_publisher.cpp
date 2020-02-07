@@ -10,7 +10,7 @@ RingTfPublisher::RingTfPublisher(ros::NodeHandle main_nh){
 	initSubscriber(main_nh);
 	initPublisher(main_nh);
 	//wait for TF
-	bool tf_ready_ = tfBuffer_ptr_->canTransform(odom_tf_name_, robot_tf_name_, ros::Time(0));
+	tf_ready_ = tfBuffer_ptr_->canTransform(odom_tf_name_, robot_tf_name_, ros::Time(0));
 	while (false == tf_ready_){
 		tf_ready_ = tfBuffer_ptr_->canTransform(odom_tf_name_, robot_tf_name_, ros::Time::now(), ros::Duration(1.0));
 		ROS_INFO("TF not found : %s -> %s", odom_tf_name_.c_str(), robot_tf_name_.c_str());
@@ -18,6 +18,8 @@ RingTfPublisher::RingTfPublisher(ros::NodeHandle main_nh){
 	odom_to_robot_tf_ = tfBuffer_ptr_->lookupTransform(odom_tf_name_, robot_tf_name_, ros::Time(0));
 	//initialize vectors
 	odom_to_ring_tf_lpf_ = odom_to_robot_tf_;
+	odom_to_ring_tf_lpf_.header.stamp = ros::Time::now();
+	odom_to_ring_tf_lpf_.header.frame_id = odom_tf_name_;
 	odom_to_ring_tf_lpf_.child_frame_id = "ring_center";
 	tf_offset_buffer_.resize(median_num_);
 	for(int i = 0; i<median_num_;i++){
@@ -25,7 +27,11 @@ RingTfPublisher::RingTfPublisher(ros::NodeHandle main_nh){
 		tf_offset_buffer_[i].setY(odom_to_ring_tf_lpf_.transform.translation.y);
 		tf_offset_buffer_[i].setZ(odom_to_ring_tf_lpf_.transform.translation.z);
 	}
-
+	//Low frequency timer loop for pulish debug message
+	tf_offset_lpf_.setX(0);
+	tf_offset_lpf_.setY(0);
+	tf_offset_lpf_.setZ(0);
+//	tf_loop_timer_ = main_nh.createTimer(ros::Duration(0.01), &RingTfPublisher::tfRepublishLoop, this);
 }
 
 RingTfPublisher::~RingTfPublisher() {
@@ -40,9 +46,9 @@ void RingTfPublisher::readParams(ros::NodeHandle node_handle_){
 }
 
 void RingTfPublisher::initSubscriber(ros::NodeHandle node_handle_){
-	 init_flag_sub_ = node_handle_.subscribe("init_flag", 1,&RingTfPublisher::getInitFlagCallback, this);
-	right_edges_sub_ = node_handle_.subscribe("right_edges", 1,&RingTfPublisher::getRightEdgeCallback, this);
-//	left_edges_sub_ = node_handle_.subscribe("left_edges", 1,&RingTfPublisher::getLeftEdgeCallback, this);
+	init_flag_sub_ = node_handle_.subscribe("init_flag", 10,&RingTfPublisher::getInitFlagCallback, this);
+	right_edges_sub_ = node_handle_.subscribe("right_edges", 10,&RingTfPublisher::getRightEdgeCallback, this);
+	left_edges_sub_ = node_handle_.subscribe("left_edges", 10,&RingTfPublisher::getLeftEdgeCallback, this);
 }
 
 void RingTfPublisher::initPublisher(ros::NodeHandle node_handle_){
@@ -131,6 +137,7 @@ void RingTfPublisher::updateOffset(){
 
 int RingTfPublisher::mainLoop(){
 	odom_to_ring_tf_lpf_.header.stamp = ros::Time::now();
+	odom_to_ring_tf_lpf_.header.frame_id = odom_tf_name_;
 	odom_to_ring_tf_lpf_.child_frame_id = "ring_center";
 	odom_to_ring_tf_lpf_.transform.rotation.x=0;
 	odom_to_ring_tf_lpf_.transform.rotation.y=0;
@@ -157,3 +164,13 @@ int RingTfPublisher::mainLoop(){
 	center_pose_pub_.publish(ring_pose_);
 	return true;
 }
+
+//void RingTfPublisher::tfRepublishLoop(const ros::TimerEvent&){
+//	if(tf_ready_ == true){
+//		odom_to_ring_tf_lpf_.header.stamp = ros::Time::now();
+//		odom_to_ring_tf_lpf_.header.frame_id = odom_tf_name_;
+//		tfBroadcaster_.sendTransform(odom_to_ring_tf_lpf_);
+//	}
+//}
+
+

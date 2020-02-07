@@ -30,8 +30,10 @@
 		        <param name="port" value="/dev/ttyCH340_1.3"/>
 		        <param name="frame_id" value="body_imu_attached_link"/>
 		        <param name="broadcast_tf" value="false"/>
-		        <remap from="imu" to="raw"/>
+		        <remap from="imu" to="raw_high"/>
 		    </node>
+		    <node name="imu_throttler" pkg="topic_tools" type="throttle" args="messages /sensor/imu/raw_high/data 100 /sensor/imu/raw/data" /> -->
+
 		</group>
 		
 		<!-- LiDAR (HOKUYO) -->
