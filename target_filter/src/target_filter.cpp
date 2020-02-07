@@ -35,6 +35,8 @@ void TargetFilter::initSubscriber() {
 //	l_target_sub_ = node_handle_.subscribe("target_l", 10, &TargetFilter::getLeftTargetCallback, this, transport_hints);
 	r_target_sub_ = node_handle_.subscribe("target_r", 10, &TargetFilter::getRightTargetCallback, this);
 	l_target_sub_ = node_handle_.subscribe("target_l", 10, &TargetFilter::getLeftTargetCallback, this);
+	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 10,&TargetFilter::getImuQuaternionCallback, this);
+
 }
 
 void TargetFilter::initTF2() {
@@ -74,6 +76,12 @@ int TargetFilter::mainLoop(){
 	ROS_FATAL("TargetFilter: Part1.Found Data");
 
 	//転倒時はスキップ
+	if(imu_fall_direction_  != 0){
+		 time_last = time_now;
+		ROS_FATAL("TargetFilter: Part2. Robot is not standing -> skip");
+		return 0;
+	}
+	/*
 	if( tfBuffer_ptr->canTransform("body_imu_base_link" , "odom",ros::Time(0)) == false){
 		 time_last = time_now;
 			ROS_FATAL("TargetFilter: Part2. TF not ready -> skip");
@@ -96,6 +104,7 @@ int TargetFilter::mainLoop(){
 			return 0;
 		}
 	}
+	*/
 
 	geometry_msgs::PoseStamped target_pose_tmp_;
 	if(r_updated_ == 1 && l_updated_ == 0){
@@ -193,4 +202,29 @@ void TargetFilter::getLeftTargetCallback(const geometry_msgs::PoseStamped::Const
 	}
 	l_updated_ = 1;
 	l_latest_time_ = ros::Time::now();
+}
+
+void TargetFilter::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg){
+	imu_ready_ = 1;
+	imu_quaternion_ = *msg;
+	tf2::Quaternion tf2_quat(imu_quaternion_.orientation.x, imu_quaternion_.orientation.y, imu_quaternion_.orientation.z, imu_quaternion_.orientation.w);
+	geometry_msgs::Vector3 euler;
+	tf2::Matrix3x3(tf2_quat).getEulerYPR(euler.z, euler.y, euler.x);
+	euler.z = 0.;
+	euler.x = 0.;
+	tf2::Vector3 single_z(0,0,1.0);
+	tf2::Matrix3x3 rotation_matrix;
+	rotation_matrix.setRPY(euler.x, euler.y, euler.z);
+	tf2::Vector3 single_z_rot = rotation_matrix * single_z;
+	double dx = single_z_rot.x();
+	double dy = single_z_rot.y();
+	double xy_norm_tmp = sqrt(dx*dx + dy*dy);
+	//0:直立、1:前転倒、2:後転倒
+	if(dx > 0.4){
+		imu_fall_direction_ = 1;
+	}else if(dx < -0.4){
+		imu_fall_direction_ = 2;
+	}else{
+		imu_fall_direction_ = 0;
+	}
 }

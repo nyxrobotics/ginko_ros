@@ -10,6 +10,8 @@ BattlePlanner::BattlePlanner(ros::NodeHandle main_nh){
 }
 
 BattlePlanner::~BattlePlanner() {
+	motion_command_.data = "STANDING";
+	motion_command_pub_.publish(motion_command_);
 	ros::shutdown();
 }
 
@@ -401,13 +403,17 @@ int BattlePlanner::approachTarget(const std::string target_tf_name,
 	if(area_distance < distance_margin &&
 			(fabs(area_theta) < angle_margin || fabs(area_theta) > (3.1416 - angle_margin))
 			){
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
 		return SUCCEED; 	//2.1 既にゴールしている場合
 	}else if(motion_timeout < time_passed.toSec()){
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
 		return MOTION_TIMEOUT; //2.2 モーションを開始してから一定時間経過した場合
 	}
 	//左右旋回
 	if(fabs(area_theta)>angle_margin && fabs(area_theta)< (3.1416 - angle_margin)){
-		if(area_distance < 0.7){
+		if(area_distance <  turn_distance_){
 			if( (area_theta < 0. && dx > 0.0)
 			||(area_theta > 0. && dx < 0.0)
 			){
@@ -439,6 +445,9 @@ int BattlePlanner::approachTarget(const std::string target_tf_name,
 		}
 		return CONTINUE;
 	}
+
+	motion_command_.data = "STANDING";
+	motion_command_pub_.publish(motion_command_);
 	return ERROR;
 }
 
@@ -565,13 +574,17 @@ int BattlePlanner::avoidTarget(const std::string target_tf_name,
 	double area_distance = sqrt(dx*dx + dy*dy);
 
 	if(area_distance > distance_margin){
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
 		return SUCCEED; 	//2.1 既にゴールしている場合
 	}else if(motion_timeout < time_passed.toSec()){
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
 		return MOTION_TIMEOUT; //2.2 モーションを開始してから一定時間経過した場合
 	}
 	//左右旋回
 	if(fabs(area_theta)>angle_margin && fabs(area_theta)< (3.1416 - angle_margin)){
-		if(area_distance < 0.7){
+		if(area_distance <  turn_distance_){
 			if( (area_theta < 0. && dx > 0.0)
 			||(area_theta > 0. && dx < 0.0)
 			){
@@ -603,6 +616,8 @@ int BattlePlanner::avoidTarget(const std::string target_tf_name,
 		}
 		return CONTINUE;
 	}
+	motion_command_.data = "STANDING";
+	motion_command_pub_.publish(motion_command_);
 	return ERROR;
 }
 
