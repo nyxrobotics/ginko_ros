@@ -9,9 +9,11 @@ int main(int argc, char **argv) {
 	UrgNearest urg_nearest(node_handle_);
 
 //	ros::spin();
+	ros::Rate rate_(20); // 20 hz
 	while (ros::ok()) {
 		urg_nearest.mainLoop();
 		ros::spinOnce();
+		rate_.sleep();
 	}
 
 	return 0;

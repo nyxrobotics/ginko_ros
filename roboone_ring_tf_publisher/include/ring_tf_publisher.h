@@ -34,7 +34,7 @@ private:
 	boost::shared_ptr<tf2_ros::Buffer> tfBuffer_ptr_;
 	boost::shared_ptr<tf2_ros::TransformListener> tfListener_ptr_;
 	tf2_ros::TransformBroadcaster tfBroadcaster_;
-	tf2_ros::StaticTransformBroadcaster static_broadcaster_;
+//	tf2_ros::StaticTransformBroadcaster static_broadcaster_;
 	ros::Publisher center_pose_pub_;
 
 	//subscribed messages
@@ -54,6 +54,10 @@ private:
 	geometry_msgs::TransformStamped odom_to_ring_tf_lpf_;
 	geometry_msgs::PoseStamped ring_pose_;
 
+	//tf publish timer
+	ros::Timer tf_loop_timer_;
+	bool tf_ready_ = false;
+
 public:
 	RingTfPublisher(ros::NodeHandle main_nh);
 	~RingTfPublisher();
@@ -67,6 +71,7 @@ private:
 	void getRightEdgeCallback(const geometry_msgs::PoseArray& msg);
 	void getLeftEdgeCallback(const geometry_msgs::PoseArray& msg);
 	void updateOffset();
+	void tfRepublishLoop(const ros::TimerEvent&);
 };
 
 #endif //RING_TF_PUBLISHER_H

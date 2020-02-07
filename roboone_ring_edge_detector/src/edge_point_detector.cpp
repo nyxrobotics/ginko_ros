@@ -7,7 +7,7 @@ EdgePointDetector::EdgePointDetector(ros::NodeHandle main_nh){
 	readParams(main_nh);
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
-	tfBuffer_ptr_.reset(new tf2_ros::Buffer(ros::Duration(10.0), false));
+	tfBuffer_ptr_.reset(new tf2_ros::Buffer(ros::Duration(2.0), false));
 	tfListener_ptr_.reset(new tf2_ros::TransformListener(*tfBuffer_ptr_));
 	sleep(1);//TFが安定するまで待つ(ないと落ちる?要検証)
 	//tfBuffer_ptr->canTransform(robot_center_tf_,odom_tf_, ros::Time::now(), ros::Duration(10.0));
@@ -349,7 +349,7 @@ int EdgePointDetector::mainLoop(){
 	left_tf_ = tfBuffer_ptr_->lookupTransform( odom_tf_ , left_scan_.header.frame_id ,ros::Time(0));
 
 	//Start calculation
-	// ros::spinOnce();
+	//ros::spinOnce();
 
 	getLaserscanPoses(	right_scan_,right_tf_,right_poses_);
 	getLaserscanPoses(left_scan_,left_tf_,left_poses_);
@@ -360,7 +360,7 @@ int EdgePointDetector::mainLoop(){
 	getEdgePoses(right_scan_,right_poses_, right_center_count,right_pitch_ , right_tf_, right_edges_);
 	getEdgePoses(left_scan_,left_poses_, left_center_count,left_pitch_ , left_tf_, left_edges_);
 
-	mergeEdges(right_edges_, left_edges_, merged_edges_);
+	//mergeEdges(right_edges_, left_edges_, merged_edges_);
 	if(right_edges_.poses.size() > 0){
 		right_edges_pub_.publish(right_edges_);
 		right_edges_.poses.resize(0);
@@ -369,10 +369,10 @@ int EdgePointDetector::mainLoop(){
 		left_edges_pub_.publish(left_edges_);
 		left_edges_.poses.resize(0);
 	}
-//	if(merged_edges_.poses.size() > 0){
-//		merged_edges_pub_.publish(merged_edges_);
-//		merged_edges_.poses.resize(0);
-//	}
+	//if(merged_edges_.poses.size() > 0){
+	//	merged_edges_pub_.publish(merged_edges_);
+	//	merged_edges_.poses.resize(0);
+	//}
 	//finish function
 	right_scan_ready_ = false;
 	left_scan_ready_ = false;
