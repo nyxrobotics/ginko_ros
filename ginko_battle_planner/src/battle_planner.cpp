@@ -15,7 +15,7 @@ BattlePlanner::~BattlePlanner() {
 
 void BattlePlanner::readParams(ros::NodeHandle node_handle_){
 	node_handle_.param<double>("/roboone_ring/ring_radious", ring_radious_, 1.8);
-	outer_radious = ring_radious_ - 0.4;
+	outer_radious = ring_radious_ - 0.5;
 	center_radious_ = outer_radious * 0.5;
 }
 
@@ -202,13 +202,16 @@ int BattlePlanner::battleMotionSelect(){
 
 	//※落ちそうなときは優先度最大で中央へ移動
 	int area_tmp = checkArea(robot_tf_);
-	if (RING_OUTER == area_tmp || RING_OUTSIDE == area_tmp ){
+	if (RING_OUTER == area_tmp){
 		approachTarget(ring_tf_, 0, area_angle_threth_, 5.0, 30.0, true); //移動可能(初期化するだけで動かない)
 		centering_flag = approachTarget(ring_tf_, 0, centering_angle_threth_, 5.0, 30.0, false);
 		if(attack_enable_count > 0){
 			attack_enable_count --;
 		}
 		centering_count = 30;
+		return 0;
+	}else if (RING_OUTSIDE == area_tmp ){
+		detect_flag = searchTarget(target_tf_,5.0,true);//強制探索 -> 次ループ
 		return 0;
 	}
 	if(centering_count == 30){
@@ -312,13 +315,22 @@ int BattlePlanner::battleMotionSelect(){
 	}
 	//タイムアウトするまで回避
 	avoid_flag_pre = avoid_flag;
-	if (RING_CENTER != area_tmp){
-		//中央に行けるときは中央に行く
-		avoid_flag = approachTarget(ring_tf_, 0, centering_angle_threth_,30.0,10.0,false);
-	}else{
-		//それ以外の時は退避行動
-		avoid_flag = avoidTarget(target_tf_,area_distance_threth_ + 0.1,area_angle_threth_,30.0,10.0,false);
+	//既に中央にいる時は中央から少し離れ、それ以外の時は中央に行く
+	approachTarget(ring_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
+	avoid_flag = approachTarget(ring_tf_, 0.1, centering_angle_threth_,30.0,3.0,false);
+	if(avoid_flag == SUCCEED ){
+		avoidTarget(ring_tf_,0, 0, 0, 0, true); //移動可能(初期化するだけで動かない)
+		avoid_flag = avoidTarget(ring_tf_, 0.2, centering_angle_threth_,30.0,3.0,false);
 	}
+//	if (RING_CENTER == area_tmp){
+//		//既に中央にいる時は退避行動、それ以外の時は中央に行く
+//		avoidTarget(target_tf_,0,0,0,0,true);
+//		avoid_flag = avoidTarget(target_tf_,area_distance_threth_ + 0.1,area_angle_threth_,30.0,10.0,false);
+//	}else{
+//		//それ以外の時は中央に行く
+//		approachTarget(ring_tf_, 0, 0, 0, 0, true); //移動可能(初期化するだけで動かない)
+//		avoid_flag = approachTarget(ring_tf_, 0, centering_angle_threth_,30.0,3.0,false);
+//	}
 
 	if (CONTINUE == avoid_flag){
 		if(attack_enable_count > 0 ){
