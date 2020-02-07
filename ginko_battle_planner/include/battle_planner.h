@@ -55,6 +55,7 @@ private:
 	double area_angle_threth_ = 0.7;//1.0472;
 	double ring_radious_, center_radious_, outer_radious;
 
+	double centering_angle_threth_ = 0.3;//1.0472;
 
 public:
 	BattlePlanner(ros::NodeHandle main_nh);

@@ -15,7 +15,7 @@ BattlePlanner::~BattlePlanner() {
 
 void BattlePlanner::readParams(ros::NodeHandle node_handle_){
 	node_handle_.param<double>("/roboone_ring/ring_radious", ring_radious_, 1.8);
-	outer_radious = ring_radious_ - 0.3;
+	outer_radious = ring_radious_ - 0.4;
 	center_radious_ = outer_radious * 0.5;
 }
 
@@ -191,16 +191,20 @@ int BattlePlanner::battleMotionSelect(){
 			avoid_flag_pre = CONTINUE,
 			centering_flag_pre = CONTINUE;
 	static int attack_enable_count = 0, attack_enable_count_pre = 0;
+	//int attack_enable_count_pre = attack_enable_count;
 	static int centering_count = 0;//, attack_enable_count_pre = 0;
 
 	if(imu_fall_direction_ != 0){
 		return 0;
 	}
+
+
+
 	//※落ちそうなときは優先度最大で中央へ移動
 	int area_tmp = checkArea(robot_tf_);
 	if (RING_OUTER == area_tmp || RING_OUTSIDE == area_tmp ){
 		approachTarget(ring_tf_, 0, area_angle_threth_, 5.0, 30.0, true); //移動可能(初期化するだけで動かない)
-		centering_flag = approachTarget(ring_tf_, 0, area_angle_threth_, 5.0, 30.0, false);
+		centering_flag = approachTarget(ring_tf_, 0, centering_angle_threth_, 5.0, 30.0, false);
 		if(attack_enable_count > 0){
 			attack_enable_count --;
 		}
@@ -213,7 +217,7 @@ int BattlePlanner::battleMotionSelect(){
 	if (centering_count > 0 ){
 		centering_count --;
 		approachTarget(ring_tf_, 0, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
-		centering_flag = approachTarget(ring_tf_, 0, area_angle_threth_, 5.0, 5.0, false);
+		centering_flag = approachTarget(ring_tf_, 0, centering_angle_threth_, 5.0, 5.0, false);
 		if(attack_enable_count > 0){
 			attack_enable_count --;
 		}
@@ -240,71 +244,95 @@ int BattlePlanner::battleMotionSelect(){
 		if(attack_enable_count > 0){
 			attack_enable_count --;
 		}
-		//attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //歩行後は攻撃可能
 		return 0;
 	}else if(SUCCEED != approach_flag){
 		ROS_FATAL("Battle Planner: Target Lost -> Start Detection");
 		detect_flag = searchTarget(target_tf_,5.0,true);//強制探索 -> 次ループ
-		approach_flag = approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
-		attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能(初期化するだけで動かない)
+		approach_flag = approachTarget(target_tf_, 0, 0, 0, 0, true); //移動可能(初期化するだけで動かない)
+		attack_flag = attackTarget(target_tf_, 0, 0, 0, 0, true); //攻撃可能(初期化するだけで動かない)
 		return 0;
 	}
 	if(CONTINUE == approach_flag_pre  && SUCCEED == approach_flag){
 		ROS_FATAL("Battle Planner: Approach Succeed -> Start Attack");
-		attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能
 	}
-
+	if(CONTINUE == approach_flag_pre  && CONTINUE != approach_flag){
+		sleep(0.1);
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
+		sleep(0.1);
+	}
 	//※歩数足りない際は中央へ移動
+
 	if(attack_enable_count > 0){
 		approachTarget(ring_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
-		centering_flag = approachTarget(ring_tf_, area_distance_threth_, area_angle_threth_, 30.0, 3.0, false);
+		centering_flag = approachTarget(ring_tf_, 0, centering_angle_threth_, 30.0, 3.0, false);
 		attack_enable_count --;
-		return 0;
+		ROS_FATAL("Battle Planner: Attack disable Count [%d -> %d]",attack_enable_count_pre,attack_enable_count);
+		if(attack_enable_count == 0 && attack_enable_count_pre != 0){
+			attack_flag = attackTarget(target_tf_, 0, 0, 0, 0, true); //歩行後は攻撃可能
+			ROS_FATAL("Battle Planner: Walked enough -> Can Attack");
+			sleep(0.1);
+			motion_command_.data = "STANDING";
+			motion_command_pub_.publish(motion_command_);
+			sleep(0.1);
+		}
+		attack_enable_count_pre = attack_enable_count;
+		if(attack_enable_count > 0){
+			return 0;
+		}
 	}
-
 	if(attack_enable_count == 0 && attack_enable_count_pre != 0){
-		attack_flag = attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //歩行後は攻撃可能
+		attack_flag = attackTarget(target_tf_, 0, 0, 0, 0, true); //歩行後は攻撃可能
+		ROS_FATAL("Battle Planner: Walked enough -> Can Attack");
+		sleep(0.1);
+		motion_command_.data = "STANDING";
+		motion_command_pub_.publish(motion_command_);
+		sleep(0.1);
+		attack_enable_count_pre = attack_enable_count;
 	}
-	attack_enable_count_pre = attack_enable_count;
 
 	//タイムアウトするまで攻撃
 	attack_flag_pre = attack_flag;
-	attack_flag = attackTarget(target_tf_,area_distance_threth_,area_angle_threth_,30.0,3.0,false);
+	attack_flag = attackTarget(target_tf_,area_distance_threth_ + 0.025,area_angle_threth_,30.0,4.5,false);
 	if (CONTINUE == attack_flag){
 		return 0; //攻撃中→次のループへ
 	}
-	if(CONTINUE == attack_flag_pre  && MOTION_TIMEOUT == attack_flag){
+	if( MOTION_TIMEOUT != attack_flag_pre  && MOTION_TIMEOUT == attack_flag){
 		ROS_FATAL("Battle Planner: Attack Timeout -> Start Avoid");
-		attack_enable_count = 30;
-		avoid_flag = avoidTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //回避動作可能(初期化するだけで動かない)
 	}
 
+	if(MOTION_TIMEOUT == attack_flag){
+		attack_enable_count = 40;
+		avoid_flag = avoidTarget(target_tf_, 0, 0, 0, 0, true); //回避動作可能(初期化するだけで動かない)
+	}
+
+
+	if(attack_enable_count == 0 ){
+		return 0;
+	}
 	//タイムアウトするまで回避
 	avoid_flag_pre = avoid_flag;
 	if (RING_CENTER != area_tmp){
 		//中央に行けるときは中央に行く
-		avoid_flag = approachTarget(ring_tf_, 0, area_angle_threth_,30.0,3.0,false);
-//		if(attack_enable_count > 0){
-//			attack_enable_count --;
-//		}
+		avoid_flag = approachTarget(ring_tf_, 0, centering_angle_threth_,30.0,10.0,false);
 	}else{
 		//それ以外の時は退避行動
-		avoid_flag = avoidTarget(target_tf_,area_distance_threth_ + 0.3,area_angle_threth_,30.0,3.0,false);
-//		if(attack_enable_count > 0){
-//			attack_enable_count --;
-//		}
+		avoid_flag = avoidTarget(target_tf_,area_distance_threth_ + 0.1,area_angle_threth_,30.0,10.0,false);
 	}
 
 	if (CONTINUE == avoid_flag){
+		if(attack_enable_count > 0 ){
+			attack_enable_count --;
+		}
 		return 0; //回避動作中→次のループへ
 	}
-	if(CONTINUE == avoid_flag_pre  && MOTION_TIMEOUT == avoid_flag ){
+	if(MOTION_TIMEOUT != avoid_flag_pre  && MOTION_TIMEOUT == avoid_flag ){
 		ROS_FATAL("Battle Planner: Avoid Timeout -> Restart Battle");
 		approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
 		attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能(初期化するだけで動かない)
 		return 0;
 	}
-	if(CONTINUE == avoid_flag_pre  && SUCCEED == avoid_flag){
+	if(SUCCEED != avoid_flag_pre  && SUCCEED == avoid_flag){
 		ROS_FATAL("Battle Planner: Avoid Suceed -> Restart Battle");
 		approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //移動可能(初期化するだけで動かない)
 		attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 0, 0, true); //攻撃可能(初期化するだけで動かない)
@@ -313,6 +341,7 @@ int BattlePlanner::battleMotionSelect(){
 	ROS_FATAL("Battle Planner: NO PLAN FOUND !!!");
 	approachTarget(target_tf_, area_distance_threth_, area_angle_threth_, 5.0, 3.0, true); //移動可能(初期化するだけで動かない)
 	attackTarget(target_tf_, area_distance_threth_, area_angle_threth_, 5.0, 3.0, true); //攻撃可能(初期化するだけで動かない)
+	attack_enable_count = 0;
 	detect_flag = searchTarget(target_tf_,5.0,true);
 	return 0;
 }
@@ -411,6 +440,7 @@ int BattlePlanner::attackTarget(const std::string target_tf_name,
 	ros::Time now_time = ros::Time::now();
 	static ros::Time start_time = now_time;
 	if(init_flag == true){
+		ROS_FATAL("Battle Planner: Attack Command -> INITIALIZD");
 		start_time = now_time;
 		return INITIALIZED;
 	}
@@ -573,6 +603,7 @@ int BattlePlanner::searchTarget(const std::string target_tf_name,
 	ros::Time now_time = ros::Time::now();
 	if(init_flag == true){
 		search_flag = true;
+//		search_motion_counter = 0;
 	}
 	//1.1 TFが来ていない場合
 	if( tfBuffer_ptr->canTransform(robot_tf_, target_tf_name,ros::Time(0)) == false){
