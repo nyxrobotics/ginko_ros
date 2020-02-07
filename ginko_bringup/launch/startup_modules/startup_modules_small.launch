@@ -9,6 +9,8 @@
 
 	<include file="$(find roboone_ring_edge_detector)/launch/ring_edge_detector.launch" />
 	<include file="$(find roboone_ring_tf_publisher)/launch/ring_tf_publisher.launch" />
-	<include file="$(find roboone_ring_tf_publisher)/launch/static_tf_publishers.launch" />
+	<include file="$(find roboone_ring_tf_publisher)/launch/static_tf_publishers.launch">
+		<arg name="large_ring" value="0" />
+	</include>
 
 </launch>

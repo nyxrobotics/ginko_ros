@@ -52,9 +52,11 @@ private:
 	std::string target_tf_ = "target_slow";	//ジャイロのTF
 
 	double area_distance_threth_ = 0.45;
-	double area_angle_threth_ = 0.7;//1.0472;
+	double area_angle_threth_ = 0.5;//1.0472;
 	double ring_radious_, center_radious_, outer_radious;
 
+	double centering_angle_threth_ = 0.3;//1.0472;
+	double turn_distance_ = 2.0; //コレより近いと旋回、遠いと横歩き default:0.7
 
 public:
 	BattlePlanner(ros::NodeHandle main_nh);

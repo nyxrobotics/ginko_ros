@@ -33,6 +33,7 @@ void UrgNearest::initSubscriber() {
 	ros::TransportHints transport_hints;
 	transport_hints.tcpNoDelay(true);
 	urg_sub_ = node_handle_.subscribe("scan", 10,&UrgNearest::getLaserScanCallback, this, transport_hints);
+	imu_quaternion_sub_ = node_handle_.subscribe("imu_quaternion_in", 10,&UrgNearest::getImuQuaternionCallback, this);
 }
 
 void UrgNearest::initTF2() {
@@ -52,6 +53,11 @@ void UrgNearest::initTF2() {
 
 int UrgNearest::mainLoop(){
 	//転倒時は計算しない
+	if(imu_fall_direction_  != 0){
+		ROS_INFO("UrgNearest: Robot is not standing -> skip");
+		return 0;
+	}
+	/*
 	if(tfBuffer_ptr->canTransform("body_imu_base_link" , "odom",ros::Time(0)) == false || tfBuffer_ptr->canTransform(odom_tf_in_name_, urg_tf_in_name_,ros::Time(0)) == false){
 		return 0;
 	}else{
@@ -70,6 +76,7 @@ int UrgNearest::mainLoop(){
 			return 0;
 		}
 	}
+	*/
 	if(urg_ready == 0 || tf2_ready == 0){
 		return 0;
 	}
@@ -152,4 +159,29 @@ void UrgNearest::getLaserScanCallback(const sensor_msgs::LaserScan::ConstPtr& ms
 	urg_to_nearest_.setX(nearest_x);
 	urg_to_nearest_.setY(nearest_y);
 	urg_to_nearest_.setZ(0.);
+}
+
+void UrgNearest::getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg){
+	imu_ready_ = 1;
+	imu_quaternion_ = *msg;
+	tf2::Quaternion tf2_quat(imu_quaternion_.orientation.x, imu_quaternion_.orientation.y, imu_quaternion_.orientation.z, imu_quaternion_.orientation.w);
+	geometry_msgs::Vector3 euler;
+	tf2::Matrix3x3(tf2_quat).getEulerYPR(euler.z, euler.y, euler.x);
+	euler.z = 0.;
+	euler.x = 0.;
+	tf2::Vector3 single_z(0,0,1.0);
+	tf2::Matrix3x3 rotation_matrix;
+	rotation_matrix.setRPY(euler.x, euler.y, euler.z);
+	tf2::Vector3 single_z_rot = rotation_matrix * single_z;
+	double dx = single_z_rot.x();
+	double dy = single_z_rot.y();
+	double xy_norm_tmp = sqrt(dx*dx + dy*dy);
+	//0:直立、1:前転倒、2:後転倒
+	if(dx > 0.4){
+		imu_fall_direction_ = 1;
+	}else if(dx < -0.4){
+		imu_fall_direction_ = 2;
+	}else{
+		imu_fall_direction_ = 0;
+	}
 }

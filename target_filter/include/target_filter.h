@@ -27,6 +27,9 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include "geometry_msgs/PoseStamped.h"
 
+//detect robot falling
+#include <sensor_msgs/Imu.h>
+
 class TargetFilter {
 private:
 	// ROS NodeHandle
@@ -58,6 +61,11 @@ private:
 	bool l_updated_ = 0;
 	ros::Time r_latest_time_;
 	ros::Time l_latest_time_;
+	//転倒検知
+	ros::Subscriber imu_quaternion_sub_;
+	int imu_ready_ = 0;
+	int imu_fall_direction_ = 0;//0:直立、1:前転倒、2:後転倒
+	sensor_msgs::Imu imu_quaternion_;
 
 public:
 	TargetFilter(ros::NodeHandle main_nh);
@@ -71,6 +79,7 @@ private:
 	void readParams(ros::NodeHandle main_nh);
 	void getRightTargetCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
 	void getLeftTargetCallback(const geometry_msgs::PoseStamped::ConstPtr& msg);
+	void getImuQuaternionCallback(const sensor_msgs::Imu::ConstPtr& msg);
 };
 
 

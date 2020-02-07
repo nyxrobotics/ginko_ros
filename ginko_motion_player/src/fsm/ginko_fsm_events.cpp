@@ -38,37 +38,11 @@
 
 using namespace std;
 
-#define foreach BOOST_FOREACH
-
-void publishRandomLaserScan(ros::Publisher& laserScanPublisher) {
-    static random_numbers::RandomNumberGenerator randomizer;
-    sensor_msgs::LaserScan scan;
-    scan.angle_min = 0;
-    scan.angle_increment = 0.05;
-    scan.header.frame_id = "/map";
-    scan.header.stamp  = ros::Time::now();
-    scan.range_min = 0.001;
-    scan.range_max = 30;
-
-    static double first = randomizer.uniformReal(0.1, 1.5);
-
-    for (int i = 0; i < 50; ++i) {
-        first += randomizer.gaussian(0, 0.03);
-        first = fmin(1.5, fmax(0.1, first));
-        scan.ranges.push_back(first);
-    }
-
-    laserScanPublisher.publish(scan);
-}
-
 int main(int argc, char **argv) {
     ros::init(argc, argv, "fsm_wandering_events");
-    ros::Publisher laserScanPublisher = ros::NodeHandle().advertise<sensor_msgs::LaserScan>("/fsm_wandering/scan", 1, false);
-
     ROS_INFO("Starting wandering events publisher...");
 
     while (ros::ok()) {
-        publishRandomLaserScan(laserScanPublisher);
         boost::this_thread::sleep(boost::posix_time::milliseconds(100));
     }
 	return 0;
