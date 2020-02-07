@@ -1,0 +1,5 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<include file="$(find ginko_bringup)/launch/startup_modules/modules/rs_rgbd.launch" />
+	<include file="$(find ginko_bringup)/launch/remote/rgbd_compress.launch" />
+</launch>
