@@ -1,0 +1,40 @@
+<launch>
+  <machine name="localhost" address="localhost" />
+  <group ns="remote">
+    <!-- <node pkg="tf" type="static_transform_publisher" ns="tf_broadcaster" name="offset_tf_broadcaster" args="0 0 -1 0 0 0 1 camera_link camera_offset_link 100" /> -->
+    <arg name="inpoints" default="/remote/depth_registered/points" doc="point cloud topic name" />
+    <arg name="bounding_box" default="/remote/darknet_ros/bounding_boxes" />
+
+    <arg name="rgb_optical_frame" default="camera_color_optical_frame" />
+    <arg name="use_fixed_tf" default="true" />
+    <!-- <arg name="use_fixed_tf" default="false" /> -->
+    <!-- <arg name="fixed_tf" default="camera_link" /> -->
+    <arg name="fixed_tf" default="odom" />
+
+    <arg name="cloud_machine" default="localhost"
+         doc="point cloud processor machine" />
+    <arg name="display_machine" default="localhost"
+         doc="display machine for visualization" />
+
+    <arg name="USE_RVIZ" default="false"
+         doc="if true, launch rviz on $(arg display_machine)" />
+
+    <!-- nodelet manager -->
+    <node name="screenpoint_manager" pkg="nodelet"
+          type="nodelet" args="manager" output="screen"
+          machine="$(arg cloud_machine)" respawn="true"/>
+
+    <!-- darknet_screenpoint_nodelet.cpp  -->
+    <node name="pointcloud_screenpoint_nodelet" pkg="nodelet" type="nodelet"
+          args="load darknet_screenpoint_pcl/DarknetScreenpoint screenpoint_manager --no-bond"
+          output="screen" clear_params="true" respawn="true"
+          machine="$(arg cloud_machine)">
+      <remap from="~points" to="$(arg inpoints)" />
+      <remap from="~yolo_windows" to="$(arg bounding_box)"  />
+      
+      <param name="rgb_optical_tf" value="$(arg rgb_optical_frame)" />
+      <param name="use_fixed_tf" value="$(arg use_fixed_tf)" />
+      <param name="fixed_tf" value="$(arg fixed_tf)" />
+    </node>
+  </group>
+</launch>

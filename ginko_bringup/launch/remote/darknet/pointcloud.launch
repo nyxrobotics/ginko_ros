@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+	<group ns="remote">
+		<node name="depth_nodelet_manager" pkg="nodelet" type="nodelet" args="manager" output="screen"/>
+		<node name="register_nodelet" pkg="nodelet" type="nodelet"
+			args="load depth_image_proc/register depth_nodelet_manager --no-bond">
+			<remap from="rgb/camera_info"              to="/camera/color/camera_info"/>
+			<remap from="depth/camera_info"            to="/camera/depth/camera_info"/>
+			<remap from="depth/image_rect"             to="/remote/decompress/depth_decompress"/>
+			<remap from="depth_registered/camera_info" to="/remote/depth_registered/camera_info"/>
+			<remap from="depth_registered/image_rect"  to="/remote/depth_registered/image"/>
+			<param name="queue_size" type="int" value="5"/>
+		</node>
+		<node name="xyz_nodelet" pkg="nodelet" type="nodelet"
+			args="load depth_image_proc/point_cloud_xyz depth_nodelet_manager --no-bond">
+			<remap from="camera_info"             to="/remote/depth_registered/camera_info" />  
+			<remap from="image_rect"              to="/remote/depth_registered/image" />   
+			<remap from="points"                  to="/remote/depth_registered/points" />
+			<param name="queue_size" type="int" value="5"/>
+		</node>
+	</group>
+</launch>

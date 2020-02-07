@@ -1,0 +1,8 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <include file="$(find ginko_bringup)/launch/remote/rgbd_decompress.launch"/>
+  <include file="$(find ginko_bringup)/launch/remote/darknet/darknet.launch"/>
+  <include file="$(find ginko_bringup)/launch/remote/darknet/pointcloud.launch"/>
+  <include file="$(find ginko_bringup)/launch/remote/darknet/screenpoint.launch"/>
+  <include file="$(find nearest_tf_selector)/launch/roboone_auto.launch"/>	
+</launch>
