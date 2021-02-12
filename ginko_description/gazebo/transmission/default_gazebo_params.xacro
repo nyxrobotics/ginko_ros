@@ -2,29 +2,32 @@
 
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:macro name="default_motor_transmission" params="joint_name gazebo_control_mode">
+	<xacro:macro name="default_motor_transmission" params="joint_name gazebo_hw_interface">
+		<gazebo reference="${joint_name}">
+  		<implicitSpringDamper>1</implicitSpringDamper>
+		</gazebo>
 		<transmission name="${joint_name}_trans">
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="${joint_name}">
-				<xacro:if value="${gazebo_control_mode=='ginko'}">
-					<hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface> 
+				<xacro:if value="${gazebo_hw_interface=='ginko'}">
+					<hardwareInterface>hardware_interface/PositionDutyPidMotorInterface</hardwareInterface> 
 				</xacro:if>
-				<xacro:if value="${gazebo_control_mode=='effort'}">
-					<hardwareInterface>EffortJointInterface</hardwareInterface>
+				<xacro:if value="${gazebo_hw_interface=='effort'}">
+					<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
 				</xacro:if>
-				<xacro:if value="${gazebo_control_mode=='position'}">
-					<hardwareInterface>PositionJointInterface</hardwareInterface> 
+				<xacro:if value="${gazebo_hw_interface=='position'}">
+					<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
 				</xacro:if>
 			</joint>
 			<actuator name="${joint_name}_motor">
-				<xacro:if value="${gazebo_control_mode=='ginko'}">
-					<hardwareInterface>PositionDutyPidMotorInterface</hardwareInterface> 
+				<xacro:if value="${gazebo_hw_interface=='ginko'}">
+					<hardwareInterface>hardware_interface/PositionDutyPidMotorInterface</hardwareInterface> 
 				</xacro:if>
-				<xacro:if value="${gazebo_control_mode=='effort'}">
-					<hardwareInterface>EffortJointInterface</hardwareInterface>
+				<xacro:if value="${gazebo_hw_interface=='effort'}">
+					<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
 				</xacro:if>
-				<xacro:if value="${gazebo_control_mode=='position'}">
-					<hardwareInterface>PositionJointInterface</hardwareInterface> 
+				<xacro:if value="${gazebo_hw_interface=='position'}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
 				</xacro:if>
 				<mechanicalReduction>1</mechanicalReduction>
 			</actuator>

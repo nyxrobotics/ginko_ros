@@ -1,5 +1,5 @@
 <sdf version='1.6'>
-  <model name='ginko_xacro'>
+  <model name='ginko'>
     <link name='root_link'>
       <pose frame=''>0 0 0 0 -0 0</pose>
       <inertial>
@@ -141,6 +141,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_l_link1'>
       <pose frame=''>0.032336 0.13143 0.037756 1.1781 0.3927 0</pose>
@@ -222,6 +232,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_l_link2'>
       <pose frame=''>0.043634 0.256715 0.040991 1.59493 0.54755 0.871268</pose>
@@ -303,6 +323,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_l_link3'>
       <pose frame=''>0.023658 0.235093 -0.007235 1.59493 0.54755 0.871268</pose>
@@ -384,6 +414,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_l_urg_link'>
       <pose frame=''>-0.025808 0.187645 0.016544 -2.72079 0.362091 1.72835</pose>
@@ -502,6 +542,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_r_link0'>
       <pose frame=''>0 -0.10683 0.05115 0 0.3927 0</pose>
@@ -583,6 +633,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_r_link1'>
       <pose frame=''>0.032336 -0.13143 0.037756 -1.1781 0.3927 0</pose>
@@ -664,6 +724,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_r_link2'>
       <pose frame=''>0.043634 -0.256715 0.040991 -1.59493 0.54755 -0.871268</pose>
@@ -745,6 +815,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_r_link3'>
       <pose frame=''>0.023658 -0.235093 -0.007235 -1.59493 0.54755 -0.871268</pose>
@@ -826,6 +906,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='arm_r_urg_link'>
       <pose frame=''>-0.025808 -0.187645 0.016544 2.72079 0.362091 -1.72835</pose>
@@ -944,6 +1034,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='body_link1'>
       <pose frame=''>0 0 0 0 -0 0</pose>
@@ -1025,6 +1125,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='body_imu_attached_link'>
       <pose frame=''>-0.09 0 -0.0379 3.14159 1.57079 3.14159</pose>
@@ -1176,6 +1286,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_l_link1'>
       <pose frame=''>0.0029 0.0175 -0.089 0 0.7854 0</pose>
@@ -1257,6 +1377,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_l_link3'>
       <pose frame=''>0.073611 0.0175 -0.159711 0 -0 0</pose>
@@ -1338,6 +1468,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_l_link4'>
       <pose frame=''>0.073611 0.0175 -0.198311 3.14159 0.785393 3.14159</pose>
@@ -1419,6 +1559,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_l_link6'>
       <pose frame=''>0.002899 0.0175 -0.269021 0 -0 0</pose>
@@ -1500,6 +1650,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_l_link7'>
       <pose frame=''>-0.025101 0.04225 -0.308121 0 -0 0</pose>
@@ -1581,6 +1741,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_l_link8'>
       <pose frame=''>0.009099 0.04225 -0.348121 0 -0 0</pose>
@@ -1608,17 +1778,17 @@
             <ode>
               <kp>2e+06</kp>
               <kd>200</kd>
-              <max_vel>1</max_vel>
+              <max_vel>10</max_vel>
               <min_depth>0.0001</min_depth>
             </ode>
           </contact>
           <friction>
             <ode>
-              <mu>10</mu>
+              <mu>1</mu>
             </ode>
           </friction>
         </surface>
-        <max_contacts>20</max_contacts>
+        <max_contacts>5</max_contacts>
       </collision>
       <visual name='leg_l_link8_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
@@ -1661,6 +1831,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_l_spring1_link0'>
       <pose frame=''>0.073611 0.0755 -0.198311 3.14159 0.567562 3.14159</pose>
@@ -2140,6 +2320,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_r_link1'>
       <pose frame=''>0.0029 -0.0175 -0.089 0 0.7854 0</pose>
@@ -2221,6 +2411,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_r_link3'>
       <pose frame=''>0.073611 -0.0175 -0.159711 0 -0 0</pose>
@@ -2302,6 +2502,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_r_link4'>
       <pose frame=''>0.073611 -0.0175 -0.198311 3.14159 0.785393 3.14159</pose>
@@ -2383,6 +2593,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_r_link6'>
       <pose frame=''>0.002899 -0.0175 -0.269021 0 -0 0</pose>
@@ -2464,6 +2684,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_r_link7'>
       <pose frame=''>-0.025101 -0.04225 -0.308121 0 -0 0</pose>
@@ -2545,6 +2775,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_r_link8'>
       <pose frame=''>0.009099 -0.04225 -0.348121 0 -0 0</pose>
@@ -2578,11 +2818,11 @@
           </contact>
           <friction>
             <ode>
-              <mu>10</mu>
+              <mu>1</mu>
             </ode>
           </friction>
         </surface>
-        <max_contacts>20</max_contacts>
+        <max_contacts>5</max_contacts>
       </collision>
       <visual name='leg_r_link8_visual'>
         <pose frame=''>0 0 0 0 -0 0</pose>
@@ -2625,6 +2865,16 @@
         </dynamics>
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+        </ode>
+      </physics>
     </joint>
     <link name='leg_r_spring1_link0'>
       <pose frame=''>0.073611 -0.0755 -0.198311 3.14159 0.567562 3.14159</pose>
@@ -3024,10 +3274,10 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
-    <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
-      <robotNamespace>/ginko</robotNamespace>
-      <robotSimType>gazebo_ros_control/GinkoRobotHWSim</robotSimType>
-      <legacyModeNS>1</legacyModeNS>
+    <plugin name='gazebo_ros_control' filename='libgazebo_dc_motor.so'>
+      <robotNamespace>ginko</robotNamespace>
+      <robotSimType>gazebo_dc_motor/DefaultRobotHWSim</robotSimType>
+      <legacyModeNS>0</legacyModeNS>
     </plugin>
     <static>0</static>
     <plugin name='imu_plugin' filename='libgazebo_ros_imu.so'>
