@@ -1,0 +1,21 @@
+
+<launch>
+  <group ns="remote">
+
+    <group ns="compress">
+
+      <node name="rgb_compress" pkg="image_transport" type="republish" args="raw compressed">
+        <remap from="in" to="/camera/color/image_raw" />
+        <remap from="out" to="rgb_compress" />
+      </node>
+
+      <node name="depth_compress" pkg="image_transport" type="republish" args="raw compressedDepth">
+        <remap from="in" to="/camera/depth/image_rect_raw" />
+        <remap from="out" to="depth_compress" />
+      </node>
+
+    </group>
+
+  </group>
+  
+</launch>

@@ -2,6 +2,7 @@
 	<!-- Dummy TFs of ring_center edge -->
 	<arg name="large_ring" default="1"/>
 	<group ns="roboone_ring">
+		<node name="trash_tf_node" pkg="tf2_ros" type="static_transform_publisher" args="0 0 -1.0 0 0 0 ring_center trash_tf" />
 		<group if="$(arg large_ring)">
 			<!-- reference: https://answers.ros.org/question/208002/static-transformation-publisher/ -->
 	    	<param name="ring_radious" value="1.8" />
@@ -27,7 +28,7 @@
 		</group>
 		<group unless="$(arg large_ring)">
 	    	<param name="ring_radious" value="1.275" />
-			<node name="ring_tf" pkg="tf2_ros" type="static_transform_publisher" args="0.6365 0 0 0 0 0 1 odom ring" />
+			<!-- <node name="ring_tf" pkg="tf2_ros" type="static_transform_publisher" args="0.6365 0 0 0 0 0 1 odom ring" /> -->
 			<node name="ring_edge_0_tf" pkg="tf2_ros" type="static_transform_publisher" args="1.2728 0 0 0 0 0 ring_center ring_edge_0" />
 			<node name="ring_vertex_0_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.6364 0 0.7854 0 0 ring_edge_0 ring_vertex_0" />
 			<node name="ring_edge_1_tf" pkg="tf2_ros" type="static_transform_publisher" args="0 0.45 0 0 0 0 ring_vertex_0 ring_edge_1" />

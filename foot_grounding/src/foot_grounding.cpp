@@ -7,11 +7,19 @@ FootGrounding::FootGrounding(ros::NodeHandle main_nh){
 
 	//クラス内での宣言時では引数をもつコンストラクタを呼べないので、boost::shared_ptrを使って宣言し、ここで初期化をする。
 	//参考：https://answers.ros.org/question/315697/tf2-buffer-length-setting-problem/
-	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(2.0), true));
+	tfBuffer_ptr.reset(new tf2_ros::Buffer(ros::Duration(10.0), true));
 	tfListener_ptr.reset(new tf2_ros::TransformListener(*tfBuffer_ptr));
-//	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
-	tfBuffer_ptr->canTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(10.0));
-	tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(10.0));
+	sleep(2);//TFが安定するまで待つ(ないと落ちる。良くわからない)
+	int tf_ready = 0;
+	while(tf_ready == 0){
+		tf_ready = tfBuffer_ptr->canTransform(imu_tf_yaw_in_name_ ,imu_tf_reverse_in_name_, ros::Time::now(), ros::Duration(1.0));
+		ROS_FATAL("TF not found : %s -> %s", imu_tf_yaw_in_name_.c_str(), imu_tf_reverse_in_name_.c_str());
+	}
+	tf_ready = 0;
+	while(tf_ready == 0){
+		tf_ready = tfBuffer_ptr->canTransform(r_toe_tf_in_[0] ,l_toe_tf_in_[0],ros::Time::now(), ros::Duration(1.0));
+		ROS_FATAL("TF not found : %s -> %s", r_toe_tf_in_[0].c_str(), l_toe_tf_in_[0].c_str());
+	}
 }
 
 FootGrounding::~FootGrounding() {

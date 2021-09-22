@@ -32,6 +32,7 @@ RingTfPublisher::RingTfPublisher(ros::NodeHandle main_nh){
 	tf_offset_lpf_.setY(0);
 	tf_offset_lpf_.setZ(0);
 //	tf_loop_timer_ = main_nh.createTimer(ros::Duration(0.01), &RingTfPublisher::tfRepublishLoop, this);
+	ring_tf_init_counter_ = 0;
 }
 
 RingTfPublisher::~RingTfPublisher() {
@@ -40,9 +41,10 @@ RingTfPublisher::~RingTfPublisher() {
 
 void RingTfPublisher::readParams(ros::NodeHandle node_handle_){
 	node_handle_.param<int>("median_num", median_num_, 5);
-	node_handle_.param<double>("lpf_constant", lpf_constant_, 0.05);
+	node_handle_.param<double>("lpf_constant", lpf_constant_, 0.1);
 	node_handle_.param<std::string>("robot_tf_name", robot_tf_name_, "ground_imu_link");
 	node_handle_.param<std::string>("odom_tf_name", odom_tf_name_, "odom");
+	node_handle_.param<double>("/roboone_ring/ring_radious", ring_radious_ , 1.273);
 }
 
 void RingTfPublisher::initSubscriber(ros::NodeHandle node_handle_){
@@ -57,7 +59,11 @@ void RingTfPublisher::initPublisher(ros::NodeHandle node_handle_){
 
 void RingTfPublisher::getInitFlagCallback(const std_msgs::Int32::ConstPtr& msg){
 	init_flag_ = msg->data;
+	if(init_flag_ == 1){
+		ring_tf_init_counter_ = ring_tf_init_countrt_max_;
+	}
 }
+
 void RingTfPublisher::getRightEdgeCallback(const geometry_msgs::PoseArray& msg){
 	right_edges_ = msg;
 	if(right_edges_.poses.size() == 2){
@@ -87,6 +93,7 @@ void RingTfPublisher::getRightEdgeCallback(const geometry_msgs::PoseArray& msg){
 		edge_ready_ = 1;
 	}
 }
+
 void RingTfPublisher::getLeftEdgeCallback(const geometry_msgs::PoseArray& msg){
 	left_edges_ = msg;
 	if(left_edges_.poses.size() == 2){
@@ -132,7 +139,6 @@ void RingTfPublisher::updateOffset(){
 		tf_offset_lpf_ = tf_offset_lpf_*(1.0-lpf_constant_) + tf_offset_buffer_[min_num] * lpf_constant_;
 		edge_ready_ = 0;
 	}
-
 }
 
 int RingTfPublisher::mainLoop(){
@@ -145,11 +151,10 @@ int RingTfPublisher::mainLoop(){
 	odom_to_ring_tf_lpf_.transform.rotation.w=1.0;
 //	tf_offset_lpf_ = tf_offset_buffer_[0];
 	updateOffset();
-
 	odom_to_ring_tf_lpf_.transform.translation.x = tf_offset_lpf_.getX();
 	odom_to_ring_tf_lpf_.transform.translation.y = tf_offset_lpf_.getY();
 	odom_to_ring_tf_lpf_.transform.translation.z = tf_offset_lpf_.getZ();
-	tfBroadcaster_.sendTransform(odom_to_ring_tf_lpf_);
+//	tfBroadcaster_.sendTransform(odom_to_ring_tf_lpf_);
 
 	ring_pose_.header.frame_id = odom_tf_name_;
 	ring_pose_.header.stamp = ros::Time::now();
@@ -162,6 +167,36 @@ int RingTfPublisher::mainLoop(){
 	ring_pose_.pose.orientation.z = quaternion_tmp.getZ();
 	ring_pose_.pose.orientation.w = quaternion_tmp.getW();
 	center_pose_pub_.publish(ring_pose_);
+
+	if(ring_tf_init_counter_ > 0){
+		ring_tf_init_counter_ --;
+//		ROS_FATAL("RingTfPublisher: Initialization (%d)",ring_tf_init_counter_);
+		quaternion_tmp.setX(odom_to_robot_tf_.transform.rotation.x);
+		quaternion_tmp.setY(odom_to_robot_tf_.transform.rotation.y);
+		quaternion_tmp.setZ(odom_to_robot_tf_.transform.rotation.z);
+		quaternion_tmp.setW(odom_to_robot_tf_.transform.rotation.w);
+		tf2::Matrix3x3 rotation_matrix(quaternion_tmp);
+		tf2::Vector3 ring_to_line_offset(ring_radious_ * 0.5,0,0);
+		tf2::Vector3 ring_to_line_offset_rotate = rotation_matrix * ring_to_line_offset;
+		odom_to_ring_init_tf_ = odom_to_robot_tf_;
+		odom_to_ring_init_tf_.header.stamp = ros::Time::now();
+		odom_to_ring_init_tf_.header.frame_id = odom_tf_name_;
+		odom_to_ring_init_tf_.child_frame_id = "ring_center";
+		odom_to_ring_init_tf_.transform.translation.x = odom_to_robot_tf_.transform.translation.x + ring_to_line_offset_rotate.getX();
+		odom_to_ring_init_tf_.transform.translation.y = odom_to_robot_tf_.transform.translation.y + ring_to_line_offset_rotate.getY();
+//		odom_to_ring_init_tf_.transform.translation.z = odom_to_robot_tf_.transform.translation.z + ring_to_line_offset_rotate.getZ();
+		odom_to_ring_init_tf_.transform.rotation.x=0;
+		odom_to_ring_init_tf_.transform.rotation.y=0;
+		odom_to_ring_init_tf_.transform.rotation.z=0;
+		odom_to_ring_init_tf_.transform.rotation.w=1.0;
+		odom_to_ring_tf_lpf_ = odom_to_ring_init_tf_;
+		tf_offset_lpf_.setX(odom_to_ring_init_tf_.transform.translation.x);
+		tf_offset_lpf_.setY(odom_to_ring_init_tf_.transform.translation.y);
+		tf_offset_lpf_.setZ(odom_to_ring_init_tf_.transform.translation.z);
+		tfBroadcaster_.sendTransform(odom_to_ring_tf_lpf_);
+	}else{
+		tfBroadcaster_.sendTransform(odom_to_ring_tf_lpf_);
+	}
 	return true;
 }
 

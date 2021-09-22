@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<launch>
+  <include file="$(find ginko_bringup)/launch/initialize/real.launch" />
+  <include file="$(find ginko_bringup)/launch/startup_modules/realsense.launch" />
+  <include file="$(find ginko_bringup)/launch/startup_modules/startup_modules_small.launch" />
+  <include file="$(find ginko_bringup)/launch/startup_modules/battle.launch" />
+
+
+</launch>

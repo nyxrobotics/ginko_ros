@@ -94,6 +94,55 @@ int TargetFilter::mainLoop(){
 	}
 	*/
 
+	//障害物周辺の除去
+	if(r_updated_ == 1){
+		geometry_msgs::PoseStamped pose_tmp = r_target_pose_;
+		int tf_ready = tfBuffer_ptr->canTransform(odom_tf_in_name_ ,ignore_01_name_, ros::Time(0));
+		if(tf_ready == 1){
+			geometry_msgs::TransformStamped tf_tmp = tfBuffer_ptr->lookupTransform(odom_tf_in_name_ ,ignore_01_name_,ros::Time(0));
+			double dx = pose_tmp.pose.position.x - tf_tmp.transform.translation.x;
+			double dy = pose_tmp.pose.position.y - tf_tmp.transform.translation.y;
+			double length = sqrt(dx*dx + dy*dy);
+			if(length < ignore_radious_){
+				r_updated_ = 0;
+			}
+		}
+		tf_ready = tfBuffer_ptr->canTransform(odom_tf_in_name_ ,ignore_02_name_, ros::Time(0));
+		if(tf_ready == 1){
+			geometry_msgs::TransformStamped tf_tmp = tfBuffer_ptr->lookupTransform(odom_tf_in_name_ ,ignore_02_name_,ros::Time(0));
+			double dx = pose_tmp.pose.position.x - tf_tmp.transform.translation.x;
+			double dy = pose_tmp.pose.position.y - tf_tmp.transform.translation.y;
+			double length = sqrt(dx*dx + dy*dy);
+			if(length < ignore_radious_){
+				r_updated_ = 0;
+			}
+		}
+	}
+	if(l_updated_ == 1){
+		geometry_msgs::PoseStamped pose_tmp = l_target_pose_;
+		int tf_ready = tfBuffer_ptr->canTransform(odom_tf_in_name_ ,ignore_01_name_, ros::Time(0));
+		if(tf_ready == 1){
+			geometry_msgs::TransformStamped tf_tmp = tfBuffer_ptr->lookupTransform(odom_tf_in_name_ ,ignore_01_name_,ros::Time(0));
+			double dx = pose_tmp.pose.position.x - tf_tmp.transform.translation.x;
+			double dy = pose_tmp.pose.position.y - tf_tmp.transform.translation.y;
+			double length = sqrt(dx*dx + dy*dy);
+			if(length < ignore_radious_){
+				l_updated_ = 0;
+			}
+		}
+		tf_ready = tfBuffer_ptr->canTransform(odom_tf_in_name_ ,ignore_02_name_, ros::Time(0));
+		if(tf_ready == 1){
+			geometry_msgs::TransformStamped tf_tmp = tfBuffer_ptr->lookupTransform(odom_tf_in_name_ ,ignore_02_name_,ros::Time(0));
+			double dx = pose_tmp.pose.position.x - tf_tmp.transform.translation.x;
+			double dy = pose_tmp.pose.position.y - tf_tmp.transform.translation.y;
+			double length = sqrt(dx*dx + dy*dy);
+			if(length < ignore_radious_){
+				l_updated_ = 0;
+			}
+		}
+	}
+
+	//計算開始
 	geometry_msgs::PoseStamped target_pose_tmp_;
 	if(r_updated_ == 1 && l_updated_ == 0){
 		target_pose_tmp_ = r_target_pose_;
