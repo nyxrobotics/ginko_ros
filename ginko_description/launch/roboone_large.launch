@@ -32,9 +32,9 @@
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -param robot_description_sdf -model $(arg robot_name) -x -0.9 -y 0.0 -z 0.7" />
-  <rosparam file="$(find ginko_description)/config/gazebo_pid.yaml" ns="$(arg robot_name)" command="load"/>
-  <rosparam file="$(find ginko_description)/config/gazebo_dc_motor.yaml" ns="$(arg robot_name)" command="load"/>
-  <rosparam file="$(find ginko_description)/config/joint_control_position.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/ginko_rs406/gazebo_pid.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/ginko_rs406/gazebo_dc_motor.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/ginko_rs406/joint_control_position.yaml" ns="$(arg robot_name)" command="load"/>
   <node name="controller_spawner" 
     pkg="controller_manager" 
     type="spawner" respawn="false" output="screen" ns="$(arg robot_name)"
