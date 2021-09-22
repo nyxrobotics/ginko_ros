@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="box_inertial" params="xyz:='0 0 0' rpy:='0 0 0' size mass">
+    <xacro:property name="d" value="${float(size.split()[0])}" />
+    <xacro:property name="w" value="${float(size.split()[1])}" />
+    <xacro:property name="h" value="${float(size.split()[2])}" />
+    <inertial>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <mass value="${mass}"/>
+      <inertia ixx="${mass * (w ** 2 + h ** 2) / 12}"
+               ixy="0.0" iyy="${mass * (d ** 2 + h ** 2) / 12}"
+               ixz="0.0" iyz="0.0" izz="${mass * (w ** 2 + d ** 2) / 12}"/> 
+    </inertial>
+  </xacro:macro>
+  <xacro:macro name="box_collision" params="xyz:='0 0 0' rpy:='0 0 0' size">
+    <collision>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <box size="${size}"/>
+      </geometry>
+    </collision>
+  </xacro:macro>
+</robot>
