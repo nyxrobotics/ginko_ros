@@ -1,8 +1,8 @@
 # Generate .urdf from .xacro
 mkdir -p ./tmp
 mkdir -p ./tmp/urdf
-rosrun xacro xacro --inorder -o  ./tmp/urdf/ginko_rviz.urdf			"./ginko.xacro" model_mode:=rviz
-rosrun xacro xacro --inorder -o  ./tmp/urdf/ginko_common.urdf		"./ginko.xacro" model_mode:=common
+rosrun xacro xacro --inorder -o  ./tmp/urdf/ginko_rviz.urdf			"../ginko.xacro" model_mode:=rviz
+rosrun xacro xacro --inorder -o  ./tmp/urdf/ginko_common.urdf		"../ginko.xacro" model_mode:=common
 # rosrun xacro xacro --inorder -o  ./tmp/urdf/ginko_gazebo_part1.urdf	"./ginko.xacro" model_mode:=gazebo_part1
 # rosrun xacro xacro --inorder -o  ./tmp/urdf/ginko_gazebo_part2.urdf	"./ginko.xacro" model_mode:=gazebo_part2
 

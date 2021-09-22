@@ -5,18 +5,18 @@
   <!-- <xacro:arg name="gazebo_motor_model" default="ginko"/> -->
   <xacro:arg name="gazebo_hw_interface" default="position"/>
 
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/sensors/imu.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/sensors/urg.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/body.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/transmission/body.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/arm_l.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_l.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/arm_r.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/transmission/arm_r.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/leg_l.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_l.gazebo"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/xacro/modules/leg_r.xacro"/>
-  <xacro:include filename="$(find ginko_description)/gazebo/transmission/leg_r.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/sensors/imu.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/sensors/urg.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/parts/body.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/transmission/body.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/parts/arm_l.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/transmission/arm_l.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/parts/arm_r.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/transmission/arm_r.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/parts/leg_l.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/transmission/leg_l.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/parts/leg_r.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_rs406/transmission/leg_r.gazebo"/>
 
   <!-- MACRO:Loading Gazebo Controllers for joints -->
   <xacro:macro name="gazebo_plugin_xacro" params="gazebo_motor_model">
