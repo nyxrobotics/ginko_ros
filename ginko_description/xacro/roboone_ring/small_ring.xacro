@@ -7,13 +7,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-        			<mesh filename="package://ginko_description/meshes/stl/small_ring.stl"/>
+        			<mesh filename="package://ginko_description/meshes/roboone_ring/stl/small_ring.stl"/>
 				</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/small_ring.obj"/>
+					<mesh filename="package://ginko_description/meshes/roboone_ring/obj/small_ring.obj"/>
 				</geometry>
 			</visual>
 			<inertial>

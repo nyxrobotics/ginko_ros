@@ -14,13 +14,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link09_l_arm01.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link09_l_arm01.stl"/>
 				</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link09_l_arm01.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link09_l_arm01.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -46,13 +46,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link10_l_arm02.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link10_l_arm02.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link10_l_arm02.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link10_l_arm02.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -96,13 +96,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link11_l_scissor01.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link11_l_scissor01.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link11_l_scissor01.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link11_l_scissor01.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -126,13 +126,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link12_l_scissor02.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link12_l_scissor02.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link12_l_scissor02.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link12_l_scissor02.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -169,13 +169,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/urg.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/urg.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/urg.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/urg.obj"/>
 				</geometry>
 			</visual>
 			<inertial>

@@ -8,13 +8,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link00_chest.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link00_chest.stl"/>
 				</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link00_chest.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link00_chest.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -40,13 +40,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link01_waist.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link01_waist.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link01_waist.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link01_waist.obj"/>
 				</geometry>
 			</visual>
 			<inertial>

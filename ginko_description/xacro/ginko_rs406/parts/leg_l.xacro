@@ -14,13 +14,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link02_l_femoral.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link02_l_femoral.stl"/>
 				</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link02_l_femoral.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link02_l_femoral.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -46,13 +46,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link03_l_leg01.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link03_l_leg01.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link03_l_leg01.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link03_l_leg01.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -92,13 +92,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link04_l_leg02.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link04_l_leg02.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link04_l_leg02.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link04_l_leg02.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -137,13 +137,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link05_l_knee.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link05_l_knee.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link05_l_knee.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link05_l_knee.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -170,13 +170,13 @@
 		    	<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 		    		<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring1.stl"/>
 		    		</geometry>
 				</collision>
 		    	<visual>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 		    		<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring1.stl"/>
 		    		</geometry>
 					<material name="spring">
 						<color rgba="0.5 0.5 0.5 1.0"/>
@@ -203,13 +203,13 @@
 		    	<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 		    		<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring2.stl"/>
 		    		</geometry>
 				</collision>
 		    	<visual>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 		    		<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring2.stl"/>
 		    		</geometry>
 					<material name="spring">
 						<color rgba="0.5 0.5 0.5 1.0"/>
@@ -257,13 +257,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link03_l_leg01.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link03_l_leg01.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link03_l_leg01.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link03_l_leg01.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -303,13 +303,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link04_l_leg02.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link04_l_leg02.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link04_l_leg02.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link04_l_leg02.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -357,13 +357,13 @@
 				<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring1.stl"/>
 					</geometry>
 				</collision>
 				<visual>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring1.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring1.stl"/>
 					</geometry>
 					<material name="spring">
 						<color rgba="0.5 0.5 0.5 1.0"/>
@@ -390,13 +390,13 @@
 				<collision>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring2.stl"/>
 					</geometry>
 				</collision>
 				<visual>
 					<origin xyz="0 0 0" rpy="0 0 0"/>
 					<geometry>                                                              
-						<mesh filename="package://ginko_description/meshes/stl/spring2.stl"/>
+						<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/spring2.stl"/>
 					</geometry>
 					<material name="spring">
 						<color rgba="0.5 0.5 0.5 1.0"/>
@@ -436,13 +436,13 @@
 			<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/stl/link06_l_toe01.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link06_l_toe01.stl"/>
 				</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link06_l_toe01.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link06_l_toe01.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -466,13 +466,13 @@
 	    	<collision>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 	    		<geometry>                                                              
-					<mesh filename="package://ginko_description/meshes/stl/link07_l_toe02.stl"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/stl/link07_l_toe02.stl"/>
 	    		</geometry>
 			</collision>
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link07_l_toe02.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link07_l_toe02.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
@@ -502,7 +502,7 @@
 			<visual>
 				<origin xyz="0 0 0" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://ginko_description/meshes/obj/link08_l_toe03.obj"/>
+					<mesh filename="package://ginko_description/meshes/ginko_rs406/obj/link08_l_toe03.obj"/>
 				</geometry>
 			</visual>
 			<inertial>
