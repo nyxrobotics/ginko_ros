@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:include filename="$(find ginko_description)/gazebo/transmission/default_gazebo_params.xacro"/>
+	<xacro:include filename="$(find ginko_description)/xacro/physics/default_gazebo_params.xacro"/>
 	<xacro:macro name="large_ring_gazebo">
 		<!-- <xacro:default_link_collision link_name="large_ring_link0" friction="1.0"/> -->
 		<link name="world" />

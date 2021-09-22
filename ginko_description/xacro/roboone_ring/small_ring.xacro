@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot name="small_ring"  xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:include filename="$(find ginko_description)/gazebo/transmission/small_ring.gazebo"/>
+	<xacro:include filename="./small_ring.gazebo"/>
 
 	<xacro:macro name="small_ring">
 		<link name="small_ring_link0">

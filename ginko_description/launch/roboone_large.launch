@@ -24,17 +24,17 @@
 
   <!-- load model with sdf for simulation,urdf for vizualization -->
   <!-- Load the URDF into the ROS Parameter Server -->
-  <param name="robot_description_sdf" textfile="$(find ginko_description)/gazebo/sdf/ginko_gazebo.sdf" />
-  <param name="robot_description"     textfile="$(find ginko_description)/gazebo/urdf/ginko_rviz.urdf" />
+  <param name="robot_description_sdf" textfile="$(find ginko_description)/xacro/ginko_rs406/sdf_generation/export/sdf/ginko_gazebo.sdf" />
+  <param name="robot_description"     textfile="$(find ginko_description)/xacro/ginko_rs406/sdf_generation/export/urdf/ginko_rviz.urdf" />
 
   <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
   <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model rrbot -param robot_description"/> -->
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_sdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -param robot_description_sdf -model $(arg robot_name) -x -0.9 -y 0.0 -z 0.7" />
-  <rosparam file="$(find ginko_description)/gazebo/config/gazebo_pid.yaml" ns="$(arg robot_name)" command="load"/>
-  <rosparam file="$(find ginko_description)/gazebo/config/gazebo_dc_motor.yaml" ns="$(arg robot_name)" command="load"/>
-  <rosparam file="$(find ginko_description)/gazebo/config/joint_control_position.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/gazebo_pid.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/gazebo_dc_motor.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/joint_control_position.yaml" ns="$(arg robot_name)" command="load"/>
   <node name="controller_spawner" 
     pkg="controller_manager" 
     type="spawner" respawn="false" output="screen" ns="$(arg robot_name)"
@@ -80,8 +80,10 @@
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
     respawn="false" output="screen" ns="$(arg robot_name)">
-<!--     <remap from="/joint_states" to="/ginko/joint_states" /> -->
+    <param name="publish_frequency" value="100"/>
+    <param name="ignore_timestamp" value="true"/>
+    <param name="use_tf_static" value="false"/>
   </node>
-  <param name="ring_urdf" command="$(find xacro)/xacro --inorder '$(find ginko_description)/gazebo/xacro/modules/large_ring.xacro'"/>
+  <param name="ring_urdf" command="$(find xacro)/xacro --inorder '$(find ginko_description)/xacro/roboone_ring/large_ring.xacro'"/>
   <node name="spawn_ring_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param ring_urdf -model ring_model -x 0.0 -y 0.0 -z 0.0" />
 </launch>
