@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find ginko_description)/xacro/physics/box_physics.xacro"/>
+	<xacro:macro name="body_xacro">
+		<!-- waist -->
+		<link name="waist_link01">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/waist_link01.obj"/>
+				</geometry>
+			</visual>
+            <!-- waits collision -->
+            <xacro:box_collision xyz="0 0 0.0305" rpy="0 0 0" size="0.084 0.04 0.0895"/>
+			<xacro:box_inertial xyz="0 0 0.03" rpy="0 0 0" size="0.068 0.0305 0.0738" mass="0.382"/>
+<!-- 			<inertial>
+				<mass value="0.382"/>
+				<origin xyz="0.000083485 0.0 0.03686607" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00034299"
+					ixy="0.00000000" iyy="0.00044850"
+					ixz="-0.00000583" iyz="0.00000000" izz="0.00022842"/>
+			</inertial> -->
+		</link>
+		<!-- Joint1 -->
+		<joint name="chest_joint01" type="revolute">
+			<parent link="waist_link01"/>
+			<child  link="chest_link01"/>
+			<origin xyz="0 0 0.0975" rpy="0 0 0"/>
+			<axis xyz="0 0 1"/>
+			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
+			<dynamics damping="0.1" friction="0.1"/>
+		</joint>
+		<!-- chest -->
+		<link name="chest_link01">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/chest_link01.obj"/>
+				</geometry>
+			</visual>
+			<!-- Chest collision -->
+            <xacro:box_collision xyz="0 0 0.012" rpy="0 0 0" size="0.11 0.201 0.053"/>
+            <!-- Head collision -->
+            <xacro:box_collision xyz="0.052 0 0.067" rpy="0 0 0" size="0.09 0.06 0.06"/>
+			<xacro:box_inertial xyz="0 0 0.02" rpy="0 0 0" size="0.11 0.201 0.08" mass="0.665"/>
+<!-- 			<inertial>
+				<mass value="0.665"/>
+				<origin xyz="0.00121250 0.0 0.01189965" rpy="0 0 0"/>
+				<inertia
+					ixx="0.00260149"
+					ixy="0.00000002" iyy="0.00082845"
+					ixz="-0.00004048" iyz="0.00000002" izz="0.00291420"/>
+			</inertial> -->
+		</link>
+	</xacro:macro>
+</robot>

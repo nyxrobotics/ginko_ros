@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+  <param name="use_sim_time" value="true" />
+
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="true"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="robot_name" default="ginko"/>
+
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- add file path to GINKO -->
+    <env name="GAZEBO_MODEL_PATH" value="$(find ginko_description)/../:$(optenv GAZEBO_MODEL_PATH)" /> 
+    <arg name="world_name" value="$(find ginko_description)/worlds/default.world"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <!-- Load motor characteristics and controller params -->
+  <rosparam file="$(find ginko_description)/config/ginko_xm540/gazebo_pid.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/ginko_xm540/gazebo_dc_motor.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/ginko_xm540/joint_control_position.yaml" ns="$(arg robot_name)" command="load"/>
+
+  <!-- load model with sdf for simulation,urdf for vizualization -->
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <!-- Convert xacro and put on parameter server -->
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find ginko_description)/xacro/ginko_xm540/ginko.xacro" />
+  <!-- Spawn a robot into Gazebo -->
+  <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
+  <node name="robot_urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model $(arg robot_name) -param robot_description -x -0.9 -y 0.0 -z 0.7"/>
+
+  <node name="controller_spawner" 
+    pkg="controller_manager" 
+    type="spawner" respawn="false" output="screen" ns="$(arg robot_name)"
+    args="
+        chest_joint01_position_controller
+        joint_state_controller
+        "/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen" ns="$(arg robot_name)">
+    <param name="publish_frequency" value="100"/>
+    <param name="ignore_timestamp" value="true"/>
+    <param name="use_tf_static" value="false"/>
+  </node>
+  <param name="ring_urdf" command="$(find xacro)/xacro --inorder '$(find ginko_description)/xacro/roboone_ring/large_ring.xacro'"/>
+  <node name="ring_urdf_spawner" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param ring_urdf -model ring_model -x 0.0 -y 0.0 -z 0.0" />
+</launch>

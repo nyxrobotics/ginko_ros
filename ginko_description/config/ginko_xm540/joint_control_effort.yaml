@@ -1,0 +1,12 @@
+
+ginko:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 100
+
+  # Position Controllers ---------------------------------------
+  chest_joint01_position_controller:
+    type: effort_controllers/JointPositionController
+    joint: chest_joint01
+    pid: {p: 40.0, i: 0.0, d: 0.1}
