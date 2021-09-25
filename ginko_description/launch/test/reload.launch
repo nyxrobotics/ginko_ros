@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <launch>
   <param name="robot_description"
-    command="$(find xacro)/xacro.py '$(find ginko_description)/gazebo/xacro/ginko.xacro' model_mode:=rviz" />
+    command="$(find xacro)/xacro.py '$(find ginko_description)/xacro/ginko_xm540/ginko.xacro' model_mode:=rviz" />
 </launch>

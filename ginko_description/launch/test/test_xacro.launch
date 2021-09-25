@@ -2,7 +2,7 @@
 <launch>
   <arg name="gui" default="True"/>
   <param name="robot_description"
-    command="$(find xacro)/xacro.py '$(find ginko_description)/gazebo/xacro/ginko.xacro' model_mode:=rviz" />
+    command="$(find xacro)/xacro.py '$(find ginko_description)/xacro/ginko_xm540/ginko.xacro' model_mode:=rviz" />
   <param name="use_gui" value="$(arg gui)"/>
   
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
