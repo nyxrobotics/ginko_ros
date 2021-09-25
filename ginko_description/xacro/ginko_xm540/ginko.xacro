@@ -9,6 +9,8 @@
   <xacro:include filename="$(find ginko_description)/xacro/sensors/urg.xacro"/>
   <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/parts/body.xacro"/>
   <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/transmission/body.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/parts/leg_r.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/transmission/leg_r.gazebo"/>
 
 
   <!-- MACRO:Loading Gazebo Controllers for joints -->
@@ -52,6 +54,8 @@
     </joint>
     <xacro:body_xacro/>
     <xacro:body_gazebo gazebo_hw_interface="${gazebo_hw_interface}"/>
+    <xacro:leg_r_xacro/>
+    <xacro:leg_r_gazebo gazebo_hw_interface="${gazebo_hw_interface}"/>
   </xacro:macro>
 
   <!-- Load Macros -->

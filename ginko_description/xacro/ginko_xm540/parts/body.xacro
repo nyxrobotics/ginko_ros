@@ -13,8 +13,8 @@
 			</visual>
             <!-- waits collision -->
             <xacro:box_collision xyz="0 0 0.0305" rpy="0 0 0" size="0.084 0.04 0.0895"/>
-			<xacro:box_inertial xyz="0 0 0.03" rpy="0 0 0" size="0.068 0.0305 0.0738" mass="0.382"/>
-<!-- 			<inertial>
+			<xacro:box_inertial xyz="0 0 0.0305" rpy="0 0 0" size="0.084 0.04 0.0895" mass="0.382"/>
+			<!-- <inertial>
 				<mass value="0.382"/>
 				<origin xyz="0.000083485 0.0 0.03686607" rpy="0 0 0"/>
 				<inertia
@@ -30,7 +30,7 @@
 			<origin xyz="0 0 0.0975" rpy="0 0 0"/>
 			<axis xyz="0 0 1"/>
 			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
-			<dynamics damping="0.1" friction="0.1"/>
+			<dynamics damping="0.0" friction="0.0"/>
 		</joint>
 		<!-- chest -->
 		<link name="chest_link01">
@@ -44,8 +44,8 @@
             <xacro:box_collision xyz="0 0 0.012" rpy="0 0 0" size="0.11 0.201 0.053"/>
             <!-- Head collision -->
             <xacro:box_collision xyz="0.052 0 0.067" rpy="0 0 0" size="0.09 0.06 0.06"/>
-			<xacro:box_inertial xyz="0 0 0.02" rpy="0 0 0" size="0.11 0.201 0.08" mass="0.665"/>
-<!-- 			<inertial>
+			<xacro:box_inertial xyz="0 0 0.012" rpy="0 0 0" size="0.11 0.201 0.053" mass="0.665"/>
+			<!-- <inertial>
 				<mass value="0.665"/>
 				<origin xyz="0.00121250 0.0 0.01189965" rpy="0 0 0"/>
 				<inertia
