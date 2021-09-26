@@ -31,3 +31,28 @@ gazebo_dc_motor:
       motor_model_type: Voltage
       stall_effort: 5.50
       noload_speed: 4.76
+    #leg left
+    leg_l_joint01:
+      motor_model_type: Voltage
+      stall_effort: 5.50
+      noload_speed: 4.76
+    leg_l_joint02:
+      motor_model_type: Voltage
+      stall_effort: 5.50
+      noload_speed: 4.76
+    leg_l_joint03:
+      motor_model_type: Voltage
+      stall_effort: 5.50
+      noload_speed: 4.76
+    leg_l_joint04:
+      motor_model_type: Voltage
+      stall_effort: 5.50
+      noload_speed: 4.76
+    leg_l_joint11:
+      motor_model_type: Voltage
+      stall_effort: 5.50
+      noload_speed: 4.76
+    leg_l_joint12:
+      motor_model_type: Voltage
+      stall_effort: 5.50
+      noload_speed: 4.76

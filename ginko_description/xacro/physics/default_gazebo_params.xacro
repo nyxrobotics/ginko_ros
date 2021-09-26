@@ -41,7 +41,7 @@
 			<mu1>${friction}</mu1>
 			<maxVel>10.0</maxVel>
 			<minDepth>0.0001</minDepth>
-			<maxContacts>6</maxContacts>
+			<maxContacts>12</maxContacts>
 			<selfCollide>false</selfCollide>
 			<dampingFactor>0.00</dampingFactor>
 		</gazebo>
