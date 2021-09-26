@@ -2,7 +2,11 @@ ginko_description
 ====
   
 Gazeboでループの閉じたリンクを再現する手順を記載します  
-  
+
+## 環境
+- inventor: 2018 Build112 Thu 02/16/2017
+- blender: 2.79
+
 ## 手順概要  
 
 大まかに以下の手準になります  
