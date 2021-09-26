@@ -23,7 +23,7 @@
 		<xacro:default_motor_transmission joint_name="leg_l_joint12" gazebo_hw_interface="${gazebo_hw_interface}"/>
 		<xacro:default_passive_joint joint_name="leg_l_ft_sensor_joint"/>
 		<xacro:default_link_collision link_name="leg_l_link01" friction="0.0"/>
-		<xacro:default_link_collision link_name="leg_l_link02" friction="0.0"/>
+		<xacro:default_link_collision link_name="leg_l_link02" friction="0.2"/>
 		<xacro:default_link_collision link_name="leg_l_link03" friction="0.0"/>
 		<xacro:default_link_collision link_name="leg_l_link04" friction="0.0"/>
 		<xacro:default_link_collision link_name="leg_l_link05" friction="0.0"/>
