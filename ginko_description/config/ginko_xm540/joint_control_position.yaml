@@ -8,3 +8,6 @@ joint_state_controller:
 chest_joint01_position_controller:
   type: position_controllers/JointPositionController
   joint: chest_joint01
+leg_r_joint04_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_r_joint04

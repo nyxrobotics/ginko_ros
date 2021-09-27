@@ -13,6 +13,10 @@
   <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/transmission/leg_r.gazebo"/>
   <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/parts/leg_l.xacro"/>
   <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/transmission/leg_l.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/parts/arm_r.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/transmission/arm_r.gazebo"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/parts/arm_l.xacro"/>
+  <xacro:include filename="$(find ginko_description)/xacro/ginko_xm540/transmission/arm_l.gazebo"/>
 
 
   <!-- MACRO:Loading Gazebo Controllers for joints -->
@@ -60,6 +64,10 @@
     <xacro:leg_r_gazebo gazebo_hw_interface="${gazebo_hw_interface}"/>
     <xacro:leg_l_xacro/>
     <xacro:leg_l_gazebo gazebo_hw_interface="${gazebo_hw_interface}"/>
+    <xacro:arm_r_xacro/>
+    <xacro:arm_r_gazebo gazebo_hw_interface="${gazebo_hw_interface}"/>
+    <xacro:arm_l_xacro/>
+    <xacro:arm_l_gazebo gazebo_hw_interface="${gazebo_hw_interface}"/>
   </xacro:macro>
 
   <!-- Load Macros -->

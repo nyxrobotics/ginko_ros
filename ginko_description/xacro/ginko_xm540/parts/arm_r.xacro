@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:macro name="arm_r_xacro">
+		<!-- Link conencts from body. Shoulder first. -->
+		<joint name="arm_r_joint01" type="revolute">
+		    <parent link="chest_link01"/>
+			<child link="arm_r_link01"/>
+		    <origin xyz="0 -0.117 0" rpy="0 0 0"/>
+		    <axis xyz="0 -1 0"/>
+			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+		<link name="arm_r_link01">
+			<visual>
+				<origin xyz="0 -0.01 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/arm_r_link01.obj"/>
+				</geometry>
+			</visual>
+            <xacro:box_collision xyz="0 -0.00475 0" rpy="0 0 0" size="0.052 0.0365 0.0335"/>
+			<xacro:box_inertial xyz="0 -0.00475 0" rpy="0 0 0" size="0.052 0.0365 0.0335" mass="0.03"/>
+		</link>
+		<joint name="arm_r_joint02" type="revolute">
+		    <parent link="arm_r_link01"/>
+			<child link="arm_r_link02"/>
+		    <origin xyz="0 -0.01 0" rpy="0 0 0"/>
+		    <axis xyz="1 0 0"/>
+			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+		<link name="arm_r_link02">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/arm_r_link02.obj"/>
+				</geometry>
+			</visual>
+            <xacro:box_collision xyz="-0.006625 -0.04275 -0.01775" rpy="0 0 0" size="0.05725 0.113 0.069"/>
+			<xacro:box_inertial xyz="-0.006625 -0.04275 -0.01775" rpy="0 0 0" size="0.05725 0.113 0.069" mass="0.35"/>
+		</link>
+		<joint name="arm_r_joint03" type="revolute">
+		    <parent link="arm_r_link02"/>
+			<child link="arm_r_link03"/>
+		    <origin xyz="0 -0.03325 -0.038" rpy="0 1.5708 0"/>
+		    <axis xyz="0 1 0"/>
+			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+		<link name="arm_r_link03">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/arm_r_link03.obj"/>
+				</geometry>
+			</visual>
+            <xacro:box_collision xyz="0.110 0 0" rpy="0 0 0" size="0.251 0.02 0.032"/>
+			<xacro:box_inertial xyz="0.110 0 0" rpy="0 0 0" size="0.251 0.02 0.032" mass="0.122"/>
+		</link>
+		<joint name="arm_r_joint04" type="revolute">
+		    <parent link="arm_r_link02"/>
+			<child link="arm_r_link04"/>
+		    <origin xyz="0 -0.03325 -0.038" rpy="0 1.5708 0"/>
+		    <axis xyz="0 1 0"/>
+			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+		<link name="arm_r_link04">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/arm_r_link04.obj"/>
+				</geometry>
+			</visual>
+            <xacro:box_collision xyz="0.110 0 0" rpy="0 0 0" size="0.251 0.02 0.032"/>
+			<xacro:box_inertial xyz="0.110 0 0" rpy="0 0 0" size="0.251 0.02 0.032" mass="0.122"/>
+		</link>
+	</xacro:macro>
+</robot>

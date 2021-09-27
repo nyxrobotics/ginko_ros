@@ -25,14 +25,14 @@ gazebo_dc_motor:
       antiwindup: false
       publish_state: true
     leg_r_joint03:
-      p: 10.0
+      p: 20.0
       i: 0.0
       d: 0.0
       i_clamp: 0.2
       antiwindup: false
       publish_state: true
     leg_r_joint04:
-      p: 10.0
+      p: 20.0
       i: 0.0
       d: 0.0
       i_clamp: 0.2
@@ -68,14 +68,14 @@ gazebo_dc_motor:
       antiwindup: false
       publish_state: true
     leg_l_joint03:
-      p: 10.0
+      p: 20.0
       i: 0.0
       d: 0.0
       i_clamp: 0.2
       antiwindup: false
       publish_state: true
     leg_l_joint04:
-      p: 10.0
+      p: 20.0
       i: 0.0
       d: 0.0
       i_clamp: 0.2
@@ -89,6 +89,64 @@ gazebo_dc_motor:
       antiwindup: false
       publish_state: true
     leg_l_joint12:
+      p: 10.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    #arm right
+    arm_r_joint01:
+      p: 10.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    arm_r_joint02:
+      p: 20.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    arm_r_joint03:
+      p: 10.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    arm_r_joint04:
+      p: 10.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    #arm left
+    arm_l_joint01:
+      p: 10.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    arm_l_joint02:
+      p: 20.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    arm_l_joint03:
+      p: 10.0
+      i: 0.0
+      d: 0.0
+      i_clamp: 0.2
+      antiwindup: false
+      publish_state: true
+    arm_l_joint04:
       p: 10.0
       i: 0.0
       d: 0.0
