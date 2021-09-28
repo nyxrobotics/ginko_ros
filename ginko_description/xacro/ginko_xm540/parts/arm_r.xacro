@@ -5,25 +5,25 @@
 		<joint name="arm_r_joint01" type="revolute">
 		    <parent link="chest_link01"/>
 			<child link="arm_r_link01"/>
-		    <origin xyz="0 -0.117 0" rpy="0 0 0"/>
+		    <origin xyz="0 -0.087 0" rpy="0 0 0"/>
 		    <axis xyz="0 -1 0"/>
 			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
 			<dynamics damping="0.0" friction="0.0"/>
 		</joint>
 		<link name="arm_r_link01">
 			<visual>
-				<origin xyz="0 -0.01 0" rpy="0 0 0"/>
+				<origin xyz="0 -0.04 0" rpy="0 0 0"/>
 				<geometry>
 					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/arm_r_link01.obj"/>
 				</geometry>
 			</visual>
-            <xacro:box_collision xyz="0 -0.00475 0" rpy="0 0 0" size="0.052 0.0365 0.0335"/>
-			<xacro:box_inertial xyz="0 -0.00475 0" rpy="0 0 0" size="0.052 0.0365 0.0335" mass="0.03"/>
+            <xacro:box_collision xyz="0 -0.03475 0" rpy="0 0 0" size="0.052 0.0365 0.0335"/>
+			<xacro:box_inertial xyz="0 -0.03475 0" rpy="0 0 0" size="0.052 0.0365 0.0335" mass="0.03"/>
 		</link>
 		<joint name="arm_r_joint02" type="revolute">
 		    <parent link="arm_r_link01"/>
 			<child link="arm_r_link02"/>
-		    <origin xyz="0 -0.01 0" rpy="0 0 0"/>
+		    <origin xyz="0 -0.04 0" rpy="0 0 0"/>
 		    <axis xyz="1 0 0"/>
 			<limit effort="1000.0" lower="-3.1" upper="3.1" velocity="10.0"/>
 			<dynamics damping="0.0" friction="0.0"/>
