@@ -29,6 +29,10 @@
           <thread_position_correction>1</thread_position_correction>
           <island_threads>8</island_threads>
         </solver>
+        <constraints>
+          <cfm>1e-7</cfm>
+          <erp>0.8</erp>
+        </constraints>
       </ode>
     </physics>
     <scene>
