@@ -72,7 +72,7 @@
 				</geometry>
 			</visual>
             <xacro:box_collision xyz="-0.015 0 0" rpy="0 0 0" size="0.04565 0.0373 0.023"/>
-			<xacro:box_inertial xyz="-0.015 0 0" rpy="0 0 0" size="0.04565 0.0373 0.023" mass="0.011"/>
+			<xacro:box_inertial xyz="-0.015 0 0" rpy="0 0 0" size="0.04565 0.0373 0.023" mass="0.03"/>
 		</link>
 		<joint name="leg_r_joint07" type="revolute">
 		    <parent link="leg_r_link03"/>

@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 
-
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 	<xacro:macro name="default_motor_transmission" params="joint_name gazebo_hw_interface">
 		<gazebo reference="${joint_name}">
@@ -43,7 +42,7 @@
 			<minDepth>0.0001</minDepth>
 			<maxContacts>6</maxContacts>
 			<selfCollide>false</selfCollide>
-			<dampingFactor>0.00</dampingFactor>
+			<dampingFactor>0</dampingFactor>
 		</gazebo>
 	</xacro:macro>
 

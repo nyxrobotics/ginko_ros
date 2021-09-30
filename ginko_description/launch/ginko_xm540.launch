@@ -40,12 +40,32 @@
     type="spawner" respawn="false" output="screen" ns="$(arg robot_name)"
     args="
         chest_joint01_position_controller
+        leg_r_joint01_position_controller
+        leg_r_joint02_position_controller
+        leg_r_joint03_position_controller
+        leg_r_joint04_position_controller
+        leg_r_joint11_position_controller
+        leg_r_joint12_position_controller
+        leg_l_joint01_position_controller
+        leg_l_joint02_position_controller
+        leg_l_joint03_position_controller
+        leg_l_joint04_position_controller
+        leg_l_joint11_position_controller
+        leg_l_joint12_position_controller
+        arm_r_joint01_position_controller
+        arm_r_joint02_position_controller
+        arm_r_joint03_position_controller
+        arm_r_joint04_position_controller
+        arm_l_joint01_position_controller
+        arm_l_joint02_position_controller
+        arm_l_joint03_position_controller
+        arm_l_joint04_position_controller
         joint_state_controller
         "/>
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
     respawn="false" output="screen" ns="$(arg robot_name)">
-    <param name="publish_frequency" value="100"/>
+    <param name="publish_frequency" value="1000"/>
     <param name="ignore_timestamp" value="true"/>
     <param name="use_tf_static" value="false"/>
   </node>

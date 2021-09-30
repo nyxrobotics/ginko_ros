@@ -17,8 +17,8 @@
 					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/arm_l_link01.obj"/>
 				</geometry>
 			</visual>
-            <xacro:box_collision xyz="0 0.03475 0" rpy="0 0 0" size="0.052 0.0365 0.0335"/>
-			<xacro:box_inertial xyz="0 0.03475 0" rpy="0 0 0" size="0.052 0.0365 0.0335" mass="0.03"/>
+            <xacro:box_collision xyz="0 0.03475 0" rpy="0 0 0" size="0.052 0.05 0.04"/>
+			<xacro:box_inertial xyz="0 0.03475 0" rpy="0 0 0" size="0.052 0.05 0.04" mass="0.05"/>
 		</link>
 		<joint name="arm_l_joint02" type="revolute">
 		    <parent link="arm_l_link01"/>

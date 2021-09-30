@@ -8,6 +8,69 @@ joint_state_controller:
 chest_joint01_position_controller:
   type: position_controllers/JointPositionController
   joint: chest_joint01
+
+leg_r_joint01_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_r_joint01
+leg_r_joint02_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_r_joint02
+leg_r_joint03_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_r_joint03
 leg_r_joint04_position_controller:
   type: position_controllers/JointPositionController
   joint: leg_r_joint04
+leg_r_joint11_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_r_joint11
+leg_r_joint12_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_r_joint12
+
+leg_l_joint01_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_l_joint01
+leg_l_joint02_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_l_joint02
+leg_l_joint03_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_l_joint03
+leg_l_joint04_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_l_joint04
+leg_l_joint11_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_l_joint11
+leg_l_joint12_position_controller:
+  type: position_controllers/JointPositionController
+  joint: leg_l_joint12
+
+arm_r_joint01_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_r_joint01
+arm_r_joint02_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_r_joint02
+arm_r_joint03_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_r_joint03
+arm_r_joint04_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_r_joint04
+
+arm_l_joint01_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_l_joint01
+arm_l_joint02_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_l_joint02
+arm_l_joint03_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_l_joint03
+arm_l_joint04_position_controller:
+  type: position_controllers/JointPositionController
+  joint: arm_l_joint04
+
+
