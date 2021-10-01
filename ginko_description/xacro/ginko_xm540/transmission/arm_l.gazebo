@@ -6,7 +6,7 @@
 		<xacro:default_motor_transmission joint_name="arm_l_joint01" gazebo_hw_interface="${gazebo_hw_interface}"/>
 		<xacro:default_link_collision link_name="arm_l_link01" friction="0.0"/>
 		<xacro:default_motor_transmission joint_name="arm_l_joint02" gazebo_hw_interface="${gazebo_hw_interface}"/>
-		<xacro:default_link_collision link_name="arm_l_link02" friction="0.0"/>
+		<xacro:default_link_collision link_name="arm_l_link02" friction="0.01"/>
 		<xacro:default_motor_transmission joint_name="arm_l_joint03" gazebo_hw_interface="${gazebo_hw_interface}"/>
 		<xacro:default_link_collision link_name="arm_l_link03" friction="0.0"/>
 		<xacro:default_motor_transmission joint_name="arm_l_joint04" gazebo_hw_interface="${gazebo_hw_interface}"/>
