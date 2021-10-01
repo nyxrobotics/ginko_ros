@@ -18,7 +18,7 @@
 				</geometry>
 			</visual>
             <xacro:box_collision xyz="0 -0.03475 0" rpy="0 0 0" size="0.052 0.05 0.04"/>
-			<xacro:box_inertial xyz="0 -0.03475 0" rpy="0 0 0" size="0.052 0.05 0.04" mass="0.05"/>
+			<xacro:box_inertial xyz="0 -0.03475 0" rpy="0 0 0" size="0.052 0.05 0.04" mass="0.01"/>
 		</link>
 		<joint name="arm_r_joint02" type="revolute">
 		    <parent link="arm_r_link01"/>
