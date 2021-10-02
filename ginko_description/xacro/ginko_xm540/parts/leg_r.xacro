@@ -329,8 +329,8 @@
 					<mesh filename="package://ginko_description/meshes/ginko_xm540/obj/leg_r_link12_2.obj"/>
 				</geometry>
 			</visual>
-            <xacro:box_collision xyz="0 0 -0.01025" rpy="0 0 0" size="0.12 0.075 0.004"/>
-			<xacro:box_inertial xyz="0 0 -0.01025" rpy="0 0 0" size="0.12 0.075 0.004" mass="0.0486"/>
+            <xacro:box_collision xyz="0 0 -0.00025" rpy="0 0 0" size="0.12 0.075 0.024"/>
+			<xacro:box_inertial xyz="0 0 -0.00025" rpy="0 0 0" size="0.12 0.075 0.024" mass="0.0486"/>
 		</link>
 	</xacro:macro>
 </robot>
