@@ -24,8 +24,11 @@
 
   <!-- Load motor characteristics and controller params -->
   <rosparam file="$(find ginko_description)/config/ginko_xm540/gazebo_pid.yaml" ns="$(arg robot_name)" command="load"/>
-  <rosparam file="$(find ginko_description)/config/ginko_xm540/gazebo_dc_motor.yaml" ns="$(arg robot_name)" command="load"/>
   <rosparam file="$(find ginko_description)/config/ginko_xm540/joint_control_position.yaml" ns="$(arg robot_name)" command="load"/>
+  <!-- <rosparam file="$(find ginko_description)/config/ginko_xm540/gazebo_dc_motor.yaml" ns="$(arg robot_name)" command="load"/> -->
+  <rosparam file="$(find ginko_description)/config/ginko_xm540/motor_test_dynamixel/xm430_350.yaml" ns="$(arg robot_name)" command="load"/>
+  <rosparam file="$(find ginko_description)/config/ginko_xm540/motor_test_dynamixel/xh540_150.yaml" ns="$(arg robot_name)" command="load"/>
+  <!-- <rosparam file="$(find ginko_description)/config/ginko_xm540/motor_test_dynamixel/xh540_270.yaml" ns="$(arg robot_name)" command="load"/> -->
 
   <!-- load model with sdf for simulation,urdf for vizualization -->
   <!-- Load the URDF into the ROS Parameter Server -->
