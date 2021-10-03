@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <launch>
-    <node name="jump_pub" pkg="rostopic" type="rostopic" args="pub /jump std_msgs/Float64 0 --once" />
+    <node name="jump_init" pkg="rostopic" type="rostopic" args="pub /jump std_msgs/Float64 0 --once" />
     <node name="jump_to_leg_r_joint03" pkg="topic_tools" type="transform" args="/jump /ginko/leg_r_joint03_position_controller/command std_msgs/Float64 'm.data'"/>
     <node name="jump_to_leg_r_joint04" pkg="topic_tools" type="transform" args="/jump /ginko/leg_r_joint04_position_controller/command std_msgs/Float64 -- '-m.data'"/>
     <node name="jump_to_leg_l_joint03" pkg="topic_tools" type="transform" args="/jump /ginko/leg_l_joint03_position_controller/command std_msgs/Float64 -- '-m.data'"/>
     <node name="jump_to_leg_l_joint04" pkg="topic_tools" type="transform" args="/jump /ginko/leg_l_joint04_position_controller/command std_msgs/Float64 'm.data'"/>
+    <node name="jump_pub_py" pkg="ginko_description" type="jump.py"/>
 </launch>
